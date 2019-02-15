@@ -24,12 +24,8 @@ public class TestNumerique {
 		for (int i = 1; i< 5 ; i++) {
 
 			n = mt.forceNormale(masse);
-			forceRappel = mt.forceRappel(masse, k, position.getX());
-			forceFriction = mt.forceFriction(masse, u, n, vitesse);
-			sommeForces = mt.sommeForces(forceRappel, forceFriction);
-			MoteurPhysique.miseAJourAcceleration(sommeForces, masse, accel);
 			MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
-			System.out.println("Iteration "+i+" tempsSimule = "+deltaT+" forceRappel = "+forceRappel.getX()+" forceFriction ="+forceFriction.getX()+" a = "+accel.getX()+" v = "+ vitesse.getX() + " x= "+ position.getX() );
+			//System.out.println("Iteration "+i+" tempsSimule = "+deltaT+" forceRappel = "+forceRappel.getX()+" forceFriction ="+forceFriction.getX()+" a = "+accel.getX()+" v = "+ vitesse.getX() + " x= "+ position.getX() );
 
 		}
 	}
