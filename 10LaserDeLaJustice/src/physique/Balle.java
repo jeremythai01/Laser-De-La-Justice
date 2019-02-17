@@ -194,9 +194,10 @@ public class Balle implements Dessinable {
 
 
 	@Override
-	public void dessiner(Graphics2D g) {
+	public void dessiner(Graphics2D g2d) {
 		// TODO Auto-generated method stub
-		
+		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
+		g2d.draw(cercle);
 	}
 	
 	

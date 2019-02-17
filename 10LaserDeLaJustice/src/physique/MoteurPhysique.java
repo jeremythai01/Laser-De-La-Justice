@@ -5,12 +5,12 @@ import geometrie.Vecteur;
 /**
  * Cette classe regroupera les calculs physiques nécessaires au mouvement des objets des divers objets dans la scène. 
  *  
- * @author Caroline Houle
+ * @author Jeremy Thai
  *
  */
 public class MoteurPhysique {
 
-	
+
 	/**
 	 * Calcule une itération de l'algorithem d'intégration numérique d'Euler semi-implicite. 
 	 * Les vecteurs position et vitesse seront modifiés à la sortie!
@@ -35,22 +35,19 @@ public class MoteurPhysique {
 
 	}//fin méthode
 
-	public static void unPasVerlet(double deltaT, Vecteur position, Vecteur vitesse, Vecteur accel) {
-		
-		
-		Vecteur deltaVitesse = Vecteur.multiplie(accel, deltaT);
-		Vecteur resultV = vitesse.additionne( deltaVitesse ); 
-		vitesse.setX(resultV.getX());	//on change le vecteur vitesse
-		vitesse.setY(resultV.getY());
+	public static void unPasVerlet( double deltaT, Vecteur position, Vecteur vitesse, Vecteur accel) {
 
-		Vecteur deltaPosition = Vecteur.multiplie(vitesse, deltaT);
-		Vecteur resultP = position.additionne(deltaPosition); //on calcule la position en considerant la nouvelle vitesse
+	
+		Vecteur  resultP =  position.additionne(  (vitesse.additionne(accel.multiplie(deltaT).multiplie(1/2))) );
+		Vecteur resultV = vitesse.additionne(accel.multiplie(deltaT));
+		
 		position.setX(resultP.getX());  //on change le vecteur position
 		position.setY(resultP.getY());
+		//vitesse.setX(resultV.getX());	//on ne change pas le vx car constant?
+		vitesse.setY(resultV.getY());
+
+		 
 	}
-
-
-
 
 	public Vecteur forceNormale(double masse) {
 		return new Vecteur(0, masse*9.8066);
