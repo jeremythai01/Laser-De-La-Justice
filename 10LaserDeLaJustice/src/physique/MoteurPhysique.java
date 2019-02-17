@@ -12,6 +12,19 @@ public class MoteurPhysique {
 
 
 	/**
+	 * Calcule l'acceleration en fonction de la masse et des forces appliquees
+	 * @param sommeDesForces La somme des forces appliquees
+	 * @param masse La masse 
+	 * @param accel En sortie, l'acceleraion calculee, avec a=m/F
+	 */
+	public static void miseAJourAcceleration(Vecteur sommeDesForces, double masse, Vecteur accel) {
+		//sachant que f=ma, on calcule a = m / f
+		accel.setX( sommeDesForces.getX() / masse );
+		accel.setY( sommeDesForces.getY() / masse );
+
+	}
+	
+	/**
 	 * Calcule une itération de l'algorithem d'intégration numérique d'Euler semi-implicite. 
 	 * Les vecteurs position et vitesse seront modifiés à la sortie!
 	 * 
