@@ -118,17 +118,6 @@ public class MoteurPhysique {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 	public double eC(double masse, Vecteur v) {
 		return (1/2) * masse* v.getY()*v.getY(); 
 	}

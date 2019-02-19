@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import personnage.Personnage;
-import Test.Balle;
+import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
 import pistolet.Pistolet;
@@ -26,8 +26,8 @@ public class Scene extends JPanel implements Runnable {
 	private AffineTransform mat;
 	private int HAUTEUR=0;
 	
-	private int tempsDuSleep = 25;
-	private double deltaT = 0.3;
+	private int tempsDuSleep = 100;
+	private double deltaT = 0.05;
 	private final double LARGEUR_DU_MONDE = 10; //en metres
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
