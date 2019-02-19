@@ -20,8 +20,8 @@ import java.awt.event.MouseEvent;
 
 public class Scene extends JPanel implements Runnable {
 
-	private int tempsDuSleep = 20;
-	private double deltaT = 0.05;
+	private int tempsDuSleep = 25;
+	private double deltaT = 0.5;
 	private final double LARGEUR_DU_MONDE = 5; //en metres
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
@@ -35,11 +35,11 @@ public class Scene extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 	
-	private Vecteur position = new Vecteur(0.3, 2.5);
+	private Vecteur position;
 	
-	private Vecteur vitesse = new Vecteur(1.0 ,0);
+	private Vecteur vitesse;
 
-	private Vecteur gravity = new Vecteur(0,9.8);
+	private Vecteur gravity ;
 
 
 
@@ -48,6 +48,14 @@ public class Scene extends JPanel implements Runnable {
 	 * Create the panel.
 	 */
 	public Scene() {
+		
+		 position = new Vecteur(0.3, 2.5);
+		
+		 vitesse = new Vecteur(1.0 ,0);
+
+		 gravity = new Vecteur(0,2);
+		
+		
 		
 		/*
 		addMouseListener(new MouseAdapter() {
@@ -120,8 +128,6 @@ public class Scene extends JPanel implements Runnable {
 		balle.unPasRK4( deltaT, tempsTotalEcoule );
 		tempsTotalEcoule += deltaT;
 
-
-		tempsTotalEcoule += deltaT;
 	}
 
 	public void arreter( ) {

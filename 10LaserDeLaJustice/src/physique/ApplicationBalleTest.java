@@ -42,7 +42,7 @@ public class ApplicationBalleTest extends JFrame {
 		contentPane.setLayout(null);
 		
 		Scene scene = new Scene();
-		scene.setBounds(24, 22, 517, 541);
+		scene.setBounds(20, 0, 517, 690);
 		contentPane.add(scene);
 		
 		JButton btnStart = new JButton("start");

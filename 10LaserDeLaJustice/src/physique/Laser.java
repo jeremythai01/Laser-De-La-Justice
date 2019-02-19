@@ -40,7 +40,7 @@ public class Laser implements Dessinable{
 	
 
 	@Override
-	public void dessiner(Graphics2D g, AffineTransform mat, int hauteur) {
+	public void dessiner(Graphics2D g, AffineTransform mat, int hauteur, int largeur) {
 		// TODO Auto-generated method stub
 		
 	}

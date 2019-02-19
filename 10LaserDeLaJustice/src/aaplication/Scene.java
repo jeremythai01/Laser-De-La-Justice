@@ -46,25 +46,7 @@ public class Scene extends JPanel implements Runnable {
 	public Scene() {
 		principal = new Personnage ();
 		pistoletPrincipal= new Pistolet();
-		
-		
-		
 		gravity = new Vecteur(0,9.8);
-		addMouseListener(new MouseAdapter() { // pour tester les balles 
-			@Override
-			public void mousePressed(MouseEvent e) {
-			
-				balle = new Balle(new Vecteur(e.getX(), e.getY()), new Vecteur(3,0),gravity,diametre, masse );
-	
-				listeBalles.add(balle);
-				repaint();
-				
-			}
-		});
-		
-		
-		
-		
 		
 		
 	
@@ -83,16 +65,8 @@ public class Scene extends JPanel implements Runnable {
 			
 		g2d.setColor(Color.yellow);
 		principal.dessiner(g2d, mat, HAUTEUR);
-		pistoletPrincipal.dessiner(g2d, mat, HAUTEUR);
+		pistoletPrincipal.dessiner(g2d, mat, HAUTEUR, 0);
 	
-
-		for(Balle balle: listeBalles) {
-
-			balle.checkCollisions((double)getWidth(),(double)getHeight());
-			balle.dessiner(g2d, mat, HAUTEUR);
-
-		}
-		
 	}
 	
 
