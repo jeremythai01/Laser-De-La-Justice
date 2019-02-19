@@ -62,6 +62,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnPlay.addActionListener(new ActionListener() {
 	
 			public void actionPerformed(ActionEvent arg0) {
+				scene.demarrer();
 			}
 		});
 		btnPlay.setBounds(10, 45, 63, 54);

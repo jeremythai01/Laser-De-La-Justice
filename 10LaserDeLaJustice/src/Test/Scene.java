@@ -1,60 +1,54 @@
-package aaplication;
+package Test;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+
 import geometrie.Vecteur;
-import personnage.Personnage;
-import Test.Balle;
-import physique.Coeurs;
-import physique.Laser;
-import pistolet.Pistolet;
-import utilite.ModeleAffichage;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 public class Scene extends JPanel implements Runnable {
 
-	private Personnage principal;
-	private Pistolet pistoletPrincipal;
-	private AffineTransform mat;
-	private int HAUTEUR=0;
-	
 	private int tempsDuSleep = 25;
 	private double deltaT = 0.3;
-	private final double LARGEUR_DU_MONDE = 10; //en metres
+	private final double LARGEUR_DU_MONDE = 3; //en metres
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
 	
 
 	private double masse = 15; //en kg
-	private double diametre = 3;  //em mètres
+	private double diametre = 50;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Vecteur gravity;
-	private Balle balle;
-	private boolean premiereFois = true;
-	private ModeleAffichage modele;
+	Balle balle;
+	
 
-	
-	
+
+
+
+
+
+	/**
+	 * Create the panel.
+	 */
 	public Scene() {
-		principal = new Personnage ();
-		pistoletPrincipal= new Pistolet();
-		
-		
-		
 		gravity = new Vecteur(0,9.8);
-		addMouseListener(new MouseAdapter() { // pour tester les balles 
+		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 			
-				balle = new Balle(new Vecteur(e.getX(), e.getY()), new Vecteur(3,0),gravity,diametre, masse );
+				balle = new Balle(new Vecteur(e.getX()-diametre/2, e.getY()-diametre/2), new Vecteur(3,0),gravity,diametre, masse );
 	
 				listeBalles.add(balle);
 				repaint();
@@ -62,41 +56,60 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 		
-		
-		
-		
-		
-		
 	
+		
+		
+		
+		
+		
 		
 	}
+
+
+
+
+
+
 	public void paintComponent(Graphics g) {
+
+
+
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
+		Graphics2D g2d = (Graphics2D) g;	
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+
 		
-		if(premiereFois) {
-			modele = new ModeleAffichage(getWidth(),getHeight(),LARGEUR_DU_MONDE);
-		mat = modele.getMatMC();
-		premiereFois = false;
-		}
-		
-			
-		g2d.setColor(Color.yellow);
-		principal.dessiner(g2d, mat, HAUTEUR);
-		pistoletPrincipal.dessiner(g2d, mat, HAUTEUR);
-	
+
+
+		Line2D.Double ligne = new Line2D.Double(30,200,getWidth(),200);
+
+		g2d.setColor(Color.RED);
+		g2d.draw(ligne);
 
 		for(Balle balle: listeBalles) {
 
-			balle.checkCollisions((double)getWidth(),(double)getHeight());
-			balle.dessiner(g2d, mat, HAUTEUR);
+		//	balle.setHeight(getHeight());
+		//	balle.setWidth(getWidth());	
+		//	balle.checkCollisions();
+			g2d.setColor(Color.blue);
+		//	balle.dessiner(g2d);
 
 		}
 		
-	}
+		
 	
+		
+
+
+		
+
+	}//fin paintComponent
+
+
+
 
 	private void calculerUneIterationPhysique() {
+		//leverEvenResultatsApresUneImage();
 		for(Balle balle : listeBalles) {
 			balle.unPasRK4( deltaT, tempsTotalEcoule );
 		}
@@ -135,5 +148,9 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	
-
+	
+	
+	
+	
 }
+

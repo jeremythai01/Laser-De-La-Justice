@@ -1,9 +1,10 @@
-package physique;
+package Test;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-
+import interfaces.Dessinable;
 import geometrie.Vecteur;
 
 /**
@@ -17,7 +18,6 @@ public class Balle implements Dessinable {
 	private double masseEnKg = 1;
 	private Ellipse2D.Double cercle=null;
 	private Vecteur position, vitesse, accel;
-	private double width,height;
 	private double vInitX,vInitY;
 	private boolean toucheSol = true;
 	private Vecteur forceGravi;
@@ -219,32 +219,14 @@ public class Balle implements Dessinable {
 
 
 	@Override
-	public void dessiner(Graphics2D g2d) {
-		// TODO Auto-generated method stub
-		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		g2d.draw(cercle);
-	}
-
-	public double getWidth() {
-		return width;
+	public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur) {
+		AffineTransform matLocale = new AffineTransform(mat);
+		g2d.setColor(Color.red);
+		g2d.draw(matLocale.createTransformedShape(new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre)));
 	}
 
 
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-
-	public double getHeight() {
-		return height;
-	}
-
-
-	public  void setHeight(double height) {
-		this.height = height;
-	}
-
-	public void checkCollisions( ) {
+	public void checkCollisions(double width, double height ) {
 		if(position.getY()+diametre >= height){ // touche le sol 
 			if(toucheSol) {
 				vInitY = vitesse.getY();

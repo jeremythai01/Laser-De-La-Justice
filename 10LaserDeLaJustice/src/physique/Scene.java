@@ -32,8 +32,7 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Vecteur gravity;
 	Balle balle;
-	Laser laser;
-	Coeurs coeurs;
+	
 
 
 
@@ -57,7 +56,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 		
-		coeurs= new Coeurs(5);
+	
 		
 		
 		
@@ -98,9 +97,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 		
 		
-		coeurs.dessiner(g2d);
-		coeurs.setCombien(4);
-		coeurs.dessiner(g2d);
+	
 		
 
 
