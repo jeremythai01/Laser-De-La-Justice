@@ -99,6 +99,8 @@ public class Scene extends JPanel implements Runnable {
 		
 		
 		coeurs.dessiner(g2d);
+		coeurs.setCombien(4);
+		coeurs.dessiner(g2d);
 		
 
 

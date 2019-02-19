@@ -23,45 +23,57 @@ import javax.swing.JOptionPane;
 public class Coeurs implements Dessinable {
 
 	private Image img=null;
+	private Image imgGris=null;
 	private int combien;
-	
+	private int combienGris;
+
 
 	public Coeurs(int combien) {
 		this.combien=combien;
+		combienGris=combien;
 		URL urlCoeur = getClass().getClassLoader().getResource("coeur.png");
 		if (urlCoeur == null) {
-			JOptionPane.showMessageDialog(null , "Fichier coeur.jpg introuvable");
+			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
 			System.exit(0);}
-		 try {
-			 img = ImageIO.read(urlCoeur);
-			 }
-		 catch (IOException e) {
-			 System.out.println("Erreur pendant la lecture du fichier d'image");
-			 }
-	}
-	
-	
-	/*public void image() {
-	URL urlCoeur=  getClass().getClassLoader().getResource("coeur.jpg");
-	if (urlCoeur == null) {
-		JOptionPane.showMessageDialog(null , "Fichier coeur.jpg introuvable");
-		System.exit(0);}
-		coeur= new ImageIcon( urlCoeur );
-		etiquette = new JLabel(coeur);
-		bouton = new JButton(coeur);	
-	}*/
+		try {
+			img = ImageIO.read(urlCoeur);
+		}
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
 
+		URL urlCoeurGris = getClass().getClassLoader().getResource("coeurGris.png");
+		if (urlCoeurGris == null) {
+			JOptionPane.showMessageDialog(null , "Fichier coeurGris.png introuvable");
+			System.exit(0);}
+		try {
+			imgGris = ImageIO.read(urlCoeurGris);
+		}
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
+
+
+
+	}
 
 
 
 	@Override
 	public void dessiner(Graphics2D g) {
-		for(int i=0; i<combien; i++) {
-			g.drawImage(img, 0+20*i, 0, 20, 20, Color.WHITE, null);
+		for(int i=0; i<combienGris; i++) {
+			g.drawImage(imgGris, 0+20*i, 0, 20, 20, null, null);
 		}
-		
-		
-		
+
+		for(int i=0; i<combien; i++) {
+			g.drawImage(img, 0+20*i, 0, 20, 20, null, null);
+		}
+
+
 	}
-	
+
+	public void setCombien(int combien) {
+		this.combien=combien;
+	}
+
 }
