@@ -88,12 +88,14 @@ public class Balle implements Dessinable {
 	 * @param g2d contexte graphique
 	 * @param matMC matrice de transformation monde-vers-composant
 	 */
-	public void dessiner(Graphics2D g2d, AffineTransform mat ) {
+	/*
+	 
+	  public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur ) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
 	}//fin methode
-
+*/
 
 	/**
 	 * Effectue une iteration de l'algorithme d'Euler implicite. Calcule la nouvelle vitesse et la nouvelle
@@ -213,7 +215,7 @@ public class Balle implements Dessinable {
 
 
 	@Override
-	public void dessiner(Graphics2D g2d) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur) {
 		// TODO Auto-generated method stub
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		g2d.draw(cercle);

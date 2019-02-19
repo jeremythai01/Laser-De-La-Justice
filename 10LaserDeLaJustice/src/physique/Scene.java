@@ -33,8 +33,9 @@ public class Scene extends JPanel implements Runnable {
 
 
 
-
-
+	private AffineTransform mat;
+	private int HAUTEUR = 0;
+	
 
 	/**
 	 * Create the panel.
@@ -80,7 +81,7 @@ public class Scene extends JPanel implements Runnable {
 			balle.setWidth(getWidth());	
 			balle.checkCollisions();
 			g2d.setColor(Color.blue);
-			balle.dessiner(g2d);
+			balle.dessiner(g2d, mat, HAUTEUR);
 
 		}
 
