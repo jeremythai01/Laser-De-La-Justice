@@ -21,10 +21,12 @@ import java.awt.event.MouseEvent;
 public class Scene extends JPanel implements Runnable {
 
 	private int tempsDuSleep = 25;
-	private double deltaT = 0.008;
+	private double deltaT = 0.3;
 	private final double LARGEUR_DU_MONDE = 3; //en metres
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
+	
+
 	private double masse = 1; //en kg
 	private double diametre = 50;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
@@ -33,9 +35,8 @@ public class Scene extends JPanel implements Runnable {
 
 
 
-	private AffineTransform mat;
-	private int HAUTEUR = 0;
-	
+
+
 
 	/**
 	 * Create the panel.
@@ -68,6 +69,7 @@ public class Scene extends JPanel implements Runnable {
 		Graphics2D g2d = (Graphics2D) g;	
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
+		
 
 
 		Line2D.Double ligne = new Line2D.Double(30,200,getWidth(),200);
@@ -81,7 +83,7 @@ public class Scene extends JPanel implements Runnable {
 			balle.setWidth(getWidth());	
 			balle.checkCollisions();
 			g2d.setColor(Color.blue);
-			balle.dessiner(g2d, mat, HAUTEUR);
+			balle.dessiner(g2d);
 
 		}
 
@@ -101,11 +103,11 @@ public class Scene extends JPanel implements Runnable {
 
 	private void calculerUneIterationPhysique() {
 		//leverEvenResultatsApresUneImage();
-		tempsTotalEcoule += deltaT;
 		for(Balle balle : listeBalles) {
-			balle.unPasVerlet( deltaT );
-
+			balle.unPasRK4( deltaT, tempsTotalEcoule );
 		}
+		tempsTotalEcoule += deltaT;
+
 
 	}
 
@@ -138,7 +140,8 @@ public class Scene extends JPanel implements Runnable {
 		System.out.println("Le thread est mort...");
 	}
 
-
+	
+	
 	
 	
 	

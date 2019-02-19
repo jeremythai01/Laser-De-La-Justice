@@ -5,7 +5,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 
 import geometrie.Vecteur;
-import interfaces.Dessinable;
 
 /**
  * Classe Balle: représentation sommaire d'une balle à l'aide d'un simple cercle.
@@ -88,14 +87,12 @@ public class Balle implements Dessinable {
 	 * @param g2d contexte graphique
 	 * @param matMC matrice de transformation monde-vers-composant
 	 */
-	/*
-	 
-	  public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur ) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat ) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
 	}//fin methode
-*/
+
 
 	/**
 	 * Effectue une iteration de l'algorithme d'Euler implicite. Calcule la nouvelle vitesse et la nouvelle
@@ -107,20 +104,27 @@ public class Balle implements Dessinable {
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 
-
+	/**
+	 * Effectue une iteration de l'algorithme Verlet. Calcule la nouvelle vitesse et la nouvelle
+	 * position de la balle.
+	 * @param deltaT intervalle de temps (pas)
+	 */
 	public void unPasVerlet(double deltaT) {
 		MoteurPhysique.miseAJourAcceleration(forceGravi, masseEnKg, accel);
 		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
-
-
 	/**
-	 * Modifie la somme des forces excercées sur la balle
-	 * Ceci a pour consequence de modifier l'acceleration
-	 * @param forces Les force exercees sur la balle
+	 * Effectue une iteration de l'algorithme de Runge-Kutta ordre 4. Calcule la nouvelle vitesse et la nouvelle
+	 * position de la balle.
+	 * @param deltaT intervalle de temps (pas)
 	 */
-
+	public void unPasRK4(double deltaT, double tempsEcoule) {
+		MoteurPhysique.miseAJourAcceleration(forceGravi, masseEnKg, accel);
+		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
+		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
+	}
+	
 
 	/**
 	 * Modifie la position de la balle
@@ -215,7 +219,7 @@ public class Balle implements Dessinable {
 
 
 	@Override
-	public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur) {
+	public void dessiner(Graphics2D g2d) {
 		// TODO Auto-generated method stub
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		g2d.draw(cercle);
@@ -267,6 +271,18 @@ public class Balle implements Dessinable {
 		this.vInitY = vInitY;
 	}
 
+
+	
+	
+	
+	
+	
+
+	
+	
+	
+
+	
 
 
 }//fin classe
