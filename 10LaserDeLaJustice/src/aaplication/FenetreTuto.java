@@ -1,4 +1,4 @@
-package physique;
+package aaplication;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ApplicationBalleTest extends JFrame {
+public class FenetreTuto extends JFrame {
 
 	private JPanel contentPane;
 
@@ -21,7 +21,7 @@ public class ApplicationBalleTest extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ApplicationBalleTest frame = new ApplicationBalleTest();
+					FenetreTuto frame = new FenetreTuto();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,36 +33,22 @@ public class ApplicationBalleTest extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ApplicationBalleTest() {
+	public FenetreTuto() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 559, 450);
+		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Scene scene = new Scene();
-		scene.setBounds(0, 0, 543, 375);
-		contentPane.add(scene);
-		
-		JButton btnStart = new JButton("start");
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				scene.demarrer();
+		JButton btnQuitter = new JButton("Quitter");
+		btnQuitter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 setVisible(false);
 			}
 		});
-		btnStart.setBounds(10, 377, 89, 23);
-		contentPane.add(btnStart);
-		
-		JButton btnStop = new JButton("stop");
-		btnStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				scene.arreter();
-			}
-		});
-		btnStop.setBounds(106, 377, 89, 23);
-		contentPane.add(btnStop);
-		
-	
+		btnQuitter.setBounds(157, 118, 89, 23);
+		contentPane.add(btnQuitter);
 	}
+
 }

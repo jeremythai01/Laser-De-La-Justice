@@ -2,6 +2,7 @@ package personnage;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.URL;
 
@@ -32,7 +33,7 @@ public class Personnage implements Dessinable {
 		
 	}
 
-	public void dessiner(Graphics2D g2d) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur) {
 		g2d.drawImage(imgPerso, (int)positionX,(int) positonY, null);
 		
 	}
