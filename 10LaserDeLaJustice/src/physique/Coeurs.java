@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import interfaces.Dessinable;
 
 /**
  * Classe coeur: classe permettant la realisation du nombre de vies du joueur
@@ -56,10 +55,11 @@ public class Coeurs implements Dessinable {
 
 
 	@Override
-	public void dessiner(Graphics2D g, AffineTransform mat, int hauteur) {
+	public void dessiner(Graphics2D g) {
 		for(int i=0; i<combien; i++) {
-			g.drawImage(img, 0+20*i, 0+20*i, 20, 20, Color.WHITE, null);
+			g.drawImage(img, 0+20*i, 0, 20, 20, Color.WHITE, null);
 		}
+		
 		
 		
 	}

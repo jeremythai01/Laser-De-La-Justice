@@ -27,11 +27,13 @@ public class Scene extends JPanel implements Runnable {
 	private double tempsTotalEcoule = 0;
 	
 
-	private double masse = 1; //en kg
+	private double masse = 15; //en kg
 	private double diametre = 50;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Vecteur gravity;
 	Balle balle;
+	Laser laser;
+	Coeurs coeurs;
 
 
 
@@ -54,6 +56,14 @@ public class Scene extends JPanel implements Runnable {
 				
 			}
 		});
+		
+		coeurs= new Coeurs(5);
+		
+		
+		
+		
+		
+		
 	}
 
 
@@ -86,15 +96,13 @@ public class Scene extends JPanel implements Runnable {
 			balle.dessiner(g2d);
 
 		}
+		
+		
+		coeurs.dessiner(g2d);
+		
 
 
-		//ModeleAffichage modele = new ModeleAffichage(getWidth(), getHeight(), LARGEUR_DU_MONDE);
-		//	AffineTransform matMC = modele.getMatMC();	
-		//blocRessort.setLargeurDuMonde(getWidth());
-		//blocRessort.dessiner(g2d, matMC);
-
-
-		g2d.setStroke( new BasicStroke());
+		
 
 	}//fin paintComponent
 

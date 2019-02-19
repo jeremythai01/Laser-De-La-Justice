@@ -17,11 +17,13 @@ public class Laser implements Dessinable{
 	private double LONGUEUR=0.5;
 	private Vecteur position, angleTir, vitesse;
 	private Path2D.Double trace=null;
+	private Vecteur accel;
 	
 	public Laser(Vecteur position, Vecteur angleTir, Vecteur vitesse) {
 		this.position=position;
 		this.angleTir=angleTir;
 		this.vitesse=vitesse;
+		accel = new Vecteur(0,0);
 	}
 
 	public void dessiner(Graphics2D g2d) {
@@ -31,9 +33,11 @@ public class Laser implements Dessinable{
 		g2d.draw((trace));
 		
 	}
-	public void unPasEuler() {
-		
+	public void unPasRK4(double deltaT, double tempsEcoule) {
+		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
+		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
+	
 
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, int hauteur) {
