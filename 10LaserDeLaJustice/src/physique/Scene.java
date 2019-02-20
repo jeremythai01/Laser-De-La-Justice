@@ -115,7 +115,7 @@ public class Scene extends JPanel implements Runnable {
 		
 		
 		balle1.unPasRK4( deltaT, tempsTotalEcoule);
-		//balle.checkCollisions((int)HAUTEUR_DU_MONDE, (int)LARGEUR_DU_MONDE);
+		
 		tempsTotalEcoule += deltaT;
 
 	}
