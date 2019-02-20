@@ -127,7 +127,7 @@ public class Scene extends JPanel implements Runnable {
 	//Miora
 	private void creerLePersonnagePrincipal(Graphics2D g2d, AffineTransform mat) {
 		principal.setDimensionScene(modele.getLargUnitesReelles(), modele.getHautUnitesReelles());
-		principal.dessiner(g2d, mat);
+		principal.dessiner(g2d, mat,0,0);
 
 		fantomePerso = new Rectangle2D.Double (principal.getPositionX(), modele.getHautUnitesReelles() - principal.getLONGUEUR_PERSO(), 
 				principal.getLARGEUR_PERSO(), principal.getLONGUEUR_PERSO());

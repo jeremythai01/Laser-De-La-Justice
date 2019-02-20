@@ -30,7 +30,7 @@ public class Pistolet extends JPanel implements Dessinable {
 	}
 
 	@Override
-	public void dessiner(Graphics2D g, AffineTransform mat) {
+	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 
 		bloc = new Rectangle2D.Double(200 - LARGEUR_PISTOLET / 2, 200 - LARGEUR_PISTOLET / 2,
 				LARGEUR_PISTOLET/2, LARGEUR_PISTOLET );

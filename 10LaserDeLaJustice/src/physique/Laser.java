@@ -28,7 +28,7 @@ public class Laser implements Dessinable{
 		accel = new Vecteur(0,0);
 	}
 
-	public void dessiner(Graphics2D g, AffineTransform mat) {
+	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		trace=new Line2D.Double(position.getX(), position.getY(),position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		g.draw(matLocal.createTransformedShape(((trace))));

@@ -99,15 +99,15 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 
 		System.out.println("hauteur est de "+getHeight());
-		balle1.dessiner(g2d,mat);
+		balle1.dessiner(g2d,mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		
 		Coeurs coeur = new Coeurs(4);
-		coeur.dessiner(g2d, mat);
+		coeur.dessiner(g2d, mat,0,0);
 		coeur.setCombien(3);
-		coeur.dessiner(g2d, mat);
+		coeur.dessiner(g2d, mat,0,0);
 		
 		 laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
-		laser.dessiner(g2d, mat);
+		laser.dessiner(g2d, mat,0,0);
 		
 		
 		
