@@ -49,7 +49,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1018, 728);
+		setBounds(100, 100, 636, 728);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,12 +57,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		
 		scene = new Scene();
 		scene.setBackground(Color.WHITE);
-		scene.setBounds(20, 110, 506, 568);
+		scene.setBounds(47, 110, 506, 568);
 		contentPane.add(scene);
-		
-		Pistolet pistolet = new Pistolet();
-		pistolet.setBounds(675, 213, 201, 265);
-		contentPane.add(pistolet);
 		
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
@@ -71,7 +67,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				scene.demarrer();
 			}
 		});
-		btnPlay.setBounds(10, 45, 63, 54);
+		btnPlay.setBounds(44, 61, 40, 38);
 		contentPane.add(btnPlay);
 		associerBoutonAvecImage(btnPlay, "play.png");
 		
@@ -80,7 +76,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnPause.setBounds(83, 45, 63, 54);
+		btnPause.setBounds(94, 61, 40, 38);
 		contentPane.add(btnPause);
 		associerBoutonAvecImage(btnPause, "pause.jpg");
 		
@@ -89,7 +85,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnImage.setBounds(152, 45, 70, 54);
+		btnImage.setBounds(144, 61, 40, 38);
 		contentPane.add(btnImage);
 		associerBoutonAvecImage(btnImage, "rejouer.png");
 		
@@ -101,7 +97,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				fenetreTuto.setVisible(true);
 			}
 		});
-		btnTutoriel.setBounds(437, 0, 89, 23);
+		btnTutoriel.setBounds(268, 0, 89, 23);
 		contentPane.add(btnTutoriel);
 		
 		JButton btnOption = new JButton("Option");
@@ -109,16 +105,16 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnOption.setBounds(510, 45, 57, 54);
+		btnOption.setBounds(513, 61, 40, 38);
 		contentPane.add(btnOption);
-		associerBoutonAvecImage(btnOption, "reglage.jpg");
+		associerBoutonAvecImage(btnOption, "reglage.png");
 		
 		JButton btnEditeur = new JButton("editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnEditeur.setBounds(443, 45, 57, 54);
+		btnEditeur.setBounds(463, 61, 40, 38);
 		contentPane.add(btnEditeur);
 		associerBoutonAvecImage(btnEditeur, "editeur.png");
 		
@@ -127,7 +123,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnEnregistrer.setBounds(370, 45, 63, 54);
+		btnEnregistrer.setBounds(413, 61, 40, 38);
 		contentPane.add(btnEnregistrer);
 		associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
 	}
