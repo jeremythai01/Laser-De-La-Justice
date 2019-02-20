@@ -20,12 +20,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import options.Editeur;
 
 public class App10LaserDeLaJustice extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnImage;
 	private Scene scene;
+	private Editeur editeur;
 
 	/**
 	 * Launch the application.
@@ -59,10 +61,6 @@ public class App10LaserDeLaJustice extends JFrame {
 		scene.setBackground(Color.WHITE);
 		scene.setBounds(20, 110, 506, 568);
 		contentPane.add(scene);
-		
-		Pistolet pistolet = new Pistolet();
-		pistolet.setBounds(675, 213, 201, 265);
-		contentPane.add(pistolet);
 		
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
@@ -113,9 +111,18 @@ public class App10LaserDeLaJustice extends JFrame {
 		contentPane.add(btnOption);
 		associerBoutonAvecImage(btnOption, "reglage.jpg");
 		
+		editeur = new Editeur();
+		editeur.setBounds(557, 114, 359, 564);
+		editeur.setBackground(Color.blue);
+		contentPane.add(editeur);
+		editeur.setVisible(false);
+		
 		JButton btnEditeur = new JButton("editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				editeur.setVisible(true);
+				scene.requestFocusInWindow();
+				
 			}
 		});
 		btnEditeur.setBounds(443, 45, 57, 54);
@@ -130,6 +137,9 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnEnregistrer.setBounds(370, 45, 63, 54);
 		contentPane.add(btnEnregistrer);
 		associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
+		
+		
+		
 	}
 
 	/**

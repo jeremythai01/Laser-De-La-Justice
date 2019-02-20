@@ -209,13 +209,20 @@ public class Scene extends JPanel implements Runnable {
 		int code = e.getKeyCode();
 		switch (code) {
 		case KeyEvent.VK_LEFT:
-			principal.setPositionX(principal.getPositionX()-0.1);
-			//	x = Math.max(x, 0);
+			if(principal.getPositionX() <= 0) {
+				principal.setPositionX(0);
+			}else {
+				principal.setPositionX(principal.getPositionX()-0.1);
+			}
 			break;
 
 		case KeyEvent.VK_RIGHT:
-			principal.setPositionX(principal.getPositionX()+0.1);
-			//x = Math.min(x, getWidth() - DIAMETRE);
+			if(principal.getPositionX()>= modele.getLargUnitesReelles() - principal.getLARGEUR_PERSO()) {
+				principal.setPositionX(modele.getLargUnitesReelles() - principal.getLARGEUR_PERSO());
+			}
+			else {
+				principal.setPositionX(principal.getPositionX()+0.1);
+			}
 			break;
 		}// fin switch
 	}//fin methode
