@@ -56,7 +56,7 @@ public class Personnage implements Dessinable {
 	/**
 	 * Methode permettant de dessiner le personnage
 	 */
-	public void dessiner(Graphics2D g2d, AffineTransform mat) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 
 		AffineTransform matLocale = new AffineTransform(mat);
 

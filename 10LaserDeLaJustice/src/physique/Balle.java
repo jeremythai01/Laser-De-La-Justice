@@ -90,10 +90,10 @@ public class Balle implements Dessinable {
 	 * @param matMC matrice de transformation monde-vers-composant
 	 */
 	@Override
-	public void dessiner(Graphics2D g2d, AffineTransform mat) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		//checkCollisions((double) ,(double) hauteur); 
+		checkCollisions((double) largeur ,(double) hauteur); 
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
 	}//fin methode
 

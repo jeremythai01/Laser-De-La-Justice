@@ -48,7 +48,7 @@ public class VecteurGraphique extends Vecteur implements Dessinable {
 	 * Dessine le vecteur sous la forme d'une flèche orientée
 	 * @param g2d Le contexte graphique
 	 */
-	public void dessiner(Graphics2D g2d, AffineTransform mat) {	
+	public void dessiner(Graphics2D g2d, AffineTransform mat,double hauteur, double largeur) {	
 
 		creerRepresentationGeometrique();
 

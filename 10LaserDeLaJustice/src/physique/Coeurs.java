@@ -62,7 +62,7 @@ public class Coeurs implements Dessinable {
 
 
 	@Override
-	public void dessiner(Graphics2D g, AffineTransform mat) {
+	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur ,double largeur) {
 		AffineTransform matLocale = new AffineTransform(mat);
 		double factPersoY = 0.5 / img.getHeight(null);
 		double factPersoX = 0.5 / imgGris.getWidth(null);
