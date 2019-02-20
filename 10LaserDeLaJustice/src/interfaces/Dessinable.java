@@ -5,4 +5,5 @@ import java.awt.geom.AffineTransform;
 
 public interface Dessinable {
 	public void dessiner (Graphics2D g, AffineTransform mat);
+	
 }

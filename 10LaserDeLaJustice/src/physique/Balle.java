@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import geometrie.Vecteur;
 import interfaces.Dessinable;
+import utilite.ModeleAffichage;
 
 /**
  * Classe Balle: représentation sommaire d'une balle à l'aide d'un simple cercle.
@@ -89,10 +90,10 @@ public class Balle implements Dessinable {
 	 * @param matMC matrice de transformation monde-vers-composant
 	 */
 	@Override
-	public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur, int largeur ) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		checkCollisions((double)largeur ,(double) hauteur); 
+		//checkCollisions((double) ,(double) hauteur); 
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
 	}//fin methode
 
