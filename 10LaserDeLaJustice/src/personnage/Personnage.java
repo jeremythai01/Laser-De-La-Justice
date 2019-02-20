@@ -24,6 +24,7 @@ public class Personnage implements Dessinable {
 	private Image imgPerso = null;
 	private double HAUTEUR_COMPO;
 	private double positionX ;
+	private boolean premiereFois = true;
 
 
 
@@ -67,7 +68,7 @@ public class Personnage implements Dessinable {
 		matLocale.scale(factPersoX, factPersoY);
 
 		//Deplacement du personnage a sa position initiale
-		matLocale.translate( (POSITION_INITIALE - LARGEUR_PERSO/2 ) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
+		matLocale.translate( (positionX) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
 		g2d.drawImage(imgPerso, matLocale, null); 
 
 
@@ -81,7 +82,10 @@ public class Personnage implements Dessinable {
 		LARGEUR_COMPO = largUnitesReelles;
 		HAUTEUR_COMPO = hautUnitesReelles;
 		POSITION_INITIALE=LARGEUR_COMPO/2;
-		positionX = POSITION_INITIALE-LARGEUR_PERSO/2;
+		if(premiereFois) {
+			positionX = POSITION_INITIALE-LARGEUR_PERSO/2;
+			premiereFois = false;
+		}
 
 	}
 	/**
