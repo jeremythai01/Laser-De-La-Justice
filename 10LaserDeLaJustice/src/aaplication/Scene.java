@@ -3,6 +3,7 @@ package aaplication;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.KeyAdapter;
@@ -11,16 +12,23 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
+
 import java.util.ArrayList;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
+import javax.swing.JPanel;
 import geometrie.Vecteur;
 import personnage.Personnage;
 import physique.Balle;
+
 import pistolet.Pistolet;
+
+import physique.Coeurs;
+//import physique.Laser;
+//import pistolet.Pistolet;
 import utilite.ModeleAffichage;
 
 /**
@@ -30,10 +38,12 @@ import utilite.ModeleAffichage;
  */
 public class Scene extends JPanel implements Runnable {
 
+
 	private Image fond = null;
 
 	private Personnage principal;
-	private Pistolet pistoletPrincipal;
+//	private Pistolet pistoletPrincipal;
+
 	private AffineTransform mat;
 	private int HAUTEUR=0;
 
@@ -41,27 +51,32 @@ public class Scene extends JPanel implements Runnable {
 	private double deltaT = 0.05;
 	private final double LARGEUR_DU_MONDE = 10;
 	private boolean enCoursAnimation= false;
-	private double tempsTotalEcoule = 0;
-
 
 	private double masse = 15; //en kg
-	private double diametre = 3;  //em mètres
+	private double diametre = 5;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
-	private Vecteur gravity;
-	private Balle balle;
 	private boolean premiereFois = true;
 	private ModeleAffichage modele;
 	private double HAUTEUR_SCENE;
-
+	private  double HAUTEUR_DU_MONDE;
+	private Balle balle1;
+	private Vecteur positionInit;
+	private Vecteur vitesseInit;
+	private Vecteur gravity ;
 	private Rectangle2D.Double fantomePerso;
 	private Shape fantomeTransfo;
 
 
 
-
 	public Scene() {
 		lireFond();
-		pistoletPrincipal= new Pistolet();
+		principal = new Personnage ();
+		//pistoletPrincipal= new Pistolet();
+		
+
+		positionInit = new Vecteur(12, 10);
+
+		vitesseInit = new Vecteur(2.0 ,0);
 		gravity = new Vecteur(0,9.8);
 		principal = new Personnage (); 
 		addKeyListener(new KeyAdapter() {
@@ -71,6 +86,8 @@ public class Scene extends JPanel implements Runnable {
 				repaint();
 			}
 		});
+
+		balle1 = new Balle(positionInit, vitesseInit,gravity,diametre, masse );
 	}
 	/*addMouseListener(new MouseAdapter() { // pour tester les balles 
 			@Override
@@ -86,20 +103,19 @@ public class Scene extends JPanel implements Runnable {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
-
-
 		if(premiereFois) {
 			modele = new ModeleAffichage(getWidth(),getHeight(),LARGEUR_DU_MONDE);
-
 			mat = modele.getMatMC();
+			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 			premiereFois = false;
 		}
+			mat = modele.getMatMC();
+			premiereFois = false;
+		
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(),(int) modele.getHautPixels(), null);
 
 		creerLePersonnagePrincipal(g2d, mat);
 
-
-		//	pistoletPrincipal.dessiner(g2d, mat, HAUTEUR);
 	}
 
 	/**
@@ -119,24 +135,30 @@ public class Scene extends JPanel implements Runnable {
 	}
 	/*
 		for(Balle balle: listeBalles) {
+=======
+>>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 
-			balle.checkCollisions((double)getWidth(),(double)getHeight());
-			balle.dessiner(g2d, mat, HAUTEUR);
+		g2d.setColor(Color.red);
+		//principal.dessiner(g2d, mat, HAUTEUR);
+		//pistoletPrincipal.dessiner(g2d, mat, HAUTEUR, 0);
 
+<<<<<<< HEAD
 		}
+=======
+		balle1.dessiner(g2d, mat, (int) HAUTEUR_DU_MONDE,(int) LARGEUR_DU_MONDE);
+>>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 
 	}
-	 */
+
 
 	private void calculerUneIterationPhysique() {
-		for(Balle balle : listeBalles) {
-			balle.unPasRK4( deltaT, tempsTotalEcoule );
-		}
+
+		balle1.unPasRK4( deltaT, tempsTotalEcoule );
 		tempsTotalEcoule += deltaT;
 
 
 	}
-
+*/
 	public void arreter( ) {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
@@ -155,7 +177,7 @@ public class Scene extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
-			calculerUneIterationPhysique();
+		//	calculerUneIterationPhysique();
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -165,6 +187,8 @@ public class Scene extends JPanel implements Runnable {
 		}//fin while
 		System.out.println("Le thread est mort...");
 	}
+	
+	
 	/**
 	 * Methode permettant de mettre un fond a la scene
 	 */ // Miora
@@ -195,8 +219,4 @@ public class Scene extends JPanel implements Runnable {
 			break;
 		}// fin switch
 	}//fin methode
-
-
-
-
 }

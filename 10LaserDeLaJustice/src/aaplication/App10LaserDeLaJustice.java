@@ -57,7 +57,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		
 		scene = new Scene();
 		scene.setBackground(Color.WHITE);
-		scene.setBounds(10, 110, 595, 569);
+		scene.setBounds(20, 110, 506, 568);
 		contentPane.add(scene);
 		
 		Pistolet pistolet = new Pistolet();

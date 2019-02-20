@@ -21,6 +21,7 @@ public class Balle implements Dessinable {
 	private double vInitX,vInitY;
 	private boolean toucheSol = true;
 	private Vecteur forceGravi;
+	private double height;
 
 
 
@@ -91,7 +92,7 @@ public class Balle implements Dessinable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, int hauteur, int largeur ) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		checkCollisions(largeur , hauteur); 
+		checkCollisions((double)largeur ,(double) hauteur); 
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
 	}//fin methode
 
@@ -126,7 +127,7 @@ public class Balle implements Dessinable {
 		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
-	
+
 
 	/**
 	 * Modifie la position de la balle
@@ -220,22 +221,23 @@ public class Balle implements Dessinable {
 	}
 
 
-	public void checkCollisions(double width, double height ) {
+	public void checkCollisions(double width, double height) {
 		if(position.getY()+diametre >= height){ // touche le sol 
 			if(toucheSol) {
 				vInitY = vitesse.getY();
 				vitesse.setY(-vInitY);
 				toucheSol = false;
+			} else {
+				vitesse.setY(-vInitY);
+
+				if(position.getX()+diametre >= width) // touche le mur droite 
+					vitesse.setX(-vitesse.getX());
+
+				if(position.getX() <= 0) // touche le mur gauche 
+					vitesse.setX(-vitesse.getX());
 			}
-			vitesse.setY(-vInitY);
 		}
-		if(position.getX()+diametre >= width) // touche le mur droite 
-			vitesse.setX(-vitesse.getX());
-
-		if(position.getX() <= 0) // touche le mur gauche 
-			vitesse.setX(-vitesse.getX());
 	}
-
 
 
 	public double getvInitY() {
@@ -252,16 +254,43 @@ public class Balle implements Dessinable {
 
 
 
-	
-	
-	
-	
+	public double getHeight() {
+		return height;
+	}
 
-	
-	
-	
 
-	
+
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+
+
+
+	public double getWidth() {
+		return width;
+	}
+
+
+
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+
+	private double width;
+
+
+
+
+
+
+
+
+
+
 
 
 }//fin classe
