@@ -98,7 +98,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 		System.out.println("hauteur est de "+getHeight());
-		balle1.dessiner(g2d,mat, (int)HAUTEUR_DU_MONDE, (int)LARGEUR_DU_MONDE);
+		balle1.dessiner(g2d,mat);
 		
 		
 
@@ -115,6 +115,7 @@ public class Scene extends JPanel implements Runnable {
 		
 		
 		balle1.unPasRK4( deltaT, tempsTotalEcoule);
+		
 		tempsTotalEcoule += deltaT;
 
 	}
