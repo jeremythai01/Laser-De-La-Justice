@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 public class ApplicationBalleTest extends JFrame {
 
 	private JPanel contentPane;
-	private Scene scene;
+	private SceneTest scene;
 
 	/**
 	 * Launch the application.
@@ -60,7 +60,7 @@ public class ApplicationBalleTest extends JFrame {
 		btnStop.setBounds(157, 705, 89, 23);
 		contentPane.add(btnStop);
 		
-		scene = new Scene();
+		scene = new SceneTest();
 		scene.setBounds(27, 43, 559, 639);
 		contentPane.add(scene);
 		

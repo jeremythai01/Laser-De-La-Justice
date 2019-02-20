@@ -2,6 +2,7 @@ package physique;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 
 import geometrie.Vecteur;
@@ -14,23 +15,23 @@ import interfaces.Dessinable;
  *
  */
 public class Laser implements Dessinable{
-	private double LONGUEUR=0.5;
-	private Vecteur position, angleTir, vitesse;
-	private Path2D.Double trace=null;
+	private double LONGUEUR=2;
+	private Vecteur position, vitesse;
+	private double angleTir;
+	private Line2D trace;
 	private Vecteur accel;
 	
-	public Laser(Vecteur position, Vecteur angleTir, Vecteur vitesse) {
+	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
 		this.position=position;
 		this.angleTir=angleTir;
 		this.vitesse=vitesse;
 		accel = new Vecteur(0,0);
 	}
 
-	public void dessiner(Graphics2D g2d) {
-
-		trace.moveTo(position.getX(), position.getY());
-		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(angleTir.getX())), position.getY()+(LONGUEUR*Math.sin(angleTir.getY())));
-		g2d.draw((trace));
+	public void dessiner(Graphics2D g, AffineTransform mat) {
+		AffineTransform matLocal = new AffineTransform(mat);
+		trace=new Line2D.Double(position.getX(), position.getY(),position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		g.draw(matLocal.createTransformedShape(((trace))));
 		
 	}
 	public void unPasRK4(double deltaT, double tempsEcoule) {
@@ -39,10 +40,10 @@ public class Laser implements Dessinable{
 	}
 	
 
-	@Override
+	/*@Override
 	public void dessiner(Graphics2D g, AffineTransform mat) {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
 
 }

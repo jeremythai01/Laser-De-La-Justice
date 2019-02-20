@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 
 
 
-public class Scene extends JPanel implements Runnable {
+public class SceneTest extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
@@ -40,6 +40,7 @@ public class Scene extends JPanel implements Runnable {
 	private Vecteur vitesse;
 
 	private Vecteur gravity ;
+	Laser laser;
 	
 
 
@@ -48,7 +49,7 @@ public class Scene extends JPanel implements Runnable {
 	/**
 	 * Create the panel.
 	 */
-	public Scene() {
+	public SceneTest() {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -100,6 +101,15 @@ public class Scene extends JPanel implements Runnable {
 		System.out.println("hauteur est de "+getHeight());
 		balle1.dessiner(g2d,mat);
 		
+		Coeurs coeur = new Coeurs(4);
+		coeur.dessiner(g2d, mat);
+		coeur.setCombien(3);
+		coeur.dessiner(g2d, mat);
+		
+		 laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
+		laser.dessiner(g2d, mat);
+		
+		
 		
 
 
@@ -117,6 +127,7 @@ public class Scene extends JPanel implements Runnable {
 		balle1.unPasRK4( deltaT, tempsTotalEcoule);
 		
 		tempsTotalEcoule += deltaT;
+		laser.unPasRK4(deltaT, tempsTotalEcoule);
 
 	}
 
