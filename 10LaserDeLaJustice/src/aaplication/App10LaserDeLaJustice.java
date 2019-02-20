@@ -28,6 +28,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	private JButton btnImage;
 	private Scene scene;
 	private Editeur editeur;
+	static App10LaserDeLaJustice frame;
 
 	/**
 	 * Launch the application.
@@ -36,7 +37,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					App10LaserDeLaJustice frame = new App10LaserDeLaJustice();
+					frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
 					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
@@ -51,7 +52,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 589, 739);
+		setBounds(100, 100, 774, 847);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -59,7 +60,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		
 		scene = new Scene();
 		scene.setBackground(Color.WHITE);
-		scene.setBounds(47, 110, 506, 568);
+		scene.setBounds(47, 110, 665, 687);
 		contentPane.add(scene);
 		
 		JButton btnPlay = new JButton("play");
@@ -112,7 +113,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		associerBoutonAvecImage(btnOption, "reglage.png");
 		
 		editeur = new Editeur();
-		editeur.setBounds(581, 114, 359, 564);
+		editeur.setBounds(729, 110, 331, 687);
 		editeur.setBackground(Color.blue);
 		contentPane.add(editeur);
 		editeur.setVisible(false);
@@ -120,10 +121,10 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnEditeur = new JButton("editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contentPane.setBounds(100, 100, 993, 748);
+			//	contentPane.setBounds(100, 100, 1500, 871);
 				editeur.setVisible(true);
 				scene.requestFocusInWindow();
-				
+				frame.setBounds(100, 100, 1138, 855);
 			}
 		});
 		btnEditeur.setBounds(463, 61, 40, 38);

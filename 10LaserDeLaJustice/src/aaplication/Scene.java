@@ -65,13 +65,14 @@ public class Scene extends JPanel implements Runnable {
 	private Vecteur gravity ;
 	private Rectangle2D.Double fantomePerso;
 	private Shape fantomeTransfo;
+	private Pistolet pistoletPrincipal;
 
 
 
 	public Scene() {
 		lireFond();
 		principal = new Personnage ();
-		//pistoletPrincipal= new Pistolet();
+		pistoletPrincipal= new Pistolet();
 		
 
 		positionInit = new Vecteur(12, 10);
@@ -131,6 +132,7 @@ public class Scene extends JPanel implements Runnable {
 		fantomePerso = new Rectangle2D.Double (principal.getPositionX(), modele.getHautUnitesReelles() - principal.getLONGUEUR_PERSO(), 
 				principal.getLARGEUR_PERSO(), principal.getLONGUEUR_PERSO());
 		g2d.draw(mat.createTransformedShape(fantomePerso));
+		pistoletPrincipal.dessiner(g2d, mat);
 
 	}
 	/*
