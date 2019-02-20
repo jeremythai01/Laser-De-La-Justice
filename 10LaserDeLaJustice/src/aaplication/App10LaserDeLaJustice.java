@@ -16,11 +16,16 @@ import java.awt.Color;
 import pistolet.Pistolet;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class App10LaserDeLaJustice extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnImage;
+	private Scene scene;
 
 	/**
 	 * Launch the application.
@@ -31,6 +36,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				try {
 					App10LaserDeLaJustice frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
+					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,9 +55,9 @@ public class App10LaserDeLaJustice extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Scene scene = new Scene();
+		scene = new Scene();
 		scene.setBackground(Color.WHITE);
-		scene.setBounds(10, 110, 569, 552);
+		scene.setBounds(10, 110, 595, 569);
 		contentPane.add(scene);
 		
 		Pistolet pistolet = new Pistolet();
