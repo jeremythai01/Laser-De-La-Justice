@@ -51,7 +51,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 636, 728);
+		setBounds(100, 100, 589, 739);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -112,7 +112,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		associerBoutonAvecImage(btnOption, "reglage.png");
 		
 		editeur = new Editeur();
-		editeur.setBounds(557, 114, 359, 564);
+		editeur.setBounds(581, 114, 359, 564);
 		editeur.setBackground(Color.blue);
 		contentPane.add(editeur);
 		editeur.setVisible(false);
@@ -120,6 +120,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnEditeur = new JButton("editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				contentPane.setBounds(100, 100, 993, 748);
 				editeur.setVisible(true);
 				scene.requestFocusInWindow();
 				

@@ -5,8 +5,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import javafx.scene.paint.Color;
-
 /**
  * Classe permettant de modifier les parametres du jeu
  * @author Miora
