@@ -1,36 +1,36 @@
 package physique;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import utilite.ModeleAffichage;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
+
+
 public class Scene extends JPanel implements Runnable {
 
+	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
-	private double deltaT = 0.5;
-	private final double LARGEUR_DU_MONDE = 5; //en metres
+	private double deltaT = 0.05;
+	private  double LARGEUR_DU_MONDE = 50; //en metres
+	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
-	
-
 	private double masse = 15; //en kg
-	private double diametre = 0.5;  //em mètres
+	private double diametre = 1;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
-	Balle balle;
+	private Balle balle1;
+	private Balle balle;
 	private boolean premiereFois = true;
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -40,6 +40,7 @@ public class Scene extends JPanel implements Runnable {
 	private Vecteur vitesse;
 
 	private Vecteur gravity ;
+	
 
 
 
@@ -48,31 +49,32 @@ public class Scene extends JPanel implements Runnable {
 	 * Create the panel.
 	 */
 	public Scene() {
-		
-		 position = new Vecteur(0.3, 2.5);
-		
-		 vitesse = new Vecteur(1.0 ,0);
-
-		 gravity = new Vecteur(0,2);
-		
-		
-		
-		/*
 		addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
-			
+			public void mouseClicked(MouseEvent e) {
 				balle = new Balle(new Vecteur(e.getX()-diametre/2, e.getY()-diametre/2), new Vecteur(3,0),gravity,diametre, masse );
-	
+				
 				listeBalles.add(balle);
 				repaint();
-				
 			}
 		});
 		
+		
+		
+		 position = new Vecteur(0.3, 10);
+		
+		 vitesse = new Vecteur(2.0 ,0);
+
+		 gravity = new Vecteur(0,1);
+		
+		 balle1 = new Balle(position, vitesse,gravity,diametre, masse );
+		
+		
+
+		
 	
 		
-		*/
+		
 		
 		
 		
@@ -88,27 +90,16 @@ public class Scene extends JPanel implements Runnable {
 		Graphics2D g2d = (Graphics2D) g;	
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
-		//if(premiereFois) {
+		if(premiereFois) {
 			modele = new ModeleAffichage(getWidth(),getHeight(),LARGEUR_DU_MONDE);
 		mat = modele.getMatMC();
+		 HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 		premiereFois = false;
-		//}
-
-
-		balle = new Balle(position, vitesse,gravity,diametre, masse );
-
-		balle.dessiner(g2d,mat, getHeight(),getWidth());
-		
-		/*
-		for(Balle balle: listeBalles) {
-
-			g2d.setColor(Color.blue);
-			balle.dessiner(g2d,mat, getHeight(),getWidth());
-
 		}
+
+		System.out.println("hauteur est de "+getHeight());
+		balle1.dessiner(g2d,mat, (int)HAUTEUR_DU_MONDE, (int)LARGEUR_DU_MONDE);
 		
-		*/
-	
 		
 
 
@@ -120,12 +111,10 @@ public class Scene extends JPanel implements Runnable {
 
 
 	private void calculerUneIterationPhysique() {
-		/*
-		for(Balle balle : listeBalles) {
-			balle.unPasRK4( deltaT, tempsTotalEcoule );
-		}
-		*/
-		balle.unPasRK4( deltaT, tempsTotalEcoule );
+	
+		
+		
+		balle1.unPasRK4( deltaT, tempsTotalEcoule);
 		tempsTotalEcoule += deltaT;
 
 	}

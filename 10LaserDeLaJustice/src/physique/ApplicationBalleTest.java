@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 public class ApplicationBalleTest extends JFrame {
 
 	private JPanel contentPane;
+	private Scene scene;
 
 	/**
 	 * Launch the application.
@@ -41,17 +42,13 @@ public class ApplicationBalleTest extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Scene scene = new Scene();
-		scene.setBounds(20, 0, 517, 690);
-		contentPane.add(scene);
-		
 		JButton btnStart = new JButton("start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scene.demarrer();
 			}
 		});
-		btnStart.setBounds(21, 712, 89, 23);
+		btnStart.setBounds(27, 705, 89, 23);
 		contentPane.add(btnStart);
 		
 		JButton btnStop = new JButton("stop");
@@ -60,8 +57,12 @@ public class ApplicationBalleTest extends JFrame {
 				scene.arreter();
 			}
 		});
-		btnStop.setBounds(124, 712, 89, 23);
+		btnStop.setBounds(157, 705, 89, 23);
 		contentPane.add(btnStop);
+		
+		scene = new Scene();
+		scene.setBounds(27, 43, 559, 639);
+		contentPane.add(scene);
 		
 	
 	}
