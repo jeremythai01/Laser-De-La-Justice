@@ -56,10 +56,16 @@ public class Personnage implements Dessinable {
 	/**
 	 * Methode permettant de dessiner le personnage
 	 */
-	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
-
+	public void dessiner(Graphics2D g2d, AffineTransform mat, double largeurScene, double hauteurScene) {
+		
 		AffineTransform matLocale = new AffineTransform(mat);
-
+		LARGEUR_COMPO = largeurScene;
+		HAUTEUR_COMPO = hauteurScene;
+		POSITION_INITIALE=LARGEUR_COMPO/2;
+		if(premiereFois) {
+			positionX = POSITION_INITIALE-LARGEUR_PERSO/2;
+			premiereFois = false;
+		}
 		//Facteur de réduction de l'image du bloc 
 		double factPersoY = LONGUEUR_PERSO / imgPerso.getHeight(null);
 		double factPersoX = LARGEUR_PERSO / imgPerso.getWidth(null);
@@ -73,21 +79,7 @@ public class Personnage implements Dessinable {
 
 
 	}
-	/**
-	 * Methode permettant de donner l'information sur les composant de la scene
-	 * @param largUnitesReelles : la largeur de la scene
-	 * @param hautUnitesReelles : la hauteur de la scene
-	 */
-	public void setDimensionScene(double largUnitesReelles, double hautUnitesReelles) {
-		LARGEUR_COMPO = largUnitesReelles;
-		HAUTEUR_COMPO = hautUnitesReelles;
-		POSITION_INITIALE=LARGEUR_COMPO/2;
-		if(premiereFois) {
-			positionX = POSITION_INITIALE-LARGEUR_PERSO/2;
-			premiereFois = false;
-		}
-
-	}
+	
 	/**
 	 * Methode permettant de savoir la position du personnage
 	 * @return la position initiale du personnage
