@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
+import miroir.MiroirConcave;
 import utilite.ModeleAffichage;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -42,7 +43,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private Vecteur gravity ;
 	Laser laser;
 	
-
+	private MiroirConcave miroirConcave;
 
 
 
@@ -61,7 +62,7 @@ public class SceneTest extends JPanel implements Runnable {
 		});
 		
 		
-		
+			
 		 position = new Vecteur(0.3, 10);
 		
 		 vitesse = new Vecteur(2.0 ,0);
@@ -70,7 +71,7 @@ public class SceneTest extends JPanel implements Runnable {
 		
 		 balle1 = new Balle(position, vitesse,gravity,diametre, masse );
 		
-		
+		miroirConcave = new MiroirConcave();
 
 		
 	
@@ -109,7 +110,7 @@ public class SceneTest extends JPanel implements Runnable {
 		 laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
 		laser.dessiner(g2d, mat,0,0);
 		
-		
+		miroirConcave.dessiner(g2d, mat, 0.0, 0.0);
 		
 
 
