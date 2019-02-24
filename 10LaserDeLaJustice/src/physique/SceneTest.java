@@ -21,14 +21,14 @@ import java.awt.event.MouseEvent;
 public class SceneTest extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	private int tempsDuSleep = 25;
-	private double deltaT = 0.05;
+	private int tempsDuSleep = 10;
+	private double deltaT = 0.10;
 	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
 	private double masse = 15; //en kg
-	private double diametre = 1;  //em mètres
+	private double diametre = 5;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Balle balle1;
 	private Balle balle;
@@ -100,7 +100,7 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 
 		System.out.println("hauteur est de "+getHeight());
-		balle1.dessiner(g2d,mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		balle1.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		
 		Coeurs coeur = new Coeurs(4);
 		coeur.dessiner(g2d, mat,0,0);
