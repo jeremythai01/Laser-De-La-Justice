@@ -6,11 +6,12 @@ import geometrie.Vecteur;
  * Cette classe regroupera les calculs physiques nécessaires au mouvement des objets des divers objets dans la scène. 
  *  
  * @author Jeremy Thai
+ *  @author Caroline Houle 
  *
  */
 public class MoteurPhysique {
 
-
+	// Caroline Houle 
 	/**
 	 * Calcule l'acceleration en fonction de la masse et des forces appliquees
 	 * @param sommeDesForces La somme des forces appliquees
@@ -23,7 +24,7 @@ public class MoteurPhysique {
 		accel.setY( sommeDesForces.getY() / masse );
 
 	}
-
+	// Caroline Houle 
 	/**
 	 * Calcule une itération de l'algorithem d'intégration numérique d'Euler semi-implicite. 
 	 * Les vecteurs position et vitesse seront modifiés à la sortie!
@@ -48,6 +49,15 @@ public class MoteurPhysique {
 
 	}//fin méthode
 
+	// Jeremy Thai 
+	/**
+	 * Calcule une itération de l'algorithme d'intégration numérique de Verlet et modifie les vecteurs position et vitesse.. 
+	 * @param deltaT Incrément de temps
+	 * @param position Vecteur de position  
+	 * @param vitesse Vecteur de vitesse
+	 * @param accel Vecteur d'accélération
+	 */
+
 	public static void unPasVerlet( double deltaT, Vecteur position, Vecteur vitesse, Vecteur accel) {
 
 
@@ -62,80 +72,109 @@ public class MoteurPhysique {
 
 	}
 
+	// Jeremy Thai 
+	/**
+	 * Calcule une itération de l'algorithme d'intégration numérique de Runge-Kutta d'ordre 4 et modifie les vecteurs position et vitesse.
+	 * 
+	 * @param deltaT Incrément de temps
+	 * @param temps temps simule
+	 * @param pos Vecteur de position  
+	 * @param vitesse Vecteur de vitesse e	/
+	 * @param a Vecteur d'accélération
+	 */
 
-
-	public static void unPasRK4(double deltaT,double tempsI, Vecteur posI, Vecteur vyI, Vecteur a) {
+	public static void unPasRK4(double deltaT,double temps, Vecteur pos, Vecteur vitesse, Vecteur a) {
 
 		//Calculs a la 1ere position finale
 
-		Vecteur posF1 = posI.additionne(Vecteur.multiplie(vyI, deltaT)); //Evaluer la position finale #1
+		Vecteur posF1 = pos.additionne(Vecteur.multiplie(vitesse, deltaT)); //Evaluer la position finale #1
 
-		Vecteur vyF1 = vyI.additionne(Vecteur.multiplie(a, deltaT)); //Evaluer la vitesse finale #1
-		
+		Vecteur vF1 = vitesse.additionne(Vecteur.multiplie(a, deltaT)); //Evaluer la vitesse finale #1
 
-		double tempsF1 = tempsI+deltaT; // Évaluer le temps final #1
-		
+
+		double tempsF1 = temps+deltaT; // Évaluer le temps final #1
+
 		//on evalue pas a car a est constant
 
 		//Calculs a la position a demie-temps
 
-		Vecteur posMilieu = vyI.multiplie(deltaT/2).additionne( a.multiplie(Math.pow(deltaT/2,2)).multiplie(1/2)).additionne(posI); // Évaluer la position milieu
+		Vecteur posMilieu = vitesse.multiplie(deltaT/2).additionne( a.multiplie(Math.pow(deltaT/2,2)).multiplie(1/2)).additionne(pos); // Évaluer la position milieu
 
-		Vecteur vMilieu =  vyI.additionne(Vecteur.multiplie(a, deltaT/2)); //Evaluer la vitesse milieu ( axi = axf1 car a est constant)
+		Vecteur vMilieu =  vitesse.additionne(Vecteur.multiplie(a, deltaT/2)); //Evaluer la vitesse milieu ( axi = axf1 car a est constant)
 
-		double tempsMilieu = tempsI+ deltaT/2;
+		double tempsMilieu = temps+ deltaT/2;
 
 		//on evalue pas a car a est constant
-		
+
 		//Calcul a la 2e position finale
 
-		Vecteur posF2 = vyI.multiplie(deltaT).additionne( a.multiplie(Math.pow(deltaT,2)).multiplie(1/2)).additionne(posI); // Évaluer la position finale #2
+		Vecteur posF2 = vitesse.multiplie(deltaT).additionne( a.multiplie(Math.pow(deltaT,2)).multiplie(1/2)).additionne(pos); // Évaluer la position finale #2
 
-		Vecteur vyF2 =  vyI.additionne(Vecteur.multiplie(a, deltaT)); // Évaluer la vitesse finale #2 
+		Vecteur vF2 =  vitesse.additionne(Vecteur.multiplie(a, deltaT)); // Évaluer la vitesse finale #2 
 
-		double tempsFinal2 = tempsI+ deltaT; // Évaluer le temps final #2 :
-		
+		double tempsFinal2 = temps+ deltaT; // Évaluer le temps final #2 :
+
 		//on evalue pas a car a est constant
 
 		//Calcul de la position finale avec pondération de l’accélération
-		
-		Vecteur posF = vyI.multiplie(deltaT).additionne( a.multiplie(Math.pow(deltaT,2)).multiplie(1/2)).additionne(posI); // Évaluer la position finale
-		
-		Vecteur vyF =  vyI.additionne(Vecteur.multiplie(a, deltaT)); // Évaluer la vitesse finale 
 
-		double tempsF = tempsI + deltaT; // Évaluer le temps final 
+		Vecteur posF = vitesse.multiplie(deltaT).additionne( a.multiplie(Math.pow(deltaT,2)).multiplie(1/2)).additionne(pos); // Évaluer la position finale
 
-		
-		posI.setX(posF.getX());  //on change le vecteur position
-		posI.setY(posF.getY());
+		Vecteur vF =  vitesse.additionne(Vecteur.multiplie(a, deltaT)); // Évaluer la vitesse finale 
+
+		double tempsF = temps + deltaT; // Évaluer le temps final 
+
+
+		pos.setX(posF.getX());  //on change le vecteur position
+		pos.setY(posF.getY());
 		//vitesse.setX(resultV.getX());	//on ne change pas le vx car constant?
-		vyI.setY(vyF.getY());
-		
-		
+		vitesse.setY(vF.getY());
 	}
 
-
-
-
-
+	//Jeremy Thai
+	/**
+	 *  Calcule et retourne l'energie cinetique de l'objet 	
+	 * @param masse masse de l'objet en kg 
+	 * @param v vitesse de l'objet en metre par seconde
+	 * @return energie cinetique en Joules 
+	 */
 	public double eC(double masse, Vecteur v) {
 		return (1/2) * masse* v.getY()*v.getY(); 
 	}
 
+	//Jeremy Thai
+	/**
+	 * 
+	 * @param masse masse de l'objet 
+	 * @param a acceleration de l'objet en metre par secondes carrees 
+	 * @param hauteur hauteur de l'objet par rapport au sol ( en m)
+	 * @return l'energie potentielle
+	 */
+
 	public double eP(double masse, Vecteur a, double hauteur) {
 		return a.getY()*masse*hauteur;
 	}
+	//Jeremy Thai
+	/**
+	 * calcule et retoune l'energie mecanique de l'objet 
+	 * @param eC l'energie cinetique de l'objet 	(J)
+	 * @param eP l'energie potentielle  de l'objet 	(J)
+	 * @return energie mecanique
+	 */
 
 	public double eM(double eC, double eP) {
 		return eC+eP;
 	}
 
+	//Jeremy Thai
+	/** 
+	 * retourne un vecteur du calcul de la force gravitationnelle
+	 /* @param masse masse (kg)
+	 * @param accel acceleration en m par s
+	 */
 
-	public Vecteur forceGravi(double masse) {
-		return new Vecteur(0, -masse*9.8066);
+	public Vecteur forceGravi(double masse, Vecteur accel) {
+		return new Vecteur(0, masse*accel.getY());
 	}
 
-	public Vecteur sommeForces(Vecteur forceRappel, Vecteur forceFriction) {
-		return new Vecteur(forceRappel.additionne(forceFriction).getX(), forceRappel.additionne(forceFriction).getY() );
-	}
 }
