@@ -108,7 +108,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnOption.setBounds(513, 61, 40, 38);
+		btnOption.setBounds(672, 61, 40, 38);
 		contentPane.add(btnOption);
 		associerBoutonAvecImage(btnOption, "reglage.png");
 		
@@ -127,7 +127,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				frame.setBounds(100, 100, 1138, 855);
 			}
 		});
-		btnEditeur.setBounds(463, 61, 40, 38);
+		btnEditeur.setBounds(622, 61, 40, 38);
 		contentPane.add(btnEditeur);
 		associerBoutonAvecImage(btnEditeur, "editeur.png");
 		
@@ -136,7 +136,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnEnregistrer.setBounds(413, 61, 40, 38);
+		btnEnregistrer.setBounds(572, 61, 40, 38);
 		contentPane.add(btnEnregistrer);
 		associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
 		

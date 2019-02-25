@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
+import miroir.MiroirConcave;
 import utilite.ModeleAffichage;
 
 import java.awt.event.KeyEvent;
@@ -49,7 +50,6 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 
-
 	/**
 	 * Create the panel.
 	 */
@@ -77,11 +77,13 @@ public class SceneTest extends JPanel implements Runnable {
 		});
 
 
+
 		balle1 = new Balle(position, vitesse,gravity,diametre, masse, "LARGE" );
 
 		laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
 
 	}
+
 
 
 	public void paintComponent(Graphics g) {
@@ -107,64 +109,65 @@ public class SceneTest extends JPanel implements Runnable {
 		coeur.dessiner(g2d, mat,0,0);
 
 		laser.dessiner(g2d, mat,0,0);
-		
-	/*
+
+		/*
 		for(Balle balle: listeBalles) {
 			g2d.setColor(Color.black);
 			balle.collisionBalleLaser(balle.getAireBalle(),g2d, laser.getAireLaser(), listeBalles);
-		}
-		*/
+		 */
 		for(Balle balle: listeBalles) {
-		balle.dessiner(g2d, mat,  HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-	}
+			
 
-
-}//fin paintComponent
-
-
-
-
-private void calculerUneIterationPhysique() {
-
-
-	balle1.unPasRK4( deltaT, tempsTotalEcoule);
-	laser.unPasRK4(deltaT, tempsTotalEcoule);
-
-	for(Balle balle: listeBalles) {
-		balle.unPasRK4( deltaT, tempsTotalEcoule);
-	}
-
-	tempsTotalEcoule += deltaT;;
-}
-
-public void arreter( ) {
-	if(enCoursAnimation)
-		enCoursAnimation = false;
-}
-
-public void demarrer() {
-	if (!enCoursAnimation) { 
-		Thread proc = new Thread(this);
-		proc.start();
-		enCoursAnimation = true;
-	}
-
-}
-
-@Override
-public void run() {
-	// TODO Auto-generated method stub
-	while (enCoursAnimation) {	
-		calculerUneIterationPhysique();
-		repaint();
-		try {
-			Thread.sleep(tempsDuSleep);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
-	}//fin while
-	System.out.println("Le thread est mort...");
-}
+
+
+	}//fin paintComponent
+
+
+
+
+	private void calculerUneIterationPhysique() {
+
+
+		balle1.unPasRK4( deltaT, tempsTotalEcoule);
+		laser.unPasRK4(deltaT, tempsTotalEcoule);
+
+		for(Balle balle: listeBalles) {
+			balle.unPasRK4( deltaT, tempsTotalEcoule);
+		}
+
+		tempsTotalEcoule += deltaT;;
+	}
+
+	public void arreter( ) {
+		if(enCoursAnimation)
+			enCoursAnimation = false;
+	}
+
+	public void demarrer() {
+		if (!enCoursAnimation) { 
+			Thread proc = new Thread(this);
+			proc.start();
+			enCoursAnimation = true;
+		}
+
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while (enCoursAnimation) {	
+			calculerUneIterationPhysique();
+			repaint();
+			try {
+				Thread.sleep(tempsDuSleep);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}//fin while
+		System.out.println("Le thread est mort...");
+	}
 
 
 
@@ -172,4 +175,3 @@ public void run() {
 
 
 }
-

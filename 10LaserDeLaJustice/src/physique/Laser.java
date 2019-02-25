@@ -32,6 +32,7 @@ public class Laser implements Dessinable{
 		accel = new Vecteur(0,0);
 	}
 
+
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		trace=new Line2D.Double(position.getX(), position.getY(),position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
@@ -49,7 +50,55 @@ public class Laser implements Dessinable{
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 	
+
+
+	public double getLONGUEUR() {
+		return LONGUEUR;
+	}
+
+	public void setLONGUEUR(double lONGUEUR) {
+		LONGUEUR = lONGUEUR;
+	}
+
+	public Vecteur getPosition() {
+		return position;
+	}
+
+	public void setPosition(Vecteur position) {
+		this.position = position;
+	}
+
+	public Vecteur getVitesse() {
+		return vitesse;
+	}
+
+	public void setVitesse(Vecteur vitesse) {
+		this.vitesse = vitesse;
+	}
+
+	public double getAngleTir() {
+		return angleTir;
+	}
+
+	public void setAngleTir(double angleTir) {
+		this.angleTir = angleTir;
+	}
+
+	public Line2D getTrace() {
+		return trace;
+	}
+
+	public void setTrace(Line2D trace) {
+		this.trace = trace;
+	}
+
+	public Vecteur getAccel() {
+		return accel;
+	}
+
+	public void setAccel(Vecteur accel) {
+		this.accel = accel;
+	}
 	
-
-
+	
 }
