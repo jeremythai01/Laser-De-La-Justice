@@ -1,16 +1,20 @@
 package physique;
 
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import utilite.ModeleAffichage;
+
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -20,8 +24,8 @@ import java.awt.event.MouseEvent;
 public class SceneTest extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	private int tempsDuSleep = 10;
-	private double deltaT = 0.10;
+	private int tempsDuSleep = 25;
+	private double deltaT = 0.07;
 	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
@@ -34,14 +38,14 @@ public class SceneTest extends JPanel implements Runnable {
 	private boolean premiereFois = true;
 	private ModeleAffichage modele;
 	private AffineTransform mat;
-	
+
 	private Vecteur position;
-	
+
 	private Vecteur vitesse;
 
 	private Vecteur gravity ;
-	Laser laser;
-	
+	private Laser  laser;
+
 
 
 
@@ -50,36 +54,33 @@ public class SceneTest extends JPanel implements Runnable {
 	 * Create the panel.
 	 */
 	public SceneTest() {
+
+
+		position = new Vecteur(0.3, 10);
+
+		vitesse = new Vecteur(3 ,0);
+
+		gravity = new Vecteur(0,9.8);
+
+
+
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				balle = new Balle(new Vecteur(e.getX()-diametre/2, e.getY()-diametre/2), new Vecteur(3,0),gravity,diametre, masse );
-				
+
+				double eXR = e.getX()/modele.getPixelsParUniteX();
+				double eYR = e.getY()/modele.getPixelsParUniteY();
+				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse,gravity,diametre, masse , "LARGE" );
 				listeBalles.add(balle);
 				repaint();
 			}
 		});
-		
-		
-		
-		 position = new Vecteur(0.3, 10);
-		
-		 vitesse = new Vecteur(2.0 ,0);
 
-		 gravity = new Vecteur(0,1);
-		
-		 balle1 = new Balle(position, vitesse,gravity,diametre, masse );
-		
-		
 
-		
-	
-		
-		
-		
-		
-		
-		
+		balle1 = new Balle(position, vitesse,gravity,diametre, masse, "LARGE" );
+
+		laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
+
 	}
 
 
@@ -93,77 +94,82 @@ public class SceneTest extends JPanel implements Runnable {
 
 		if(premiereFois) {
 			modele = new ModeleAffichage(getWidth(),getHeight(),LARGEUR_DU_MONDE);
-		mat = modele.getMatMC();
-		 HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
-		premiereFois = false;
+			mat = modele.getMatMC();
+			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
+			premiereFois = false;
 		}
 
-		System.out.println("hauteur est de "+getHeight());
 		balle1.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		
+
 		Coeurs coeur = new Coeurs(4);
 		coeur.dessiner(g2d, mat,0,0);
 		coeur.setCombien(3);
 		coeur.dessiner(g2d, mat,0,0);
-		
-		 laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
+
 		laser.dessiner(g2d, mat,0,0);
 		
-		
-		
-
-
-		
-
-	}//fin paintComponent
-
-
-
-
-	private void calculerUneIterationPhysique() {
-	
-		
-		
-		balle1.unPasRK4( deltaT, tempsTotalEcoule);
-		
-		tempsTotalEcoule += deltaT;
-		laser.unPasRK4(deltaT, tempsTotalEcoule);
-
-	}
-
-	public void arreter( ) {
-		if(enCoursAnimation)
-			enCoursAnimation = false;
-	}
-
-	public void demarrer() {
-		if (!enCoursAnimation) { 
-			Thread proc = new Thread(this);
-			proc.start();
-			enCoursAnimation = true;
+	/*
+		for(Balle balle: listeBalles) {
+			g2d.setColor(Color.black);
+			balle.collisionBalleLaser(balle.getAireBalle(),g2d, laser.getAireLaser(), listeBalles);
 		}
-
+		*/
+		for(Balle balle: listeBalles) {
+		balle.dessiner(g2d, mat,  HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		while (enCoursAnimation) {	
-			calculerUneIterationPhysique();
-			repaint();
-			try {
-				Thread.sleep(tempsDuSleep);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}//fin while
-		System.out.println("Le thread est mort...");
+
+}//fin paintComponent
+
+
+
+
+private void calculerUneIterationPhysique() {
+
+
+	balle1.unPasRK4( deltaT, tempsTotalEcoule);
+	laser.unPasRK4(deltaT, tempsTotalEcoule);
+
+	for(Balle balle: listeBalles) {
+		balle.unPasRK4( deltaT, tempsTotalEcoule);
 	}
 
-	
-	
-	
-	
-	
+	tempsTotalEcoule += deltaT;;
+}
+
+public void arreter( ) {
+	if(enCoursAnimation)
+		enCoursAnimation = false;
+}
+
+public void demarrer() {
+	if (!enCoursAnimation) { 
+		Thread proc = new Thread(this);
+		proc.start();
+		enCoursAnimation = true;
+	}
+
+}
+
+@Override
+public void run() {
+	// TODO Auto-generated method stub
+	while (enCoursAnimation) {	
+		calculerUneIterationPhysique();
+		repaint();
+		try {
+			Thread.sleep(tempsDuSleep);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}//fin while
+	System.out.println("Le thread est mort...");
+}
+
+
+
+
+
+
 }
 

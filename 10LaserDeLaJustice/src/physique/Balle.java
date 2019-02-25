@@ -1,8 +1,12 @@
 package physique;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
+
 import geometrie.Vecteur;
 import interfaces.Dessinable;
 
@@ -22,6 +26,14 @@ public class Balle implements Dessinable {
 	private boolean toucheSolPremiereFois = true;
 	private Vecteur forceGravi;
 	private MoteurPhysique mt = new MoteurPhysique();
+	private Area aireBalle;
+	private Type type;
+
+	private enum Type {
+		SMALL, MEDIUM, LARGE;
+	}
+
+
 
 	// Jeremy Thai
 	/**
@@ -32,13 +44,26 @@ public class Balle implements Dessinable {
 	 * @param diametre diametre (unites du monde reel)
 	 * @param masse masse (kg)
 	 */
-	public Balle(Vecteur position, Vecteur vitesse, Vecteur accel, double diametre, double masse) {
+	public Balle(Vecteur position, Vecteur vitesse, Vecteur accel, double diametre, double masse, String size) {
 		this.diametre = diametre;	
 		setPosition( position ); //ces setters crent des copies des vecteurs
 		setVitesse( vitesse );
 		setAccel( accel );
 		this.masse = masse;
 		forceGravi = mt.forceGravi(masse, accel);
+		switch(size) {
+		case "SMALL":
+			type = Type.SMALL;
+			break;
+		case "MEDIUM":
+			type = Type.MEDIUM;
+			break;
+		case "LARGE":
+			type = Type.LARGE;
+			break;
+		}
+
+		
 	}
 
 
@@ -105,8 +130,12 @@ public class Balle implements Dessinable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		checkCollisions((double) largeur ,(double) hauteur); 
+//		aireBalle = new Area(cercle);
+		checkCollisions(largeur , hauteur); 
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
+
+
+
 	}//fin methode
 
 	// Jeremy Thai
@@ -253,7 +282,7 @@ public class Balle implements Dessinable {
 	 */
 
 	public void checkCollisions(double width, double height) {
-		
+
 		if(position.getY()+diametre >= height) { // touche le sol 
 			if(toucheSolPremiereFois) {
 				vInitY = vitesse.getY();
@@ -274,12 +303,54 @@ public class Balle implements Dessinable {
 	}
 
 
+	public void collisionBalleLaser(Area aire, Graphics2D g2d,  Area laser, ArrayList<Balle> liste) {
+
+		Area aireInter = new Area(aire);
+		aireInter.intersect(laser);
+
+		if(!aireInter.isEmpty()) { // Si la balle est touche  par le laser 
+
+			Balle newBall;
+			switch(type)	{
+
+			case LARGE:
+
+				g2d.setColor(Color.green);
+				newBall = this; // rend a medium
+				newBall.setVitesse(new Vecteur(vitesse.getX()+1,vitesse.getY()+1)); 
+				liste.add(newBall);
+				newBall.setMasse(masse-5);
+				liste.add(newBall);
+				newBall.setVitesse(new Vecteur(-(vitesse.getX()+1),vitesse.getY()+1)); 
+				liste.add(newBall);
+				type = Type.MEDIUM;
+				liste.remove(this);
+				break;
+
+			case MEDIUM:
+				g2d.setColor(Color.red);
+				newBall = this; // rend a petit
+				newBall.setVitesse(new Vecteur(vitesse.getX()+1,vitesse.getY()+1)); 
+				newBall.setMasse(masse-5);				
+				liste.add(newBall);
+				newBall.setVitesse(new Vecteur(-(vitesse.getX()+1),vitesse.getY()+1)); 
+				liste.add(newBall);
+				type = Type.SMALL;
+				liste.remove(this);
+				break;
+
+			case SMALL:
+				liste.remove(this);
+				break;
+			}		
+		}
+	}
 
 
 
-
-
-
+	public Area getAireBalle() {
+		return aireBalle;
+	}
 
 
 }//fin classe

@@ -88,7 +88,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 
-		balle1 = new Balle(positionInit, vitesseInit,gravity,diametre, masse );
+	//	balle1 = new Balle(positionInit, vitesseInit,gravity,diametre, masse );
 	}
 	/*addMouseListener(new MouseAdapter() { // pour tester les balles 
 			@Override
