@@ -17,6 +17,11 @@ import javax.swing.border.EmptyBorder;
 
 import options.Editeur;
 import options.Options;
+import javax.swing.JSpinner;
+import javax.swing.JLabel;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class App10LaserDeLaJustice extends JFrame {
 
@@ -137,6 +142,22 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnEnregistrer.setBounds(572, 61, 40, 38);
 		contentPane.add(btnEnregistrer);
 		associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
+		
+		JSpinner spnAngle = new JSpinner();
+		spnAngle.setModel(new SpinnerNumberModel(new Double(0), null, null, new Double(1)));
+		spnAngle.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				double valeur= (double) spnAngle.getValue();
+				scene.setAngle(valeur);
+				repaint();
+			}
+		});
+		spnAngle.setBounds(320, 61, 29, 20);
+		contentPane.add(spnAngle);
+		
+		JLabel lblAngle = new JLabel("Angle");
+		lblAngle.setBounds(268, 64, 46, 14);
+		contentPane.add(lblAngle);
 		
 		
 		

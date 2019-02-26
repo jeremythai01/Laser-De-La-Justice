@@ -27,6 +27,7 @@ import physique.Balle;
 import pistolet.Pistolet;
 
 import physique.Coeurs;
+import physique.Laser;
 //import physique.Laser;
 //import pistolet.Pistolet;
 import utilite.ModeleAffichage;
@@ -67,6 +68,8 @@ public class Scene extends JPanel implements Runnable {
 	private Shape fantomeTransfo;
 	private Pistolet pistoletPrincipal;
 	private String gauche, droite;
+	private double angle;
+	private Laser laser;
 	
 
 
@@ -84,6 +87,10 @@ public class Scene extends JPanel implements Runnable {
 		vitesseInit = new Vecteur(2.0 ,0);
 		gravity = new Vecteur(0,9.8);
 		principal = new Personnage (); 
+		
+		laser = new Laser(new Vecteur(principal.getPositionX()+principal.getLARGEUR_PERSO(),LARGEUR_DU_MONDE), angle, new Vecteur(2,2));
+		
+		
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -120,6 +127,8 @@ public class Scene extends JPanel implements Runnable {
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(),(int) modele.getHautPixels(), null);
 
 		creerLePersonnagePrincipal(g2d, mat);
+		g2d.setColor(Color.white);
+		laser.dessiner(g2d, mat, 0, 0);
 
 	}
 
@@ -236,4 +245,10 @@ public class Scene extends JPanel implements Runnable {
 			break;
 		}// fin switch
 	}//fin methode
+	
+	public void setAngle(double angle) {
+		laser.setAngleTir(angle);
+		principal.getPositionX();
+		
+	}
 }
