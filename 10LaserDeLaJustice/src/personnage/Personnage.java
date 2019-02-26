@@ -2,6 +2,8 @@ package personnage;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.URL;
@@ -42,8 +44,6 @@ public class Personnage implements Dessinable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
-
-
 	}
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
@@ -79,7 +79,33 @@ public class Personnage implements Dessinable {
 
 
 	}
-	
+	/**
+	 * Cette methode permet de deplacer le personnage  selon les touches du clavier dans option de jeu.
+	 * Si ces touches n'ont pas ete modife, gauche et droite seront les touches qui feront bouger le personnage
+	 * @param e : la touche enfoncee
+	 */
+		//Miora
+		public void deplacerLePersoSelonTouche(KeyEvent e) {
+			int code = e.getKeyCode();
+			switch (code) {
+			case KeyEvent.VK_LEFT:
+				if(positionX <= 0) {
+					positionX = 0;
+				}else {
+					positionX -= 0.1;
+				}
+				break;
+
+			case KeyEvent.VK_RIGHT:
+				if(positionX>= LARGEUR_COMPO - LARGEUR_PERSO) {
+					positionX = LARGEUR_COMPO - LARGEUR_PERSO; 
+				}
+				else {
+					positionX += 0.1; 
+				}
+				break;
+			}// fin switch
+		}//fin methode
 	/**
 	 * Methode permettant de savoir la position du personnage
 	 * @return la position initiale du personnage

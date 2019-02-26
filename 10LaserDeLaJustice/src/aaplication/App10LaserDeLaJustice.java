@@ -45,7 +45,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creation de la fenêtre 
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,7 +122,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			//	contentPane.setBounds(100, 100, 1500, 871);
 				editeur.setVisible(true);
-				scene.requestFocusInWindow();
+			//	scene.requestFocusInWindow();
 				setBounds(100, 100, 1138, 855);
 			}
 		});
@@ -141,6 +141,12 @@ public class App10LaserDeLaJustice extends JFrame {
 		
 		
 		
+	}
+	/**
+	 * Methode qui donne le focus a la scene
+	 */
+	public void donneFocusALaScene() {
+		scene.requestFocusInWindow();
 	}
 
 	/**
