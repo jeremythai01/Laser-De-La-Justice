@@ -29,7 +29,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	private JButton btnImage;
 	private Scene scene;
 	private Editeur editeur;
-	static App10LaserDeLaJustice frame;
+	
 
 	/**
 	 * Launch the application.
@@ -38,6 +38,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					 App10LaserDeLaJustice frame;
 					frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
 					frame.scene.requestFocusInWindow();
@@ -49,7 +50,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creation de la fenêtre 
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,8 +127,8 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			//	contentPane.setBounds(100, 100, 1500, 871);
 				editeur.setVisible(true);
-				scene.requestFocusInWindow();
-				frame.setBounds(100, 100, 1138, 855);
+			//	scene.requestFocusInWindow();
+				setBounds(100, 100, 1138, 855);
 			}
 		});
 		btnEditeur.setBounds(622, 61, 40, 38);
@@ -161,6 +162,12 @@ public class App10LaserDeLaJustice extends JFrame {
 		
 		
 		
+	}
+	/**
+	 * Methode qui donne le focus a la scene
+	 */
+	public void donneFocusALaScene() {
+		scene.requestFocusInWindow();
 	}
 
 	/**

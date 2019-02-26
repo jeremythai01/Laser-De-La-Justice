@@ -94,7 +94,7 @@ public class Scene extends JPanel implements Runnable {
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				deplacerLePersoSelonTouche( e );
+				principal.deplacerLePersoSelonTouche( e );
 				repaint();
 			}
 		});
@@ -218,37 +218,14 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
-/**
- * Cette methode permet de deplacer le personnage  selon les touches du clavier dans option de jeu.
- * Si ces touches n'ont pas ete modife, gauche et droite seront les touches pour faire bouger les personnages 
- * @param e : la touche enfoncee
- */
-	//Miora
-	private void deplacerLePersoSelonTouche(KeyEvent e) {
-		int code = e.getKeyCode();
-		switch (code) {
-		case KeyEvent.VK_LEFT:
-			if(principal.getPositionX() <= 0) {
-				principal.setPositionX(0);
-			}else {
-				principal.setPositionX(principal.getPositionX()-0.1);
-			}
-			break;
 
-		case KeyEvent.VK_RIGHT:
-			if(principal.getPositionX()>= modele.getLargUnitesReelles() - principal.getLARGEUR_PERSO()) {
-				principal.setPositionX(modele.getLargUnitesReelles() - principal.getLARGEUR_PERSO());
-			}
-			else {
-				principal.setPositionX(principal.getPositionX()+0.1);
-			}
-			break;
-		}// fin switch
-	}//fin methode
+
+	
 	
 	public void setAngle(double angle) {
 		laser.setAngleTir(angle);
 		principal.getPositionX();
 		
 	}
+
 }
