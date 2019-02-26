@@ -1,23 +1,25 @@
 package aaplication;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import options.Options;
 
 public class FenetreDemarrage extends JFrame {
 
 	private JPanel contentPane;
+	private Options fenetreOption;
 
 	/**
 	 * Launch the application.
@@ -46,17 +48,7 @@ public class FenetreDemarrage extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnJouer = new JButton("jouer");
-		btnJouer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				App10LaserDeLaJustice jeu = new App10LaserDeLaJustice();
-				jeu.setVisible(true);
-				setVisible(false);
-			}
-		});
-		btnJouer.setBounds(277, 173, 86, 85);
-		contentPane.add(btnJouer);
-		associerBoutonAvecImage(btnJouer, "play.png");
+		
 		
 		JButton btnEditeurDeNiveau = new JButton("Editeur de niveau");
 		btnEditeurDeNiveau.addActionListener(new ActionListener() {
@@ -78,6 +70,8 @@ public class FenetreDemarrage extends JFrame {
 		JButton btnOption = new JButton("option du jeu ");
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				fenetreOption = new Options();
+				fenetreOption.setVisible(true);
 			}
 		});
 		btnOption.setBounds(473, 101, 125, 45);
@@ -90,6 +84,18 @@ public class FenetreDemarrage extends JFrame {
 		});
 		button_2.setBounds(47, 289, 125, 45);
 		contentPane.add(button_2);
+		
+		JButton btnJouer = new JButton("jouer");
+		btnJouer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				App10LaserDeLaJustice jeu = new App10LaserDeLaJustice();
+				jeu.setVisible(true);
+				setVisible(false);
+			}
+		});
+		btnJouer.setBounds(277, 173, 86, 85);
+		contentPane.add(btnJouer);
+		associerBoutonAvecImage(btnJouer, "play.png");
 	
 	}
 

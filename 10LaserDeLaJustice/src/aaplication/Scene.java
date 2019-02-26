@@ -66,11 +66,15 @@ public class Scene extends JPanel implements Runnable {
 	private Rectangle2D.Double fantomePerso;
 	private Shape fantomeTransfo;
 	private Pistolet pistoletPrincipal;
+	private String gauche, droite;
+	
 
 
 
 	public Scene() {
 		lireFond();
+		//this.gauche = gauche;
+	//	this.droite = droite;
 		principal = new Personnage ();
 		pistoletPrincipal= new Pistolet();
 		
@@ -205,7 +209,12 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
-
+/**
+ * Cette methode permet de deplacer le personnage  selon les touches du clavier dans option de jeu.
+ * Si ces touches n'ont pas ete modife, gauche et droite seront les touches pour faire bouger les personnages 
+ * @param e : la touche enfoncee
+ */
+	//Miora
 	private void deplacerLePersoSelonTouche(KeyEvent e) {
 		int code = e.getKeyCode();
 		switch (code) {

@@ -1,8 +1,10 @@
 package aaplication;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -12,15 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import pistolet.Pistolet;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+
 import options.Editeur;
+import options.Options;
 
 public class App10LaserDeLaJustice extends JFrame {
 
@@ -106,6 +102,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnOption = new JButton("Option");
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Options fenetreOpt = new Options();
+				fenetreOpt.setVisible(true);
 			}
 		});
 		btnOption.setBounds(672, 61, 40, 38);
