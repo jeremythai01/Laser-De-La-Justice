@@ -21,7 +21,7 @@ public class Laser implements Dessinable{
 	private double LONGUEUR=2;
 	private Vecteur position, vitesse;
 	private double angleTir;
-	private Line2D trace;
+	private Path2D trace;
 	private Vecteur accel;
 	private Area aireLaser;
 	
@@ -35,7 +35,10 @@ public class Laser implements Dessinable{
 
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		trace=new Line2D.Double(position.getX(), position.getY(),position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		Path2D trace=new Path2D.Double();
+		trace.moveTo(position.getX(), position.getY());
+		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		trace.closePath();
 		g.draw(matLocal.createTransformedShape(((trace))));
 		
 		aireLaser = new Area(trace);
@@ -84,11 +87,11 @@ public class Laser implements Dessinable{
 		this.angleTir = angleTir;
 	}
 
-	public Line2D getTrace() {
+	public Path2D getTrace() {
 		return trace;
 	}
 
-	public void setTrace(Line2D trace) {
+	public void setTrace(Path2D trace) {
 		this.trace = trace;
 	}
 

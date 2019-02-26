@@ -48,8 +48,9 @@ public class SceneTestObjets extends JPanel implements Runnable {
 	private Vecteur gravity ;
 	
 	private BlocDEau bloc;
-	private BlocDEau bloc1;
 	private ArrayList<BlocDEau> listeBloc = new ArrayList<BlocDEau>();
+	private TrouNoir trou;
+	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
 
 
 	/**
@@ -74,11 +75,15 @@ public class SceneTestObjets extends JPanel implements Runnable {
 				double eYR = e.getY()/modele.getPixelsParUniteY();
 				bloc= new BlocDEau(new Vecteur(eXR,eYR));
 				listeBloc.add(bloc);
+				
+				trou= new TrouNoir(new Vecteur(eXR,eYR));
+				listeTrou.add(trou);
+				
 				repaint();
 			}
 		});
 
-		bloc1= new BlocDEau(new Vecteur(0,0));
+		
 
 
 	}
@@ -102,18 +107,17 @@ public class SceneTestObjets extends JPanel implements Runnable {
 
 		
 		
-		
-		/*
-		for(Balle balle: listeBalles) {
-			g2d.setColor(Color.black);
-			balle.collisionBalleLaser(balle.getAireBalle(),g2d, laser.getAireLaser(), listeBalles);
-		 */
-		
 		for(BlocDEau bloc: listeBloc) {
 			
 
 			bloc.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
+		
+		/*for(TrouNoir trou: listeTrou) {
+			
+
+			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+		}*/
 
 	}//fin paintComponent
 
