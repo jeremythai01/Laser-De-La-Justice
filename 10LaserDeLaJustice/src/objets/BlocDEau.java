@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
+//import sim.math.SVector3d;
 
 public class BlocDEau extends Objet implements Dessinable {
 	
@@ -27,5 +28,18 @@ public class BlocDEau extends Objet implements Dessinable {
 		g.fill(matLocal.createTransformedShape(bloc));
 		
 	}
+	
+	public Vecteur refraction(Vecteur v, Vecteur N, double n1, double n2) {
+		Vecteur vecteur= new Vecteur();
+		double n= n1/n2;
+		Vecteur E=new Vecteur();
+		E=v.multiplie(-1);
+		vecteur = v.multiplie(n).additionne(N.multiplie(((E.prodScalaire(N)*n)-Math.sqrt(1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N)))))))));
+		return vecteur;
+	}
+	
+	
+	
+	
 
 }

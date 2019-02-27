@@ -149,7 +149,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
-
+		checkCollisionTrouLaserPersonnage( listeLasers );
 		/*	
 		for(Balle balle: listeBalles) {
 			g2d.setColor(Color.black);
@@ -159,7 +159,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		for(Balle balle: listeBalles) {
 
 			g2d.setColor(Color.black);
-			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+			//balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
@@ -289,7 +289,7 @@ private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
 */
 
-
+		//bloc.refraction(v, N, n1, n2);
 
 	}
 

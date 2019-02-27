@@ -12,12 +12,9 @@ import java.awt.event.ActionEvent;
 
 public class ApplicationObjetsTest extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private SceneTestPls scene;
+	private static  ApplicationObjetsTest frame;
 
 	/**
 	 * Launch the application.
@@ -26,8 +23,9 @@ public class ApplicationObjetsTest extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ApplicationObjetsTest frame = new ApplicationObjetsTest();
+					frame = new ApplicationObjetsTest();
 					frame.setVisible(true);
+					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,6 +47,7 @@ public class ApplicationObjetsTest extends JFrame {
 		JButton btnStart = new JButton("start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scene.requestFocusInWindow();
 				scene.demarrer();
 			}
 		});

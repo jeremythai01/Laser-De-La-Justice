@@ -17,7 +17,7 @@ public class TrouNoir extends Objet implements Dessinable {
 	
 	private Vecteur position;
 	private final int LARGEUR=2;
-	private final int LARGEUR_GROS=3;
+	private final int distance=2;
 	
 	private Ellipse2D.Double trou;
 	
@@ -29,11 +29,17 @@ public class TrouNoir extends Objet implements Dessinable {
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
+		g.setColor(Color.LIGHT_GRAY);
+		trou=new Ellipse2D.Double(position.getX()-distance, position.getY()-distance, LARGEUR+distance*2, LARGEUR+distance*2);
+		g.fill(matLocal.createTransformedShape(trou));
+		
 		trou= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g.setColor(Color.black);
+		
+		
+		
+		
 		g.fill(matLocal.createTransformedShape(trou));
-	//	trou=new Ellipse2D.Double(position.getX()-LARGEUR, position.getY()-LARGEUR+LARGEUR_GROS/2, LARGEUR_GROS, LARGEUR_GROS);
-		//g.draw(matLocal.createTransformedShape(trou));
 		
 	}
 	
