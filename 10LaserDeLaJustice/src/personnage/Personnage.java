@@ -2,7 +2,6 @@ package personnage;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
@@ -27,13 +26,16 @@ public class Personnage implements Dessinable {
 	private double HAUTEUR_COMPO;
 	private double positionX ;
 	private boolean premiereFois = true;
+	private int toucheGauche = 37, toucheDroite = 39;
 
 
 
 	/**
 	 Constructeur de la classe.
+	 @param gauche : le code (KeyCode) de la touche gauche lorsque clique, le personnage veut aller a gauche
+	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage veut aller a gauche
 	 */
-	public Personnage() {
+	public Personnage(int gauche, int droite) {
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier Fnaruto_debout.jpg introuvable!");
@@ -44,6 +46,8 @@ public class Personnage implements Dessinable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
+		this.toucheGauche = gauche;
+		this.toucheDroite = droite;
 	}
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
@@ -87,24 +91,21 @@ public class Personnage implements Dessinable {
 		//Miora
 		public void deplacerLePersoSelonTouche(KeyEvent e) {
 			int code = e.getKeyCode();
-			switch (code) {
-			case KeyEvent.VK_LEFT:
+			if(code == toucheGauche) {
 				if(positionX <= 0) {
 					positionX = 0;
 				}else {
 					positionX -= 0.1;
 				}
-				break;
-
-			case KeyEvent.VK_RIGHT:
+			}
+			if (code == toucheDroite) {
 				if(positionX>= LARGEUR_COMPO - LARGEUR_PERSO) {
 					positionX = LARGEUR_COMPO - LARGEUR_PERSO; 
 				}
 				else {
 					positionX += 0.1; 
 				}
-				break;
-			}// fin switch
+			}
 		}//fin methode
 	/**
 	 * Methode permettant de savoir la position du personnage

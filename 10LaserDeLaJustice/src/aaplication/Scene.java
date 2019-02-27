@@ -10,6 +10,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
@@ -70,27 +75,17 @@ public class Scene extends JPanel implements Runnable {
 	private String gauche, droite;
 	private double angle;
 	private Laser laser;
+	private int toucheGauche=0, toucheDroite = 0;
 	
-
-
-
 	public Scene() {
 		lireFond();
-		//this.gauche = gauche;
-	//	this.droite = droite;
-		principal = new Personnage ();
+		lectureFichierOption();
+		principal = new Personnage (toucheGauche, toucheDroite);
 		pistoletPrincipal= new Pistolet();
-		
-
 		positionInit = new Vecteur(12, 10);
-
 		vitesseInit = new Vecteur(2.0 ,0);
 		gravity = new Vecteur(0,9.8);
-		principal = new Personnage (); 
-		
 		laser = new Laser(new Vecteur(principal.getPositionX()+principal.getLARGEUR_PERSO(),LARGEUR_DU_MONDE), angle, new Vecteur(2,2));
-		
-		
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -226,6 +221,46 @@ public class Scene extends JPanel implements Runnable {
 		laser.setAngleTir(angle);
 		principal.getPositionX();
 		
+	}
+	/**
+	 * Cette methode permet de lire le fichier option de la classe option modifie avant le debut de la partie
+	 */
+	//Miora
+	private void lectureFichierOption() {
+		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
+		DataInputStream fluxEntree = null;
+		double acceleration=0;
+		int niveau=0;
+		File fichierDeTravail = new File( NOM_FICHIER_OPTION );
+		
+		try {
+			fluxEntree =  new DataInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
+			niveau = fluxEntree.readInt();
+			acceleration = fluxEntree.readDouble();
+			toucheGauche= fluxEntree.readInt();
+			toucheDroite= fluxEntree.readInt();
+		} // fin try
+
+		catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Fichier  " + fichierDeTravail.getAbsolutePath() + "  introuvable!");
+			System.exit(0);
+		}
+		
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture");
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+		finally {
+			//on exécutera toujours ceci, erreur ou pas
+		  	try { 
+		  		fluxEntree.close();  
+		  	}
+		    catch (IOException e) { 
+		    	JOptionPane.showMessageDialog(null,"Erreur rencontrée lors de la fermeture!"); 
+		    }
+		}//fin finally
 	}
 
 }
