@@ -17,7 +17,7 @@ public class ApplicationObjetsTest extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private SceneTestObjets scene;
+	private SceneTestPls scene;
 
 	/**
 	 * Launch the application.
@@ -64,7 +64,7 @@ public class ApplicationObjetsTest extends JFrame {
 		btnStop.setBounds(159, 449, 89, 23);
 		contentPane.add(btnStop);
 		
-		scene = new SceneTestObjets();
+		scene = new SceneTestPls();
 		scene.setBounds(10, 11, 484, 439);
 		contentPane.add(scene);
 		

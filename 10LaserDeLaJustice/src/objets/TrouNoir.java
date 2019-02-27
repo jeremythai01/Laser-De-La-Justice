@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -16,7 +17,9 @@ public class TrouNoir extends Objet implements Dessinable {
 	
 	private Vecteur position;
 	private final int LARGEUR=2;
-	private Rectangle2D.Double trou;
+	private final int LARGEUR_GROS=3;
+	
+	private Ellipse2D.Double trou;
 	
 	public TrouNoir(Vecteur position) {
 		this.position=position;
@@ -26,9 +29,11 @@ public class TrouNoir extends Objet implements Dessinable {
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		trou= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
+		trou= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g.setColor(Color.black);
 		g.fill(matLocal.createTransformedShape(trou));
+	//	trou=new Ellipse2D.Double(position.getX()-LARGEUR, position.getY()-LARGEUR+LARGEUR_GROS/2, LARGEUR_GROS, LARGEUR_GROS);
+		//g.draw(matLocal.createTransformedShape(trou));
 		
 	}
 	
@@ -42,5 +47,10 @@ public class TrouNoir extends Objet implements Dessinable {
 		}
 	
 
+	}
+	
+	public Area getAireTrou() {
+		 Ellipse2D aire= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
+		 return new Area(aire);
 	}
 }
