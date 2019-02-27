@@ -18,8 +18,8 @@ import interfaces.Dessinable;
  */
 
 public class Balle implements Dessinable { 
-	private double diametre = 1;
-	private double masse = 1;
+	private double diametre = 3;
+	private double masse = 15;
 	private Ellipse2D.Double cercle;
 	private Vecteur position, vitesse, accel;
 	private double vInitY;
@@ -33,6 +33,40 @@ public class Balle implements Dessinable {
 		SMALL, MEDIUM, LARGE;
 	}
 
+	
+	// Jeremy Thai
+		/**
+		 * Constructeur ou la position, la vitesse et l'acceleration  initiales sont spécifiés
+		 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
+		 * @param vitesse Vecteur incluant les vitesses en x et y
+		 * @param accel Vecteur incluant les accelerations en x et y  
+		 * @param diametre diametre (unites du monde reel)
+		 * @param masse masse (kg)
+		 */
+		public Balle(Vecteur position, Vecteur vitesse, String size) {	
+			setPosition( position ); //ces setters crent des copies des vecteurs
+			setVitesse( vitesse );
+			setAccel( new Vecteur(0,9.8) );
+			forceGravi = mt.forceGravi(masse, accel);
+			switch(size) {
+			case "SMALL":
+				type = Type.SMALL;
+				setMasse(5);
+				setDiametre(1);
+				break;
+			case "MEDIUM":
+				type = Type.MEDIUM;
+				setMasse(10);
+				setDiametre(2);
+				break;
+			case "LARGE":
+				type = Type.LARGE;
+				break;
+			}
+		}
+	
+	
+	
 
 
 	// Jeremy Thai
@@ -132,8 +166,18 @@ public class Balle implements Dessinable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-	//	aireBalle = new Area(cercle);
 		checkCollisions(largeur , hauteur); 
+		
+		switch(type){
+		case LARGE:
+			g2d.setColor(Color.blue);
+		case MEDIUM:
+			g2d.setColor(Color.green);
+			break;
+		case SMALL:
+			g2d.setColor(Color.red);
+			break;
+		}		
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
 
 
@@ -305,39 +349,26 @@ public class Balle implements Dessinable {
 	}
 
 
-	public void collisionBalleLaser(Area aireBalle, Graphics2D g2d,  Area aireLaser, ArrayList<Balle> liste) {
+	public void shrink(ArrayList<Balle> liste) {
 
-		Area aireInter = new Area(aireBalle);
-		aireInter.intersect(aireLaser);
-
-		if(!aireInter.isEmpty()) { // Si la balle est touche  par le laser 
-
-			Balle newBall;
+			Balle newBall1;
+		Balle newBall2;
 			switch(type)	{
 
 			case LARGE:
-
-				g2d.setColor(Color.green);
-				newBall = this; // rend a medium
-				newBall.setVitesse(new Vecteur(vitesse.getX()+1,vitesse.getY()+1)); 
-				liste.add(newBall);
-				newBall.setMasse(masse-5);
-				liste.add(newBall);
-				newBall.setVitesse(new Vecteur(-(vitesse.getX()+1),vitesse.getY()+1)); 
-				liste.add(newBall);
-				type = Type.MEDIUM;
+				newBall1 = new Balle(position, vitesse, "MEDIUM");
+				liste.add(newBall1);
+				newBall2 = new Balle(position, vitesse, "MEDIUM");
+				newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
+				liste.add(newBall2);
 				liste.remove(this);
-				break;
 
 			case MEDIUM:
-				g2d.setColor(Color.red);
-				newBall = this; // rend a petit
-				newBall.setVitesse(new Vecteur(vitesse.getX()+1,vitesse.getY()+1)); 
-				newBall.setMasse(masse-5);				
-				liste.add(newBall);
-				newBall.setVitesse(new Vecteur(-(vitesse.getX()+1),vitesse.getY()+1)); 
-				liste.add(newBall);
-				type = Type.SMALL;
+				newBall1 = new Balle(position, vitesse, "SMALL");
+				liste.add(newBall1);
+				newBall2 = new Balle(position, vitesse, "SMALL");
+				newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
+				liste.add(newBall2);
 				liste.remove(this);
 				break;
 
@@ -346,12 +377,18 @@ public class Balle implements Dessinable {
 				break;
 			}		
 		}
-	}
 	
 	public Ellipse2D getBallOval() { // pour detecter lintersection
         return new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
     }
 
+	public Area getAireBalle() {
+		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
+		return new Area(cercle);
+		
+	}
+	
+	
 
 }//fin classe
 

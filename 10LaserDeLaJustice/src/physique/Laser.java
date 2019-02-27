@@ -30,6 +30,7 @@ public class Laser implements Dessinable{
 	private double ligneDebutY;
 	
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
+		trace=new Path2D.Double();
 		this.position=position;
 		this.angleTir=angleTir;
 		this.vitesse= vitesse;
@@ -41,7 +42,6 @@ public class Laser implements Dessinable{
 
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		Path2D trace=new Path2D.Double();
 		trace.moveTo(position.getX(), ligneDebutY);
 		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
@@ -63,7 +63,10 @@ public class Laser implements Dessinable{
 	
 	
 	public Area getAireLaser() {
-		return aireLaser;
+		trace.moveTo(position.getX(), ligneDebutY);
+		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		trace.closePath();
+		return new Area(trace);
 	}
 
 	public void unPasRK4(double deltaT, double tempsEcoule) {
@@ -73,7 +76,7 @@ public class Laser implements Dessinable{
 	
 
 	public Rectangle2D getLine(){ // pour detecter lintersection
-        return new Rectangle2D.Double(position.getX(), ligneFinY,2,position.getY());
+        return new Rectangle2D.Double(position.getX(), ligneFinY,0.1,position.getY());
     }
 	
 	

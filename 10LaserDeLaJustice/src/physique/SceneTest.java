@@ -68,15 +68,13 @@ public class SceneTest extends JPanel implements Runnable {
 
 		gravity = new Vecteur(0,9.8);
 
-
-
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse,gravity,diametre, masse , "LARGE" );
+				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
 				listeBalles.add(balle);
 				repaint();
 			}
@@ -96,7 +94,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 
-		balle1 = new Balle(position, vitesse,gravity,diametre, masse, "LARGE" );
+		balle1 = new Balle(position, vitesse, "LARGE" );
 		/*
 		laser = new Laser(
 				new Vecteur(
@@ -131,6 +129,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+
 		/*	
 		for(Balle balle: listeBalles) {
 			g2d.setColor(Color.black);
@@ -217,17 +216,49 @@ public class SceneTest extends JPanel implements Runnable {
 			}
 		}
 	}
-	
-	
+
+
 	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
+
+		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
+		for(Laser laser : listeLasers) {
+			for(Balle balle : listeBalles ) {
+				if(balle.getAireBalle().intersects(laser.getLine())) {
+					listeLasers.remove(laser);   
+					listeBalleTouche.add(balle);
+					balle.shrink(listeBalles);
+				}	
+			}
+		}
+/*
+		for(Balle balle : listeBalleTouche) {
+			balle.shrink(listeBalles);
+		}
 		
-	        for (int i = 0; i < listeLasers.size(); i++) {
-	            for (int j = 0; j < listeBalles.size(); j++) {
-	                if (listeBalles.get(j).getBallOval().intersects(listeLasers.get(i).getLine())) {
-	                    listeLasers.remove(i);     
-	                    listeBalles.remove(j);
-	                }
-	            }
+
+*/
+
+
+
 	}
+	private boolean intersection(Area aire1, Area aire2) {
+		Area aireInter = new Area(aire1);
+		aireInter.intersect(aire2);
+		if(!aireInter.isEmpty()) {
+			return true;
+		}
+		return false;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 }
