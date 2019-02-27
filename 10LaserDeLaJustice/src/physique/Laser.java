@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -25,25 +26,41 @@ public class Laser implements Dessinable{
 	private Vecteur accel;
 	private Area aireLaser;
 	
+	private double ligneFinY;
+	
+	
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
 		this.position=position;
 		this.angleTir=angleTir;
 		this.vitesse= vitesse;
 		accel = new Vecteur(0,0);
+		ligneFinY = position.getY();
 	}
 
 
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		Path2D trace=new Path2D.Double();
-		trace.moveTo(position.getX(), position.getY());
-		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		trace.moveTo(position.getX(), ligneFinY);
+		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		g.draw(matLocal.createTransformedShape(((trace))));
 		
 		aireLaser = new Area(trace);
 		
 	}
+	
+	public double getLigneFinY() {
+		return ligneFinY;
+	}
+
+
+	public void move() { 
+		ligneFinY -= vitesse.getY();
+	}
+	
+	
+	
 	public Area getAireLaser() {
 		return aireLaser;
 	}
@@ -54,6 +71,11 @@ public class Laser implements Dessinable{
 	}
 	
 
+	public Rectangle2D getLine(){ // pour detecter lintersection
+        return new Rectangle2D.Double(position.getX(), ligneFinY,2,position.getY());
+    }
+	
+	
 
 	public double getLONGUEUR() {
 		return LONGUEUR;

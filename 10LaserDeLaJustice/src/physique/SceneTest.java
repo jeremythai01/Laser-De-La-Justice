@@ -13,8 +13,10 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
+import personnage.Personnage;
 import utilite.ModeleAffichage;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,12 +29,12 @@ public class SceneTest extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
 	private double deltaT = 0.07;
-	private  double LARGEUR_DU_MONDE = 50; //en metres
+	private  double LARGEUR_DU_MONDE = 10; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
 	private double masse = 15; //en kg
-	private double diametre = 5;  //em mètres
+	private double diametre = 2;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Balle balle1;
 	private Balle balle;
@@ -45,8 +47,11 @@ public class SceneTest extends JPanel implements Runnable {
 	private Vecteur vitesse;
 
 	private Vecteur gravity ;
-	private Laser  laser;
 
+	private Personnage character;
+
+	private double angle;
+	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
 
 
@@ -55,6 +60,8 @@ public class SceneTest extends JPanel implements Runnable {
 	 */
 	public SceneTest() {
 
+		angle = -90;
+		character = new Personnage ();
 
 		position = new Vecteur(0.3, 10);
 
@@ -66,7 +73,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 		addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
@@ -77,11 +84,25 @@ public class SceneTest extends JPanel implements Runnable {
 		});
 
 
+		addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				character.deplacerLePersoSelonTouche( e );
+				shoot(e);
+				repaint();
+			}
+		});
+
+
+
 
 		balle1 = new Balle(position, vitesse,gravity,diametre, masse, "LARGE" );
-
-		laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
-
+		/*
+		laser = new Laser(
+				new Vecteur(
+			character.getPositionX()+character.getLARGEUR_PERSO(),LARGEUR_DU_MONDE), angle, new Vecteur(2,2));
+		 */
 	}
 
 
@@ -108,19 +129,30 @@ public class SceneTest extends JPanel implements Runnable {
 		coeur.setCombien(3);
 		coeur.dessiner(g2d, mat,0,0);
 
-		laser.dessiner(g2d, mat,0,0);
 
-		/*
+		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+		/*	
 		for(Balle balle: listeBalles) {
 			g2d.setColor(Color.black);
 			balle.collisionBalleLaser(balle.getAireBalle(),g2d, laser.getAireLaser(), listeBalles);
+		}
 		 */
 		for(Balle balle: listeBalles) {
-			
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
+		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
+
+		for(Laser laser : listeLasers) { 
+
+			if(laser.getLigneFinY() <= 0 )
+				listeLasers.remove(laser);
+
+			laser.dessiner(g2d, mat, 0, 0);
+
+
+		}
 
 	}//fin paintComponent
 
@@ -131,8 +163,12 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 		balle1.unPasRK4( deltaT, tempsTotalEcoule);
-		laser.unPasRK4(deltaT, tempsTotalEcoule);
 
+		for(Laser laser : listeLasers) { 
+
+			laser.move();
+
+		}
 		for(Balle balle: listeBalles) {
 			balle.unPasRK4( deltaT, tempsTotalEcoule);
 		}
@@ -170,8 +206,27 @@ public class SceneTest extends JPanel implements Runnable {
 	}
 
 
-
-
-
-
+	private void shoot(KeyEvent e) {
+		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_SPACE) {
+			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+				listeLasers.add(
+						new Laser(new Vecteur(
+								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0.5,0.5)));
+			}
+		}
+	}
+	
+	
+	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
+		
+	        for (int i = 0; i < listeLasers.size(); i++) {
+	            for (int j = 0; j < listeBalles.size(); j++) {
+	                if (listeBalles.get(j).getBallOval().intersects(listeLasers.get(i).getLine())) {
+	                    listeLasers.remove(i);     
+	                    listeBalles.remove(j);
+	                }
+	            }
+	}
+	}
 }

@@ -14,6 +14,7 @@ public class ApplicationBalleTest extends JFrame {
 
 	private JPanel contentPane;
 	private SceneTest scene;
+	private static  ApplicationBalleTest frame;
 
 	/**
 	 * Launch the application.
@@ -22,8 +23,9 @@ public class ApplicationBalleTest extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ApplicationBalleTest frame = new ApplicationBalleTest();
+					frame = new ApplicationBalleTest();
 					frame.setVisible(true);
+					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -45,6 +47,7 @@ public class ApplicationBalleTest extends JFrame {
 		JButton btnStart = new JButton("start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				scene.requestFocusInWindow();
 				scene.demarrer();
 			}
 		});

@@ -63,6 +63,8 @@ public class Balle implements Dessinable {
 			break;
 		}
 
+		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
+		aireBalle = new Area(cercle);
 		
 	}
 
@@ -130,7 +132,7 @@ public class Balle implements Dessinable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-//		aireBalle = new Area(cercle);
+	//	aireBalle = new Area(cercle);
 		checkCollisions(largeur , hauteur); 
 		g2d.draw( matLocal.createTransformedShape(cercle) );		
 
@@ -303,10 +305,10 @@ public class Balle implements Dessinable {
 	}
 
 
-	public void collisionBalleLaser(Area aire, Graphics2D g2d,  Area laser, ArrayList<Balle> liste) {
+	public void collisionBalleLaser(Area aireBalle, Graphics2D g2d,  Area aireLaser, ArrayList<Balle> liste) {
 
-		Area aireInter = new Area(aire);
-		aireInter.intersect(laser);
+		Area aireInter = new Area(aireBalle);
+		aireInter.intersect(aireLaser);
 
 		if(!aireInter.isEmpty()) { // Si la balle est touche  par le laser 
 
@@ -345,12 +347,10 @@ public class Balle implements Dessinable {
 			}		
 		}
 	}
-
-
-
-	public Area getAireBalle() {
-		return aireBalle;
-	}
+	
+	public Ellipse2D getBallOval() { // pour detecter lintersection
+        return new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
+    }
 
 
 }//fin classe
