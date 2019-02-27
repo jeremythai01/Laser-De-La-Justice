@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
-import personnage.Personnage;
 import utilite.ModeleAffichage;
 
 import java.awt.event.KeyAdapter;
