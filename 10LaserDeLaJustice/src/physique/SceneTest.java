@@ -28,7 +28,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
 	private double deltaT = 0.07;
-	private  double LARGEUR_DU_MONDE = 10; //en metres
+	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
@@ -121,6 +121,7 @@ public class SceneTest extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 
+		g2d.setColor(Color.pink);
 		balle1.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 
 		Coeurs coeur = new Coeurs(4);
@@ -138,6 +139,7 @@ public class SceneTest extends JPanel implements Runnable {
 		 */
 		for(Balle balle: listeBalles) {
 
+			g2d.setColor(Color.black);
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
