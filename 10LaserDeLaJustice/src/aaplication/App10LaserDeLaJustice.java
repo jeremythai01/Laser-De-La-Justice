@@ -22,13 +22,23 @@ import javax.swing.JLabel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 
 public class App10LaserDeLaJustice extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnImage;
 	private Scene scene;
-	private Editeur editeur;
+	private JButton btnPrisme;
+	private JButton btnPetiteBalle;
+	private JButton btnMediumBalle;
+	private JButton btnGrosseBalle;
+	private JButton btnBlocDeau;
+	private JButton btnTrouNoir;
+	private JButton btnMiroirConcave;
+	private JButton btnMiroirConvexe;
+	private JButton btnMiroirPlan;
 	
 
 	/**
@@ -54,17 +64,17 @@ public class App10LaserDeLaJustice extends JFrame {
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 774, 847);
+		setBounds(100, 100, 910, 847);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+		/*
 		scene = new Scene();
 		scene.setBackground(Color.WHITE);
 		scene.setBounds(47, 110, 665, 687);
 		contentPane.add(scene);
-		
+		*/
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
 	
@@ -116,19 +126,14 @@ public class App10LaserDeLaJustice extends JFrame {
 		contentPane.add(btnOption);
 		associerBoutonAvecImage(btnOption, "reglage.png");
 		
-		editeur = new Editeur();
-		editeur.setBounds(729, 110, 331, 687);
-		editeur.setBackground(Color.blue);
-		contentPane.add(editeur);
-		editeur.setVisible(false);
-		
 		JButton btnEditeur = new JButton("editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			//	contentPane.setBounds(100, 100, 1500, 871);
-				editeur.setVisible(true);
+				//editeur.setVisible(true);
 			//	scene.requestFocusInWindow();
-				setBounds(100, 100, 1138, 855);
+				activerEditeur();
+				
 			}
 		});
 		btnEditeur.setBounds(622, 61, 40, 38);
@@ -160,6 +165,57 @@ public class App10LaserDeLaJustice extends JFrame {
 		lblAngle.setBounds(268, 64, 46, 14);
 		contentPane.add(lblAngle);
 		
+		btnMiroirPlan = new JButton("miroir Plan");
+		btnMiroirPlan.setEnabled(false);
+		btnMiroirPlan.setBounds(771, 147, 105, 23);
+		contentPane.add(btnMiroirPlan);
+		
+		btnMiroirConvexe = new JButton("miroir Convexe");
+		btnMiroirConvexe.setEnabled(false);
+		btnMiroirConvexe.setBounds(771, 181, 105, 23);
+		contentPane.add(btnMiroirConvexe);
+		
+		btnMiroirConcave = new JButton("miroir Concave");
+		btnMiroirConcave.setEnabled(false);
+		btnMiroirConcave.setBounds(771, 215, 105, 23);
+		contentPane.add(btnMiroirConcave);
+		
+		btnTrouNoir = new JButton("Trou Noir");
+		btnTrouNoir.setEnabled(false);
+		btnTrouNoir.setBounds(771, 249, 105, 23);
+		contentPane.add(btnTrouNoir);
+		
+		btnBlocDeau = new JButton("bloc D'eau ");
+		btnBlocDeau.setEnabled(false);
+		btnBlocDeau.setBounds(771, 283, 105, 23);
+		contentPane.add(btnBlocDeau);
+		
+		btnGrosseBalle = new JButton("Grosse Balle");
+		btnGrosseBalle.setEnabled(false);
+		btnGrosseBalle.setBounds(771, 317, 105, 23);
+		contentPane.add(btnGrosseBalle);
+		
+		btnMediumBalle = new JButton("Medium Balle");
+		btnMediumBalle.setEnabled(false);
+		btnMediumBalle.setBounds(771, 351, 105, 23);
+		contentPane.add(btnMediumBalle);
+		
+		btnPetiteBalle = new JButton("petite balle ");
+		btnPetiteBalle.setEnabled(false);
+		btnPetiteBalle.setBounds(771, 385, 105, 23);
+		contentPane.add(btnPetiteBalle);
+		
+		btnPrisme = new JButton("prisme");
+		btnPrisme.setEnabled(false);
+		btnPrisme.setBounds(771, 419, 105, 23);
+		contentPane.add(btnPrisme);
+		
+		JSlider sldAngle = new JSlider();
+		sldAngle.setFocusable(false);
+		sldAngle.setMaximum(180);
+		sldAngle.setBounds(774, 464, 200, 26);
+		contentPane.add(sldAngle);
+		
 		
 		
 	}
@@ -170,6 +226,33 @@ public class App10LaserDeLaJustice extends JFrame {
 		scene.requestFocusInWindow();
 	}
 
+	
+	
+	public void activerEditeur() {
+		setBounds(100, 100, 1138, 855);
+		btnBlocDeau.setEnabled(true);
+		btnGrosseBalle.setEnabled(true);
+		btnMediumBalle.setEnabled(true);
+		btnMiroirConcave.setEnabled(true);
+		btnMiroirConvexe.setEnabled(true);
+		btnMiroirPlan.setEnabled(true);
+		btnPrisme.setEnabled(true);
+		btnTrouNoir.setEnabled(true);
+		btnPetiteBalle.setEnabled(true);
+	}
+	
+	public void desactiverEditeur() {
+		
+		btnBlocDeau.setEnabled(false);
+		btnGrosseBalle.setEnabled(false);
+		btnMediumBalle.setEnabled(false);
+		btnMiroirConcave.setEnabled(false);
+		btnMiroirConvexe.setEnabled(false);
+		btnMiroirPlan.setEnabled(false);
+		btnPrisme.setEnabled(false);
+		btnTrouNoir.setEnabled(false);
+		btnPetiteBalle.setEnabled(false);
+	}
 	/**
 	 * @param leBouton
 	 * @param fichierImage
