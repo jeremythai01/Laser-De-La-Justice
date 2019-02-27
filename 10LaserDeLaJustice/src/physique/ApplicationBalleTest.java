@@ -38,7 +38,7 @@ public class ApplicationBalleTest extends JFrame {
 	 */
 	public ApplicationBalleTest() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 623, 594);
+		setBounds(100, 100, 989, 808);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -51,7 +51,7 @@ public class ApplicationBalleTest extends JFrame {
 				scene.demarrer();
 			}
 		});
-		btnStart.setBounds(36, 449, 89, 23);
+		btnStart.setBounds(10, 735, 89, 23);
 		contentPane.add(btnStart);
 		
 		JButton btnStop = new JButton("stop");
@@ -60,11 +60,11 @@ public class ApplicationBalleTest extends JFrame {
 				scene.arreter();
 			}
 		});
-		btnStop.setBounds(159, 449, 89, 23);
+		btnStop.setBounds(109, 735, 89, 23);
 		contentPane.add(btnStop);
 		
 		scene = new SceneTest();
-		scene.setBounds(10, 11, 484, 439);
+		scene.setBounds(10, 11, 953, 713);
 		contentPane.add(scene);
 		
 	

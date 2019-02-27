@@ -96,9 +96,6 @@ public class Balle implements Dessinable {
 			type = Type.LARGE;
 			break;
 		}
-
-		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		aireBalle = new Area(cercle);
 		
 	}
 
@@ -171,6 +168,7 @@ public class Balle implements Dessinable {
 		switch(type){
 		case LARGE:
 			g2d.setColor(Color.blue);
+			break;
 		case MEDIUM:
 			g2d.setColor(Color.green);
 			break;
@@ -178,7 +176,7 @@ public class Balle implements Dessinable {
 			g2d.setColor(Color.red);
 			break;
 		}		
-		g2d.draw( matLocal.createTransformedShape(cercle) );		
+		g2d.fill( matLocal.createTransformedShape(cercle) );		
 
 
 
@@ -362,7 +360,7 @@ public class Balle implements Dessinable {
 				newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
 				liste.add(newBall2);
 				liste.remove(this);
-
+				break;
 			case MEDIUM:
 				newBall1 = new Balle(position, vitesse, "SMALL");
 				liste.add(newBall1);
