@@ -29,7 +29,6 @@ public class App10LaserDeLaJustice extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnImage;
-	private Scene scene;
 	private JButton btnPrisme;
 	private JButton btnPetiteBalle;
 	private JButton btnMediumBalle;
@@ -51,7 +50,7 @@ public class App10LaserDeLaJustice extends JFrame {
 					 App10LaserDeLaJustice frame;
 					frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
-					frame.scene.requestFocusInWindow();
+				//	frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -69,17 +68,13 @@ public class App10LaserDeLaJustice extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		/*
-		scene = new Scene();
-		scene.setBackground(Color.WHITE);
-		scene.setBounds(47, 110, 665, 687);
-		contentPane.add(scene);
-		*/
+		
+		
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
 	
 			public void actionPerformed(ActionEvent arg0) {
-				scene.demarrer();
+			//	scene.demarrer();
 			}
 		});
 		btnPlay.setBounds(44, 61, 40, 38);
@@ -131,8 +126,8 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			//	contentPane.setBounds(100, 100, 1500, 871);
 				//editeur.setVisible(true);
-			//	scene.requestFocusInWindow();
-				activerEditeur();
+				//scene.requestFocusInWindow();
+				//activerEditeur();
 				
 			}
 		});
@@ -154,7 +149,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		spnAngle.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				double valeur= (double) spnAngle.getValue();
-				scene.setAngle(valeur);
+			//	scene.setAngle(valeur);
 				repaint();
 			}
 		});
@@ -223,7 +218,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 * Methode qui donne le focus a la scene
 	 */
 	public void donneFocusALaScene() {
-		scene.requestFocusInWindow();
+	//	scene.requestFocusInWindow();
 	}
 
 	

@@ -11,10 +11,8 @@ import geometrie.Vecteur;
 import interfaces.Dessinable;
 
 /**
- * Classe Balle: représentation sommaire d'une balle à l'aide d'un simple cercle.
- * Une balle mémorise sa masse, son diamètre, sa position, sa vitesse, son accélération, la somme des forces qui s'applique sur elle.
+ * Classe qui créée une balle et mémorise sa masse, son diamètre, sa position, sa vitesse, son accélération, la somme des forces qui s'applique sur elle et son type.
  * @author Jeremy Thai 
- * @author Caroline Houle 
  */
 
 public class Balle implements Dessinable { 
@@ -26,50 +24,20 @@ public class Balle implements Dessinable {
 	private boolean toucheSolPremiereFois = true;
 	private Vecteur forceGravi;
 	private MoteurPhysique mt = new MoteurPhysique();
-	private Area aireBalle;
 	private Type type;
 
+	
+	
+	/**
+	 * Classe enumeration des types de balle
+	 * @author Jeremy Thai
+	 *
+	 */
 	private enum Type {
 		SMALL, MEDIUM, LARGE;
 	}
 
-	
-	// Jeremy Thai
-		/**
-		 * Constructeur ou la position, la vitesse et l'acceleration  initiales sont spécifiés
-		 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
-		 * @param vitesse Vecteur incluant les vitesses en x et y
-		 * @param accel Vecteur incluant les accelerations en x et y  
-		 * @param diametre diametre (unites du monde reel)
-		 * @param masse masse (kg)
-		 */
-		public Balle(Vecteur position, Vecteur vitesse, String size) {	
-			setPosition( position ); //ces setters crent des copies des vecteurs
-			setVitesse( vitesse );
-			setAccel( new Vecteur(0,9.8) );
-			forceGravi = mt.forceGravi(masse, accel);
-			switch(size) {
-			case "SMALL":
-				type = Type.SMALL;
-				//setMasse(5);
-				setDiametre(1);
-				break;
-			case "MEDIUM":
-				type = Type.MEDIUM;
-			//	setMasse(10);
-				setDiametre(2);
-				break;
-			case "LARGE":
-				type = Type.LARGE;
-				break;
-			}
-		}
-	
-	
-	
 
-
-	// Jeremy Thai
 	/**
 	 * Constructeur ou la position, la vitesse et l'acceleration  initiales sont spécifiés
 	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
@@ -78,85 +46,37 @@ public class Balle implements Dessinable {
 	 * @param diametre diametre (unites du monde reel)
 	 * @param masse masse (kg)
 	 */
-	public Balle(Vecteur position, Vecteur vitesse, Vecteur accel, double diametre, double masse, String size) {
-		this.diametre = diametre;	
-		setPosition( position ); //ces setters crent des copies des vecteurs
+	public Balle(Vecteur position, Vecteur vitesse, String size) {	
+		setPosition( position );
 		setVitesse( vitesse );
-		setAccel( accel );
-		this.masse = masse;
+		setAccel( new Vecteur(0,9.8) );
 		forceGravi = mt.forceGravi(masse, accel);
+		
 		switch(size) {
 		case "SMALL":
 			type = Type.SMALL;
+			setMasse(5);
+			setDiametre(1);
 			break;
 		case "MEDIUM":
 			type = Type.MEDIUM;
+			setMasse(10);
+			setDiametre(2);
 			break;
 		case "LARGE":
 			type = Type.LARGE;
 			break;
 		}
-		
 	}
 
 
 
-	// Caroline Houle
 	/**
-	 * Constructeur ou la position, la vitesse et l'acceleration  initiales sont spécifiés
-	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
-	 * @param vitesse Vecteur incluant les vitesses en x et y
-	 * @param accel Vecteur incluant les accelerations en x et y  
-	 * @param diametre diametre (unites du monde reel)
-	 */
-
-	public Balle(Vecteur position, Vecteur vitesse, Vecteur accel, double diametre) {
-		this.diametre = diametre;	
-		setPosition( position ); //ces setters crent des copies des vecteurs
-		setVitesse( vitesse );
-		setAccel( accel );
-	}
-
-	// Caroline Houle
-	/**
-	 * Constructeur ou la position initiale est specifiee par un vecteur
-	 * La vitesse et acceleration sont mises à zero. 
-	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
-	 * @param diametre diametre (unites du monde reel)
-	 */
-	public Balle(Vecteur position, double diametre) {
-		this( position, new Vecteur(0,0),  new Vecteur(0, 0), diametre );
-	}
-
-	// Caroline Houle
-	/**
-	 * Constructeur ou la position initiale est specifiee par x et y
-	 * La vitesse et acceleration sont mises à zero. 
-	 * @param x Coin superieur-gauche en x
-	 * @param y Coin superieur-gauche en y
-	 * @param diametre diametre (unites du monde reel)
-	 */
-	public Balle(double x, double y, double diametre) {
-		this( new Vecteur(x, y), new Vecteur(0,0),  new Vecteur(0, 0), diametre ); //appelle l'autre constructeur
-	}
-
-	// Caroline Houle
-	/**
-	 * Constructeur ou la position initiale est specifiee par un vecteur et ou la vitesse initiale est aussi specifiee
-	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
-	 * @param vitesse Vecteur incluant les vitesses en x et y 
-	 * @param diametre diametre (unites du monde reel)
-	 */
-
-	public Balle(Vecteur position, Vecteur vitesse, double diametre) {
-		this( position, vitesse,  new Vecteur(0, 0), diametre );
-	}
-	// Jeremy Thai
-	/**
-	 * Permet de dessiner la balle, sur le contexte graphique passe en parametre.
+	 * Permet de dessiner la balle selon le contexte graphique en parametre.
 	 * @param g2d contexte graphique
-	 * @param matMC matrice de transformation monde-vers-composant
-	 * @param matMC matrice de transformation monde-vers-composant
+	 * @param mat matrice de transformation monde-vers-composant
+	 * @param hauteur hauteur du monde reelle
+	 * @param largeur largeur du monde reelle
 	 * 
 	 */
 	@Override
@@ -164,7 +84,7 @@ public class Balle implements Dessinable {
 		AffineTransform matLocal = new AffineTransform(mat);
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		checkCollisions(largeur , hauteur); 
-		
+
 		switch(type){
 		case LARGE:
 			g2d.setColor(Color.blue);
@@ -177,12 +97,8 @@ public class Balle implements Dessinable {
 			break;
 		}		
 		g2d.fill( matLocal.createTransformedShape(cercle) );		
+	}
 
-
-
-	}//fin methode
-
-	// Jeremy Thai
 	/**
 	 * Effectue une iteration de l'algorithme d'Euler implicite. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -192,7 +108,6 @@ public class Balle implements Dessinable {
 		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
-	// Jeremy Thai
 	/**
 	 * Effectue une iteration de l'algorithme Verlet. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -203,7 +118,6 @@ public class Balle implements Dessinable {
 		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
-	// Jeremy Thai
 	/**
 	 * Effectue une iteration de l'algorithme de Runge-Kutta ordre 4. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -216,36 +130,32 @@ public class Balle implements Dessinable {
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 
-	// Caroline Houle 
+
 	/**
 	 * Modifie la position de la balle
-	 * Note: ici on decide de simplement refaire la forme sous-jacente!
-	 * @param pos Vecteur incluant les positions en x et y 
+	 * @param pos vecteur des positions x et y
 	 */
 	public void setPosition(Vecteur pos) {
-		//on fait une copie du vecteur  passe en paramètre (l'orignal peut donc être modifé au besoin)
-		Vecteur nouveauVec = new Vecteur(pos.getX(), pos.getY());
-		this.position = nouveauVec;
+		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
+		this.position = newVec;
 	}
 
-	// Jeremy Thai
 	/**
 	 * Retourne la position courante
 	 * @return la position courante
 	 */
 	public Vecteur getPosition() { return (position); }
 
-	// Caroline Houle 
 	/**
-	 * Associe une vitesse, ou modifie la vitesse courante de la balle
-	 * @param vitesse Vecteur incluant les vitesses en x et y 
+	 * modifie ou affecte une vitesse a celle courante de la balle
+	 * @param vitesse vecteur des vitesse x et y
 	 */
 	public void setVitesse(Vecteur vitesse) {
-		//on fait une copie du vecteur passé en paramètre (l'orignal peut donc être modifé au besoin)
-		Vecteur nouveauVec = new Vecteur(vitesse.getX(), vitesse.getY());
-		this.vitesse = nouveauVec;
+
+		Vecteur newVec = new Vecteur(vitesse.getX(), vitesse.getY());
+		this.vitesse = newVec;
 	}
-	// Jeremy Thai
+
 	/**
 	 * Retourne la vitesse courante
 	 * @return la vitesse courante
@@ -254,46 +164,45 @@ public class Balle implements Dessinable {
 		return (vitesse);
 	}
 
-	// Caroline Houle 
 	/**
 	 * Associe une acceleration, ou modifie l'acceleration courante de la balle
-	 * @param accel Vecteur incluant les accelerations en x et y 
+	 * @param accel vecteur des accélérations en x et y
 	 */
 
 	public void setAccel(Vecteur accel) {
-		//on fait une copie du vecteur  passé en paramètre (l'orignal peut donc être modifé au besoin)
-		Vecteur nouveauVec = new Vecteur(accel.getX(), accel.getY());
-		this.accel = nouveauVec;
+		Vecteur newVec = new Vecteur(accel.getX(), accel.getY());
+		this.accel = newVec;
 	}
-	// Jeremy Thai
+
+
 	/**
 	 * Retourne l'acceleration courante
 	 * @return acceleration courante
 	 */
 	public Vecteur getAccel() { return (accel); }
 
-	// Jeremy Thai
+
 	/**
 	 * Retourne le diametre de la balle
 	 * @return Le diamètre
 	 */
 	public double getDiametre() { return diametre; }
 
-	// Jeremy Thai
+
 	/**
 	 * MOdifie le diametre de la balle
 	 * @param diametre Le nouveau diamètre
 	 */
 	public void setDiametre(double diametre) { this.diametre = diametre; }
 
-	// Jeremy Thai
+
 	/**
 	 * Retourne la masse en Kg
 	 * @return La masse en kg
 	 */
 	public double getMasse() {	return masse; }
 
-	// Jeremy Thai
+
 	/**
 	 * Modifie la masse 
 	 * @param masseEnKg masse en kg
@@ -301,7 +210,7 @@ public class Balle implements Dessinable {
 	public void setMasse(double masse) { this.masse = masse; }
 
 
-	//Jeremy thai
+
 	/**
 	 * Modifie la vitesse courante par la vitesse initiale
 	 * @param vInitY vitesse initiale 
@@ -309,7 +218,7 @@ public class Balle implements Dessinable {
 
 	public void setvInitY(double vInitY) { this.vInitY = vInitY; }
 
-	//Jeremy thai
+
 	/**
 	 * Retourne la force gravitationnelle
 	 * @return force gravitationnelle
@@ -318,7 +227,7 @@ public class Balle implements Dessinable {
 		return forceGravi;
 	}
 
-	//Jeremy thai
+
 	/**
 	 *Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
 	 * @param width largeur du monde 
@@ -346,47 +255,51 @@ public class Balle implements Dessinable {
 
 	}
 
+	/**
+	 * Modifie le type de balle en creant 2 balles d'un plus petit type et en les ajoutant dans la liste de balles 
+	 * @param liste liste des balles 
+	 */
 
 	public void shrink(ArrayList<Balle> liste) {
 
-			Balle newBall1;
+		Balle newBall1;
 		Balle newBall2;
-			switch(type)	{
+		switch(type)	{
 
-			case LARGE:
-				newBall1 = new Balle(position, vitesse, "MEDIUM");
-				liste.add(newBall1);
-				newBall2 = new Balle(position, vitesse, "MEDIUM");
-				newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
-				liste.add(newBall2);
-				liste.remove(this);
-				break;
-			case MEDIUM:
-				newBall1 = new Balle(position, vitesse, "SMALL");
-				liste.add(newBall1);
-				newBall2 = new Balle(position, vitesse, "SMALL");
-				newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
-				liste.add(newBall2);
-				liste.remove(this);
-				break;
+		case LARGE:
+			newBall1 = new Balle(position, vitesse, "MEDIUM");
+			liste.add(newBall1);
+			newBall2 = new Balle(position, vitesse, "MEDIUM");
+			newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
+			liste.add(newBall2);
+			liste.remove(this);
+			break;
+		case MEDIUM:
+			newBall1 = new Balle(position, vitesse, "SMALL");
+			liste.add(newBall1);
+			newBall2 = new Balle(position, vitesse, "SMALL");
+			newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
+			liste.add(newBall2);
+			liste.remove(this);
+			break;
 
-			case SMALL:
-				liste.remove(this);
-				break;
-			}		
-		}
-	
-	public Ellipse2D getBallOval() { // pour detecter lintersection
-        return new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-    }
+		case SMALL:
+			liste.remove(this);
+			break;
+		}		
+	}
 
+	/**
+	 * retourne l'aire d'une balle en forme de cercle
+	 * @return aire de la balle 
+	 */
 	public Area getAireBalle() {
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		return new Area(cercle);
-		
+
 	}
-	
-	
+
+
 
 }//fin classe
 

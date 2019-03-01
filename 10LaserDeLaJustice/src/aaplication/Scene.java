@@ -8,7 +8,10 @@ import java.awt.Image;
 import java.awt.Shape;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -26,6 +29,7 @@ import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
 import geometrie.Vecteur;
+import objets.TrouNoir;
 import personnage.Personnage;
 import physique.Balle;
 
@@ -48,63 +52,92 @@ public class Scene extends JPanel implements Runnable {
 	private Image fond = null;
 
 	private Personnage principal;
-//	private Pistolet pistoletPrincipal;
 
-	private AffineTransform mat;
-	private int HAUTEUR=0;
 
-	private int tempsDuSleep = 100;
-	private double deltaT = 0.05;
-	private final double LARGEUR_DU_MONDE = 10;
-	private boolean enCoursAnimation= false;
-
-	private double masse = 15; //en kg
-	private double diametre = 5;  //em mètres
-	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
-	private boolean premiereFois = true;
-	private ModeleAffichage modele;
-	private double HAUTEUR_SCENE;
-	private  double HAUTEUR_DU_MONDE;
-	private Balle balle1;
 	private Vecteur positionInit;
 	private Vecteur vitesseInit;
-	private Vecteur gravity ;
 	private Rectangle2D.Double fantomePerso;
 	private Shape fantomeTransfo;
 	private Pistolet pistoletPrincipal;
-	private String gauche, droite;
-	private double angle;
 	private Laser laser;
-	private int toucheGauche=0, toucheDroite = 0;
+	private static final long serialVersionUID = 1L;
+	private int tempsDuSleep = 30;
+	private double deltaT = 0.08;
+	private  double LARGEUR_DU_MONDE = 30; //en metres
+	private  double HAUTEUR_DU_MONDE;
+	private boolean enCoursAnimation= false;
+	private double tempsTotalEcoule = 0;
+	private double diametre = 2;  //em mètres
+	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
+	private Balle balle;
+	private boolean premiereFois = true;
+	private ModeleAffichage modele;
+	private AffineTransform mat;
+	private Vecteur vitesse;
+	private Personnage character;
+	private double angle;
+	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
+	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
+	private TrouNoir trou;
+	private int toucheGauche;
+	private int toucheDroite;
+
+
+	
+	
+	//Jeremy Thai
+	
+
+	
 	
 	public Scene() {
 		lireFond();
 		lectureFichierOption();
+		angle = -90;
 		principal = new Personnage (toucheGauche, toucheDroite);
 		pistoletPrincipal= new Pistolet();
 		positionInit = new Vecteur(12, 10);
 		vitesseInit = new Vecteur(2.0 ,0);
-		gravity = new Vecteur(0,9.8);
-		laser = new Laser(new Vecteur(principal.getPositionX()+principal.getLARGEUR_PERSO(),LARGEUR_DU_MONDE), angle, new Vecteur(2,2));
+		
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			//Jeremy Thai
+			public void mousePressed(MouseEvent e) {
+
+				double eXR = e.getX()/modele.getPixelsParUniteX();
+				double eYR = e.getY()/modele.getPixelsParUniteY();
+				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
+				listeBalles.add(balle);
+
+				trou= new TrouNoir(new Vecteur(eXR,eYR));
+				listeTrou.add(trou);
+
+				repaint();
+			}
+		});
+		
+		
+		
 		addKeyListener(new KeyAdapter() {
+
 			@Override
 			public void keyPressed(KeyEvent e) {
-				principal.deplacerLePersoSelonTouche( e );
+				character.deplacerLePersoSelonTouche( e );
+				shootEtAddLaser(e);
+				repaint();
+			}
+			@Override
+			//Jeremy Thai
+			public void keyReleased(KeyEvent e) {
+				character.relacheTouche(e);
 				repaint();
 			}
 		});
 
-	//	balle1 = new Balle(positionInit, vitesseInit,gravity,diametre, masse );
+
 	}
-	/*addMouseListener(new MouseAdapter() { // pour tester les balles 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				balle = new Balle(new Vecteur(e.getX(), e.getY()), new Vecteur(3,0),gravity,diametre, masse );
-				listeBalles.add(balle);
-				repaint();
-			}
-		});
-	 */
+	
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -116,14 +149,40 @@ public class Scene extends JPanel implements Runnable {
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 			premiereFois = false;
 		}
-			mat = modele.getMatMC();
-			premiereFois = false;
 		
+	
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(),(int) modele.getHautPixels(), null);
 
+
+		for(Laser laser : listeLasers) { 
+			if(laser.getLigneFinY() <= 0 )
+				listeLasers.remove(laser);
+			g2d.setColor((new Color(255,255,200)));
+			laser.dessiner(g2d, mat, 0, 0);
+			laser.move();
+		}
+
+		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+		checkCollisionTrouLaserPersonnage( listeLasers );
+
+		for(Balle balle: listeBalles) {
+
+			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+		}
+
+
+		for(TrouNoir trou: listeTrou) {
+			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+		}
+
+		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
+
+
+		
+		
 		creerLePersonnagePrincipal(g2d, mat);
-		g2d.setColor(Color.white);
-		laser.dessiner(g2d, mat, 0, 0);
+		
+		
 
 	}
 
@@ -139,35 +198,9 @@ public class Scene extends JPanel implements Runnable {
 		fantomePerso = new Rectangle2D.Double (principal.getPositionX(), modele.getHautUnitesReelles() - principal.getLONGUEUR_PERSO(), 
 				principal.getLARGEUR_PERSO(), principal.getLONGUEUR_PERSO());
 		g2d.draw(mat.createTransformedShape(fantomePerso));
-	//	pistoletPrincipal.dessiner(g2d, mat);
 
 	}
-	/*
-		for(Balle balle: listeBalles) {
-=======
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
-
-		g2d.setColor(Color.red);
-		//principal.dessiner(g2d, mat, HAUTEUR);
-		//pistoletPrincipal.dessiner(g2d, mat, HAUTEUR, 0);
-
-<<<<<<< HEAD
-		}
-=======
-		balle1.dessiner(g2d, mat, (int) HAUTEUR_DU_MONDE,(int) LARGEUR_DU_MONDE);
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
-
-	}
-
-
-	private void calculerUneIterationPhysique() {
-
-		balle1.unPasRK4( deltaT, tempsTotalEcoule );
-		tempsTotalEcoule += deltaT;
-
-
-	}
-*/
+	
 	public void arreter( ) {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
@@ -181,12 +214,25 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 	}
+	
+	//Jeremy Thai
+	private void calculerUneIterationPhysique() {
+
+		for(Balle balle: listeBalles) {
+			balle.unPasRK4( deltaT, tempsTotalEcoule);
+		}
+
+		tempsTotalEcoule += deltaT;;
+	}
+
+	
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while (enCoursAnimation) {	
-		//	calculerUneIterationPhysique();
+		while (enCoursAnimation) {
+			character.move();
+			calculerUneIterationPhysique();
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -214,9 +260,6 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-
-	
-	
 	public void setAngle(double angle) {
 		laser.setAngleTir(angle);
 		principal.getPositionX();
@@ -229,7 +272,7 @@ public class Scene extends JPanel implements Runnable {
 	private void lectureFichierOption() {
 		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
 		DataInputStream fluxEntree = null;
-		double acceleration=0;
+		double acceleration= 9.8;
 		int niveau=0;
 		File fichierDeTravail = new File( NOM_FICHIER_OPTION );
 		
@@ -262,5 +305,62 @@ public class Scene extends JPanel implements Runnable {
 		    }
 		}//fin finally
 	}
+	
+	//Jeremy Thai
+	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
+
+		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
+		for(Laser laser : listeLasers) {
+			for(Balle balle : listeBalles ) {
+				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
+					listeLasers.remove(laser);   
+					listeBalleTouche.add(balle);
+					balle.shrink(listeBalles);
+				}	
+
+			}
+		}
+	}
+	
+	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
+
+
+		for(Laser laser : listeLasers) {
+			for(TrouNoir trou : listeTrou ) {
+				if(intersection(trou.getAireTrou(), laser.getLaserAire())) {
+					listeLasers.remove(laser);   
+
+				}	
+			}
+		}
+
+
+	}
+	
+	//Jeremy Thai
+	private void shootEtAddLaser(KeyEvent e) {
+		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_SPACE) {
+			character.shoot(code);
+			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+				listeLasers.add(
+						new Laser(new Vecteur(
+								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+			}
+		}
+	}
+	
+	//Jeremy Thai
+	private boolean intersection(Area aire1, Area aire2) {
+		Area aireInter = new Area(aire1);
+		aireInter.intersect(aire2);
+		if(!aireInter.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
 
 }

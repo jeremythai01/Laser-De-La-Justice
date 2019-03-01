@@ -56,12 +56,13 @@ public class Laser implements Dessinable{
 	}
 	
 	private void randomColor(Graphics2D g2d) {
-		float r = rand.nextFloat() ;
-		float g = rand.nextFloat() ;
-		float b = rand.nextFloat() ;
+		float i = (float) 0.5;
+		float r = (rand.nextFloat()/2f) + i;
+		float g = (rand.nextFloat()/2f) + i;
+		float b = (rand.nextFloat()/2f) + i;
 		
 		Color randomColor = new Color(r,g,b);
-		g2d.setColor(randomColor.brighter());
+		g2d.setColor(randomColor);
 	}
 	
 	

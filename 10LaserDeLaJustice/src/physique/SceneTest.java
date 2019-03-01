@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
-import miroir.MiroirConcave;
+import interfaces.SceneListener;
+
 import objets.TrouNoir;
+import personnage.Personnage;
 import utilite.ModeleAffichage;
 
 import java.awt.event.KeyAdapter;
@@ -33,20 +35,13 @@ public class SceneTest extends JPanel implements Runnable {
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
-	private double masse = 15; //en kg
 	private double diametre = 2;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Balle balle;
 	private boolean premiereFois = true;
 	private ModeleAffichage modele;
 	private AffineTransform mat;
-
-	private Vecteur position;
-
 	private Vecteur vitesse;
-
-	private Vecteur gravity ;
-
 	private Personnage character;
 
 	private double angle;
@@ -56,9 +51,10 @@ public class SceneTest extends JPanel implements Runnable {
 	private TrouNoir trou;
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
-	//private int toucheTir = 10;
 
 
+	private ArrayList<SceneListener> listeEcouteurs = new ArrayList<SceneListener>();
+	
 
 	/**
 	 * Create the panel.
@@ -68,11 +64,7 @@ public class SceneTest extends JPanel implements Runnable {
 		character = new Personnage(toucheGauche, toucheDroite);
 
 		angle = -90;
-		position = new Vecteur(0.3, 10);
-
 		vitesse = new Vecteur(0.5 ,0);
-
-		gravity = new Vecteur(0,9.8);
 
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -106,14 +98,7 @@ public class SceneTest extends JPanel implements Runnable {
 			}
 		});
 
-
-
-
-
-
-
 	}
-
 
 
 	public void paintComponent(Graphics g) {
@@ -244,7 +229,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	}
-
+	
 	private void shootEtAddLaser(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
@@ -256,5 +241,21 @@ public class SceneTest extends JPanel implements Runnable {
 			}
 		}
 	}
+	
+	
+		/**
+		 * prend un ecouteur en parametre pour être ajouté par le ArrayList d'écouteur
+		 * @param ecouteur
+		 */
+		public void addSceneListener(SceneListener ecouteur) {
+			listeEcouteurs.add(ecouteur);
+		}
+	
+	
+	
+	
+	
+	
+	
 }
 
