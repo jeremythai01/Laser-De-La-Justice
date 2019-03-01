@@ -1,5 +1,6 @@
 package physique;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -7,6 +8,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -24,10 +26,12 @@ public class Laser implements Dessinable{
 	private double angleTir;
 	private Path2D trace;
 	private Vecteur accel;
-	private Area aireLaser;
 	
 	private double ligneFinY;
 	private double ligneDebutY;
+	
+	
+	Random rand = new Random();
 	
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
 		trace=new Path2D.Double();
@@ -40,16 +44,26 @@ public class Laser implements Dessinable{
 	}
 
 
-	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		trace.moveTo(position.getX(), ligneDebutY);
 		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
-		g.draw(matLocal.createTransformedShape(((trace))));
 		
-		aireLaser = new Area(trace);
+		randomColor(g2d);
+		g2d.draw(matLocal.createTransformedShape(((trace))));
 		
 	}
+	
+	private void randomColor(Graphics2D g2d) {
+		float r = rand.nextFloat() ;
+		float g = rand.nextFloat() ;
+		float b = rand.nextFloat() ;
+		
+		Color randomColor = new Color(r,g,b);
+		g2d.setColor(randomColor.brighter());
+	}
+	
 	
 	public double getLigneFinY() {
 		return ligneFinY;
@@ -74,12 +88,16 @@ public class Laser implements Dessinable{
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 	
-
+/*
 	public Rectangle2D getLine(){ // pour detecter lintersection
         return new Rectangle2D.Double(position.getX(), ligneFinY,0.1,position.getY());
     }
+	*/
 	
 	
+	public Area getLaserAire(){ // pour detecter lintersection
+       return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,0.5,position.getY()));
+    }
 
 	public double getLONGUEUR() {
 		return LONGUEUR;

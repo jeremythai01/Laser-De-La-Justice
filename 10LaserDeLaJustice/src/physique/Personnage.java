@@ -1,15 +1,18 @@
-package personnage;
+package physique;
 
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import geometrie.Vecteur;
 import interfaces.Dessinable;
 
 /**
@@ -27,7 +30,13 @@ public class Personnage implements Dessinable {
 	private double positionX ;
 	private boolean premiereFois = true;
 	private int toucheGauche = 37, toucheDroite = 39;
-	private int derniereTouche = 0;
+	private double vitesseX =0;
+	private boolean gauche;
+	private boolean droite;
+	private boolean bougePas;
+
+	private static final double VITESSE = 0.1;
+
 
 
 
@@ -92,31 +101,60 @@ public class Personnage implements Dessinable {
 	//Miora
 	public void deplacerLePersoSelonTouche(KeyEvent e) {
 		int code = e.getKeyCode();
+
 		if(code == toucheGauche) {
-			if(positionX <= 0) {
-				positionX = 0;
-			}else {
-				if(toucheDroite == derniereTouche )
-					positionX -= 0.2;
-				//positionX -= 0.1;
-			}
+			gauche = true;
 		}
-		if (code == toucheDroite) {
-			if(positionX>= LARGEUR_COMPO - LARGEUR_PERSO) {
-				positionX = LARGEUR_COMPO - LARGEUR_PERSO; 
-			}
-			else {
-				positionX += 0.1; 
-			}
-			derniereTouche = code;
+		if(code == toucheDroite) {
+			droite = true;
+		}
+		update();
+	}
+	public void relacheTouche(KeyEvent e) {
+		int code = e.getKeyCode();
+		if(code == toucheGauche) {
+			gauche = false;
+		}
+		if(code == toucheDroite) {
+			droite = false;
+		}
+		if(code == KeyEvent.VK_SPACE) {
+			bougePas = false;
 		}
 		
 		
+		update();
+
+	}
+
+	public void move() { 
+		positionX += vitesseX;
+	}
+
+
+	public void update() {
+		vitesseX = 0;
+		if(gauche) 
+			vitesseX = -VITESSE;
+		if(droite) 
+			vitesseX = VITESSE;
+		if(bougePas) 
+			vitesseX = 0;
 		
-		
-		
-		
-	}//fin methode
+	}
+
+	public void shoot(int code) {
+			bougePas = true; 
+			update();
+		}
+	
+	
+	
+
+
+	public void setVitesseX(double vitesseX) {
+		this.vitesseX = vitesseX;
+	}
 	/**
 	 * Methode permettant de savoir la position du personnage
 	 * @return la position initiale du personnage

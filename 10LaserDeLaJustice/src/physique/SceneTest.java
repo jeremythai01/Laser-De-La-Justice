@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
 import objets.TrouNoir;
-import personnage.Personnage;
 import utilite.ModeleAffichage;
 
 import java.awt.event.KeyAdapter;
@@ -57,6 +56,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private TrouNoir trou;
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
+	//private int toucheTir = 10;
 
 
 
@@ -64,9 +64,9 @@ public class SceneTest extends JPanel implements Runnable {
 	 * Create the panel.
 	 */
 	public SceneTest() {
-		
+
 		character = new Personnage(toucheGauche, toucheDroite);
-		
+
 		angle = -90;
 		position = new Vecteur(0.3, 10);
 
@@ -96,7 +96,12 @@ public class SceneTest extends JPanel implements Runnable {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
-				shoot(e);
+				shootEtAddLaser(e);
+				repaint();
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				character.relacheTouche(e);
 				repaint();
 			}
 		});
@@ -129,7 +134,7 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) { 
 			if(laser.getLigneFinY() <= 0 )
 				listeLasers.remove(laser);
-			g2d.setColor(Color.red);
+			g2d.setColor((new Color(255,255,200)));
 			laser.dessiner(g2d, mat, 0, 0);
 			laser.move();
 		}
@@ -184,6 +189,7 @@ public class SceneTest extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
+			character.move();
 			calculerUneIterationPhysique();
 			repaint();
 			try {
@@ -196,16 +202,6 @@ public class SceneTest extends JPanel implements Runnable {
 	}
 
 
-	private void shoot(KeyEvent e) {
-		int code = e.getKeyCode();
-		if(code == KeyEvent.VK_SPACE) {
-			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
-				listeLasers.add(
-						new Laser(new Vecteur(
-								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
-			}
-		}
-	}
 
 
 	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
@@ -213,7 +209,7 @@ public class SceneTest extends JPanel implements Runnable {
 		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		for(Laser laser : listeLasers) {
 			for(Balle balle : listeBalles ) {
-				if(balle.getAireBalle().intersects(laser.getLine())) {
+				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
 					listeLasers.remove(laser);   
 					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
@@ -221,7 +217,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 			}
 		}
-		
+
 
 	}
 	private boolean intersection(Area aire1, Area aire2) {
@@ -239,24 +235,26 @@ public class SceneTest extends JPanel implements Runnable {
 
 		for(Laser laser : listeLasers) {
 			for(TrouNoir trou : listeTrou ) {
-				if(trou.getAireTrou().intersects(laser.getLine())) {
+				if(intersection(trou.getAireTrou(), laser.getLaserAire())) {
 					listeLasers.remove(laser);   
 
 				}	
 			}
 		}
-	
+
 
 	}
 
-
-
-
-
-
-
-
-
-
-
+	private void shootEtAddLaser(KeyEvent e) {
+		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_SPACE) {
+			character.shoot(code);
+			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+				listeLasers.add(
+						new Laser(new Vecteur(
+								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+			}
+		}
+	}
 }
+

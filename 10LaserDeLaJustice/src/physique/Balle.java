@@ -51,12 +51,12 @@ public class Balle implements Dessinable {
 			switch(size) {
 			case "SMALL":
 				type = Type.SMALL;
-				setMasse(5);
+				//setMasse(5);
 				setDiametre(1);
 				break;
 			case "MEDIUM":
 				type = Type.MEDIUM;
-				setMasse(10);
+			//	setMasse(10);
 				setDiametre(2);
 				break;
 			case "LARGE":
