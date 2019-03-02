@@ -177,4 +177,82 @@ public class MoteurPhysique {
 		return new Vecteur(0, masse*accel.getY());
 	}
 
+	public static double[] quadricRealRoot(double A, double B, double C)
+	{
+		double dis = B*B-(4*A*C);
+		if(dis <0) {
+			return new double[0];
+		} else if(dis ==0) {
+			double tab[] = {-B/(2*A) };
+			return tab;
+		} else {
+			double tab[] = { Math.min((-B-Math.sqrt(dis))/(2*A),(-B+Math.sqrt(dis))/(2*A)), Math.max((-B-Math.sqrt(dis))/(2*A),(-B+Math.sqrt(dis))/(2*A))};
+			return tab;
+		}
+	}
+
+
+	public static void detectionCollisionBalles(Balle balle1, Balle balle2) {
+
+		double rayonA = balle1.getDiametre()/2 ;
+		//Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
+		Vecteur vA =  balle1.getVitesse();
+		Vecteur rA0 = balle1.getPosition();
+		double rayonB = balle2.getDiametre()/2; 
+		Vecteur rB0 = balle2.getPosition();
+		//	Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
+		Vecteur vB =  balle2.getVitesse();
+		
+		
+		
+		Vecteur v = vB.soustrait(vA);
+		Vecteur r0 = rB0.soustrait(rA0);
+
+		double D = rayonA + rayonB;
+
+		double A = v.prodScalaire(v);
+		double B = r0.multiplie(2).prodScalaire(v);
+		double C = r0.prodScalaire(r0) - D*D;
+
+		double temps[] = quadricRealRoot( A, B, C); 
+
+		if( temps.length == 2) { 
+			
+			for(int i = 0; i< temps.length; i++) {
+				if( temps[i] > 0) {
+					Vecteur rA = rA0.additionne(vA.multiplie(temps[i]));
+					Vecteur rB = rB0.additionne(vB.multiplie(temps[i]));
+					
+					Vecteur nAB = rB.soustrait(rA).multiplie(1/rB.soustrait(rA).module());
+					
+					double masseA = balle1.getMasse();
+					double masseB = balle2.getMasse();
+					
+					Vecteur vAB0 = vA.soustrait(vB);
+					
+					double vNAB0 = vAB0.prodScalaire(nAB);
+					
+					double masseBA = masseB/masseA;
+					double vNAB = vNAB0*(1-masseBA)/(1+masseBA);
+					
+					Vecteur vBb =  nAB.multiplie(vNAB-vNAB0).multiplie(-(masseA/masseB));
+					
+					Vecteur vAB = vAB0.additionne(nAB.multiplie(vNAB-vNAB0));
+					
+					Vecteur vAfinal = vAB.additionne(vB);
+					Vecteur vBfinal = vBb.additionne(vB);
+					
+					balle1.setVitesse(vAfinal);
+					balle2.setVitesse(vBfinal);
+					break;
+				}
+			}	
+		}
+	}
+
+
+
+
+
+
 }
