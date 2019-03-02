@@ -300,7 +300,6 @@ public class Balle implements Dessinable {
 	}
 
 
-
 }//fin classe
 
 

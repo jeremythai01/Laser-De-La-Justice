@@ -31,7 +31,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 30;
 	private double deltaT = 0.08;
-	private  double LARGEUR_DU_MONDE = 30; //en metres
+	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
@@ -47,7 +47,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
-	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
+	//private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
 	private TrouNoir trou;
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
@@ -75,8 +75,8 @@ public class SceneTest extends JPanel implements Runnable {
 				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
 				listeBalles.add(balle);
 
-				trou= new TrouNoir(new Vecteur(eXR,eYR));
-				listeTrou.add(trou);
+			//	trou= new TrouNoir(new Vecteur(eXR,eYR));
+				//listeTrou.add(trou);
 
 				repaint();
 			}
@@ -116,27 +116,42 @@ public class SceneTest extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 
+		for(Laser laser : listeLasers) {
+			laser.move();
+		}
+		
+		
 		for(Laser laser : listeLasers) { 
 			if(laser.getLigneFinY() <= 0 )
 				listeLasers.remove(laser);
-			g2d.setColor((new Color(255,255,200)));
 			laser.dessiner(g2d, mat, 0, 0);
-			laser.move();
+			
 		}
 
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
-		checkCollisionTrouLaserPersonnage( listeLasers );
+	//	checkCollisionTrouLaserPersonnage( listeLasers );
 
+		
+	
+		for (int i = 0; i < listeBalles.size(); i++) {
+			  for (int j = i+1; j < listeBalles.size(); j++) {
+				  Balle balle1 = listeBalles.get(i);
+				  Balle balle2 = listeBalles.get(j);
+			    MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+			  }
+			}
+		
+		
 		for(Balle balle: listeBalles) {
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-
+/*
 		for(TrouNoir trou: listeTrou) {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
-
+*/
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
 
@@ -150,8 +165,10 @@ public class SceneTest extends JPanel implements Runnable {
 	private void calculerUneIterationPhysique() {
 
 		for(Balle balle: listeBalles) {
-			balle.unPasRK4( deltaT, tempsTotalEcoule);
+			balle.unPasRK4(deltaT, tempsTotalEcoule);
 		}
+		
+		
 
 		tempsTotalEcoule += deltaT;;
 	}
@@ -214,7 +231,7 @@ public class SceneTest extends JPanel implements Runnable {
 		return false;
 	}
 
-
+/*
 	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
 
@@ -229,7 +246,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	}
-	
+	*/
 	private void shootEtAddLaser(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
@@ -237,7 +254,7 @@ public class SceneTest extends JPanel implements Runnable {
 			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 				listeLasers.add(
 						new Laser(new Vecteur(
-								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+								character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE), angle, new Vecteur(0,1 )));
 			}
 		}
 	}

@@ -28,7 +28,6 @@ public class Laser implements Dessinable{
 	private Vecteur accel;
 	
 	private double ligneFinY;
-	private double ligneDebutY;
 	
 	
 	Random rand = new Random();
@@ -40,13 +39,12 @@ public class Laser implements Dessinable{
 		this.vitesse= vitesse;
 		accel = new Vecteur(0,0);
 		ligneFinY = position.getY();
-		ligneDebutY = position.getY();
 	}
 
 
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		trace.moveTo(position.getX(), ligneDebutY);
+		trace.moveTo(position.getX(), ligneFinY);
 		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		
@@ -78,7 +76,7 @@ public class Laser implements Dessinable{
 	
 	
 	public Area getAireLaser() {
-		trace.moveTo(position.getX(), ligneDebutY);
+		trace.moveTo(position.getX(), ligneFinY);
 		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		return new Area(trace);
