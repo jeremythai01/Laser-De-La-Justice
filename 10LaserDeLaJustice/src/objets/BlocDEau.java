@@ -39,7 +39,7 @@ public class BlocDEau extends Objet implements Dessinable {
 		Vecteur E=new Vecteur();
 		E=v.multiplie(-1);
 		vecteur = v.multiplie(n).additionne(N.multiplie(((E.prodScalaire(N)*n)-Math.sqrt(1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N)))))))));
-		return vecteur;
+		return new Vecteur(vecteur.getX(),vecteur.getY());
 	}
 
 

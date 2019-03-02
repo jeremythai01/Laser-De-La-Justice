@@ -2,6 +2,7 @@ package objets;
 
 
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,7 +14,6 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
-//import physique.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
@@ -249,13 +249,19 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		for(Laser laser : listeLasers) {
 			for(Balle balle : listeBalles ) {
+
 				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
+
+				//if(balle.getAireBalle().intersects(laser.getLine())) {
+
 					listeLasers.remove(laser);   
 					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
 				}	
-			}
+			
 		}
+		}
+	}
 /*
 		for(Balle balle : listeBalleTouche) {
 			balle.shrink(listeBalles);
@@ -266,7 +272,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 
-	}
+	//}
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -282,7 +288,10 @@ private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 		for(Laser laser : listeLasers) {
 			for(TrouNoir trou : listeTrou ) {
 				//if(trou.getAireTrou().intersects(laser.getLine())) {
+
 				if(intersection(trou.getAireTrou(), laser.getLaserAire())) {
+
+
 					listeLasers.remove(laser);   
 					
 				}	
@@ -305,7 +314,8 @@ private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 	for(Laser laser : listeLasers) {
 		for(BlocDEau bloc : listeBloc) {
 			if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
-				laser.setVitesse((bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33)));
+				//laser.setPosition(new Vecteur(laser.getPosition().getX()+bloc.getLARGEUR(), laser.getPosition().getY()+bloc.getLARGEUR()));
+				laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getX()));
 				System.out.println("au moins");
 				repaint();
 			}
@@ -314,14 +324,9 @@ private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+//}
