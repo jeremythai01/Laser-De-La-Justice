@@ -2,6 +2,7 @@ package objets;
 
 
 import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,7 +14,6 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
-import physique.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
@@ -243,7 +243,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		for(Laser laser : listeLasers) {
 			for(Balle balle : listeBalles ) {
-				if(balle.getAireBalle().intersects(laser.getLine())) {
+				//if(balle.getAireBalle().intersects(laser.getLine())) {
 					listeLasers.remove(laser);   
 					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
@@ -260,7 +260,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 
-	}
+	//}
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -275,7 +275,7 @@ private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 		
 		for(Laser laser : listeLasers) {
 			for(TrouNoir trou : listeTrou ) {
-				if(trou.getAireTrou().intersects(laser.getLine())) {
+				//if(trou.getAireTrou().intersects(laser.getLine())) {
 					listeLasers.remove(laser);   
 					
 				}	
@@ -299,9 +299,4 @@ private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
 
 
-
-
-
-
-
-}
+//}
