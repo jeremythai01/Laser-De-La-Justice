@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
-import physique.Personnage;
+//import physique.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
@@ -89,8 +89,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 				bloc= new BlocDEau(new Vecteur(eXR,eYR));
 				listeBloc.add(bloc);
 				
-				trou= new TrouNoir(new Vecteur(eXR,eYR));
-				listeTrou.add(trou);
+			//	trou= new TrouNoir(new Vecteur(eXR,eYR));
+				//listeTrou.add(trou);
 				repaint();
 			}
 		});
@@ -133,10 +133,15 @@ public class SceneTestPls extends JPanel implements Runnable {
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 			premiereFois = false;
 		}
-		for(TrouNoir trou: listeTrou) {
+		/*for(TrouNoir trou: listeTrou) {
 			
 
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+		}*/
+		for(BlocDEau bloc: listeBloc) {
+			
+			g2d.setColor(Color.BLUE);
+			bloc.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
 		g2d.setColor(Color.pink);
@@ -150,6 +155,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
 		checkCollisionTrouLaserPersonnage( listeLasers );
+		checkCollisionBlocLaserPersonnage( listeLasers);
 		/*	
 		for(Balle balle: listeBalles) {
 			g2d.setColor(Color.black);
@@ -243,7 +249,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		for(Laser laser : listeLasers) {
 			for(Balle balle : listeBalles ) {
-				if(balle.getAireBalle().intersects(laser.getLine())) {
+				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
 					listeLasers.remove(laser);   
 					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
@@ -275,7 +281,8 @@ private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 		
 		for(Laser laser : listeLasers) {
 			for(TrouNoir trou : listeTrou ) {
-				if(trou.getAireTrou().intersects(laser.getLine())) {
+				//if(trou.getAireTrou().intersects(laser.getLine())) {
+				if(intersection(trou.getAireTrou(), laser.getLaserAire())) {
 					listeLasers.remove(laser);   
 					
 				}	
@@ -292,6 +299,19 @@ private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 		//bloc.refraction(v, N, n1, n2);
 
 	}
+
+private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
+	
+	for(Laser laser : listeLasers) {
+		for(BlocDEau bloc : listeBloc) {
+			if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
+				laser.setVitesse((bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33)));
+				System.out.println("au moins");
+				repaint();
+			}
+		}
+	}
+}
 
 
 
