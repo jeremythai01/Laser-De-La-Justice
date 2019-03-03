@@ -69,7 +69,11 @@ public class SceneTestMiroire extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
+
+			//	balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse,gravity,diametre, masse , "LARGE" );
+
 				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse,gravity,diametre, masse , "LARGE" );
+
 				listeBalles.add(balle);
 				
 				repaint();
@@ -78,7 +82,11 @@ public class SceneTestMiroire extends JPanel implements Runnable {
 
 
 
+
+	//	balle1 = new Balle(position, vitesse,gravity,diametre, masse, "LARGE" );
+
 		//balle1 = new Balle(position, vitesse,gravity,diametre, masse, "LARGE" );
+//gitlab.com/MacVac/10laserdelajustice.git
 
 		laser = new Laser(new Vecteur(5,5), 45, new Vecteur(0.5,0.5));
 
