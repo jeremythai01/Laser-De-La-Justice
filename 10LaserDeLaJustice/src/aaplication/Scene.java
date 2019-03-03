@@ -76,8 +76,9 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
 	private TrouNoir trou;
-	private int toucheGauche = 37;
-	private int toucheDroite = 39;
+	private int toucheGauche =37;
+	private int toucheDroite=39;
+
 
 
 	

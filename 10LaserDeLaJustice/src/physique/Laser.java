@@ -31,7 +31,7 @@ public class Laser implements Dessinable{
 
 
 	Random rand = new Random();
-
+	
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
 		
 		this.position=position;
