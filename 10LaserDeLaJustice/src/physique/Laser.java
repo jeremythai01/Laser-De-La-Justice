@@ -100,7 +100,7 @@ public class Laser implements Dessinable{
 
 
 	public Area getLaserAire(){ // pour detecter lintersection
-		return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,0.5,position.getY()));
+		return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,LONGUEUR,position.getY()));
 	}
 
 	public double getLONGUEUR() {

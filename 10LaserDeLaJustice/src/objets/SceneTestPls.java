@@ -312,7 +312,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 					laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
 					//System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 				//	laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
-					laser.setAngleTir(60);
+				//	laser.setAngleTir(60);
 					//laser.updaterAngleVitesse((laser.getAngleTir()));
 					System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 					System.out.println("nouvelle vitesse laser: "+ laser.getVitesse());
