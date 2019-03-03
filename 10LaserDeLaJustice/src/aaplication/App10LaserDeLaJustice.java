@@ -324,6 +324,10 @@ public class App10LaserDeLaJustice extends JFrame {
 		lblLesSorties.setBounds(40, 856, 69, 14);
 		contentPane.add(lblLesSorties);
 		
+		Scene scene = new Scene();
+		scene.setBounds(30, 107, 1303, 727);
+		contentPane.add(scene);
+		
 		
 		
 	}

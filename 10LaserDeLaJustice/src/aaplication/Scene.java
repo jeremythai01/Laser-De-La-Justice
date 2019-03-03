@@ -37,8 +37,7 @@ import pistolet.Pistolet;
 
 import physique.Coeurs;
 import physique.Laser;
-//import physique.Laser;
-//import pistolet.Pistolet;
+import pistolet.Pistolet;
 import utilite.ModeleAffichage;
 
 /**
@@ -54,8 +53,6 @@ public class Scene extends JPanel implements Runnable {
 	private Personnage principal;
 
 
-	private Vecteur positionInit;
-	private Vecteur vitesseInit;
 	private Rectangle2D.Double fantomePerso;
 	private Shape fantomeTransfo;
 	private Pistolet pistoletPrincipal;
@@ -96,8 +93,6 @@ public class Scene extends JPanel implements Runnable {
 		angle = -90;
 		principal = new Personnage (toucheGauche, toucheDroite);
 		pistoletPrincipal= new Pistolet();
-		positionInit = new Vecteur(12, 10);
-		vitesseInit = new Vecteur(2.0 ,0);
 		
 		
 		addMouseListener(new MouseAdapter() {
@@ -175,10 +170,6 @@ public class Scene extends JPanel implements Runnable {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
-
-
-		
 		
 		creerLePersonnagePrincipal(g2d, mat);
 		
@@ -269,6 +260,7 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de lire le fichier option de la classe option modifie avant le debut de la partie
 	 */
 	//Miora
+	
 	private void lectureFichierOption() {
 		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
 		DataInputStream fluxEntree = null;
