@@ -89,7 +89,7 @@ public class Scene extends JPanel implements Runnable {
 	
 	public Scene() {
 		lireFond();
-		lectureFichierOption();
+		//lectureFichierOption();
 		angle = -90;
 		principal = new Personnage (toucheGauche, toucheDroite);
 		pistoletPrincipal= new Pistolet();
