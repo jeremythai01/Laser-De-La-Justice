@@ -90,7 +90,7 @@ public class SceneTest extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
 				shootEtAddLaser(e);
-				repaint();
+				//repaint();
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -161,8 +161,10 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 
-	private void calculerUneIterationPhysique() {
 
+
+	private void calculerUneIterationPhysique() {
+		
 		for(Balle balle: listeBalles) {
 			balle.unPasRK4(deltaT, tempsTotalEcoule);
 		}

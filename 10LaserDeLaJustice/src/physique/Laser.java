@@ -21,12 +21,13 @@ import interfaces.Dessinable;
  *
  */
 public class Laser implements Dessinable{
-	private double LONGUEUR= 0.5;
+	private double LONGUEUR= 1.5;
 	private Vecteur position, vitesse;
 	private double angleTir;
 	private Vecteur accel;
 	Path2D.Double trace;
 	private double ligneFinY;
+	private double ligneDebutX;
 
 
 	Random rand = new Random();
@@ -38,14 +39,16 @@ public class Laser implements Dessinable{
 		this.vitesse= vitesse;
 		accel = new Vecteur(0,0);
 		ligneFinY = position.getY();
+		ligneDebutX=position.getX();
+		
 	}
 
 
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		trace = new Path2D.Double();
 		AffineTransform matLocal = new AffineTransform(mat);
-		trace.moveTo(position.getX(), ligneFinY);
-		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		trace.moveTo(ligneDebutX, ligneFinY);
+		trace.lineTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 
 		randomColor(g2d);
@@ -71,6 +74,7 @@ public class Laser implements Dessinable{
 
 	public void move() { 
 		ligneFinY -= vitesse.getY();
+		ligneDebutX+=vitesse.getX();
 	}
 
 
@@ -129,6 +133,7 @@ public class Laser implements Dessinable{
 
 	public void setAngleTir(double angleTir) {
 		this.angleTir = angleTir;
+		updaterAngleVitesse(angleTir);
 	}
 /*
 	public Path2D getTrace() {
@@ -146,6 +151,11 @@ public class Laser implements Dessinable{
 
 	public void setAccel(Vecteur accel) {
 		this.accel = accel;
+	}
+	public void updaterAngleVitesse(double angle) {
+		double vitesseEnX=0.5*Math.cos(Math.toRadians(angle));
+		double vitesseEnY=0.5*Math.sin(Math.toRadians(angle));
+		setVitesse(new Vecteur(vitesseEnX,vitesseEnY));
 	}
 
 
