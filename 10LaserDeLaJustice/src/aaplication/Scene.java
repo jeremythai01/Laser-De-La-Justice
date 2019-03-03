@@ -1,5 +1,6 @@
 package aaplication;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -71,13 +72,12 @@ public class Scene extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 	private Vecteur vitesse;
-	private Personnage character;
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
 	private TrouNoir trou;
-	private int toucheGauche;
-	private int toucheDroite;
+	private int toucheGauche = 37;
+	private int toucheDroite = 39;
 
 
 	
@@ -94,6 +94,7 @@ public class Scene extends JPanel implements Runnable {
 		principal = new Personnage (toucheGauche, toucheDroite);
 		pistoletPrincipal= new Pistolet();
 		
+		vitesse = new Vecteur(3, 0);
 		
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -105,6 +106,7 @@ public class Scene extends JPanel implements Runnable {
 				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
 				listeBalles.add(balle);
 
+				
 				trou= new TrouNoir(new Vecteur(eXR,eYR));
 				listeTrou.add(trou);
 
@@ -118,21 +120,20 @@ public class Scene extends JPanel implements Runnable {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				character.deplacerLePersoSelonTouche( e );
+				principal.deplacerLePersoSelonTouche( e );
 				shootEtAddLaser(e);
 				repaint();
 			}
 			@Override
 			//Jeremy Thai
 			public void keyReleased(KeyEvent e) {
-				character.relacheTouche(e);
+				principal.relacheTouche(e);
 				repaint();
 			}
 		});
 
 
 	}
-	
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -145,19 +146,16 @@ public class Scene extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 		
-	
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(),(int) modele.getHautPixels(), null);
-
 
 		for(Laser laser : listeLasers) { 
 			if(laser.getLigneFinY() <= 0 )
 				listeLasers.remove(laser);
-			g2d.setColor((new Color(255,255,200)));
+			g2d.setStroke( new BasicStroke(3));
 			laser.dessiner(g2d, mat, 0, 0);
-			laser.move();
 		}
 
-		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers, principal);
 		checkCollisionTrouLaserPersonnage( listeLasers );
 
 		for(Balle balle: listeBalles) {
@@ -165,13 +163,14 @@ public class Scene extends JPanel implements Runnable {
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-
 		for(TrouNoir trou: listeTrou) {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
 		
-		creerLePersonnagePrincipal(g2d, mat);
+	//	creerLePersonnagePrincipal(g2d, mat);
+		
+		principal.dessiner(g2d,mat, HAUTEUR_DU_MONDE , LARGEUR_DU_MONDE);
 		
 		
 
@@ -213,6 +212,11 @@ public class Scene extends JPanel implements Runnable {
 			balle.unPasRK4( deltaT, tempsTotalEcoule);
 		}
 
+		
+		for(Laser laser : listeLasers)
+		{
+			laser.move();
+		}
 		tempsTotalEcoule += deltaT;;
 	}
 
@@ -222,7 +226,7 @@ public class Scene extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
-			character.move();
+			principal.move();
 			calculerUneIterationPhysique();
 			repaint();
 			try {
@@ -331,14 +335,16 @@ public class Scene extends JPanel implements Runnable {
 	
 	//Jeremy Thai
 	private void shootEtAddLaser(KeyEvent e) {
+		if(enCoursAnimation) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
-			character.shoot(code);
+			principal.shoot(code);
 			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 				listeLasers.add(
 						new Laser(new Vecteur(
-								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+								principal.getPositionX()+principal.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
 			}
+		}
 		}
 	}
 	

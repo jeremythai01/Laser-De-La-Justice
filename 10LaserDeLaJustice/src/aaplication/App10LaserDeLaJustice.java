@@ -44,6 +44,8 @@ public class App10LaserDeLaJustice extends JFrame {
 	private JButton btnMiroirConvexe;
 	private JButton btnMiroirPlan;
 	private JLabel lblValeur;
+	private Scene scene;
+	
 	
 
 	/**
@@ -56,7 +58,7 @@ public class App10LaserDeLaJustice extends JFrame {
 					 App10LaserDeLaJustice frame;
 					frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
-				//	frame.scene.requestFocusInWindow();
+					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -83,7 +85,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnPlay.addActionListener(new ActionListener() {
 	
 			public void actionPerformed(ActionEvent arg0) {
-			//	scene.demarrer();
+				scene.demarrer();
+				donneFocusALaScene();
 			}
 		});
 		btnPlay.setBounds(44, 61, 40, 38);
@@ -93,6 +96,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnPause = new JButton("pause");
 		btnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scene.arreter();
 			}
 		});
 		btnPause.setBounds(94, 61, 40, 38);
@@ -135,7 +139,8 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				//editeur.setVisible(true);
-				//scene.requestFocusInWindow();
+				scene.requestFocusInWindow();
+				scene.arreter();
 				activerEditeur();
 				
 			}
@@ -148,6 +153,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			desactiverEditeur();
+			donneFocusALaScene();
 			}
 		});
 		btnEnregistrer.setBounds(1181, 61, 40, 38);
@@ -324,7 +330,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		lblLesSorties.setBounds(40, 856, 69, 14);
 		contentPane.add(lblLesSorties);
 		
-		Scene scene = new Scene();
+		scene = new Scene();
 		scene.setBounds(30, 107, 1303, 727);
 		contentPane.add(scene);
 		
@@ -335,7 +341,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 * Methode qui donne le focus a la scene
 	 */
 	public void donneFocusALaScene() {
-	//	scene.requestFocusInWindow();
+		scene.requestFocusInWindow();
 	}
 
 	
