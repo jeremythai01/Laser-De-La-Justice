@@ -90,7 +90,7 @@ public class SceneTest extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
 				shootEtAddLaser(e);
-				//repaint();
+				repaint();
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -128,7 +128,7 @@ public class SceneTest extends JPanel implements Runnable {
 				laser.dessiner(g2d, mat, 0, 0);
 			}
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
-		//	checkCollisionTrouLaserPersonnage( listeLasers );
+	//	checkCollisionTrouLaserPersonnage( listeLasers );
 
 
 
@@ -151,7 +151,8 @@ public class SceneTest extends JPanel implements Runnable {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 		 */
-		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
+		
+		character.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 
 
 
