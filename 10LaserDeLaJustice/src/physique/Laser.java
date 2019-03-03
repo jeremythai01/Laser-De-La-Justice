@@ -21,13 +21,14 @@ import interfaces.Dessinable;
  *
  */
 public class Laser implements Dessinable{
-	private double LONGUEUR=2;
+	private double LONGUEUR=0.3;
 	private Vecteur position, vitesse;
 	private double angleTir;
 	private Path2D trace;
 	private Vecteur accel;
 	
 	private double ligneFinY;
+	private double ligneDebutY;
 	
 	
 	Random rand = new Random();
@@ -39,13 +40,14 @@ public class Laser implements Dessinable{
 		this.vitesse= vitesse;
 		accel = new Vecteur(0,0);
 		ligneFinY = position.getY();
+		ligneDebutY=position.getY()+LONGUEUR;
 	}
 
 
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		trace.moveTo(position.getX(), ligneFinY);
-		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		
 		randomColor(g2d);
@@ -71,6 +73,7 @@ public class Laser implements Dessinable{
 
 	public void move() { 
 		ligneFinY -= vitesse.getY();
+		System.out.println("valeur du fin: "+ligneFinY);
 	}
 	
 	

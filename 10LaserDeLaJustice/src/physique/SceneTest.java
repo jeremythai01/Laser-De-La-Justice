@@ -89,7 +89,7 @@ public class SceneTest extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
 				shootEtAddLaser(e);
-				repaint();
+				//repaint();
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -116,15 +116,16 @@ public class SceneTest extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 
-		for(Laser laser : listeLasers) {
+		/*for(Laser laser : listeLasers) {
 			laser.move();
 		}
 		
-		
+		*/
 		for(Laser laser : listeLasers) { 
 			if(laser.getLigneFinY() <= 0 )
 				listeLasers.remove(laser);
 			laser.dessiner(g2d, mat, 0, 0);
+			System.out.println("nombre de laser: " + listeLasers.size());
 			
 		}
 
@@ -168,6 +169,11 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.unPasRK4(deltaT, tempsTotalEcoule);
 		}
 		
+		for(Laser laser : listeLasers) {
+			laser.move();
+			System.out.println("nombre de laser22: " + listeLasers.size());
+			repaint();
+		}
 		
 
 		tempsTotalEcoule += deltaT;;
