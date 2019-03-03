@@ -1,6 +1,7 @@
 package physique;
 
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -54,7 +55,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	private ArrayList<SceneListener> listeEcouteurs = new ArrayList<SceneListener>();
-	
+
 
 	/**
 	 * Create the panel.
@@ -75,7 +76,7 @@ public class SceneTest extends JPanel implements Runnable {
 				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
 				listeBalles.add(balle);
 
-			//	trou= new TrouNoir(new Vecteur(eXR,eYR));
+				//	trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
 
 				repaint();
@@ -116,42 +117,40 @@ public class SceneTest extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 
-		for(Laser laser : listeLasers) {
-			laser.move();
-		}
-		
-		
-		for(Laser laser : listeLasers) { 
-			if(laser.getLigneFinY() <= 0 )
-				listeLasers.remove(laser);
-			laser.dessiner(g2d, mat, 0, 0);
-			
-		}
 
-		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
-	//	checkCollisionTrouLaserPersonnage( listeLasers );
 
-		
-	
-		for (int i = 0; i < listeBalles.size(); i++) {
-			  for (int j = i+1; j < listeBalles.size(); j++) {
-				  Balle balle1 = listeBalles.get(i);
-				  Balle balle2 = listeBalles.get(j);
-			    MoteurPhysique.detectionCollisionBalles(balle1, balle2);
-			  }
+			for(Laser laser : listeLasers) { 
+
+				if(laser.getLigneFinY() <= 0 ) {
+					listeLasers.remove(laser);
+				}
+				g2d.setStroke( new BasicStroke(3));
+				laser.dessiner(g2d, mat, 0, 0);
 			}
-		
-		
+		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+		//	checkCollisionTrouLaserPersonnage( listeLasers );
+
+
+
+		for (int i = 0; i < listeBalles.size(); i++) {
+			for (int j = i+1; j < listeBalles.size(); j++) {
+				Balle balle1 = listeBalles.get(i);
+				Balle balle2 = listeBalles.get(j);
+				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+			}
+		}
+
+
 		for(Balle balle: listeBalles) {
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-/*
+		/*
 		for(TrouNoir trou: listeTrou) {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
-*/
+		 */
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
 
@@ -167,8 +166,12 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Balle balle: listeBalles) {
 			balle.unPasRK4(deltaT, tempsTotalEcoule);
 		}
-		
-		
+
+		for(Laser laser : listeLasers) {
+			laser.move();
+		}
+
+
 
 		tempsTotalEcoule += deltaT;;
 	}
@@ -231,7 +234,7 @@ public class SceneTest extends JPanel implements Runnable {
 		return false;
 	}
 
-/*
+	/*
 	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
 
@@ -246,33 +249,36 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	}
-	*/
+	 */
 	private void shootEtAddLaser(KeyEvent e) {
-		int code = e.getKeyCode();
-		if(code == KeyEvent.VK_SPACE) {
-			character.shoot(code);
-			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
-				listeLasers.add(
-						new Laser(new Vecteur(
-								character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE), angle, new Vecteur(0,1 )));
+		if(enCoursAnimation == true) {
+			int code = e.getKeyCode();
+			if(code == KeyEvent.VK_SPACE) {
+				character.shoot(code);
+				if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+					listeLasers.add(
+							new Laser(new Vecteur(
+									character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE) , angle, new Vecteur(0, 1 )));
+					System.out.println("nb de laser :"+ listeLasers.size());
+					repaint();
+				}
 			}
 		}
+
 	}
-	
-	
-		/**
-		 * prend un ecouteur en parametre pour être ajouté par le ArrayList d'écouteur
-		 * @param ecouteur
-		 */
-		public void addSceneListener(SceneListener ecouteur) {
-			listeEcouteurs.add(ecouteur);
-		}
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * prend un ecouteur en parametre pour être ajouté par le ArrayList d'écouteur
+	 * @param ecouteur
+	 */
+	public void addSceneListener(SceneListener ecouteur) {
+		listeEcouteurs.add(ecouteur);
+	}
+
+
+
+
+
+
+
 }
 
