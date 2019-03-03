@@ -21,51 +21,52 @@ import interfaces.Dessinable;
  *
  */
 public class Laser implements Dessinable{
-	private double LONGUEUR=0.3;
+	private double LONGUEUR= 1.5;
 	private Vecteur position, vitesse;
 	private double angleTir;
-	private Path2D trace;
 	private Vecteur accel;
-	
+	Path2D.Double trace;
 	private double ligneFinY;
-	private double ligneDebutY;
-	
-	
+	private double ligneDebutX;
+
+
 	Random rand = new Random();
-	
+
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
-		trace=new Path2D.Double();
+		
 		this.position=position;
 		this.angleTir=angleTir;
 		this.vitesse= vitesse;
 		accel = new Vecteur(0,0);
 		ligneFinY = position.getY();
-		ligneDebutY=position.getY()+LONGUEUR;
+		ligneDebutX=position.getX();
+		
 	}
 
 
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
+		trace = new Path2D.Double();
 		AffineTransform matLocal = new AffineTransform(mat);
-		trace.moveTo(position.getX(), ligneFinY);
-		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		trace.moveTo(ligneDebutX, ligneFinY);
+		trace.lineTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
-		
+
 		randomColor(g2d);
 		g2d.draw(matLocal.createTransformedShape(((trace))));
-		
+
 	}
-	
+
 	private void randomColor(Graphics2D g2d) {
 		float i = (float) 0.5;
 		float r = (rand.nextFloat()/2f) + i;
 		float g = (rand.nextFloat()/2f) + i;
 		float b = (rand.nextFloat()/2f) + i;
-		
+
 		Color randomColor = new Color(r,g,b);
 		g2d.setColor(randomColor);
 	}
-	
-	
+
+
 	public double getLigneFinY() {
 		return ligneFinY;
 	}
@@ -73,14 +74,15 @@ public class Laser implements Dessinable{
 
 	public void move() { 
 		ligneFinY -= vitesse.getY();
-		System.out.println("valeur du fin: "+ligneFinY);
+		ligneDebutX+=vitesse.getX();
 	}
-	
-	
-	
+
+
+
 	public Area getAireLaser() {
-		trace.moveTo(position.getX(), ligneFinY);
-		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		Path2D.Double trace = new Path2D.Double();
+		trace.moveTo(position.getX(), position.getY());
+		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		return new Area(trace);
 	}
@@ -89,17 +91,17 @@ public class Laser implements Dessinable{
 		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
-	
-/*
+
+	/*
 	public Rectangle2D getLine(){ // pour detecter lintersection
         return new Rectangle2D.Double(position.getX(), ligneFinY,0.1,position.getY());
     }
-	*/
-	
-	
+	 */
+
+
 	public Area getLaserAire(){ // pour detecter lintersection
-       return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,0.5,position.getY()));
-    }
+		return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,0.5,position.getY()));
+	}
 
 	public double getLONGUEUR() {
 		return LONGUEUR;
@@ -131,8 +133,9 @@ public class Laser implements Dessinable{
 
 	public void setAngleTir(double angleTir) {
 		this.angleTir = angleTir;
+		updaterAngleVitesse(angleTir);
 	}
-
+/*
 	public Path2D getTrace() {
 		return trace;
 	}
@@ -141,6 +144,7 @@ public class Laser implements Dessinable{
 		this.trace = trace;
 	}
 
+*/
 	public Vecteur getAccel() {
 		return accel;
 	}
@@ -148,6 +152,11 @@ public class Laser implements Dessinable{
 	public void setAccel(Vecteur accel) {
 		this.accel = accel;
 	}
-	
-	
+	public void updaterAngleVitesse(double angle) {
+		double vitesseEnX=0.5*Math.cos(Math.toRadians(angle));
+		double vitesseEnY=0.5*Math.sin(Math.toRadians(angle));
+		setVitesse(new Vecteur(vitesseEnX,vitesseEnY));
+	}
+
+
 }

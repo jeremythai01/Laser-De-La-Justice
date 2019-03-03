@@ -1,6 +1,7 @@
 package objets;
 
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import miroir.MiroirConcave;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
+import physique.MoteurPhysique;
 import utilite.ModeleAffichage;
 
 import java.awt.event.KeyAdapter;
@@ -55,8 +57,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
-	
-	
+
+
 	private BlocDEau bloc;
 	private ArrayList<BlocDEau> listeBloc = new ArrayList<BlocDEau>();
 	private TrouNoir trou;
@@ -88,8 +90,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 				listeBalles.add(balle);
 				bloc= new BlocDEau(new Vecteur(eXR,eYR));
 				listeBloc.add(bloc);
-				
-			//	trou= new TrouNoir(new Vecteur(eXR,eYR));
+
+				//	trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
 				repaint();
 			}
@@ -120,9 +122,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 	public void paintComponent(Graphics g) {
-
-
-
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -133,52 +132,49 @@ public class SceneTestPls extends JPanel implements Runnable {
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 			premiereFois = false;
 		}
-		/*for(TrouNoir trou: listeTrou) {
-			
-
-			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		}*/
-		for(BlocDEau bloc: listeBloc) {
-			
-			g2d.setColor(Color.BLUE);
-			bloc.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		}
-
-		g2d.setColor(Color.pink);
-		balle1.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-
-		Coeurs coeur = new Coeurs(4);
-		coeur.dessiner(g2d, mat,0,0);
-		coeur.setCombien(3);
-		coeur.dessiner(g2d, mat,0,0);
 
 
-		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
-		checkCollisionTrouLaserPersonnage( listeLasers );
-		checkCollisionBlocLaserPersonnage( listeLasers);
-		/*	
-		for(Balle balle: listeBalles) {
-			g2d.setColor(Color.black);
-			balle.collisionBalleLaser(balle.getAireBalle(),g2d, laser.getAireLaser(), listeBalles);
-		}
-		 */
-		for(Balle balle: listeBalles) {
-
-			g2d.setColor(Color.black);
-			//balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		}
-
-		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
 		for(Laser laser : listeLasers) { 
 
-			if(laser.getLigneFinY() <= 0 )
+			if(laser.getLigneFinY() <= 0 ) {
 				listeLasers.remove(laser);
-
+			}
+			g2d.setStroke( new BasicStroke(3));
 			laser.dessiner(g2d, mat, 0, 0);
-
-
 		}
+		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+		checkCollisionTrouLaserPersonnage( listeLasers );
+		checkCollisionBlocLaserPersonnage( listeLasers );
+
+		for(BlocDEau bloc:listeBloc) {
+			g2d.setColor(Color.blue);
+			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
+		
+		for (int i = 0; i < listeBalles.size(); i++) {
+			for (int j = i+1; j < listeBalles.size(); j++) {
+				Balle balle1 = listeBalles.get(i);
+				Balle balle2 = listeBalles.get(j);
+				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+			}
+		}
+
+
+		/*for(Balle balle: listeBalles) {
+
+			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+		}*/
+
+		/*
+	for(TrouNoir trou: listeTrou) {
+		trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+	}
+		 */
+		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
+
+
+
 
 	}//fin paintComponent
 
@@ -188,16 +184,15 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private void calculerUneIterationPhysique() {
 
 
-		balle1.unPasRK4( deltaT, tempsTotalEcoule);
-
-		for(Laser laser : listeLasers) { 
-
-			laser.move();
-
-		}
 		for(Balle balle: listeBalles) {
-			balle.unPasRK4( deltaT, tempsTotalEcoule);
+			balle.unPasRK4(deltaT, tempsTotalEcoule);
 		}
+
+		for(Laser laser : listeLasers) {
+			laser.move();
+		}
+
+
 
 		tempsTotalEcoule += deltaT;;
 	}
@@ -238,7 +233,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 				listeLasers.add(
 						new Laser(new Vecteur(
-								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0.5,0.5)));
+								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
 			}
 		}
 	}
@@ -252,23 +247,23 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
 
-				//if(balle.getAireBalle().intersects(laser.getLine())) {
+					//if(balle.getAireBalle().intersects(laser.getLine())) {
 
 					listeLasers.remove(laser);   
 					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
 				}	
-			
-		}
+
+			}
 		}
 	}
-/*
+	/*
 		for(Balle balle : listeBalleTouche) {
 			balle.shrink(listeBalles);
 		}
-		
 
-*/
+
+	 */
 
 
 
@@ -281,10 +276,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 		return false;
 	}
-	
-private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
-		
+	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
+
+
 		for(Laser laser : listeLasers) {
 			for(TrouNoir trou : listeTrou ) {
 				//if(trou.getAireTrou().intersects(laser.getLine())) {
@@ -293,35 +288,40 @@ private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
 
 					listeLasers.remove(laser);   
-					
+
 				}	
 			}
 		}
-/*
+		/*
 		for(Balle balle : listeBalleTouche) {
 			balle.shrink(listeBalles);
 		}
-		
 
-*/
+
+		 */
 
 		//bloc.refraction(v, N, n1, n2);
 
 	}
 
-private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
-	
-	for(Laser laser : listeLasers) {
-		for(BlocDEau bloc : listeBloc) {
-			if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
-				//laser.setPosition(new Vecteur(laser.getPosition().getX()+bloc.getLARGEUR(), laser.getPosition().getY()+bloc.getLARGEUR()));
-				laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getX()));
-				System.out.println("au moins");
-				repaint();
+	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
+
+		for(Laser laser : listeLasers) {
+			for(BlocDEau bloc : listeBloc) {
+				if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
+					laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
+					//System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
+				//	laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
+					laser.setAngleTir(60);
+					//laser.updaterAngleVitesse((laser.getAngleTir()));
+					System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
+					System.out.println("nouvelle vitesse laser: "+ laser.getVitesse());
+					//repaint();
+					
+				}
 			}
 		}
 	}
-}
 
 
 }
