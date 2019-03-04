@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
+import geometrie.VecteurGraphique;
 import physique.Balle;
 import physique.Laser;
 import utilite.ModeleAffichage;
@@ -35,13 +36,13 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 	private double tempsTotalEcoule = 0;
 	private double masse = 15; //en kg
 	private double diametre = 2;  //em mètres
-	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Balle balle1;
 	private Balle balle;
 	private boolean premiereFois = true;
 	private ModeleAffichage modele;
 	private AffineTransform mat;
-
+	private VecteurGraphique vecDess;
+	private double angleMiroir = 0;
 	private Vecteur position;
 
 	private Vecteur vitesse;
@@ -73,7 +74,7 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			public void mousePressed(MouseEvent e) {
 				double posX = e.getX()/modele.getPixelsParUniteX();
 				double posY = e.getY()/modele.getPixelsParUniteY();
-				plan = new MiroirPlan (posX,posY,posX+1,posY+2);
+				plan = new MiroirPlan (posX,posY, 0);
 				listeMiroirPlan.add(plan);
 				repaint();
 			}
@@ -107,16 +108,19 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			g2d.setStroke( new BasicStroke(3));
 			laser.dessiner(g2d, mat, 0, 0);
 		}
-		colisionLaserMiroir(listeLasers);
-		
+		try {
+			colisionLaserMiroir(listeLasers, listeMiroirPlan);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		for(MiroirPlan miroir:listeMiroirPlan) {
-			g2d.setColor(Color.blue);
+			g2d.setColor(Color.gray);
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			g2d.setColor(Color.yellow);
+			g2d.draw(miroir.getAireMiroir());
 		}
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
-
-
-
+		
 
 	}//fin paintComponent
 	private void calculerUneIterationPhysique() {
@@ -176,11 +180,14 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 		return false;
 	}
 
-	private void colisionLaserMiroir( ArrayList<Laser> listeLasers ) {
+	private void colisionLaserMiroir( ArrayList<Laser> listeLasers, ArrayList<MiroirPlan> listeMiroirPlan  ) throws Exception {
 		for(Laser laser : listeLasers) {
 			for(MiroirPlan miroir : listeMiroirPlan ) {
 				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
-					laser.setAngleTir(20);
+					Vecteur v = new Vecteur (Math.cos(angleMiroir), Math.sin(angleMiroir)).normalise();
+					Vecteur n = miroir.calculNormal().normalise();
+					Vecteur e = v.multiplie(-1);
+					laser.setAccel(v.additionne(n.multiplie(2*(e.prodScalaire(n)))));
 				}	
 			}
 		}

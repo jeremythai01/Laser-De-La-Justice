@@ -14,6 +14,10 @@ import physique.SceneTestMiroire;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JSpinner;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class TestMiroirMiora extends JFrame {
 

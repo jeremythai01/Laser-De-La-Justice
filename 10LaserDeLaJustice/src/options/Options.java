@@ -23,8 +23,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-
-import utilite.ModeleDonnee;
 /**
  * Cette classe permet a l'utilisateur de modifier les parametres du jeu. 
  * Ces parametres sont le niveau, la gravite, les touches de clavier et la couleur du rayon 
@@ -36,7 +34,6 @@ public class Options extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private int toucheGauche = 37, toucheDroite = 39;
-	private ModeleDonnee modele;
 	private JTable table;
 	private JSpinner snpDif;
 	private JSpinner snpAcc;
