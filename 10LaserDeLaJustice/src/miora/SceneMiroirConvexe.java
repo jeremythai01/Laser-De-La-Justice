@@ -1,6 +1,5 @@
 package miora;
 
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -22,12 +21,7 @@ import physique.Balle;
 import physique.Laser;
 import utilite.ModeleAffichage;
 
-
-
-
-public class SceneTestMiroirMiora extends JPanel implements Runnable {
-
-	private static final long serialVersionUID = 1L;
+public class SceneMiroirConvexe extends JPanel implements Runnable {
 	private int tempsDuSleep = 200;
 	private double deltaT = 0.07;
 	private  double LARGEUR_DU_MONDE = 10; //en metres
@@ -53,13 +47,10 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
-	private MiroirPlan plan;
-	private ArrayList<MiroirPlan> listeMiroirPlan = new ArrayList<MiroirPlan>();
+	private MiroirConvexe miroir;
+	private ArrayList<MiroirConvexe> listeMiroirPlan = new ArrayList<MiroirConvexe>();
 
-	/**
-	 * Create the panel.
-	 */
-	public SceneTestMiroirMiora() {
+	public SceneMiroirConvexe() {
 		angle = -90;
 		character = new Personnage();
 
@@ -74,8 +65,8 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			public void mousePressed(MouseEvent e) {
 				double posX = e.getX()/modele.getPixelsParUniteX();
 				double posY = e.getY()/modele.getPixelsParUniteY();
-				plan = new MiroirPlan (posX,posY, 0);
-				listeMiroirPlan.add(plan);
+				miroir = new MiroirConvexe (posX,posY,1.0);
+				listeMiroirPlan.add(miroir);
 				repaint();
 			}
 		});
@@ -108,19 +99,20 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			g2d.setStroke( new BasicStroke(3));
 			laser.dessiner(g2d, mat, 0, 0);
 		}
-		try {
+		/*try {
 			colisionLaserMiroir(listeLasers, listeMiroirPlan);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		for(MiroirPlan miroir:listeMiroirPlan) {
+		*/
+		for(MiroirConvexe miroir:listeMiroirPlan) {
 			g2d.setColor(Color.gray);
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			g2d.setColor(Color.yellow);
-			g2d.draw(miroir.getAireMiroir());
+			//g2d.draw(miroir.getAireMiroir());
 		}
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
-		
+
 
 	}//fin paintComponent
 	private void calculerUneIterationPhysique() {
@@ -192,4 +184,5 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			}
 		}
 	}
+
 }
