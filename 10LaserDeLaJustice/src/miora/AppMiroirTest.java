@@ -24,6 +24,7 @@ public class AppMiroirTest extends JFrame {
 				try {
 					AppMiroirTest frame = new AppMiroirTest();
 					frame.setVisible(true);
+					frame.sceneTestMiroirs.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,7 +60,6 @@ public class AppMiroirTest extends JFrame {
 		btnMiroirPlan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneTestMiroirs.setMiroirPlan(true);
-				sceneTestMiroirs.requestFocusInWindow();
 				donneFocusALaScene();
 			}
 		});
@@ -70,7 +70,6 @@ public class AppMiroirTest extends JFrame {
 		btnMiroirConvexe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneTestMiroirs.setMiroirPlan(false);
-				sceneTestMiroirs.requestFocusInWindow();
 				donneFocusALaScene();
 			}
 		});
@@ -84,7 +83,6 @@ public class AppMiroirTest extends JFrame {
 		});
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sceneTestMiroirs.requestFocusInWindow();
 				sceneTestMiroirs.demarrer();
 				donneFocusALaScene();
 			}

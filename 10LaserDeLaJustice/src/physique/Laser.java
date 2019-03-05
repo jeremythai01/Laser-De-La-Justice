@@ -154,7 +154,9 @@ public class Laser implements Dessinable{
 	public void updaterAngleVitesse(double angle) {
 		double vitesseEnX=0.5*Math.cos(Math.toRadians(angle));
 		double vitesseEnY=0.5*Math.sin(Math.toRadians(angle));
+		Vecteur vec = new Vecteur(vitesseEnX,vitesseEnY);
 		setVitesse(new Vecteur(vitesseEnX,vitesseEnY));
+		System.out.println("modification vitesse"+ vec );
 	}
 
 

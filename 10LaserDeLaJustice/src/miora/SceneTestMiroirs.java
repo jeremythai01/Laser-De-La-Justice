@@ -24,7 +24,7 @@ import utilite.ModeleAffichage;
 public class SceneTestMiroirs extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	private int tempsDuSleep = 25;
+	private int tempsDuSleep = 100;
 	private double deltaT = 0.07;
 	private  double LARGEUR_DU_MONDE = 10; //en metres
 	private  double HAUTEUR_DU_MONDE;
@@ -60,7 +60,7 @@ public class SceneTestMiroirs extends JPanel implements Runnable {
 	 * Create the panel.
 	 */
 	public SceneTestMiroirs() {
-		angle = -90;
+		angle = 90;
 		character = new Personnage(37,39);
 
 		position = new Vecteur(0.5, 10);
@@ -111,14 +111,14 @@ public class SceneTestMiroirs extends JPanel implements Runnable {
 			/*if(laser.getLigneFinY() <= 0 ) {
 				listeLasers.remove(laser);
 			}
-			*/
+			 */
 			//g2d.setStroke( new BasicStroke(3));
 			//laser.setAngleTir(angle);
 			laser.dessiner(g2d, mat, 0, 0);
 		}
 		try {
 			colisionLaserMiroirPlan();
-			colisionLaserMiroirPlan();
+			colisionLaserMiroirConvexe();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -175,11 +175,11 @@ public class SceneTestMiroirs extends JPanel implements Runnable {
 	private void shoot(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
-			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
-				listeLasers.add(
-						new Laser(new Vecteur(
-								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
-			}
+			//if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+			listeLasers.add(
+					new Laser(new Vecteur(
+							character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+			//}
 		}
 	}
 	/**
@@ -206,14 +206,20 @@ public class SceneTestMiroirs extends JPanel implements Runnable {
 		for(MiroirPlan miroir : listeMiroirPlan ) {
 			for(Laser laser : listeLasers) {
 				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
+					laser.setPosition(new Vecteur (0,0));
 					// v orientation rayon incident
-					double angleLaser = -Math.toRadians(laser.getAngleTir());
+					double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					System.out.println("je me dirige avec" + v);
 					//n vecteur normal au miroir
-					Vecteur n = miroir.getNormal().normalise();	
+					Vecteur n = miroir.getNormal().normalise();
+					System.out.println("normal"+ n);
 					//e = -v
 					Vecteur e = v.multiplie(-1);
-					laser.setAngleTir( Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX())))));
+					double nouvelAngle = Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
+					laser.setAngleTir(nouvelAngle);
+					System.out.println("nouvelAngle" + nouvelAngle);
+					
 				}	
 			}
 		}
@@ -224,21 +230,23 @@ public class SceneTestMiroirs extends JPanel implements Runnable {
 	 * avec un miroir convexe
 	 * @throws Exception
 	 */
-	private void colisionLaserMiroir() throws Exception{
+	private void colisionLaserMiroirConvexe() throws Exception{
 		for(MiroirConvexe miroir : listeMiroirConvexe ) {
 			for(Laser laser : listeLasers) {
 				if(intersection(miroir.getAireMiroirConvexe(), laser.getLaserAire())) {
-					System.out.println("j'ai une intersection");
-					laser.setPosition(new Vecteur (0,0));
-					//System.out.println(miroir.getNormalPosition(laser.getPosition()));
-					double angleLaser = -Math.toRadians(laser.getAngleTir());
+					// v orientation rayon incident
+					double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					System.out.println("je me dirige avec" + v);
 					//n vecteur normal au miroir
-					Vecteur n = miroir.getNormalPosition(laser.getPosition()).normalise();	
+					System.out.println("la position de la collision" + laser.getPosition());
+					Vecteur n = miroir.getNormalPosition(laser.getPosition().getX()/modele.getPixelsParUniteX(), laser.getPosition().getY()/modele.getPixelsParUniteY()).normalise();
+					System.out.println("normal"+ Math.toDegrees(Math.tan(n.getY()/n.getX())));
 					//e = -v
 					Vecteur e = v.multiplie(-1);
-					laser.setAngleTir( Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX())))));
-				}
+					double nouvelAngle = Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
+					laser.setAngleTir(nouvelAngle);
+					System.out.println("nouvelAngle" + nouvelAngle);				}
 			}
 		}
 	}

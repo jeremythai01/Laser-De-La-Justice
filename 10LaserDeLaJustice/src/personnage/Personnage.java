@@ -73,6 +73,18 @@ public class Personnage implements Dessinable {
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
 	}
+	public Personnage() {
+		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		if (fich == null) {
+			JOptionPane.showMessageDialog(null, "Fichier Fnaruto_debout.jpg introuvable!");
+		} else {
+			try {
+				imgPerso = ImageIO.read(fich);
+			} catch (IOException e) {
+				System.out.println("Erreur de lecture du fichier d'image");
+			}
+		}
+	}
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
 	 * gauche.
@@ -116,7 +128,6 @@ public class Personnage implements Dessinable {
 	 */
 	//Miora
 	public void deplacerLePersoSelonTouche(KeyEvent e) {
-		System.out.println("je bouge");
 		int code = e.getKeyCode();
 
 		if(code == toucheGauche) {

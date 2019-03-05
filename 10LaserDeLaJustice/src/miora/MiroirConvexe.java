@@ -15,6 +15,8 @@ public class MiroirConvexe implements Dessinable {
 	private AffineTransform matLocale;
 	private Vecteur normal; 
 	private Line2D.Double m;
+	private double hauteur =0;
+	private double largeur = 0;
 	
 	/**
 	 * Constructeur du miroir convexe
@@ -32,18 +34,26 @@ public class MiroirConvexe implements Dessinable {
 
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		matLocale = new AffineTransform(mat);
+		this.hauteur = hauteur;
+		this.largeur = largeur;
 		miroir = new Arc2D.Double(x, y, rayon, rayon, -180, 180, Arc2D.OPEN);
-		g2d.draw(matLocale.createTransformedShape(miroir));
+		g2d.fill(matLocale.createTransformedShape(miroir));
 	}
 	
 	public Area getAireMiroirConvexe() {
 		return new Area (miroir);
 	}
 
-
-	public Vecteur getNormalPosition(Vecteur position) {
-		return new Vecteur (x-position.getX(), y-position.getY());
-		
+	/**
+	 * Cette methode retourne le vecteur normal au laser apres intersection avec
+	 * le miroir convexe
+	 * @param x : la position en x de l'intersection
+	 * @param y : la position en y de l'intersection
+	 * @return le vecteur normal a l'intersection
+	 */
+	public Vecteur getNormalPosition(double x, double y) {
+		System.out.println(x + " " + y);
+		return new Vecteur (this.x-x, this.y-y);
 	}
 
 
