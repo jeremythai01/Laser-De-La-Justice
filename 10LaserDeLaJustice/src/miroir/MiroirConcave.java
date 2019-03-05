@@ -113,6 +113,10 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	}
 
 	
+	public Vecteur getNormalPosition(Vecteur position) {
+		return new Vecteur (positionIni.getX()-position.getX(), positionIni.getY()-position.getY());
+		
+	}
 
 	public double getAngleDebut() {
 		return angleDebut;

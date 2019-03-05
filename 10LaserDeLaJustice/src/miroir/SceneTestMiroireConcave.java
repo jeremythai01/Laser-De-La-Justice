@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import geometrie.Vecteur;
 import interfaces.SceneListener;
 import miora.MiroirConvexe;
+import miora.MiroirPlan;
 import objets.TrouNoir;
 import personnage.Personnage;
 import physique.Balle;
@@ -136,6 +137,10 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 				}
 				g2d.setStroke( new BasicStroke(3));
 				laser.dessiner(g2d, mat, 0, 0);
+			}try {
+				colisionLaserMiroirConcave();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
 	//	checkCollisionTrouLaserPersonnage( listeLasers );
@@ -255,22 +260,7 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 		return false;
 	}
 
-	/*
-	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
-
-
-		for(Laser laser : listeLasers) {
-			for(TrouNoir trou : listeTrou ) {
-				if(intersection(trou.getAireTrou(), laser.getLaserAire())) {
-					listeLasers.remove(laser);   
-
-				}	
-			}
-		}
-
-
-	}
-	 */
+	
 	private void shootEtAddLaser(KeyEvent e) {
 		if(enCoursAnimation == true) {
 			int code = e.getKeyCode();
@@ -296,7 +286,25 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 	}
 
 
-
+	private void colisionLaserMiroirConcave() throws Exception{
+		for(MiroirConcave miroirC : listeMiroireConcave ) {
+			for(Laser laser : listeLasers) {
+				if(intersection(miroirC.aire(), laser.getLaserAire())) {
+					// v orientation rayon incident
+					laser.setPosition(new Vecteur (1,1));
+					double angleLaser = -Math.toRadians(laser.getAngleTir());
+					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					//n vecteur normal au miroir
+					Vecteur n = miroirC.calculNormal(laser, miroirC).normalise();	
+					//e = -v
+					Vecteur e = v.multiplie(-1);
+					
+					laser.setAngleTir( Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX())))));
+					
+				}	
+			}
+		}
+	}
 
 
 
