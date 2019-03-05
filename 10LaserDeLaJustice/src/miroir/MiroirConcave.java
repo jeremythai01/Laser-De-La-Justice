@@ -14,7 +14,11 @@ import javax.swing.JPanel;
 import geometrie.Vecteur;
 import interfaces.Dessinable;
 import physique.Laser;
-
+/**
+ * 
+ * @author Arezki Issaadi
+ *
+ */
 public class MiroirConcave extends JPanel implements Dessinable {
 
 	private Vecteur positionIni;
@@ -26,8 +30,8 @@ public class MiroirConcave extends JPanel implements Dessinable {
 
 	private Arc2D miroirConcave;
 
-	public MiroirConcave(double x, double y) {
-		positionIni = new Vecteur(x, y);
+	public MiroirConcave(Vecteur position) {
+		positionIni = position;
 		angleDebut = 150;
 		grosseurMiroire = 150;
 
@@ -66,7 +70,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	
 	
 	public Vecteur collisionAvecMiroireLaser(Laser laser, Area miroireAire, MiroirConcave miroire) {
-		Area laserAire = new Area(laser.getTrace());
+		Area laserAire = new Area(laser.getAireLaser());
 		laserAire.intersect(miroireAire);
 		if (!laserAire.isEmpty()) {
 			return calculNormal(laser, miroire);
@@ -77,8 +81,8 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	
 	}
 
-	public Area aire(Arc2D miroire) {
-		return new Area(miroire);
+	public Area aire() {
+		return new Area(miroirConcave);
 	}
 
 	public Vecteur calculRayonIncidentInverse(Laser laser) {

@@ -1,6 +1,4 @@
-package miora;
-
-
+package miroir;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -11,19 +9,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JSpinner;
-import javax.swing.event.ChangeListener;
 
-import miroir.SceneTestMiroireConcave;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.SpinnerNumberModel;
-
-public class TestMiroirMiora extends JFrame {
+public class AplicationTestMiroire extends JFrame {
 
 	private JPanel contentPane;
-	private SceneTestMiroirMiora scene;
-	private static  TestMiroirMiora frame;
+	private SceneTestMiroireConcave scene;
+	private static  AplicationTestMiroire frame;
 
 	/**
 	 * Launch the application.
@@ -32,7 +23,7 @@ public class TestMiroirMiora extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new TestMiroirMiora();
+					frame = new AplicationTestMiroire();
 					frame.setVisible(true);
 					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
@@ -45,9 +36,9 @@ public class TestMiroirMiora extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TestMiroirMiora() {
+	public AplicationTestMiroire() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 623, 594);
+		setBounds(100, 100, 989, 808);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -60,7 +51,7 @@ public class TestMiroirMiora extends JFrame {
 				scene.demarrer();
 			}
 		});
-		btnStart.setBounds(36, 449, 89, 23);
+		btnStart.setBounds(10, 735, 89, 23);
 		contentPane.add(btnStart);
 		
 		JButton btnStop = new JButton("stop");
@@ -69,11 +60,11 @@ public class TestMiroirMiora extends JFrame {
 				scene.arreter();
 			}
 		});
-		btnStop.setBounds(159, 449, 89, 23);
+		btnStop.setBounds(109, 735, 89, 23);
 		contentPane.add(btnStop);
 		
-		scene = new SceneTestMiroirMiora();
-		scene.setBounds(10, 11, 484, 439);
+		scene = new SceneTestMiroireConcave();
+		scene.setBounds(10, 11, 953, 713);
 		contentPane.add(scene);
 		
 	
