@@ -151,12 +151,13 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 			}
 		}
 
-
+		/*
 		for(Balle balle: listeBalles) {
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
-
+	
+		
 		/*
 		for(TrouNoir trou: listeTrou) {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);

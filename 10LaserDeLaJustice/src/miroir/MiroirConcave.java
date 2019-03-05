@@ -8,11 +8,13 @@ import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.QuadCurve2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
+import miora.MiroirPlan;
 import physique.Laser;
 /**
  * 
@@ -71,10 +73,12 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	
 	public Vecteur collisionAvecMiroireLaser(Laser laser, Area miroireAire, MiroirConcave miroire) {
 		Area laserAire = new Area(laser.getAireLaser());
-		laserAire.intersect(miroireAire);
-		if (!laserAire.isEmpty()) {
+		
+		if (!intersection(aire(), laser.getAireLaser())) {
+			System.out.println("je touche");
 			return calculNormal(laser, miroire);
 		} else {
+			System.out.println("XD");
 			return new Vecteur();
 		}
 
@@ -96,6 +100,19 @@ public class MiroirConcave extends JPanel implements Dessinable {
 				laser.getPosition().getY() - miroire.getPositionIni().getY());
 
 	}
+	
+	
+	
+	private boolean intersection(Area aire1, Area aire2) {
+		Area aireInter = new Area(aire1);
+		aireInter.intersect(aire2);
+		if(!aireInter.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+	
 
 	public double getAngleDebut() {
 		return angleDebut;

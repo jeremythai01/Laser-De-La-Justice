@@ -405,6 +405,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 * permet d'ajouter une grosse balle via lediteur  
 	 */
 	public void ajoutBalleGrosse() {
 		listeBalles.add(new Balle(new Vecteur(), vitesse, "LARGE"));
@@ -414,6 +415,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 * permet d'ajouter une balle medium via lediteur 
 	 */
 	public void ajoutBalleMedium() {
 		listeBalles.add(new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"));
@@ -423,6 +425,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 * permet d'ajouter une petite balle via lediteur 
 	 */
 	public void ajoutBallePetite() {
 		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
@@ -432,6 +435,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 * permet d'ajouter un miroir concave via lediteur 
 	 */
 	public void ajoutMiroireConcave() {
 		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0)));
@@ -440,6 +444,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 *  permet d'ajouter un miroir convexe via lediteur 
 	 */
 	public void ajoutMiroireConvexe() {
 		listeMiroireConvexe.add(new MiroirConvexe(4, 0, 1));
@@ -448,6 +453,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 *  permet d'ajouter un miroir plan via lediteur 
 	 */
 	public void ajoutMiroirPlan() {
 		listeMiroirePlan.add(new MiroirPlan(5, 0, 0));
@@ -457,6 +463,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 *  permet d'ajouter un trou noir via lediteur 
 	 */
 	public void ajoutTrouNoir() {
 		listeTrou.add(new TrouNoir(new Vecteur(7, 0)));
@@ -466,6 +473,7 @@ public class Scene extends JPanel implements Runnable {
 	
 	/**
 	 * Arezki Issaadi
+	 *  permet d'ajouter un bloc d'eau via lediteur 
 	 */
 	public void ajoutBlocEau() {
 		listeBlocEau.add(new BlocDEau(new Vecteur (9,0)));
@@ -474,6 +482,7 @@ public class Scene extends JPanel implements Runnable {
 	}
 	/**
 	 * Arezki Issaadi
+	 * permet aux dessins de safficher a chaque clic
 	 */
 	public void ActiverEditeur() {
 		editeurActiver = true;
@@ -482,6 +491,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
+	 * permet d'empecher que les dessins saffichent a chaque clic
 	 */
 
 	public void DesactiverEditeur() {
