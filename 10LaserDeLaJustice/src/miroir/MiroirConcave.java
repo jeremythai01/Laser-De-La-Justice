@@ -72,9 +72,9 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	
 	
 	public Vecteur collisionAvecMiroireLaser(Laser laser, Area miroireAire, MiroirConcave miroire) {
-		Area laserAire = new Area(laser.getAireLaser());
+		Area laserAire = new Area(laser.getLaserAire());
 		
-		if (!intersection(aire(), laser.getAireLaser())) {
+		if (!intersection(aire(), laser.getLaserAire())) {
 			System.out.println("je touche");
 			return calculNormal(laser, miroire);
 		} else {

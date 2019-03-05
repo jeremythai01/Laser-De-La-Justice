@@ -73,7 +73,7 @@ public class Laser implements Dessinable{
 
 	public void move() { 
 		ligneFinY -= vitesse.getY();
-		ligneDebutX+=vitesse.getX();
+		//ligneDebutX+=vitesse.getX();
 	}
 
 

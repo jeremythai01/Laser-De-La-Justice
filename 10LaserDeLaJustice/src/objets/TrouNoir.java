@@ -44,7 +44,7 @@ public class TrouNoir extends Objet implements Dessinable {
 	}
 	
 	public void collisionLaserTrouNoir(Laser laser, ArrayList<Balle> liste, Area aireTrou) {
-		Area aireIntermediaire= new Area(laser.getAireLaser());
+		Area aireIntermediaire= new Area(laser.getLaserAire());
 		aireIntermediaire.intersect(aireTrou);
 	
 		if(!aireIntermediaire.isEmpty()) { //si un laser rentre dans le trou noir
