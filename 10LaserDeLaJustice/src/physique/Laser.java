@@ -50,7 +50,6 @@ public class Laser implements Dessinable{
 		trace.moveTo(ligneDebutX, ligneFinY);
 		trace.lineTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
-
 		randomColor(g2d);
 		g2d.draw(matLocal.createTransformedShape(((trace))));
 
@@ -78,7 +77,7 @@ public class Laser implements Dessinable{
 	}
 
 
-
+/*
 	public Area getAireLaser() {
 		Path2D.Double trace = new Path2D.Double();
 		trace.moveTo(position.getX(), position.getY());
@@ -86,7 +85,7 @@ public class Laser implements Dessinable{
 		trace.closePath();
 		return new Area(trace);
 	}
-
+*/
 	public void unPasRK4(double deltaT, double tempsEcoule) {
 		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());

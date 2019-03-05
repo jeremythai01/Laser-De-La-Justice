@@ -38,6 +38,7 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 	private VecteurGraphique vecDess;
 	private double angleMiroir = 0;
 	private Vecteur position;
+	private Laser laser2;
 
 	private Vecteur vitesse;
 
@@ -48,10 +49,11 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private MiroirConvexe miroir;
-	private ArrayList<MiroirConvexe> listeMiroirPlan = new ArrayList<MiroirConvexe>();
+	private ArrayList<MiroirConvexe> listeMiroirConvexe= new ArrayList<MiroirConvexe>();
+	private boolean laser2active = false;
 
 	public SceneMiroirConvexe() {
-		angle = -90;
+		angle = -40;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);
@@ -65,8 +67,8 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 			public void mousePressed(MouseEvent e) {
 				double posX = e.getX()/modele.getPixelsParUniteX();
 				double posY = e.getY()/modele.getPixelsParUniteY();
-				miroir = new MiroirConvexe (posX,posY,1.0);
-				listeMiroirPlan.add(miroir);
+				miroir = new MiroirConvexe (posX,posY, 3);
+				listeMiroirConvexe.add(miroir);
 				repaint();
 			}
 		});
@@ -99,19 +101,20 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 			g2d.setStroke( new BasicStroke(3));
 			laser.dessiner(g2d, mat, 0, 0);
 		}
-		/*try {
-			colisionLaserMiroir(listeLasers, listeMiroirPlan);
+		try {
+			colisionLaserMiroir();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		*/
-		for(MiroirConvexe miroir:listeMiroirPlan) {
+		for(MiroirConvexe miroir:listeMiroirConvexe) {
 			g2d.setColor(Color.gray);
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			g2d.setColor(Color.yellow);
-			//g2d.draw(miroir.getAireMiroir());
 		}
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
+		if(laser2active) {
+			laser2.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
+		}
 
 
 	}//fin paintComponent
@@ -138,7 +141,6 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
 			calculerUneIterationPhysique();
 			repaint();
@@ -162,7 +164,12 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 			}
 		}
 	}
-
+	/**
+	 * Cette methode verifie s'il y a une intersection entre deux aires
+	 * @param aire1 : aire de la premiere geometrie
+	 * @param aire2 : aire de la deuxieme geometrie
+	 * @return vrai s'il y a intersection
+	 */
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -171,18 +178,28 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 		}
 		return false;
 	}
-
-	private void colisionLaserMiroir( ArrayList<Laser> listeLasers, ArrayList<MiroirPlan> listeMiroirPlan  ) throws Exception {
-		for(Laser laser : listeLasers) {
-			for(MiroirPlan miroir : listeMiroirPlan ) {
-				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
-					Vecteur v = new Vecteur (Math.cos(angleMiroir), Math.sin(angleMiroir)).normalise();
-					Vecteur n = miroir.calculNormal().normalise();
+	/**
+	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
+	 * avec un miroir convexe
+	 * @throws Exception
+	 */
+	private void colisionLaserMiroir() throws Exception{
+		for(MiroirConvexe miroir : listeMiroirConvexe ) {
+			for(Laser laser : listeLasers) {
+				if(intersection(miroir.getAireMiroirConvexe(), laser.getLaserAire())) {
+					System.out.println("j'ai une intersection");
+					laser.setPosition(new Vecteur (0,0));
+					//System.out.println(miroir.getNormalPosition(laser.getPosition()));
+					double angleLaser = -Math.toRadians(laser.getAngleTir());
+					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					//n vecteur normal au miroir
+					Vecteur n = miroir.getNormalPosition(laser.getPosition()).normalise();	
+					//e = -v
 					Vecteur e = v.multiplie(-1);
 					laser.setAngleTir( Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX())))));
-				}	
+				}
 			}
 		}
 	}
-
 }
+

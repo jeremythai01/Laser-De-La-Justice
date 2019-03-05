@@ -30,6 +30,19 @@ public class Personnage implements Dessinable {
 	private double positionX ;
 	private boolean premiereFois = true;
 	private int toucheGauche = 37, toucheDroite = 39;
+	
+	public int getToucheGauche() {
+		return toucheGauche;
+	}
+	public void setToucheGauche(int toucheGauche) {
+		this.toucheGauche = toucheGauche;
+	}
+	public int getToucheDroite() {
+		return toucheDroite;
+	}
+	public void setToucheDroite(int toucheDroite) {
+		this.toucheDroite = toucheDroite;
+	}
 	private double vitesseX =0;
 	private boolean gauche;
 	private boolean droite;

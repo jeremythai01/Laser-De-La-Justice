@@ -60,7 +60,7 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 	 * Create the panel.
 	 */
 	public SceneTestMiroirMiora() {
-		angle = -90;
+		angle = -45;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);
@@ -109,7 +109,7 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			laser.dessiner(g2d, mat, 0, 0);
 		}
 		try {
-			colisionLaserMiroir(listeLasers, listeMiroirPlan);
+			colisionLaserMiroirPlan();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -117,10 +117,10 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			g2d.setColor(Color.gray);
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			g2d.setColor(Color.yellow);
-			g2d.draw(miroir.getAireMiroir());
+			//g2d.draw(miroir.getAireMiroir());
 		}
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
-		
+
 
 	}//fin paintComponent
 	private void calculerUneIterationPhysique() {
@@ -170,7 +170,12 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 			}
 		}
 	}
-
+	/**
+	 * Cette methode verifie s'il y a une intersection entre deux aires
+	 * @param aire1 : aire de la premiere geometrie
+	 * @param aire2 : aire de la deuxieme geometrie
+	 * @return vrai s'il y a intersection
+	 */
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -179,13 +184,21 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 		}
 		return false;
 	}
-
-	private void colisionLaserMiroir( ArrayList<Laser> listeLasers, ArrayList<MiroirPlan> listeMiroirPlan  ) throws Exception {
-		for(Laser laser : listeLasers) {
-			for(MiroirPlan miroir : listeMiroirPlan ) {
+	/**
+	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
+	 * avec un miroir plan
+	 * @throws Exception
+	 */
+	private void colisionLaserMiroirPlan() throws Exception{
+		for(MiroirPlan miroir : listeMiroirPlan ) {
+			for(Laser laser : listeLasers) {
 				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
-					Vecteur v = new Vecteur (Math.cos(angleMiroir), Math.sin(angleMiroir)).normalise();
-					Vecteur n = miroir.calculNormal().normalise();
+					// v orientation rayon incident
+					double angleLaser = -Math.toRadians(laser.getAngleTir());
+					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					//n vecteur normal au miroir
+					Vecteur n = miroir.getNormal().normalise();	
+					//e = -v
 					Vecteur e = v.multiplie(-1);
 					laser.setAngleTir( Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX())))));
 				}	

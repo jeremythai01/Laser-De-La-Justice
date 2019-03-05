@@ -111,7 +111,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 		lireFond();
-		// lectureFichierOption();
+		lectureFichierOption();
 		angle = -90;
 		principal = new Personnage(toucheGauche, toucheDroite);
 		pistoletPrincipal = new Pistolet();
@@ -147,6 +147,7 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				principal.deplacerLePersoSelonTouche(e);
+				System.out.println(principal.getToucheDroite() + " " + principal.getToucheGauche());
 				shootEtAddLaser(e);
 				repaint();
 			}
