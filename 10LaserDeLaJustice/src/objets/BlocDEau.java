@@ -38,8 +38,14 @@ public class BlocDEau extends Objet implements Dessinable {
 		double n= n1/n2;
 		Vecteur E=new Vecteur();
 		E=v.multiplie(-1);
-		vecteur = v.multiplie(n).additionne(N.multiplie(((E.prodScalaire(N)*n)-Math.sqrt(1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N)))))))));
-		return new Vecteur(vecteur.getX(),vecteur.getY());
+		
+		// QUE FAIRE ICI !!!!! %???? /"%?"%?/"%?$ %
+		//if(((1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N))))))) < 0)
+		//	throw new RuntimeException("OUPS !!!");
+		double resultat=1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)));
+		System.out.println("dsfsa"+resultat);
+		vecteur = v.multiplie(n).additionne(N.multiplie(((E.prodScalaire(N)*n)-Math.sqrt(1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)))))));
+		return new Vecteur(-vecteur.getX(),vecteur.getY());
 	}
 
 

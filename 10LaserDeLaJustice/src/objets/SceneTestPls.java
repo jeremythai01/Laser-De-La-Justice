@@ -310,7 +310,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			for(BlocDEau bloc : listeBloc) {
 				if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
 					try {
-						laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse().normalise(), bloc.getNormal(), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1.33, 1).getX()));
+						laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1.33, 1).getX()));
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -319,9 +319,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 				//	laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
 					//laser.setAngleTir(30);
 					//laser.updaterAngleVitesse((laser.getAngleTir()));
-					System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
-					System.out.println("nouvel normal:" + bloc.getNormal());
-					System.out.println("valeur bloc: "+ bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1.33, 1).getX());
+					//System.out.println("laser:" + laser.getVitesse().multiplie(-1));
+				//	System.out.println("nouvel normal:" + bloc.getNormal());
+				//	System.out.println();
+				//	System.out.println("valeur bloc: "+ bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1.33, 1).getX());
 					//repaint();
 					
 				}
