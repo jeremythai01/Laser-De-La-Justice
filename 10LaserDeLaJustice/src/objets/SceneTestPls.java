@@ -230,11 +230,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private void shoot(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
-			if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+			//if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 				listeLasers.add(
 						new Laser(new Vecteur(
 								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
-			}
+			//}
 		}
 	}
 
@@ -309,13 +309,19 @@ public class SceneTestPls extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			for(BlocDEau bloc : listeBloc) {
 				if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
-					laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
+					try {
+						laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse().normalise(), bloc.getNormal(), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1.33, 1).getX()));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					//System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 				//	laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
-					laser.setAngleTir(90);
+					//laser.setAngleTir(30);
 					//laser.updaterAngleVitesse((laser.getAngleTir()));
 					System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
-					System.out.println("nouvelle vitesse laser: "+ laser.getVitesse());
+					System.out.println("nouvel normal:" + bloc.getNormal());
+					System.out.println("valeur bloc: "+ bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.getNormal(), 1.33, 1).getX());
 					//repaint();
 					
 				}

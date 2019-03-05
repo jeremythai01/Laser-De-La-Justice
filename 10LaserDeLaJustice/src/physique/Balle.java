@@ -106,7 +106,7 @@ public class Balle implements Dessinable {
 	 */
 	public void unPasEuler(double deltaT) {
 		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
-		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
+		//System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 	/**
 	 * Effectue une iteration de l'algorithme Verlet. Calcule la nouvelle vitesse et la nouvelle
@@ -116,7 +116,7 @@ public class Balle implements Dessinable {
 	public void unPasVerlet(double deltaT) {
 		MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
 		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
-		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
+		//System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 	/**
 	 * Effectue une iteration de l'algorithme de Runge-Kutta ordre 4. Calcule la nouvelle vitesse et la nouvelle
@@ -127,7 +127,7 @@ public class Balle implements Dessinable {
 	public void unPasRK4(double deltaT, double tempsEcoule) {
 		MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
 		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
-		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
+		//System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 
 

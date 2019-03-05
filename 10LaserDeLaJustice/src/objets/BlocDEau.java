@@ -48,8 +48,15 @@ public class BlocDEau extends Objet implements Dessinable {
 		return new Vecteur(laser.getPosition().getX() - bloc.getPosition().getX(),
 				laser.getPosition().getY() - bloc.getPosition().getY());
 
+		
 	}
 
+	public Vecteur getNormal() {
+		double angle = Math.toRadians(0);
+		Vecteur vecMiroir = new Vecteur (Math.cos(angle), Math.sin(angle));
+		Vecteur normal = new Vecteur(-vecMiroir.getY(), vecMiroir.getX());
+		return normal;
+	}
 
 	public Vecteur getPosition() {
 		return position;
