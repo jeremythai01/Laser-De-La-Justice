@@ -60,7 +60,7 @@ public class SceneTestMiroirMiora extends JPanel implements Runnable {
 	 * Create the panel.
 	 */
 	public SceneTestMiroirMiora() {
-		angle = -45;
+		angle = 45;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);

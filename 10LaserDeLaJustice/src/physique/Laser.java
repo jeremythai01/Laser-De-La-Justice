@@ -40,7 +40,7 @@ public class Laser implements Dessinable{
 		accel = new Vecteur(0,0);
 		ligneFinY = position.getY();
 		ligneDebutX=position.getX();
-		
+		updaterAngleVitesse(angleTir);
 	}
 
 
