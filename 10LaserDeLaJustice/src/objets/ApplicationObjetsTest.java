@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import geometrie.Vecteur;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -20,6 +23,7 @@ public class ApplicationObjetsTest extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -31,6 +35,19 @@ public class ApplicationObjetsTest extends JFrame {
 				}
 			}
 		});
+		
+		
+		
+		/*BlocDEau b = new BlocDEau(new Vecteur(0.0, 0.0));
+		Vecteur v = b.refraction(new Vecteur(0.0, -1.0), new Vecteur(0.0, 1.0), 1.0, 1.33);
+		
+		
+		
+		BlocDEau b = new BlocDEau(new Vecteur(0.0, 0.0));
+		Vecteur v = b.refraction(new Vecteur(1.0, -1.0), new Vecteur(0.0, 1.0), 1.0, 1.33);
+		
+		
+		System.out.println(v);*/
 	}
 
 	/**

@@ -217,9 +217,9 @@ public class Scene extends JPanel implements Runnable {
 	
 		}
 		
-		// creerLePersonnagePrincipal(g2d, mat);
+		 creerLePersonnagePrincipal(g2d, mat);
 
-		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+	//	principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}
 

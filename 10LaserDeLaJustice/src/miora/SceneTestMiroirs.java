@@ -1,6 +1,5 @@
 package miora;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,12 +16,15 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import geometrie.VecteurGraphique;
+import personnage.Personnage;
 import physique.Balle;
 import physique.Laser;
 import utilite.ModeleAffichage;
 
-public class SceneMiroirConvexe extends JPanel implements Runnable {
-	private int tempsDuSleep = 200;
+public class SceneTestMiroirs extends JPanel implements Runnable {
+
+	private static final long serialVersionUID = 1L;
+	private int tempsDuSleep = 25;
 	private double deltaT = 0.07;
 	private  double LARGEUR_DU_MONDE = 10; //en metres
 	private  double HAUTEUR_DU_MONDE;
@@ -38,7 +40,6 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 	private VecteurGraphique vecDess;
 	private double angleMiroir = 0;
 	private Vecteur position;
-	private Laser laser2;
 
 	private Vecteur vitesse;
 
@@ -46,15 +47,21 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 
 	private Personnage character;
 
+	private boolean miroirPlan = true, miroirConvexe = false;
+
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
-	private MiroirConvexe miroir;
-	private ArrayList<MiroirConvexe> listeMiroirConvexe= new ArrayList<MiroirConvexe>();
-	private boolean laser2active = false;
+	private MiroirPlan plan;
+	private MiroirConvexe convexe;
+	private ArrayList<MiroirPlan> listeMiroirPlan = new ArrayList<MiroirPlan>();
+	private ArrayList<MiroirConvexe> listeMiroirConvexe = new ArrayList<MiroirConvexe>();
 
-	public SceneMiroirConvexe() {
-		angle = -40;
-		character = new Personnage();
+	/**
+	 * Create the panel.
+	 */
+	public SceneTestMiroirs() {
+		angle = -90;
+		character = new Personnage(37,39);
 
 		position = new Vecteur(0.5, 10);
 
@@ -65,24 +72,30 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				double posX = e.getX()/modele.getPixelsParUniteX();
-				double posY = e.getY()/modele.getPixelsParUniteY();
-				miroir = new MiroirConvexe (posX,posY, 3);
-				listeMiroirConvexe.add(miroir);
-				repaint();
+				if(miroirPlan) {
+					double posX = e.getX()/modele.getPixelsParUniteX();
+					double posY = e.getY()/modele.getPixelsParUniteY();
+					plan = new MiroirPlan (posX,posY, 0);
+					listeMiroirPlan.add(plan);
+					repaint();
+				}else {
+					double posX = e.getX()/modele.getPixelsParUniteX();
+					double posY = e.getY()/modele.getPixelsParUniteY();
+					convexe = new MiroirConvexe (posX,posY, 3);
+					listeMiroirConvexe.add(convexe);
+					repaint();
+				}
 			}
 		});
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				character.deplacerLePersoSelonTouche( e );
+				character.deplacerLePersoSelonTouche(e);
 				shoot(e);
 				repaint();
 			}
 		});
-	}
-
-
+	} // fin constructeur
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -95,29 +108,33 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 		for(Laser laser : listeLasers) { 
-			if(laser.getLigneFinY() <= 0 ) {
+			/*if(laser.getLigneFinY() <= 0 ) {
 				listeLasers.remove(laser);
 			}
-			g2d.setStroke( new BasicStroke(3));
+			*/
+			//g2d.setStroke( new BasicStroke(3));
+			//laser.setAngleTir(angle);
 			laser.dessiner(g2d, mat, 0, 0);
 		}
 		try {
-			colisionLaserMiroir();
+			colisionLaserMiroirPlan();
+			colisionLaserMiroirPlan();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		for(MiroirConvexe miroir:listeMiroirConvexe) {
+		for(MiroirPlan miroir:listeMiroirPlan) {
 			g2d.setColor(Color.gray);
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			g2d.setColor(Color.yellow);
 		}
-		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
-		if(laser2active) {
-			laser2.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
+		for(MiroirConvexe convexe :listeMiroirConvexe) {
+			g2d.setColor(Color.gray);
+			convexe.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			g2d.setColor(Color.yellow);
 		}
-
-
+		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 	}//fin paintComponent
+
 	private void calculerUneIterationPhysique() {
 		for(Laser laser : listeLasers) {
 			laser.move();
@@ -141,6 +158,7 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
+		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
 			calculerUneIterationPhysique();
 			repaint();
@@ -178,6 +196,29 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 		}
 		return false;
 	}
+
+	/**
+	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
+	 * avec un miroir plan
+	 * @throws Exception
+	 */
+	private void colisionLaserMiroirPlan() throws Exception{
+		for(MiroirPlan miroir : listeMiroirPlan ) {
+			for(Laser laser : listeLasers) {
+				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
+					// v orientation rayon incident
+					double angleLaser = -Math.toRadians(laser.getAngleTir());
+					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					//n vecteur normal au miroir
+					Vecteur n = miroir.getNormal().normalise();	
+					//e = -v
+					Vecteur e = v.multiplie(-1);
+					laser.setAngleTir( Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX())))));
+				}	
+			}
+		}
+	}
+
 	/**
 	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
 	 * avec un miroir convexe
@@ -201,5 +242,9 @@ public class SceneMiroirConvexe extends JPanel implements Runnable {
 			}
 		}
 	}
-}
 
+	public void setMiroirPlan(boolean reponse) {
+		miroirPlan = reponse;
+		System.out.println(miroirPlan);
+	}
+}
