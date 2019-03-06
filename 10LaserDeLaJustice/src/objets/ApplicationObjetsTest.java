@@ -6,10 +6,18 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import geometrie.Vecteur;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Application qui permet de tester les differents objets sans jouer dans les classes des autres
+ * @author Arnaud Lefebvre
+ *
+ */
 public class ApplicationObjetsTest extends JFrame {
 
 	private JPanel contentPane;
@@ -17,9 +25,10 @@ public class ApplicationObjetsTest extends JFrame {
 	private static  ApplicationObjetsTest frame;
 
 	/**
-	 * Launch the application.
+	 * Demarrer  l'application.
 	 */
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -31,10 +40,23 @@ public class ApplicationObjetsTest extends JFrame {
 				}
 			}
 		});
+		
+		
+		
+		/*BlocDEau b = new BlocDEau(new Vecteur(0.0, 0.0));
+		Vecteur v = b.refraction(new Vecteur(0.0, -1.0), new Vecteur(0.0, 1.0), 1.0, 1.33);
+		
+		
+		
+		BlocDEau b = new BlocDEau(new Vecteur(0.0, 0.0));
+		Vecteur v = b.refraction(new Vecteur(1.0, -1.0), new Vecteur(0.0, 1.0), 1.0, 1.33);
+		
+		
+		System.out.println(v);*/
 	}
 
 	/**
-	 * Create the frame.
+	 * Creer la fenetre.
 	 */
 	public ApplicationObjetsTest() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

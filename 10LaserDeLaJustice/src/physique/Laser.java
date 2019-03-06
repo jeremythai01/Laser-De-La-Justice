@@ -27,8 +27,10 @@ public class Laser implements Dessinable{
 	private Vecteur accel;
 	Path2D.Double trace;
 	private double ligneFinY;
+	public void setLigneFinY(double ligneFinY) {
+		this.ligneFinY = ligneFinY;
+	}
 	private double ligneDebutX;
-
 
 	Random rand = new Random();
 	
@@ -40,18 +42,16 @@ public class Laser implements Dessinable{
 		accel = new Vecteur(0,0);
 		ligneFinY = position.getY();
 		ligneDebutX=position.getX();
-		updaterAngleVitesse(angleTir);
-		
+		//updaterAngleVitesse(angleTir);
+
+
 	}
-
-
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		trace = new Path2D.Double();
 		AffineTransform matLocal = new AffineTransform(mat);
 		trace.moveTo(ligneDebutX, ligneFinY);
 		trace.lineTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
-
 		randomColor(g2d);
 		g2d.draw(matLocal.createTransformedShape(((trace))));
 
@@ -76,10 +76,22 @@ public class Laser implements Dessinable{
 	public void move() { 
 		ligneFinY -= vitesse.getY();
 		ligneDebutX+=vitesse.getX();
+		position = new Vecteur (ligneDebutX, ligneFinY);
+		System.out.println(position.toString());
+		//System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
+	}
+	
+	public double getLigneDebutX() {
+		return ligneDebutX;
 	}
 
 
+	public void setLigneDebutX(double ligneDebutX) {
+		this.ligneDebutX = ligneDebutX;
+	}
 
+
+/*
 	public Area getAireLaser() {
 		Path2D.Double trace = new Path2D.Double();
 		trace.moveTo(position.getX(), position.getY());
@@ -87,7 +99,7 @@ public class Laser implements Dessinable{
 		trace.closePath();
 		return new Area(trace);
 	}
-
+*/
 	public void unPasRK4(double deltaT, double tempsEcoule) {
 		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
 		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
@@ -113,7 +125,7 @@ public class Laser implements Dessinable{
 	}
 
 	public Vecteur getPosition() {
-		return position;
+		return new Vecteur (position.getX(),position.getY());
 	}
 
 	public void setPosition(Vecteur position) {
@@ -156,7 +168,9 @@ public class Laser implements Dessinable{
 	public void updaterAngleVitesse(double angle) {
 		double vitesseEnX=0.5*Math.cos(Math.toRadians(angle));
 		double vitesseEnY=0.5*Math.sin(Math.toRadians(angle));
+		Vecteur vec = new Vecteur(vitesseEnX,vitesseEnY);
 		setVitesse(new Vecteur(vitesseEnX,vitesseEnY));
+	//	System.out.println("modification vitesse"+ vec );
 	}
 
 

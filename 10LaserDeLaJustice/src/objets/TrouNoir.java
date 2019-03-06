@@ -13,6 +13,12 @@ import interfaces.Dessinable;
 import physique.Balle;
 import physique.Laser;
 
+/**
+ * Classe qui cree un trou noir et qui memorise sa position
+ * Un trou noir, lorsqu'un laser rentre en contact avec, fait disparaitre le laser
+ * @author Arnaud Lefebvre
+ *
+ */
 public class TrouNoir extends Objet implements Dessinable {
 	
 	private Vecteur position;
@@ -21,12 +27,24 @@ public class TrouNoir extends Objet implements Dessinable {
 	
 	private Ellipse2D.Double trou;
 	
+	/**
+	 * Constructeur qui memorise la position
+	 * @param position, la position donnee au trou noir
+	 */
 	public TrouNoir(Vecteur position) {
 		this.position=position;
 	}
 	
 
 	@Override
+	/**
+	 * Permet de dessiner le trou selon le contexte graphique en parametre.
+	 * @param g2d contexte graphique
+	 * @param mat matrice de transformation monde-vers-composant
+	 * @param hauteur hauteur du monde reelle
+	 * @param largeur largeur du monde reelle
+	 * 
+	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		g.setColor(Color.LIGHT_GRAY);
@@ -43,18 +61,10 @@ public class TrouNoir extends Objet implements Dessinable {
 		
 	}
 	
-	public void collisionLaserTrouNoir(Laser laser, ArrayList<Balle> liste, Area aireTrou) {
-		Area aireIntermediaire= new Area(laser.getAireLaser());
-		aireIntermediaire.intersect(aireTrou);
-	
-		if(!aireIntermediaire.isEmpty()) { //si un laser rentre dans le trou noir
-			
-			
-		}
-	
-
-	}
-	
+	/**
+	 * Methode qui permet de calculer l'aire du trou noir
+	 * @return, l'aire du trou noir sous forme d'area
+	 */
 	public Area getAireTrou() {
 		 Ellipse2D aire= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		 return new Area(aire);

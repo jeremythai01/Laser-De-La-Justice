@@ -1,6 +1,7 @@
 package aaplication;
 
 import java.awt.Color;
+
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -29,7 +30,11 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Font;
-
+/**
+ * 
+ * @author Arezki
+ *
+ */
 public class App10LaserDeLaJustice extends JFrame {
 
 	private JPanel contentPane;
@@ -142,7 +147,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				scene.requestFocusInWindow();
 				scene.arreter();
 				activerEditeur();
-				
+				scene.ActiverEditeur();
 			}
 		});
 		btnEditeur.setBounds(1231, 61, 40, 38);
@@ -153,6 +158,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			desactiverEditeur();
+			scene.DesactiverEditeur();
 			donneFocusALaScene();
 			}
 		});
@@ -161,41 +167,81 @@ public class App10LaserDeLaJustice extends JFrame {
 		associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
 		
 		btnMiroirPlan = new JButton("miroir Plan");
+		btnMiroirPlan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.ajoutMiroirPlan();
+			}
+		});
 		btnMiroirPlan.setEnabled(false);
 		btnMiroirPlan.setBounds(1443, 107, 105, 23);
 		contentPane.add(btnMiroirPlan);
 		
 		btnMiroirConvexe = new JButton("miroir Convexe");
+		btnMiroirConvexe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.ajoutMiroireConvexe();
+			}
+		});
 		btnMiroirConvexe.setEnabled(false);
 		btnMiroirConvexe.setBounds(1443, 175, 105, 23);
 		contentPane.add(btnMiroirConvexe);
 		
 		btnMiroirConcave = new JButton("miroir Concave");
+		btnMiroirConcave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.ajoutMiroireConcave();
+			}
+		});
 		btnMiroirConcave.setEnabled(false);
 		btnMiroirConcave.setBounds(1443, 255, 105, 23);
 		contentPane.add(btnMiroirConcave);
 		
 		btnTrouNoir = new JButton("Trou Noir");
+		btnTrouNoir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.ajoutTrouNoir();
+			}
+		});
 		btnTrouNoir.setEnabled(false);
 		btnTrouNoir.setBounds(1443, 335, 105, 23);
 		contentPane.add(btnTrouNoir);
 		
 		btnBlocDeau = new JButton("bloc D'eau ");
+		btnBlocDeau.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.ajoutBlocEau();
+			}
+		});
 		btnBlocDeau.setEnabled(false);
 		btnBlocDeau.setBounds(1443, 418, 105, 23);
 		contentPane.add(btnBlocDeau);
 		
 		btnGrosseBalle = new JButton("Grosse Balle");
+		btnGrosseBalle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.ajoutBalleGrosse();
+			}
+		});
 		btnGrosseBalle.setEnabled(false);
 		btnGrosseBalle.setBounds(1443, 509, 105, 23);
 		contentPane.add(btnGrosseBalle);
 		
 		btnMediumBalle = new JButton("Medium Balle");
+		btnMediumBalle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.ajoutBalleMedium();
+			}
+		});
 		btnMediumBalle.setEnabled(false);
 		btnMediumBalle.setBounds(1443, 600, 105, 23);
 		contentPane.add(btnMediumBalle);
 		
 		btnPetiteBalle = new JButton("petite balle ");
+		btnPetiteBalle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				scene.ajoutBallePetite();
+			}
+		});
 		btnPetiteBalle.setEnabled(false);
 		btnPetiteBalle.setBounds(1443, 702, 105, 23);
 		contentPane.add(btnPetiteBalle);
@@ -334,18 +380,30 @@ public class App10LaserDeLaJustice extends JFrame {
 		scene.setBounds(30, 107, 1303, 727);
 		contentPane.add(scene);
 		
+		JButton btnViderScene = new JButton("Vider Scene");
+		btnViderScene.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scene.reinitialiserDessin();
+			}
+		});
+		btnViderScene.setBounds(1131, 61, 40, 38);
+		contentPane.add(btnViderScene);
+		associerBoutonAvecImage(btnViderScene, "corbeille.png");
 		
 		
 	}
 	/**
 	 * Methode qui donne le focus a la scene
+	 *@author Miora
 	 */
 	public void donneFocusALaScene() {
 		scene.requestFocusInWindow();
 	}
 
 	
-	
+	/**
+	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur
+	 */
 	public void activerEditeur() {
 		setBounds(100, 100, 1800, 1006);
 		btnBlocDeau.setEnabled(true);
@@ -358,7 +416,9 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnTrouNoir.setEnabled(true);
 		btnPetiteBalle.setEnabled(true);
 	}
-	
+	/**
+	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons de l'éditeur
+	 */
 	public void desactiverEditeur() {
 		setBounds(100, 100, 1389, 1006);
 		btnBlocDeau.setEnabled(false);
