@@ -48,7 +48,7 @@ import java.awt.event.MouseMotionAdapter;
 /**
  * Cette classe contient la scene d'animation du jeu.
  * 
- * @author Miora
+ * @author Miora et Arezki
  *
  */
 public class Scene extends JPanel implements Runnable {
@@ -99,7 +99,10 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private int tempsDuSleep = 30;
 
-	// Jeremy Thai
+	/**
+	 * @author  Jeremy Thai
+	 * Constructeur qui permet de mettre les dessins avec le clic de la souris 
+	 */
 
 	public Scene() {
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -161,7 +164,9 @@ public class Scene extends JPanel implements Runnable {
 		});
 
 	}
-
+		/**
+		 * Méthode qui permet de dessiner toutes les formes   
+		 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -240,16 +245,12 @@ public class Scene extends JPanel implements Runnable {
 		g2d.draw(mat.createTransformedShape(fantomePerso));
 
 	}
-	/**
-	 * Arrete l'animation
-	 */
+	
 	public void arreter() {
 		if (enCoursAnimation)
 			enCoursAnimation = false;
 	}
-	/** 
-	 * Demarre le thread s'il n'est pas deja demarrer
-	 */
+	
 	public void demarrer() {
 		if (!enCoursAnimation) {
 			Thread proc = new Thread(this);
@@ -259,9 +260,9 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	// Jeremy Thai
+	
 	/**
-	 * Calcul des nouvelles positions de tous les objets en mouvement(balles,lasers,personnage)
+	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
 	 */
 	private void calculerUneIterationPhysique() {
 
@@ -368,24 +369,24 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	private void detectionCollisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
 
-		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
-				if (intersection(balle.getAireBalle(), laser.getLaserAire())) {
+				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
 					listeLasers.remove(laser);
-					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
 				}
-
 			}
 		}
 	}
+		
 
+	
+	
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
 		for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
-				if (intersection(trou.getAireTrou(), laser.getLaserAire())) {
+				if (enIntersection(trou.getAireTrou(), laser.getLaserAire())) {
 					listeLasers.remove(laser);
 
 				}
@@ -419,7 +420,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param aire2 aire de la deuxieme forme
 	 * @return boolean true or false 
 	 */
-	private boolean intersection(Area aire1, Area aire2) {
+	private boolean enIntersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
 		if (!aireInter.isEmpty()) {
@@ -527,7 +528,8 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki
+	 *@author Arezki
+	 *efface tous les dessins sur la scene
 	 */
 	public void reinitialiserDessin() {
 		listeBalles.removeAll(listeBalles);

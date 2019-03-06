@@ -1,6 +1,7 @@
 package aaplication;
 
 import java.awt.Color;
+
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -29,7 +30,11 @@ import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Font;
-
+/**
+ * 
+ * @author Arezki
+ *
+ */
 public class App10LaserDeLaJustice extends JFrame {
 
 	private JPanel contentPane;
@@ -389,13 +394,16 @@ public class App10LaserDeLaJustice extends JFrame {
 	}
 	/**
 	 * Methode qui donne le focus a la scene
+	 *@author Miora
 	 */
 	public void donneFocusALaScene() {
 		scene.requestFocusInWindow();
 	}
 
 	
-	
+	/**
+	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur
+	 */
 	public void activerEditeur() {
 		setBounds(100, 100, 1800, 1006);
 		btnBlocDeau.setEnabled(true);
@@ -408,7 +416,9 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnTrouNoir.setEnabled(true);
 		btnPetiteBalle.setEnabled(true);
 	}
-	
+	/**
+	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons de l'éditeur
+	 */
 	public void desactiverEditeur() {
 		setBounds(100, 100, 1389, 1006);
 		btnBlocDeau.setEnabled(false);

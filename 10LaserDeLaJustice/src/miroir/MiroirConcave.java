@@ -65,7 +65,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 
 	/**
 	 * 
-	 * @param laser 
+	 * @param laser mettre le laser qui va entrer en collision avec le miroir 
 	 * @param miroireAire c'est l'air du miroir concave;
 	 * @param miroire mettre un miroir concave pour faire les calculs nécessaires
 	 * @return un nouveau rayon (laser) qui est réflchi par le miroir
@@ -98,7 +98,13 @@ public class MiroirConcave extends JPanel implements Dessinable {
 		return nouveauLaser;
 	}
 	
-	
+	/**
+	 * 
+	 @param laser mettre le laser qui va entrer en collision avec le miroir
+	 * @param miroireAire c'est l'air du miroir concave;
+	 * @param miroire mettre un miroir concave pour faire les calculs nécessaires
+	 * @return un vecteur de position de la collision entre le laser et le miroir
+	 */
 	public Vecteur collisionAvecMiroireLaser(Laser laser, Area miroireAire, MiroirConcave miroire) {
 		
 		
@@ -112,16 +118,28 @@ public class MiroirConcave extends JPanel implements Dessinable {
 
 	
 	}
-
+/**
+ * 
+ * @return une aire du miroir concave
+ */
 	public Area aire() {
 		return new Area(miroirConcave);
 	}
-
+	/**
+	
+	 * @param laser mettre le laser qui va entrer en collision avec le miroir
+	 * @return un vecteur qui a la direction opposé du laser 
+	 */
 	public Vecteur calculRayonIncidentInverse(Laser laser) {
 		return new Vecteur(-laser.getPosition().getX(), -laser.getPosition().getY());
 
 	}
-
+/**
+ * 
+ * @param laser mettre le laser qui va entrer en collision avec le miroir
+ * @param miroire mettre un miroir concave qui va entrer en collision avec le laser et pour faire les calculs nécessaires
+ * @return un vecteur de la normal entre le laser et le miroir concave
+ */
 	public Vecteur calculNormal(Laser laser, MiroirConcave miroire) {
 
 		return new Vecteur(laser.getPosition().getX() - miroire.getPositionIni().getX(),
@@ -130,7 +148,12 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	}
 	
 	
-	
+	/**
+	 * @author Miora
+	 * @param aire1 : aire de la premiere geometrie
+	 * @param aire2 : aire de la deuxieme geometrie
+	 * @return si il y'a une intersection entre 2 aires 
+	 */
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -140,32 +163,55 @@ public class MiroirConcave extends JPanel implements Dessinable {
 		return false;
 	}
 
-	
+	/**
+	 * @author Miora
+	 * @param laser mettre le laser qui va entrer en collision avec le miroir
+	 * @return un vecteur de la normal entre le laser et le miroir
+	 */
 	public Vecteur getNormalPosition(Vecteur position) {
 		return new Vecteur (positionIni.getX()-position.getX(), positionIni.getY()-position.getY());
 		
 	}
-
+	/**
+	 * 
+	 * @return le parametre angle de debut du miroir concave 
+	 */
 	public double getAngleDebut() {
 		return angleDebut;
 	}
-
+	/**
+	 * 
+	 * @return la position initiale du miroir concave en vecteur
+	 */
 	public Vecteur getPositionIni() {
 		return positionIni;
 	}
-
+	/**
+	 * methode quipermet de modifier la posiution du miroir
+	 * @param positionIni nouvelle position du miroire concave 
+	 */
 	public void setPositionIni(Vecteur positionIni) {
 		this.positionIni = positionIni;
 	}
-
+	/**
+	 * Permet de modifier l'angle du miroir 
+	 * @param angleDebut nouveau angle du miroir
+	 */
 	public void setAngleDebut(double angleDebut) {
 		this.angleDebut = angleDebut;
 	}
 
+	/**
+	 * 
+	 * @return la grosseur du miroir
+	 */
 	public double getGrosseurMiroire() {
 		return grosseurMiroire;
 	}
-
+	/**
+	 * Permet de modifier la grosseur du miroir
+	 * @param grosseurMiroire nouvelle grosseur du miroir 
+	 */
 	public void setGrosseurMiroire(double grosseurMiroire) {
 		this.grosseurMiroire = grosseurMiroire;
 	}

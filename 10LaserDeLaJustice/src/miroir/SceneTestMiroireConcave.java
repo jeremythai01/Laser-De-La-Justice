@@ -252,7 +252,7 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
 	 * avec un miroir convexe
 	 * @throws Exception
-	 * @author Miora 
+	 * @author Miora et Arezki
 	 */
 	private void colisionLaserMiroirConcave() throws Exception{
 		for(MiroirConcave miroirC : listeMiroirConcave ) {
@@ -281,7 +281,7 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 	/**
 	 * Cette methode permet de savoir si l'utilisateur veut oui ou non dessiner un miroir plan
 	 * @param reponse : vrai s'il veut dessiner un miroir plan
-	 * @author Arezki
+	
 	 */
 	public void setMiroirPlan(boolean reponse) {
 		miroirPlan = reponse;
