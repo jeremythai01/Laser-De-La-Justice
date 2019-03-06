@@ -257,7 +257,7 @@ public class SceneTest extends JPanel implements Runnable {
 		if(enCoursAnimation == true) {
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_SPACE) {
-				character.shoot(code);
+				character.neBougePas();
 				if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 					listeLasers.add(
 							new Laser(new Vecteur(

@@ -308,9 +308,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			for(BlocDEau bloc : listeBloc) {
 				if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
-<<<<<<< HEAD
 					//laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
-=======
+
 					try {
 						Vecteur ref=bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
 						laser.setAngleTir(Math.atan(ref.getY()/ref.getX()));
@@ -318,22 +317,20 @@ public class SceneTestPls extends JPanel implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 					//System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 				//	laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
-<<<<<<< HEAD
+
 					laser.setAngleTir(60);
 					laser.updaterAngleVitesse((laser.getAngleTir()));
 					System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 					System.out.println("nouvelle vitesse laser: "+ laser.getVitesse());
-=======
 					//laser.setAngleTir(30);
 					//laser.updaterAngleVitesse((laser.getAngleTir()));
 					System.out.println("laser:" + laser.getVitesse().multiplie(-1));
 					System.out.println("nouvel normal:" + bloc.getNormal());
 				//	System.out.println();
 				//	System.out.println("valeur bloc: "+ ref);
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
+
 					//repaint();
 					
 				}
