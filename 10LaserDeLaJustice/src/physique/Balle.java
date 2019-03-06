@@ -247,9 +247,11 @@ public class Balle implements Dessinable {
 		}
 
 		if(position.getX()+diametre >= width) // touche le mur droite 
+			if(vitesse.getX() >0 )
 			vitesse.setX(-vitesse.getX());
 
 		if(position.getX() <= 0) // touche le mur gauche 
+			if(vitesse.getX() < 0 )
 			vitesse.setX(-vitesse.getX());
 
 

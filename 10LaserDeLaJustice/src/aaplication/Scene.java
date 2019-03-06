@@ -63,7 +63,7 @@ public class Scene extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private double angle;
-	private double deltaT = 0.08;
+	private double deltaT = 0.06;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
 
@@ -151,7 +151,7 @@ public class Scene extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				principal.deplacerLePersoSelonTouche(e);
 				System.out.println(principal.getToucheDroite() + " " + principal.getToucheGauche());
-				shootEtAddLaser(e);
+				tirLaser(e);
 				repaint();
 			}
 
@@ -187,8 +187,8 @@ public class Scene extends JPanel implements Runnable {
 			laser.dessiner(g2d, mat, 0, 0);
 		}
 
-		checkCollisionBalleLaserPersonnage(listeBalles, listeLasers, principal);
-		checkCollisionTrouLaserPersonnage(listeLasers);
+		detectionCollisionBalleLaser(listeBalles, listeLasers);
+		detectionCollisionTrouLaser(listeLasers);
 
 		if (editeurActiver) {
 
@@ -215,14 +215,14 @@ public class Scene extends JPanel implements Runnable {
 			for (TrouNoir trou : listeTrou) {
 				trou.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			}
-			
+
 			for(BlocDEau blocE : listeBlocEau) {
 				blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			}
-	
+
 		}
-		
-		// creerLePersonnagePrincipal(g2d, mat);
+
+		//creerLePersonnagePrincipal(g2d, mat);
 
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
@@ -245,19 +245,12 @@ public class Scene extends JPanel implements Runnable {
 		g2d.draw(mat.createTransformedShape(fantomePerso));
 
 	}
-	/**
-	 * permet d'arreter l'animation
-	 * @author Jeremy
-	 */
+	
 	public void arreter() {
 		if (enCoursAnimation)
 			enCoursAnimation = false;
 	}
-
-	/**
-	 * @author Jeremy
-	 * permet de démarrer l'animation
-	 */
+	
 	public void demarrer() {
 		if (!enCoursAnimation) {
 			Thread proc = new Thread(this);
@@ -267,9 +260,9 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	// Jeremy Thai
+	
 	/**
-	 * permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
+	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
 	 */
 	private void calculerUneIterationPhysique() {
 
@@ -285,10 +278,13 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	@Override
+	/** 
+	 * Animation du bloc-ressort
+	 */
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
-			principal.move();
+			principal.bouge();
 			calculerUneIterationPhysique();
 			repaint();
 			try {
@@ -366,32 +362,31 @@ public class Scene extends JPanel implements Runnable {
 
 	// Jeremy Thai
 	/**
-	 * 
-	 * @param listeBalles
-	 * @param listeLasers
-	 * @param character
+	 * Fait la detection d une collision entre toutes les balles et tous les lasers
+	 * @param listeBalles liste de balles
+	 * @param listeLasers liste de lasers
+	 * @param character personnage 
 	 */
-	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers,
-			Personnage character) {
+	private void detectionCollisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
 
-		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
-				if (intersection(balle.getAireBalle(), laser.getLaserAire())) {
+				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
 					listeLasers.remove(laser);
-					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
 				}
-
 			}
 		}
 	}
+		
 
-	private void checkCollisionTrouLaserPersonnage(ArrayList<Laser> listeLasers) {
+	
+	
+	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
 		for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
-				if (intersection(trou.getAireTrou(), laser.getLaserAire())) {
+				if (enIntersection(trou.getAireTrou(), laser.getLaserAire())) {
 					listeLasers.remove(laser);
 
 				}
@@ -401,22 +396,31 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	// Jeremy Thai
-	private void shootEtAddLaser(KeyEvent e) {
+	/**
+	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne touche de clavier
+	 * @param e touche du clavier 
+	 */
+	private void tirLaser(KeyEvent e) {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
-				principal.shoot(code);
-				if (listeLasers.size() < 1) { // Pour que 1 laser soit tirer a la fois
+				principal.neBougePas(); // Pour que 1 laser soit tirer a la fois
 					listeLasers.add(new Laser(
-							new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2, LARGEUR_DU_MONDE),
+							new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2, LARGEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
 							angle, new Vecteur(0, 0.5)));
-				}
+				
 			}
 		}
 	}
 
 	// Jeremy Thai
-	private boolean intersection(Area aire1, Area aire2) {
+	/**
+	 * Retourne vrai si deux aires de formes sont en intersection, sinon faux.
+	 * @param aire1 aire de la premiere forme 
+	 * @param aire2 aire de la deuxieme forme
+	 * @return boolean true or false 
+	 */
+	private boolean enIntersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
 		if (!aireInter.isEmpty()) {
@@ -424,6 +428,8 @@ public class Scene extends JPanel implements Runnable {
 		}
 		return false;
 	}
+
+
 
 	/**
 	 * Arezki Issaadi
@@ -492,7 +498,7 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 
 	}
-	
+
 	/**
 	 * Arezki Issaadi
 	 *  permet d'ajouter un bloc d'eau via lediteur 
