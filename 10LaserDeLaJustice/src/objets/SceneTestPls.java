@@ -71,7 +71,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	 */
 	public SceneTestPls() {
 
-		angle = -90;
+		angle = 45;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -309,11 +309,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			for(BlocDEau bloc : listeBloc) {
 				if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
-					laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
+					//laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
 					//System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 				//	laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
-				//	laser.setAngleTir(60);
-					//laser.updaterAngleVitesse((laser.getAngleTir()));
+					laser.setAngleTir(60);
+					laser.updaterAngleVitesse((laser.getAngleTir()));
 					System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 					System.out.println("nouvelle vitesse laser: "+ laser.getVitesse());
 					//repaint();
