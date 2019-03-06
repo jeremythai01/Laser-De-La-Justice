@@ -129,7 +129,7 @@ public class Scene extends JPanel implements Runnable {
 				double eXR = e.getX() / modele.getPixelsParUniteX();
 				double eYR = e.getY() / modele.getPixelsParUniteY();
 
-				balle = new Balle(new Vecteur(eXR - diametre / 2, eYR - diametre / 2), vitesse, "LARGE");
+				/*balle = new Balle(new Vecteur(eXR - diametre / 2, eYR - diametre / 2), vitesse, "LARGE");
 				trou = new TrouNoir(new Vecteur(eXR, eYR));
 				miroireConvexe = new MiroirConvexe(eXR, eYR, 1);
 				miroirConcave = new MiroirConcave(new Vecteur(eXR, eYR),2);
@@ -139,7 +139,7 @@ public class Scene extends JPanel implements Runnable {
 				listeTrou.add(trou);
 				listeMiroireConcave.add(miroirConcave);
 				listeMiroireConvexe.add(miroireConvexe);
-				listeBlocEau.add(bloc);
+				listeBlocEau.add(bloc);*/
 
 				repaint();
 			}
