@@ -12,7 +12,11 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
-
+/**
+ * 
+ * @author Arezki Issaadi
+ *
+ */
 public class Pistolet extends JPanel implements Dessinable {
 
 	/**

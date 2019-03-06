@@ -30,6 +30,19 @@ public class Personnage implements Dessinable {
 	private double positionX ;
 	private boolean premiereFois = true;
 	private int toucheGauche = 37, toucheDroite = 39;
+	
+	public int getToucheGauche() {
+		return toucheGauche;
+	}
+	public void setToucheGauche(int toucheGauche) {
+		this.toucheGauche = toucheGauche;
+	}
+	public int getToucheDroite() {
+		return toucheDroite;
+	}
+	public void setToucheDroite(int toucheDroite) {
+		this.toucheDroite = toucheDroite;
+	}
 	private double vitesseX =0;
 	private boolean gauche;
 	private boolean droite;
@@ -45,6 +58,7 @@ public class Personnage implements Dessinable {
 	 @param gauche : le code (KeyCode) de la touche gauche lorsque clique, le personnage veut aller a gauche
 	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage veut aller a gauche
 	 */
+	//Miora
 	public Personnage(int gauche, int droite) {
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
@@ -59,17 +73,31 @@ public class Personnage implements Dessinable {
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
 	}
+	public Personnage() {
+		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		if (fich == null) {
+			JOptionPane.showMessageDialog(null, "Fichier Fnaruto_debout.jpg introuvable!");
+		} else {
+			try {
+				imgPerso = ImageIO.read(fich);
+			} catch (IOException e) {
+				System.out.println("Erreur de lecture du fichier d'image");
+			}
+		}
+	}
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
 	 * gauche.
 	 * @return la position initial du personnage
 	 */
+	//Miora
 	public double getPOSITION_INITIALE() {
 		return POSITION_INITIALE;
 	}
 	/**
 	 * Methode permettant de dessiner le personnage
 	 */
+	//Miora
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteurScene, double largeurScene) {
 
 		AffineTransform matLocale = new AffineTransform(mat);
@@ -162,6 +190,7 @@ public class Personnage implements Dessinable {
 	 * Methode permettant de savoir la position du personnage
 	 * @return la position initiale du personnage
 	 */
+	//Miora
 	public double getPositionX() {
 		return positionX;
 	}
@@ -169,6 +198,7 @@ public class Personnage implements Dessinable {
 	 * Methode permettant de modifier la position du personnage.
 	 * @param positionX : position voulue du personnage
 	 */
+	//Miora
 	public void setPositionX(double positionX) {
 		this.positionX = positionX;
 	}
@@ -176,6 +206,7 @@ public class Personnage implements Dessinable {
 	 * Methode permettant qui retourne la longueur du personnage.
 	 * @return la longueur du personnage
 	 */
+	//Miora
 	public double getLONGUEUR_PERSO() {
 		return LONGUEUR_PERSO;
 	}
@@ -183,6 +214,7 @@ public class Personnage implements Dessinable {
 	 * Methode permettant de savoir la largeur du personnae
 	 * @return la largeur du personnage
 	 */
+	//Miora
 	public double getLARGEUR_PERSO() {
 		return LARGEUR_PERSO;
 	}

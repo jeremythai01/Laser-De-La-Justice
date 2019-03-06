@@ -1,63 +1,75 @@
 package miora;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Path2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
-import objets.BlocDEau;
 import physique.Laser;
 
 /**
- * Cette classe permet 
- * @author Miora R. Rakoto
+ * Classe des miroirs plan
+ * @author Miora
  *
  */
 public class MiroirPlan implements Dessinable {
-	private double hauteur = 0;
-	private Path2D.Double miroirPlan;
 	
-	private double x1=0, y1=0, x2=0, y2=0;
-	private double epaisseur = 5;
-	private Area aireMiroir = null; 
-	AffineTransform matLocal;
-	/*
-	 * Constructeur de la classe
-	 * @param x1 : position sur l'axe des x de point le plus a gauche du miroir
-	 * @param y1 : position sur l'axe des y de point le plus a gauche du miroir
-	 * @param x2 : position sur l'axe des x de point le plus a droite du miroir
-	 * @param y2 : position sur l'axe des y de point le plus a droite du miroir
+	private double x=0, y=0, angle=0;
+	private Rectangle2D.Double miroir;
+	private AffineTransform matLocale;
+	private double longueur = 2; 
+	private Shape miroirTransfo;
+	private Vecteur normal;
+	
+	/**
+	 * Constructeur d'un miroir plan
+	 * @param x : la position la plus a gauche du miroir en x
+	 * @param y : la position la plus a droite du miroir en y
+	 * @param angle : angle de miroir avec une rotation en degre a partir de x,y
 	 */
-	public MiroirPlan(double x1, double y1, double x2, double y2) {
-		this.x1 = x1;
-		this.y1 = y1;
-		this.x2 = x2;
-		this.y2 = y2;
+	public MiroirPlan(double x, double y, double angle) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.angle = angle;
 	}
-	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
-		matLocal = new AffineTransform(mat);
-		miroirPlan = new Path2D.Double();
-		miroirPlan.moveTo(x1,y1);
-		miroirPlan.lineTo(x2, y2);
-		miroirPlan.closePath();
-		g.setStroke(new BasicStroke((float) epaisseur));
-		g.setColor(Color.red);
-		g.draw(matLocal.createTransformedShape(miroirPlan));
+	/**
+	 * Dessiner le miroir
+	 * @param g2d : le composant graphique
+	 * @param mat : la matrice de transformation
+	 * @param hauteur : la hauteur du composant acceuillant le miroir
+	 * @param largeur : la largeur du composant acceuillant le miroir
+	 */
+	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
+		matLocale = new AffineTransform(mat);
+		matLocale.rotate(-angle,x,y);
+		miroir = new Rectangle2D.Double(x,y, longueur, 0.05);
+		//miroirTransfo = matLocale.createTransformedShape(miroir);
+		//g2d.fill(miroirTransfo);
+		g2d.draw(matLocale.createTransformedShape(miroir));
 	}
+	/**
+	 * Methode qui retourne aire du miroir
+	 * @return aire du miroir
+	 */
 	public Area getAireMiroir() {
-		miroirPlan.moveTo(x1,y1);
-		miroirPlan.lineTo(x2, y2);
-		miroirPlan.closePath();
-		return new Area(miroirPlan);
+		return new Area (miroir);
 	}
 	
-	public Vecteur calculNormal() {
-		Vecteur positionMiroir = new Vecteur (x2-x1, y2-y1);
-		return new Vecteur(-positionMiroir.getY(), positionMiroir.getX());
+	/**
+	 * Methode pour obtenir le vecteur normal au miroir
+	 * @return le vecteur perpendiculaire au miroir
+	 */
+	public Vecteur getNormal() {
+		angle = Math.toRadians(angle);
+		Vecteur vecMiroir = new Vecteur (Math.cos(angle), Math.sin(angle));
+		normal = new Vecteur(-vecMiroir.getY(), vecMiroir.getX());
+		return normal;
 	}
+	
 
 }

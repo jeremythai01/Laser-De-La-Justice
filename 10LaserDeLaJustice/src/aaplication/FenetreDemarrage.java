@@ -16,6 +16,11 @@ import javax.swing.border.EmptyBorder;
 
 import options.Options;
 
+/**
+ * 
+ * @author Arezki Issaadi
+ *
+ */
 public class FenetreDemarrage extends JFrame {
 
 	private JPanel contentPane;
