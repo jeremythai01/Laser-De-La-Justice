@@ -29,9 +29,9 @@ import javax.swing.JOptionPane;
 
 import javax.swing.JPanel;
 import geometrie.Vecteur;
-import miora.MiroirConvexe;
-import miora.MiroirPlan;
 import miroir.MiroirConcave;
+import miroir.MiroirConvexe;
+import miroir.MiroirPlan;
 import objets.BlocDEau;
 import objets.TrouNoir;
 import personnage.Personnage;

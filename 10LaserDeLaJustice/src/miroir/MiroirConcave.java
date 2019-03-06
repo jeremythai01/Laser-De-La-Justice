@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
-import miora.MiroirPlan;
 import physique.Laser;
 /**
  * 
