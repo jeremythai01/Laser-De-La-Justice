@@ -50,7 +50,7 @@ public class MiroirPlan implements Dessinable {
 		miroir = new Rectangle2D.Double(x,y, longueur, 0.05);
 		//miroirTransfo = matLocale.createTransformedShape(miroir);
 		//g2d.fill(miroirTransfo);
-		g2d.fill(matLocale.createTransformedShape(miroir));
+		g2d.draw(matLocale.createTransformedShape(miroir));
 	}
 	/**
 	 * Methode qui retourne aire du miroir
@@ -65,7 +65,6 @@ public class MiroirPlan implements Dessinable {
 	 * @return le vecteur perpendiculaire au miroir
 	 */
 	public Vecteur getNormal() {
-		System.out.println("j'execute ceci");
 		angle = Math.toRadians(angle);
 		Vecteur vecMiroir = new Vecteur (Math.cos(angle), Math.sin(angle));
 		normal = new Vecteur(-vecMiroir.getY(), vecMiroir.getX());

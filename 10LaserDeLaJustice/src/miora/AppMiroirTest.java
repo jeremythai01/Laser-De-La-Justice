@@ -5,26 +5,32 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
 
+/**
+ * Cette classe permet de tester les miroirs concaves et convexes
+ * @author Miora
+ *
+ */
 public class AppMiroirTest extends JFrame {
 
 	private JPanel contentPane;
-	private SceneTestMiroirs sceneTestMiroirs;
+	private SceneMiroir sceneMiroir;
+	private static AppMiroirTest frame;
 
 	/**
-	 * Launch the application.
+	 * Lancer l'application
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AppMiroirTest frame = new AppMiroirTest();
+					frame = new AppMiroirTest();
 					frame.setVisible(true);
-					frame.sceneTestMiroirs.requestFocusInWindow();
+					frame.sceneMiroir.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -33,62 +39,55 @@ public class AppMiroirTest extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creer la fenetre
 	 */
 	public AppMiroirTest() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 629, 567);
+		setBounds(100, 100, 736, 556);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		sceneTestMiroirs = new SceneTestMiroirs();
-		sceneTestMiroirs.setBounds(10, 11, 461, 481);
-		contentPane.add(sceneTestMiroirs);
-		donneFocusALaScene();
-		
-		JButton btnStart = new JButton("start");
-		btnStart.setBounds(495, 87, 108, 23);
-		contentPane.add(btnStart);
-		
-		JButton btnStop = new JButton("stop");
-		btnStop.setBounds(495, 197, 108, 23);
-		contentPane.add(btnStop);
-		
-		JButton btnMiroirPlan = new JButton("Miroir plan");
-		btnMiroirPlan.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sceneTestMiroirs.setMiroirPlan(true);
-				donneFocusALaScene();
+		JButton btnJouer = new JButton("Jouer");
+		btnJouer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneMiroir.requestFocusInWindow();
+				sceneMiroir.demarrer();
 			}
 		});
-		btnMiroirPlan.setBounds(495, 307, 108, 23);
-		contentPane.add(btnMiroirPlan);
+		btnJouer.setBounds(578, 85, 132, 23);
+		contentPane.add(btnJouer);
+		
+		JButton btnArreter = new JButton("Arreter");
+		btnArreter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneMiroir.arreter();
+			}
+		});
+		btnArreter.setBounds(578, 193, 132, 23);
+		contentPane.add(btnArreter);
+		
+		JButton btnMioirPlan = new JButton("Mioir plan");
+		btnMioirPlan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneMiroir.setMiroirPlan(true);
+			}
+		});
+		btnMioirPlan.setBounds(578, 301, 132, 23);
+		contentPane.add(btnMioirPlan);
 		
 		JButton btnMiroirConvexe = new JButton("Miroir convexe");
 		btnMiroirConvexe.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sceneTestMiroirs.setMiroirPlan(false);
-				donneFocusALaScene();
+			public void actionPerformed(ActionEvent arg0) {
+				sceneMiroir.setMiroirPlan(false);
 			}
 		});
-		btnMiroirConvexe.setBounds(495, 417, 108, 23);
+		btnMiroirConvexe.setBounds(578, 409, 132, 23);
 		contentPane.add(btnMiroirConvexe);
-		btnStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				sceneTestMiroirs.arreter();
-				donneFocusALaScene();
-			}
-		});
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				sceneTestMiroirs.demarrer();
-				donneFocusALaScene();
-			}
-		});
-	}
-	public void donneFocusALaScene() {
-		sceneTestMiroirs.requestFocusInWindow();
+		
+		sceneMiroir = new SceneMiroir();
+		sceneMiroir.setBounds(10, 11, 558, 496);
+		contentPane.add(sceneMiroir);
 	}
 }

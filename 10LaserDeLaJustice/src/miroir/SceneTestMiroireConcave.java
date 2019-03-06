@@ -74,7 +74,7 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 		character = new Personnage(toucheGauche, toucheDroite);
 		
 		
-		angle = -90;
+		angle = 90;
 		vitesse = new Vecteur(0.5 ,0);
 
 		addMouseListener(new MouseAdapter() {

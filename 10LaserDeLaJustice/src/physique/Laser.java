@@ -27,8 +27,10 @@ public class Laser implements Dessinable{
 	private Vecteur accel;
 	Path2D.Double trace;
 	private double ligneFinY;
+	public void setLigneFinY(double ligneFinY) {
+		this.ligneFinY = ligneFinY;
+	}
 	private double ligneDebutX;
-
 
 	Random rand = new Random();
 	
@@ -74,6 +76,18 @@ public class Laser implements Dessinable{
 	public void move() { 
 		ligneFinY -= vitesse.getY();
 		ligneDebutX+=vitesse.getX();
+		position = new Vecteur (ligneDebutX, ligneFinY);
+		System.out.println(position.toString());
+		//System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
+	}
+	
+	public double getLigneDebutX() {
+		return ligneDebutX;
+	}
+
+
+	public void setLigneDebutX(double ligneDebutX) {
+		this.ligneDebutX = ligneDebutX;
 	}
 
 
@@ -111,7 +125,7 @@ public class Laser implements Dessinable{
 	}
 
 	public Vecteur getPosition() {
-		return position;
+		return new Vecteur ();
 	}
 
 	public void setPosition(Vecteur position) {
@@ -156,7 +170,7 @@ public class Laser implements Dessinable{
 		double vitesseEnY=0.5*Math.sin(Math.toRadians(angle));
 		Vecteur vec = new Vecteur(vitesseEnX,vitesseEnY);
 		setVitesse(new Vecteur(vitesseEnX,vitesseEnY));
-		System.out.println("modification vitesse"+ vec );
+	//	System.out.println("modification vitesse"+ vec );
 	}
 
 
