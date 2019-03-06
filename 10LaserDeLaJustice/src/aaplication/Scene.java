@@ -48,7 +48,7 @@ import java.awt.event.MouseMotionAdapter;
 /**
  * Cette classe contient la scene d'animation du jeu.
  * 
- * @author Miora
+ * @author Miora et Arezki
  *
  */
 public class Scene extends JPanel implements Runnable {
@@ -99,7 +99,10 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private int tempsDuSleep = 30;
 
-	// Jeremy Thai
+	/**
+	 * @author  Jeremy Thai
+	 * Constructeur qui permet de mettre les dessins avec le clic de la souris 
+	 */
 
 	public Scene() {
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -161,7 +164,9 @@ public class Scene extends JPanel implements Runnable {
 		});
 
 	}
-
+		/**
+		 * Méthode qui permet de dessiner toutes les formes   
+		 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -240,12 +245,19 @@ public class Scene extends JPanel implements Runnable {
 		g2d.draw(mat.createTransformedShape(fantomePerso));
 
 	}
-
+	/**
+	 * permet d'arreter l'animation
+	 * @author Jeremy
+	 */
 	public void arreter() {
 		if (enCoursAnimation)
 			enCoursAnimation = false;
 	}
 
+	/**
+	 * @author Jeremy
+	 * permet de démarrer l'animation
+	 */
 	public void demarrer() {
 		if (!enCoursAnimation) {
 			Thread proc = new Thread(this);
@@ -256,6 +268,9 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	// Jeremy Thai
+	/**
+	 * permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
+	 */
 	private void calculerUneIterationPhysique() {
 
 		for (Balle balle : listeBalles) {
@@ -350,6 +365,12 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	// Jeremy Thai
+	/**
+	 * 
+	 * @param listeBalles
+	 * @param listeLasers
+	 * @param character
+	 */
 	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers,
 			Personnage character) {
 
@@ -501,7 +522,8 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki
+	 *@author Arezki
+	 *efface tous les dessins sur la scene
 	 */
 	public void reinitialiserDessin() {
 		listeBalles.removeAll(listeBalles);
