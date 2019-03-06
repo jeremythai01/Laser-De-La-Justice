@@ -50,8 +50,8 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 
-		miroirConcave = new Arc2D.Double(positionIni.getX(), positionIni.getY(), grosseurMiroire, grosseurMiroire, -180,
-				180, Arc2D.CHORD);
+		miroirConcave = new Arc2D.Double(positionIni.getX(), positionIni.getY(), grosseurMiroire, grosseurMiroire, 180,
+				-180, Arc2D.OPEN);
 		// matLocal.rotate(90);
 		// En rouge
 		g.setColor(Color.red);
@@ -108,10 +108,10 @@ public class MiroirConcave extends JPanel implements Dessinable {
 		
 		
 		if (!intersection(aire(), laser.getLaserAire())) {
-			System.out.println("je touche");
+			//System.out.println("je touche");
 			return calculNormal(laser, miroire);
 		} else {
-			System.out.println("XD");
+		//	System.out.println("XD");
 			return new Vecteur();
 		}
 

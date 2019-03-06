@@ -56,7 +56,7 @@ public class AppMiroirTest extends JFrame {
 				sceneMiroir.demarrer();
 			}
 		});
-		btnJouer.setBounds(578, 85, 132, 23);
+		btnJouer.setBounds(578, 67, 132, 23);
 		contentPane.add(btnJouer);
 		
 		JButton btnArreter = new JButton("Arreter");
@@ -65,29 +65,44 @@ public class AppMiroirTest extends JFrame {
 				sceneMiroir.arreter();
 			}
 		});
-		btnArreter.setBounds(578, 193, 132, 23);
+		btnArreter.setBounds(578, 157, 132, 23);
 		contentPane.add(btnArreter);
 		
 		JButton btnMioirPlan = new JButton("Mioir plan");
 		btnMioirPlan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				sceneMiroir.setMiroirPlan(true);
+				sceneMiroir.setMiroirConvexe(false);
+				sceneMiroir.setMiroiConcave(false);
 			}
 		});
-		btnMioirPlan.setBounds(578, 301, 132, 23);
+		btnMioirPlan.setBounds(578, 247, 132, 23);
 		contentPane.add(btnMioirPlan);
 		
 		JButton btnMiroirConvexe = new JButton("Miroir convexe");
 		btnMiroirConvexe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				sceneMiroir.setMiroirPlan(false);
+				sceneMiroir.setMiroirConvexe(true);
+				sceneMiroir.setMiroiConcave(false);
 			}
 		});
-		btnMiroirConvexe.setBounds(578, 409, 132, 23);
+		btnMiroirConvexe.setBounds(578, 337, 132, 23);
 		contentPane.add(btnMiroirConvexe);
 		
 		sceneMiroir = new SceneMiroir();
 		sceneMiroir.setBounds(10, 11, 558, 496);
 		contentPane.add(sceneMiroir);
+		
+		JButton btnMiroirConcave = new JButton("Miroir concave");
+		btnMiroirConcave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneMiroir.setMiroirPlan(false);
+				sceneMiroir.setMiroirConvexe(false);
+				sceneMiroir.setMiroiConcave(true);
+			}
+		});
+		btnMiroirConcave.setBounds(585, 427, 125, 23);
+		contentPane.add(btnMiroirConcave);
 	}
 }

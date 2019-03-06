@@ -215,16 +215,36 @@ public class Personnage implements Dessinable {
 	public double getLARGEUR_PERSO() {
 		return LARGEUR_PERSO;
 	}
-
+	
+	/**
+	 * Methode permettant de savoir la touche utilise pour bouger le personnage a gauche
+	 * @return la latouche pour bouger le personnage a gauche
+	 */
+	//Miora
 	public int getToucheGauche() {
 		return toucheGauche;
 	}
+	/**
+	 * Methode de changer la touche utilise pour bouger le personnage a gauche
+	 * @param la nouvelle touche gauche
+	 */
+	//Miora
 	public void setToucheGauche(int toucheGauche) {
 		this.toucheGauche = toucheGauche;
 	}
+	/**
+	 * Methode permettant de savoir la touche utilise pour bouger le personnage a gauche
+	 * @return la latouche pour bouger le personnage a gauche
+	 */
+	//Miora
 	public int getToucheDroite() {
 		return toucheDroite;
 	}
+	/**
+	 * Methode de changer la touche utilise pour bouger le personnage a droite
+	 * @param la nouvelle touche droite
+	 */
+	//Miora
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
