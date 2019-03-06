@@ -2,22 +2,31 @@ package miroir;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
+/**
+ * Cette classe permet de tester les miroirs concaves et convexes
+ * @author Miora
+ *
+ */
 public class AplicationTestMiroire extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private SceneTestMiroireConcave scene;
-	private static  AplicationTestMiroire frame;
+	private SceneTestMiroireConcave sceneMiroir;
+	private static AplicationTestMiroire frame;
 
 	/**
-	 * Launch the application.
+	 * Lancer l'application
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -25,7 +34,7 @@ public class AplicationTestMiroire extends JFrame {
 				try {
 					frame = new AplicationTestMiroire();
 					frame.setVisible(true);
-					frame.scene.requestFocusInWindow();
+					frame.sceneMiroir.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -34,39 +43,55 @@ public class AplicationTestMiroire extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creer la fenetre
 	 */
 	public AplicationTestMiroire() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 989, 808);
+		setBounds(100, 100, 736, 556);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnStart = new JButton("start");
-		btnStart.addActionListener(new ActionListener() {
+		JButton btnJouer = new JButton("Jouer");
+		btnJouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				scene.requestFocusInWindow();
-				scene.demarrer();
+				sceneMiroir.requestFocusInWindow();
+				sceneMiroir.demarrer();
 			}
 		});
-		btnStart.setBounds(10, 735, 89, 23);
-		contentPane.add(btnStart);
+		btnJouer.setBounds(578, 85, 132, 23);
+		contentPane.add(btnJouer);
 		
-		JButton btnStop = new JButton("stop");
-		btnStop.addActionListener(new ActionListener() {
+		JButton btnArreter = new JButton("Arreter");
+		btnArreter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				scene.arreter();
+				sceneMiroir.arreter();
 			}
 		});
-		btnStop.setBounds(109, 735, 89, 23);
-		contentPane.add(btnStop);
+		btnArreter.setBounds(578, 193, 132, 23);
+		contentPane.add(btnArreter);
 		
-		scene = new SceneTestMiroireConcave();
-		scene.setBounds(10, 11, 953, 713);
-		contentPane.add(scene);
+		JButton btnMioirPlan = new JButton("Mioir plan");
+		btnMioirPlan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneMiroir.setMiroirPlan(true);
+			}
+		});
+		btnMioirPlan.setBounds(578, 301, 132, 23);
+		contentPane.add(btnMioirPlan);
 		
-	
+		JButton btnMiroirConcave = new JButton("Miroir concave");
+		btnMiroirConcave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneMiroir.setMiroirPlan(false);
+			}
+		});
+		btnMiroirConcave.setBounds(578, 409, 132, 23);
+		contentPane.add(btnMiroirConcave);
+		
+		sceneMiroir = new SceneTestMiroireConcave();
+		sceneMiroir.setBounds(10, 11, 558, 496);
+		contentPane.add(sceneMiroir);
 	}
 }

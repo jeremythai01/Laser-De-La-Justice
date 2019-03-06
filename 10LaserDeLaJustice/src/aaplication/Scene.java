@@ -129,7 +129,7 @@ public class Scene extends JPanel implements Runnable {
 				balle = new Balle(new Vecteur(eXR - diametre / 2, eYR - diametre / 2), vitesse, "LARGE");
 				trou = new TrouNoir(new Vecteur(eXR, eYR));
 				miroireConvexe = new MiroirConvexe(eXR, eYR, 1);
-				miroirConcave = new MiroirConcave(new Vecteur(eXR, eYR));
+				miroirConcave = new MiroirConcave(new Vecteur(eXR, eYR),2);
 				bloc = new BlocDEau(new Vecteur(eXR,eYR));
 
 				listeBalles.add(balle);
@@ -439,7 +439,7 @@ public class Scene extends JPanel implements Runnable {
 	 * permet d'ajouter un miroir concave via lediteur 
 	 */
 	public void ajoutMiroireConcave() {
-		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0)));
+		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0),2));
 		repaint();
 	}
 

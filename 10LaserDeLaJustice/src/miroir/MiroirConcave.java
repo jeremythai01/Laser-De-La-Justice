@@ -24,27 +24,35 @@ import physique.Laser;
 public class MiroirConcave extends JPanel implements Dessinable {
 
 	private Vecteur positionIni;
-	private Vecteur P;
-	private Vecteur Q;
 
 	private double angleDebut;
 	private double grosseurMiroire;
 
 	private Arc2D miroirConcave;
 
-	public MiroirConcave(Vecteur position) {
+	/**
+	 * 
+	 * @param position c'est la position du miroir en vecteur (x,y)
+	 * @param grosseurMiroire c'est le paramètre qui permet d'ajuster la largeur du miroir.
+	 */
+	public MiroirConcave(Vecteur position, double grosseurMiroire) {
 		positionIni = position;
-		angleDebut = 150;
-		grosseurMiroire = 150;
+		angleDebut = 100;
+		this.grosseurMiroire = grosseurMiroire;
 
 	}
 
 	@Override
+	/**
+	 * @param hauteur c'est la hauteur du monde réel
+	 * @param largeur c'est la largeur du monde réel 
+	 * dessiner le miroir concave
+	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 
-		miroirConcave = new Arc2D.Double(positionIni.getX(), positionIni.getY(), 5, 5, getAngleDebut(),
-				getGrosseurMiroire(), Arc2D.CHORD);
+		miroirConcave = new Arc2D.Double(positionIni.getX(), positionIni.getY(), grosseurMiroire, grosseurMiroire, -180,
+				180, Arc2D.CHORD);
 		// matLocal.rotate(90);
 		// En rouge
 		g.setColor(Color.red);
@@ -55,24 +63,44 @@ public class MiroirConcave extends JPanel implements Dessinable {
 
 	}
 
-	public Laser calculRayonReflechi(Laser laser, Area miroireAire, MiroirConcave miroire) {
+	/**
+	 * 
+	 * @param laser 
+	 * @param miroireAire c'est l'air du miroir concave;
+	 * @param miroire mettre un miroir concave pour faire les calculs nécessaires
+	 * @return un nouveau rayon (laser) qui est réflchi par le miroir
+	 * @throws Exception 
+	 */
+	public Laser calculRayonReflechi(Laser laser, Area miroireAire, MiroirConcave miroire) throws Exception {
 
 		Vecteur rayonIncident = laser.getPosition();
 		Vecteur normal = collisionAvecMiroireLaser(laser, miroireAire, miroire);
-		Vecteur rayonIncidentInverse = calculRayonIncidentInverse(laser);
+		//Vecteur rayonIncidentInverse = calculRayonIncidentInverse(laser);
 		Vecteur rayonReflechi;
 		Laser nouveauLaser;
 
-		rayonReflechi = rayonIncident.additionne(normal.multiplie(rayonIncidentInverse.multiplie(2).prodScalaire(normal.multiplie(2))));
+		// Pas oublier de normaliser ...
+		try {
+			normal = normal.normalise();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Ancienne version.
+		//rayonReflechi = rayonIncident.additionne(normal.multiplie(rayonIncidentInverse.multiplie(2).prodScalaire(normal.multiplie(2))));
+		
+		// Nouvelle version.
+		rayonReflechi = rayonIncident.additionne( normal.multiplie(2.0).multiplie(rayonIncident.multiplie(-1.0).prodScalaire(normal)));
+				
 		nouveauLaser = new Laser(rayonReflechi, -laser.getAngleTir(), laser.getVitesse());
 
 		return nouveauLaser;
 	}
-
 	
 	
 	public Vecteur collisionAvecMiroireLaser(Laser laser, Area miroireAire, MiroirConcave miroire) {
-		Area laserAire = new Area(laser.getLaserAire());
+		
 		
 		if (!intersection(aire(), laser.getLaserAire())) {
 			System.out.println("je touche");

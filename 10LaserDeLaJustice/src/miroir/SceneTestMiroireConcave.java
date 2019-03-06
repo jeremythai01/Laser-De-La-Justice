@@ -1,11 +1,14 @@
 package miroir;
 
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.util.ArrayList;
@@ -13,200 +16,157 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
-import interfaces.SceneListener;
 import miora.MiroirConvexe;
 import miora.MiroirPlan;
-import objets.TrouNoir;
-import personnage.Personnage;
-import physique.Balle;
+import miora.Personnage;
 import physique.Laser;
-import physique.MoteurPhysique;
 import utilite.ModeleAffichage;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 /**
- * 
- * @author Arezki Issaadi
+ * Cette classe permet de visualise le test
+ * @author Miora
  *
  */
-
-
 public class SceneTestMiroireConcave extends JPanel implements Runnable {
 
-	private static final long serialVersionUID = 1L;
-	private int tempsDuSleep = 30;
-	private double deltaT = 0.08;
-	private  double LARGEUR_DU_MONDE = 50; //en metres
+	private int tempsDuSleep = 25;
+	private double deltaT = 100;
+	private  double LARGEUR_DU_MONDE = 10; //en metres
 	private  double HAUTEUR_DU_MONDE;
-	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
-	private double diametre = 2;  //em mètres
-	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
-	private Balle balle;
+	private boolean enCoursAnimation= false;
 	private boolean premiereFois = true;
 	private ModeleAffichage modele;
 	private AffineTransform mat;
+	private Vecteur position;
+	private boolean miroirPlan = true;
+
 	private Vecteur vitesse;
+
+	private Vecteur gravity ;
+
 	private Personnage character;
-	
-	
+
 	private double angle;
+	private MiroirPlan plan;
+	private MiroirConvexe convexe;
+	private MiroirConcave concave;
+	
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
-
-	//private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
-	private TrouNoir trou;
-	private int toucheGauche = 37;
-	private int toucheDroite = 39;
-	private MiroirConcave miroireConcave;
-
-	private ArrayList<SceneListener> listeEcouteurs = new ArrayList<SceneListener>();
-	private ArrayList<MiroirConcave> listeMiroireConcave = new ArrayList<MiroirConcave>();
-
+	private ArrayList<MiroirPlan> listeMiroirPlan = new ArrayList<MiroirPlan>();
+	private ArrayList<MiroirConvexe> listeMiroirConvexe = new ArrayList<MiroirConvexe>();
+	private ArrayList<MiroirConcave> listeMiroirConcave = new ArrayList<MiroirConcave>();
+	
 	/**
-	 * Create the panel.
+	 * Constructeur de la classe
 	 */
 	public SceneTestMiroireConcave() {
-
-		character = new Personnage(toucheGauche, toucheDroite);
-		
-		
 		angle = 90;
-		vitesse = new Vecteur(0.5 ,0);
+		character = new Personnage();
+
+		position = new Vecteur(0.5, 10);
+
+		vitesse = new Vecteur(3 ,0);
+
+		gravity = new Vecteur(0,9.8);
 
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-
-				double eXR = e.getX()/modele.getPixelsParUniteX();
-				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
-				listeBalles.add(balle);
-				miroireConcave = new MiroirConcave(new Vecteur(eXR,eYR));
-				listeMiroireConcave.add(miroireConcave);
-				//	trou= new TrouNoir(new Vecteur(eXR,eYR));
-				//listeTrou.add(trou);
-				
-				repaint();
+				if(miroirPlan) {
+					double posX = e.getX()/modele.getPixelsParUniteX();
+					double posY = e.getY()/modele.getPixelsParUniteY();
+					
+					plan = new MiroirPlan (posX,posY, 0);
+					listeMiroirPlan.add(plan);
+					
+					repaint();
+				}else {
+					
+					double posX = e.getX()/modele.getPixelsParUniteX();
+					double posY = e.getY()/modele.getPixelsParUniteY();
+					concave = new MiroirConcave(new Vecteur(posX,posY),2); 
+					convexe = new MiroirConvexe (posX ,posY, 3);
+					listeMiroirConvexe.add(convexe);
+					listeMiroirConcave.add(concave);
+					repaint();
+					System.out.println("je suis ici");
+				}
 			}
 		});
-
-
 		addKeyListener(new KeyAdapter() {
-
 			@Override
 			public void keyPressed(KeyEvent e) {
-				character.deplacerLePersoSelonTouche( e );
-				shootEtAddLaser(e);
-				repaint();
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				character.relacheTouche(e);
+				character.deplacerLePersoSelonTouche(e);
+				shoot(e);
 				repaint();
 			}
 		});
-
 	}
-
-
+	/**
+	 * Cette methode permet de dessiner sur le composant g2d
+	 * @param g le composant gaphique
+	 */
 	public void paintComponent(Graphics g) {
-
-
-
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-
 		if(premiereFois) {
 			modele = new ModeleAffichage(getWidth(),getHeight(),LARGEUR_DU_MONDE);
 			mat = modele.getMatMC();
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 			premiereFois = false;
 		}
-
-
-
-			for(Laser laser : listeLasers) { 
-
-				if(laser.getLigneFinY() <= 0 ) {
-					listeLasers.remove(laser);
-				}
-				g2d.setStroke( new BasicStroke(3));
-				laser.dessiner(g2d, mat, 0, 0);
-			}try {
-				colisionLaserMiroirConcave();
-			} catch (Exception e) {
-				e.printStackTrace();
+		for(Laser laser : listeLasers) { 
+			if(laser.getLigneFinY() <= 0 ) {
+				listeLasers.remove(laser);
 			}
-		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
-	//	checkCollisionTrouLaserPersonnage( listeLasers );
-		
-
-		
-
-		for (int i = 0; i < listeBalles.size(); i++) {
-			for (int j = i+1; j < listeBalles.size(); j++) {
-				Balle balle1 = listeBalles.get(i);
-				Balle balle2 = listeBalles.get(j);
-				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
-			}
+			g2d.setStroke( new BasicStroke(3));
+			//laser.setAngleTir(angle);
+			laser.dessiner(g2d, mat, 0, 0);
 		}
-
-		/*
-		for(Balle balle: listeBalles) {
-
-			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+		try {
+			colisionLaserMiroirPlan();
+			colisionLaserMiroirConcave();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	
-		
-		/*
-		for(TrouNoir trou: listeTrou) {
-			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		}
-		 */
-		
-		for(MiroirConcave miroir: listeMiroireConcave) {
-			g2d.setColor(Color.red);
+		for(MiroirPlan miroir:listeMiroirPlan) {
+			g2d.setColor(Color.gray);
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			g2d.setColor(Color.yellow);
+			//g2d.draw(miroir.getAireMiroir());
 		}
 		
-		character.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
+		for(MiroirConcave miroirC:listeMiroirConcave) {
+			g2d.setColor(Color.gray);
+			miroirC.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			g2d.setColor(Color.yellow);
+		}
+		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
-		
 
 	}//fin paintComponent
-
-
-
-
-
-
+	/**
+	 * Cette methode permet de calculer une iteration physique
+	 */
 	private void calculerUneIterationPhysique() {
-		
-		for(Balle balle: listeBalles) {
-			balle.unPasRK4(deltaT, tempsTotalEcoule);
-		}
-
 		for(Laser laser : listeLasers) {
 			laser.move();
-			miroireConcave.calculRayonReflechi(laser, miroireConcave.aire(), miroireConcave);
 		}
-
-		
-
 		tempsTotalEcoule += deltaT;;
-		
 	}
-
+/**
+ * Cette methode permet d'arreter l'animation
+ */
 	public void arreter( ) {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
 	}
 
+	/**
+	 * Cette methode permet de demarrer l'animation
+	 */
 	public void demarrer() {
 		if (!enCoursAnimation) { 
 			Thread proc = new Thread(this);
@@ -215,12 +175,12 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 		}
 
 	}
-
-	@Override
+/**
+ * Cette methode demare l'animation
+ */
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
-			character.move();
 			calculerUneIterationPhysique();
 			repaint();
 			try {
@@ -232,25 +192,26 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 		System.out.println("Le thread est mort...");
 	}
 
-
-
-
-	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
-
-		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
-		for(Laser laser : listeLasers) {
-			for(Balle balle : listeBalles ) {
-				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
-					listeLasers.remove(laser);   
-					listeBalleTouche.add(balle);
-					balle.shrink(listeBalles);
-				}	
-
-			}
+/**
+ * Cette methode permet d'ecouter quel touche a ete actionne et s'il s'agit de la touche espace, le laser va s'actionner
+ * @param e : la touche
+ */
+	private void shoot(KeyEvent e) {
+		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_SPACE) {
+		//	if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+				listeLasers.add(
+						new Laser(new Vecteur(
+								character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+			//}
 		}
-
-
 	}
+	/**
+	 * Cette methode verifie s'il y a une intersection entre deux aires
+	 * @param aire1 : aire de la premiere geometrie
+	 * @param aire2 : aire de la deuxieme geometrie
+	 * @return vrai s'il y a intersection
+	 */
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -259,55 +220,72 @@ public class SceneTestMiroireConcave extends JPanel implements Runnable {
 		}
 		return false;
 	}
-
-	
-	private void shootEtAddLaser(KeyEvent e) {
-		if(enCoursAnimation == true) {
-			int code = e.getKeyCode();
-			if(code == KeyEvent.VK_SPACE) {
-				character.shoot(code);
-				if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
-					listeLasers.add(
-							new Laser(new Vecteur(
-									character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE) , angle, new Vecteur(0, 1 )));
-					System.out.println("nb de laser :"+ listeLasers.size());
-					repaint();
-				}
-			}
-		}
-
-	}
 	/**
-	 * prend un ecouteur en parametre pour être ajouté par le ArrayList d'écouteur
-	 * @param ecouteur
+	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
+	 * avec un miroir plan
+	 * @throws Exception
+	 * @author Miora
 	 */
-	public void addSceneListener(SceneListener ecouteur) {
-		listeEcouteurs.add(ecouteur);
-	}
-
-
-	private void colisionLaserMiroirConcave() throws Exception{
-		for(MiroirConcave miroirC : listeMiroireConcave ) {
+	private void colisionLaserMiroirPlan() throws Exception{
+		for(MiroirPlan miroir : listeMiroirPlan ) {
 			for(Laser laser : listeLasers) {
-				if(intersection(miroirC.aire(), laser.getLaserAire())) {
+				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
+					
 					// v orientation rayon incident
-					laser.setPosition(new Vecteur (1,1));
-					double angleLaser = -Math.toRadians(laser.getAngleTir());
+					double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					
 					//n vecteur normal au miroir
-					Vecteur n = miroirC.calculNormal(laser, miroirC).normalise();	
+					Vecteur n = miroir.getNormal().normalise();	
+					
 					//e = -v
 					Vecteur e = v.multiplie(-1);
-					
-					laser.setAngleTir( Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX())))));
-					
+					double angle2 =  Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
+					laser.setAngleTir(angle2);
+					System.out.println("le nouvel angle apres intersection miroir plan est : " + angle2);
 				}	
 			}
 		}
 	}
+	
+	/**
+	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
+	 * avec un miroir convexe
+	 * @throws Exception
+	 * @author Miora 
+	 */
+	private void colisionLaserMiroirConcave() throws Exception{
+		for(MiroirConcave miroirC : listeMiroirConcave ) {
+			for(Laser laser : listeLasers) {
+				if(intersection(miroirC.aire(), laser.getLaserAire())) {
+					System.out.println("j'ai une intersection");
+					//laser.setPosition(new Vecteur (0,0));
+					double angleLaser = Math.toRadians(laser.getAngleTir());
+					
+					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
+					//n vecteur normal au miroir
+					Vecteur n = miroirC.getNormalPosition(laser.getPosition()).normalise();	
+					
+					//e = -v
+					Vecteur e = v.multiplie(-1);
+					
+					Vecteur resultat = v.additionne(n.multiplie(2.0).multiplie(e.prodScalaire(n)));
+					laser.setAngleTir( Math.toDegrees(Math.atan( resultat.getY()/resultat.getX())));
+					
+				}
+			}
+		}
+	}
+	
 
-
-
+	/**
+	 * Cette methode permet de savoir si l'utilisateur veut oui ou non dessiner un miroir plan
+	 * @param reponse : vrai s'il veut dessiner un miroir plan
+	 * @author Arezki
+	 */
+	public void setMiroirPlan(boolean reponse) {
+		miroirPlan = reponse;
+		System.out.println(miroirPlan);
+	}
 
 }
-
