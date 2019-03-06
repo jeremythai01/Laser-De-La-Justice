@@ -340,7 +340,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 				}
 			}
 		}
-
 	}
 }
 

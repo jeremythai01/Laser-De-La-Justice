@@ -37,6 +37,7 @@ public class ApplicationBalleTest extends JFrame {
 	 * Create the frame.
 	 */
 	public ApplicationBalleTest() {
+		setTitle("Test de collision entre balles");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 989, 808);
 		contentPane = new JPanel();
