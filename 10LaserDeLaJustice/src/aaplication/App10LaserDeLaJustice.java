@@ -170,6 +170,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMiroirPlan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.ajoutMiroirPlan();
+				donneFocusALaScene();
 			}
 		});
 		btnMiroirPlan.setEnabled(false);
@@ -180,6 +181,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMiroirConvexe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.ajoutMiroireConvexe();
+				donneFocusALaScene();
 			}
 		});
 		btnMiroirConvexe.setEnabled(false);
@@ -190,6 +192,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMiroirConcave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.ajoutMiroireConcave();
+				donneFocusALaScene();
 			}
 		});
 		btnMiroirConcave.setEnabled(false);
@@ -200,6 +203,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnTrouNoir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.ajoutTrouNoir();
+				donneFocusALaScene();
 			}
 		});
 		btnTrouNoir.setEnabled(false);
@@ -210,6 +214,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnBlocDeau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.ajoutBlocEau();
+				donneFocusALaScene();
 			}
 		});
 		btnBlocDeau.setEnabled(false);
@@ -230,6 +235,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMediumBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.ajoutBalleMedium();
+				donneFocusALaScene();
 			}
 		});
 		btnMediumBalle.setEnabled(false);
@@ -240,6 +246,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnPetiteBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scene.ajoutBallePetite();
+				donneFocusALaScene();
 			}
 		});
 		btnPetiteBalle.setEnabled(false);
@@ -384,6 +391,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnViderScene.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.reinitialiserDessin();
+				donneFocusALaScene();
 			}
 		});
 		btnViderScene.setBounds(1131, 61, 40, 38);
