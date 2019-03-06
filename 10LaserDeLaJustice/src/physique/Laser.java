@@ -25,7 +25,7 @@ public class Laser implements Dessinable{
 	private Vecteur position, vitesse;
 	private double angleTir;
 	private Vecteur accel;
-	Path2D.Double trace;
+	private Path2D.Double trace;
 	private double ligneFinY;
 	public void setLigneFinY(double ligneFinY) {
 		this.ligneFinY = ligneFinY;
@@ -90,8 +90,8 @@ public class Laser implements Dessinable{
 
 
 	/**
-	 * 
-	 * @return
+	 * retourne le point final y du trace
+	 * @return ligneFinY le point final y du trace
 	 */
 	//auteur Jeremy Thai
 	public double getLigneFinY() {
@@ -111,8 +111,8 @@ public class Laser implements Dessinable{
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * retourne le point initial en x du trace
+	 * @return ligneDebutX retourne le point initial en x du trace
 	 */
 	//auteur Jeremy Thai
 	public double getLigneDebutX() {
@@ -120,8 +120,8 @@ public class Laser implements Dessinable{
 	}
 
 	/**
-	 * 
-	 * @param ligneDebutX
+	 * Modifie le point initial en x du trace par celle en parametre
+	 * @param ligneDebutX le point initial en x du trace par celle en parametre
 	 */
 	//auteur Jeremy Thai
 	public void setLigneDebutX(double ligneDebutX) {
@@ -146,8 +146,8 @@ public class Laser implements Dessinable{
 	 */
 
 	/**
-	 * 
-	 * @return
+	 * Retourne l'aire en forme de rectangle du laser
+	 * @return l'aire en forme de rectangle du laser
 	 */
 	//auteur Jeremy Thai
 	public Area getLaserAire(){ // pour detecter lintersection
@@ -218,8 +218,8 @@ public class Laser implements Dessinable{
 		updaterAngleVitesse(angleTir);
 	}
 	/**
-	 * 
-	 * @return
+	 * retourne lacceleration du laser
+	 * @return accel acceleration du laser
 	 */
 	//auteur Jeremy Thai
 	public Vecteur getAccel() {
@@ -227,8 +227,8 @@ public class Laser implements Dessinable{
 	}
 
 	/**
-	 * 
-	 * @param accel
+	 * modifie l'acceleration du laser par celle en parametre
+	 * @param accel acceleration du laser
 	 */
 	//auteur Jeremy Thai
 	public void setAccel(Vecteur accel) {
