@@ -100,17 +100,12 @@ public class Laser implements Dessinable{
 		return new Area(trace);
 	}
 */
-	public void unPasRK4(double deltaT, double tempsEcoule) {
-		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
-		System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
-	}
 
 	/*
 	public Rectangle2D getLine(){ // pour detecter lintersection
         return new Rectangle2D.Double(position.getX(), ligneFinY,0.1,position.getY());
     }
 	 */
-
 
 	public Area getLaserAire(){ // pour detecter lintersection
 		return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,0.5,position.getY()));
@@ -148,16 +143,6 @@ public class Laser implements Dessinable{
 		this.angleTir = angleTir;
 		updaterAngleVitesse(angleTir);
 	}
-/*
-	public Path2D getTrace() {
-		return trace;
-	}
-
-	public void setTrace(Path2D trace) {
-		this.trace = trace;
-	}
-
-*/
 	public Vecteur getAccel() {
 		return accel;
 	}

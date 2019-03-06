@@ -18,6 +18,7 @@ import interfaces.Dessinable;
 /**
  * La classe personnage sert a creer le heros du jeu.
  * @author Miora
+ *  @author Jeremy Thai
  *
  */
 public class Personnage implements Dessinable {
@@ -30,19 +31,8 @@ public class Personnage implements Dessinable {
 	private double positionX ;
 	private boolean premiereFois = true;
 	private int toucheGauche = 37, toucheDroite = 39;
-	
-	public int getToucheGauche() {
-		return toucheGauche;
-	}
-	public void setToucheGauche(int toucheGauche) {
-		this.toucheGauche = toucheGauche;
-	}
-	public int getToucheDroite() {
-		return toucheDroite;
-	}
-	public void setToucheDroite(int toucheDroite) {
-		this.toucheDroite = toucheDroite;
-	}
+
+
 	private double vitesseX =0;
 	private boolean gauche;
 	private boolean droite;
@@ -138,8 +128,12 @@ public class Personnage implements Dessinable {
 		}
 		update();
 	}
-	
+
 	//Jeremy Thai
+	/**
+	 * Cette méthode permet de rendre le changement de direction du personnage plus rapide
+	 * @param e touche enfoncee
+	 */
 	public void relacheTouche(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == toucheGauche) {
@@ -151,18 +145,21 @@ public class Personnage implements Dessinable {
 		if(code == KeyEvent.VK_SPACE) {
 			bougePas = false;
 		}
-		
-		
 		update();
-
 	}
 
-
-	public void move() { 
+	//Jeremy Thai
+	/**
+	 * Méthode qui permet de modifier la position du personnage selon la vitesse en x 
+	 */
+	public void bouge() { 
 		positionX += vitesseX;
 	}
 
-	
+	//Jeremy Thai
+	/**
+	 * Méthode qui permet de modifier la vitesse du personnage selon la touche enfoncee
+	 */
 	public void update() {
 		vitesseX = 0;
 		if(gauche) 
@@ -171,17 +168,17 @@ public class Personnage implements Dessinable {
 			vitesseX = VITESSE;
 		if(bougePas) 
 			vitesseX = 0;
-		
+
 	}
 
-	public void shoot(int code) {
-			bougePas = true; 
-			update();
-		}
-	
-	
-	
-
+	//Jeremy Thai
+	/**
+	 * méthode qui permet au personnage de ne pas bouger si un laser est lancé
+	 */
+	public void neBougePas() {
+		bougePas = true; 
+		update();
+	}
 
 	public void setVitesseX(double vitesseX) {
 		this.vitesseX = vitesseX;
@@ -218,4 +215,19 @@ public class Personnage implements Dessinable {
 	public double getLARGEUR_PERSO() {
 		return LARGEUR_PERSO;
 	}
+
+	public int getToucheGauche() {
+		return toucheGauche;
+	}
+	public void setToucheGauche(int toucheGauche) {
+		this.toucheGauche = toucheGauche;
+	}
+	public int getToucheDroite() {
+		return toucheDroite;
+	}
+	public void setToucheDroite(int toucheDroite) {
+		this.toucheDroite = toucheDroite;
+	}
+
+
 }

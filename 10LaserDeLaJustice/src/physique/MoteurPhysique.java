@@ -64,9 +64,8 @@ public class MoteurPhysique {
 		Vecteur  resultP =  position.additionne(  (vitesse.additionne(accel.multiplie(deltaT).multiplie(1/2))) );
 		Vecteur resultV = vitesse.additionne(accel.multiplie(deltaT));
 
-		position.setX(resultP.getX());  //on change le vecteur position
+		position.setX(resultP.getX());
 		position.setY(resultP.getY());
-		//vitesse.setX(resultV.getX());	//on ne change pas le vx car constant?
 		vitesse.setY(resultV.getY());
 
 
@@ -192,6 +191,11 @@ public class MoteurPhysique {
 	}
 
 
+	/**
+	 * Methode qui permet de faire la detection de balles et s il y en a une, realiser la collision entre celles-ci
+	 * @param balle1 une balle
+	 * @param balle2 une autre balle 
+	 */
 	public static void detectionCollisionBalles(Balle balle1, Balle balle2) {
 
 		double rayonA = balle1.getDiametre()/2 ;
@@ -203,8 +207,7 @@ public class MoteurPhysique {
 		//	Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
 		Vecteur vB =  balle2.getVitesse();
 		
-		
-		
+	
 		Vecteur v = vB.soustrait(vA);
 		Vecteur r0 = rB0.soustrait(rA0);
 
@@ -216,8 +219,9 @@ public class MoteurPhysique {
 
 		double temps[] = quadricRealRoot( A, B, C); 
 
-		if( temps.length == 2) { 
-			
+		if( temps.length == 0) 
+			return;
+		
 			for(int i = 0; i< temps.length; i++) {
 				if( temps[i] > 0) {
 					Vecteur rA = rA0.additionne(vA.multiplie(temps[i]));
@@ -244,15 +248,9 @@ public class MoteurPhysique {
 					
 					balle1.setVitesse(vAfinal);
 					balle2.setVitesse(vBfinal);
-					break;
+					return;
 				}
 			}	
 		}
 	}
 
-
-
-
-
-
-}

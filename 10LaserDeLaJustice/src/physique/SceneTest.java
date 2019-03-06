@@ -197,7 +197,7 @@ public class SceneTest extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
-			character.move();
+			character.bouge();
 			calculerUneIterationPhysique();
 			repaint();
 			try {
