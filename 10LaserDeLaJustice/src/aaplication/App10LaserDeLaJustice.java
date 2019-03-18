@@ -411,6 +411,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	
 	/**
 	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur
+	 * @author Arezki
 	 */
 	public void activerEditeur() {
 		setBounds(100, 100, 1800, 1006);
@@ -426,6 +427,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	}
 	/**
 	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons de l'éditeur
+	 * @author Arezki
 	 */
 	public void desactiverEditeur() {
 		setBounds(100, 100, 1389, 1006);

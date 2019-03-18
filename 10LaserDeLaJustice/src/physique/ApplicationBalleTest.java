@@ -9,7 +9,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+/**
+ * 
+ * @author Jeremy
+ *
+ */
 public class ApplicationBalleTest extends JFrame {
 
 	private JPanel contentPane;

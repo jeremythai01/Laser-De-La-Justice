@@ -165,7 +165,8 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 		/**
-		 * Méthode qui permet de dessiner toutes les formes   
+		 * Méthode qui permet de dessiner toutes les formes  
+		 * @author Arezki, Miora, Jeremy et Arnaud
 		 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -245,12 +246,19 @@ public class Scene extends JPanel implements Runnable {
 		g2d.draw(mat.createTransformedShape(fantomePerso));
 
 	}
-	
+	/**
+	 * Cette méthode permet d'arreter l'animation
+	 * @author Jeremy
+	 */
 	public void arreter() {
 		if (enCoursAnimation)
 			enCoursAnimation = false;
 	}
 	
+	/**
+	 * Cette méthode permet de démarrer l'animation
+	 * @author Jeremy
+	 */
 	public void demarrer() {
 		if (!enCoursAnimation) {
 			Thread proc = new Thread(this);
@@ -263,6 +271,7 @@ public class Scene extends JPanel implements Runnable {
 	
 	/**
 	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
+	 *  @author Jeremy
 	 */
 	private void calculerUneIterationPhysique() {
 
@@ -280,6 +289,7 @@ public class Scene extends JPanel implements Runnable {
 	@Override
 	/** 
 	 * Animation du bloc-ressort
+	 * @author Jeremy
 	 */
 	public void run() {
 		// TODO Auto-generated method stub
@@ -311,7 +321,11 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
-
+	/**
+	 * Cette methode permet de modifier l'angle du laser
+	 * @param angle: C'est le nouveau angle du laser
+	 * @author Arnaud
+	 */
 	public void setAngle(double angle) {
 		laser.setAngleTir(angle);
 		principal.getPositionX();

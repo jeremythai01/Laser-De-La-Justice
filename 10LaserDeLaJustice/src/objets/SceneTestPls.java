@@ -28,7 +28,11 @@ import java.awt.event.MouseEvent;
 
 
 
-
+/**
+ * 
+ * @author Jeremy
+ *
+ */
 public class SceneTestPls extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;

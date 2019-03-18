@@ -5,7 +5,11 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import interfaces.*;
-
+/**
+ * 
+ * @author Cette classe était déjà construite
+ *
+ */
 public class VecteurGraphique extends Vecteur implements Dessinable {
 
 	//caractéristiques supplemetaires utiles pour le dessin

@@ -62,6 +62,13 @@ public class Coeurs implements Dessinable {
 
 
 	@Override
+	/**
+	 * Cette méthode donnera la possibilité de dessiner les objets
+	 * @param g: c'est le paramètre Graphics2D qui permettra de dessiner les objets
+	 * @param mat: c'est la matrice qui permettra de transformer le monde pixel en monde monde réel
+	 * @param hauteur: c'est la hauteur en pixel de la scene
+	 * @param largeur: C'est la largeure en pixel de la scene
+	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur ,double largeur) {
 		AffineTransform matLocale = new AffineTransform(mat);
 		double factPersoY = 0.5 / img.getHeight(null);
@@ -85,7 +92,10 @@ public class Coeurs implements Dessinable {
 
 
 	}
-
+/**
+ * 
+ * @param combien
+ */
 	public void setCombien(int combien) {
 		this.combien=combien;
 	}

@@ -8,7 +8,11 @@ import java.awt.geom.Line2D;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
-
+/**
+ * 
+ * @author Miora
+ *
+ */
 public class MiroirConvexe implements Dessinable {
 	private double x=0, y=0, rayon=0;  // x et y sont les coordonne du centre de l'arc
 	private Arc2D.Double miroir ;
