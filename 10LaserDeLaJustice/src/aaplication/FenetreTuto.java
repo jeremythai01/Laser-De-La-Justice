@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 /**
- * 
+ * C'est la classe du tutoriel. Elle permet au joueur de comprendre le but du jeu.
  * @author Arezki Issaadi
  *
  */

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import geometrie.Vecteur;
 import interfaces.Dessinable;
 /**
- * 
+ * Cette classe permet de dessiner un pistolet qui sera au dessus du personnage et le suivra.( en construction) 
  * @author Arezki Issaadi
  *
  */
@@ -59,15 +59,15 @@ public class Pistolet extends JPanel implements Dessinable {
 		
 	}
 	/**
-	 * 
-	 * @return la valeur de l'angle du pistolet
+	 * Cette méthode retourne la valeur de l'angle du pistolet en degrès
+	 * @return la valeur de l'angle 
 	 */
 	public double getAngle() {
 		return angle;
 	}
 	/**
-	 * 
-	 * @param angle: C'est la nouvelle valeur de l'angle du pistolet
+	 * Cette méthode met la nouvelle valeur de l'angle du pistolet em degrès
+	 * @param angle: C'est la nouvelle valeur de l'angle
 	 */
 	public void setAngle(double angle) {
 		this.angle = angle;

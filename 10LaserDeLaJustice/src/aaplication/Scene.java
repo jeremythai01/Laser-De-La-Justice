@@ -165,8 +165,9 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 		/**
-		 * Méthode qui permet de dessiner toutes les formes  
-		 * @author Arezki, Miora, Jeremy et Arnaud
+		 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le personnage
+		 * et de savoir s'il y a des collisions entre le laser et les balles  
+		 * @author Arezki
 		 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -191,7 +192,7 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
 
-		if (editeurActiver) {
+		
 
 			for (Balle balle : listeBalles) {
 
@@ -221,7 +222,7 @@ public class Scene extends JPanel implements Runnable {
 				blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			}
 
-		}
+		
 
 		//creerLePersonnagePrincipal(g2d, mat);
 
@@ -447,7 +448,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter une grosse balle via lediteur  
+	 * permet d'ajouter et de dessiner une grosse balle en appuyant sur le boutton grosse balle 
 	 */
 	public void ajoutBalleGrosse() {
 		listeBalles.add(new Balle(new Vecteur(), vitesse, "LARGE"));
@@ -457,7 +458,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter une balle medium via lediteur 
+	 * permet d'ajouter et de dessiner une balle medium en appuyant sur le boutton medium balle 
 	 */
 	public void ajoutBalleMedium() {
 		listeBalles.add(new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"));
@@ -467,7 +468,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter une petite balle via lediteur 
+	 * permet d'ajouter et de dessiner une petite balle en appuyant sur le boutton petite balle 
 	 */
 	public void ajoutBallePetite() {
 		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
@@ -477,7 +478,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter un miroir concave via lediteur 
+	 * permet d'ajouter et de dessiner un miroir concave en appuyant sur le boutton miroire concave  
 	 */
 	public void ajoutMiroireConcave() {
 		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0),2));
@@ -486,7 +487,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un miroir convexe via lediteur 
+	 *  permet d'ajouter et de dessiner un miroir convexe en appuyant sur le boutton miroire convexe  
 	 */
 	public void ajoutMiroireConvexe() {
 		listeMiroireConvexe.add(new MiroirConvexe(4, 0, 1));
@@ -495,7 +496,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un miroir plan via lediteur 
+	 *  permet d'ajouter et de dessiner un miroir plan en appuyant sur le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
 		listeMiroirePlan.add(new MiroirPlan(5, 0, 0));
@@ -505,7 +506,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un trou noir via lediteur 
+	 *  permet d'ajouter et de dessiner un trou noir en appuyant sur le boutton Trou noir
 	 */
 	public void ajoutTrouNoir() {
 		listeTrou.add(new TrouNoir(new Vecteur(7, 0)));
@@ -515,7 +516,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un bloc d'eau via lediteur 
+	 *  permet d'ajouter et de dessiner un bloc d'eau en appuyant sur le boutton Bloc d'eau
 	 */
 	public void ajoutBlocEau() {
 		listeBlocEau.add(new BlocDEau(new Vecteur (9,0)));
@@ -543,7 +544,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 *@author Arezki
-	 *efface tous les dessins sur la scene
+	 *efface tous les dessins sur la scene en effaçant tous les objets dans les listes. Agisse comme une corbeille
 	 */
 	public void reinitialiserDessin() {
 		listeBalles.removeAll(listeBalles);

@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 /**
- * 
+ * C'est la fenetre ayant les règles du jeu (en construction)
  * @author Arezki
  *
  */

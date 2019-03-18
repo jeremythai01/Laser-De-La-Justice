@@ -31,7 +31,8 @@ import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Font;
 /**
- * 
+ * Cette fenetre est la fenetre principale du jeu.
+ * C'est là ou le joueur pourra jouer
  * @author Arezki
  *
  */
@@ -410,7 +411,7 @@ public class App10LaserDeLaJustice extends JFrame {
 
 	
 	/**
-	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur
+	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre les objets dans la scene
 	 * @author Arezki
 	 */
 	public void activerEditeur() {
@@ -426,7 +427,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnPetiteBalle.setEnabled(true);
 	}
 	/**
-	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons de l'éditeur
+	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons de l'éditeur, mais les dessins restent
 	 * @author Arezki
 	 */
 	public void desactiverEditeur() {

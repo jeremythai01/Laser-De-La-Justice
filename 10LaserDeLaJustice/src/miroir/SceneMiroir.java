@@ -21,7 +21,7 @@ import utilite.ModeleAffichage;
 
 /**
  * Cette classe permet de visualiser le test
- * @author Miora et Arezki
+ * @author Miora 
  *
  */
 public class SceneMiroir extends JPanel implements Runnable {

@@ -30,9 +30,9 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	private Arc2D miroirConcave;
 
 	/**
-	 * 
-	 * @param position c'est la position du miroir en vecteur (x,y)
-	 * @param grosseurMiroire c'est le paramètre qui permet d'ajuster la largeur du miroir.
+	 * Constructeur du miroir concave
+	 * @param position c'est la position du miroir en vecteur (x,y). (mesures réelle)
+	 * @param grosseurMiroire c'est le paramètre qui permet d'ajuster la largeur du miroir.(mesures réelle)
 	 */
 	public MiroirConcave(Vecteur position, double grosseurMiroire) {
 		positionIni = position;
@@ -43,9 +43,11 @@ public class MiroirConcave extends JPanel implements Dessinable {
 
 	@Override
 	/**
-	 * @param hauteur c'est la hauteur du monde réel
-	 * @param largeur c'est la largeur du monde réel 
-	 * dessiner le miroir concave
+	  * Elle permet d'alleger le paintComponent dans la scene principale.
+	 * @param g: c'est le paramètre Graphics2D qui permettra de dessiner les objets
+	 * @param mat: c'est la matrice qui permettra de transformer le monde pixel en monde monde réel
+	 * @param hauteur: c'est la hauteur en réel de la scene
+	 * @param largeur: C'est la largeure en réel de la scene
 	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
@@ -98,11 +100,11 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	}
 	
 	/**
-	 * 
-	 @param laser mettre le laser qui va entrer en collision avec le miroir
+	 * Cette méthode calculun vecteur de position de la collision entre le laser et le miroir (en réel)
+	   @param laser: mettre le laser qui va entrer en collision avec le miroir
 	 * @param miroireAire c'est l'air du miroir concave;
 	 * @param miroire mettre un miroir concave pour faire les calculs nécessaires
-	 * @return un vecteur de position de la collision entre le laser et le miroir
+	 * @return un vecteur de position 
 	 */
 	public Vecteur collisionAvecMiroireLaser(Laser laser, Area miroireAire, MiroirConcave miroire) {
 		
@@ -118,8 +120,8 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	
 	}
 /**
- * 
- * @return une aire du miroir concave
+ * Cette méthode retourne une aire du miroir concave
+ * @return une aire (Area)
  */
 	public Area aire() {
 		return new Area(miroirConcave);
@@ -134,10 +136,10 @@ public class MiroirConcave extends JPanel implements Dessinable {
 
 	}
 /**
- * 
- * @param laser mettre le laser qui va entrer en collision avec le miroir
+ * Cette métjode calcule un vecteur de la normal entre le laser et le miroir concave (en réel)
+ * @param laser: mettre le laser qui va entrer en collision avec le miroir
  * @param miroire mettre un miroir concave qui va entrer en collision avec le laser et pour faire les calculs nécessaires
- * @return un vecteur de la normal entre le laser et le miroir concave
+ * @return un vecteur de la normal 
  */
 	public Vecteur calculNormal(Laser laser, MiroirConcave miroire) {
 
@@ -172,43 +174,43 @@ public class MiroirConcave extends JPanel implements Dessinable {
 		
 	}
 	/**
-	 * 
-	 * @return le parametre angle de debut du miroir concave 
+	 * Cette méthode retourne le parametre angle de debut du miroir concave en degrès
+	 * @return l'angle de début du miroir concave en degrès
 	 */
 	public double getAngleDebut() {
 		return angleDebut;
 	}
 	/**
-	 * 
-	 * @return la position initiale du miroir concave en vecteur
+	 * Cette méthode retourne la position initiale du miroir concave en vecteur dans les mesures du réel
+	 * @return la position initiale du miroir concave 
 	 */
 	public Vecteur getPositionIni() {
 		return positionIni;
 	}
 	/**
-	 * methode quipermet de modifier la posiution du miroir
+	 * methode qui permet de modifier la position du miroir dans les mesures du réel
 	 * @param positionIni nouvelle position du miroire concave 
 	 */
 	public void setPositionIni(Vecteur positionIni) {
 		this.positionIni = positionIni;
 	}
 	/**
-	 * Permet de modifier l'angle du miroir 
-	 * @param angleDebut nouveau angle du miroir
+	 * Permet de modifier l'angle du miroir en degrès. Elle sera utile lors des calculs pour trouver le rayon reflechi
+	 * @param angleDebut nouveau angle du miroir 
 	 */
 	public void setAngleDebut(double angleDebut) {
 		this.angleDebut = angleDebut;
 	}
 
 	/**
-	 * 
-	 * @return la grosseur du miroir
+	 * Cette méthode retourne la grosseur du miroire en double dans les mesures réelle
+	 * @return la grosseur du miroir 
 	 */
 	public double getGrosseurMiroire() {
 		return grosseurMiroire;
 	}
 	/**
-	 * Permet de modifier la grosseur du miroir
+	 * Permet de modifier la grosseur du miroir avec les mesures du réel 
 	 * @param grosseurMiroire nouvelle grosseur du miroir 
 	 */
 	public void setGrosseurMiroire(double grosseurMiroire) {
