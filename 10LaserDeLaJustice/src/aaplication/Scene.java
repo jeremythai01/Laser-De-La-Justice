@@ -94,6 +94,9 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirConvexe miroireConvexe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
+	private int nombreVies=5;
+	private Coeurs coeurs = new Coeurs(nombreVies);
+	
 
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
@@ -226,6 +229,9 @@ public class Scene extends JPanel implements Runnable {
 
 		//On dessine le personnage principal
 		creerLePersonnagePrincipal(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		
+		
+		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}
 
@@ -389,6 +395,9 @@ public class Scene extends JPanel implements Runnable {
 				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
 					listeLasers.remove(laser);
 					balle.shrink(listeBalles);
+					coeurs.setCombien(nombreVies-1);
+					nombreVies-=1;
+					repaint();
 				}
 			}
 		}

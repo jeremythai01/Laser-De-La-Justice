@@ -67,6 +67,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private ArrayList<BlocDEau> listeBloc = new ArrayList<BlocDEau>();
 	private TrouNoir trou;
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
+	private Coeurs coeur;
+	private int nombreVies=3;
 
 
 
@@ -75,7 +77,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	 */
 	public SceneTestPls() {
 
-		angle = 45;
+		angle = 90   ;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -175,10 +177,12 @@ public class SceneTestPls extends JPanel implements Runnable {
 		trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 	}
 		 */
+		coeur= new Coeurs(nombreVies);
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
-
-
-
+		
+		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		coeur.setCombien(nombreVies-1);
+		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}//fin paintComponent
 
@@ -256,6 +260,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 					listeLasers.remove(laser);   
 					listeBalleTouche.add(balle);
 					balle.shrink(listeBalles);
+					coeur.setCombien(nombreVies-1);
+					nombreVies-=1;
 				}	
 
 			}
@@ -312,13 +318,14 @@ public class SceneTestPls extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			for(BlocDEau bloc : listeBloc) {
 				if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
+					//if(bloc.isPremiereCollision()) {
 
 					//laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
 
 					try {
 						Vecteur ref=bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
-						laser.setAngleTir(Math.atan(ref.getY()/ref.getX()));
-						//System.out.println("a");
+						laser.setAngleTir(90-Math.atan(ref.getY()/ref.getX()));
+						System.out.println(laser.getAngleTir());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -340,7 +347,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 					//	System.out.println("valeur bloc: "+ ref);
 
 					//repaint();
-
+				//	bloc.setPremiereCollision(false);
+					//}
 				}
 			}
 		}
