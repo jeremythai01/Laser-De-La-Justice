@@ -22,10 +22,10 @@ import interfaces.Dessinable;
  *
  */
 public class Personnage implements Dessinable {
-	private double LONGUEUR_PERSO = 1.6;
-	private double LARGEUR_PERSO = 1;
-	private double LARGEUR_COMPO;
-	private  double POSITION_INITIALE;
+	private final double LONGUEUR_PERSO = 1.6;
+	private final double LARGEUR_PERSO = 1;
+	private double largeurCompo;
+	private double positionIni;
 	private Image imgPerso = null;
 	private double HAUTEUR_COMPO;
 	private double positionX ;
@@ -44,15 +44,15 @@ public class Personnage implements Dessinable {
 
 
 	/**
-	 Constructeur de la classe.
-	 @param gauche : le code (KeyCode) de la touche gauche lorsque clique, le personnage veut aller a gauche
-	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage veut aller a gauche
+	 Constructeur 1 de la classe.
+	 @param gauche : le code (KeyCode) de la touche gauche lorsque clique, le personnage va aller a gauche
+	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage va aller a droite
 	 */
 	//Miora
 	public Personnage(int gauche, int droite) {
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier Fnaruto_debout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
 		} else {
 			try {
 				imgPerso = ImageIO.read(fich);
@@ -63,10 +63,14 @@ public class Personnage implements Dessinable {
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
 	}
+	/**
+	 Constructeur 2 de la classe.
+	 */
+	//Miora
 	public Personnage() {
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier Fnaruto_debout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
 		} else {
 			try {
 				imgPerso = ImageIO.read(fich);
@@ -82,7 +86,7 @@ public class Personnage implements Dessinable {
 	 */
 	//Miora
 	public double getPOSITION_INITIALE() {
-		return POSITION_INITIALE;
+		return positionIni;
 	}
 	/**
 	 * Methode permettant de dessiner le personnage
@@ -91,11 +95,11 @@ public class Personnage implements Dessinable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteurScene, double largeurScene) {
 
 		AffineTransform matLocale = new AffineTransform(mat);
-		LARGEUR_COMPO = largeurScene;
+		largeurCompo = largeurScene;
 		HAUTEUR_COMPO = hauteurScene;
-		POSITION_INITIALE=LARGEUR_COMPO/2;
+		positionIni=largeurCompo/2;
 		if(premiereFois) {
-			positionX = POSITION_INITIALE-LARGEUR_PERSO/2;
+			positionX = positionIni-LARGEUR_PERSO/2;
 			premiereFois = false;
 		}
 		//Facteur de réduction de l'image du bloc 
@@ -180,6 +184,10 @@ public class Personnage implements Dessinable {
 		update();
 	}
 
+	/**
+	 * Methode permettant de changer la vitesse du personnage
+	 */
+	//Jeremy Thai
 	public void setVitesseX(double vitesseX) {
 		this.vitesseX = vitesseX;
 	}

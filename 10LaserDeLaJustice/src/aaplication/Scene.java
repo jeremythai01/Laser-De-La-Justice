@@ -48,7 +48,7 @@ import java.awt.event.MouseMotionAdapter;
 /**
  * Cette classe contient la scene d'animation du jeu.
  * 
- * @author Miora et Arezki
+ * @author Miora, Arezki, Jeremy
  *
  */
 public class Scene extends JPanel implements Runnable {
@@ -99,9 +99,9 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private int tempsDuSleep = 30;
 
+	// Par Jeremy
 	/**
-	 * @author  Jeremy Thai
-	 * Constructeur qui permet de mettre les dessins avec le clic de la souris 
+	 * Constructeur de la scene et permet de mettre les objets avec le clique de la souris 
 	 */
 
 	public Scene() {
@@ -123,7 +123,6 @@ public class Scene extends JPanel implements Runnable {
 
 		addMouseListener(new MouseAdapter() {
 			@Override
-			// Jeremy Thai
 			public void mousePressed(MouseEvent e) {
 
 				double eXR = e.getX() / modele.getPixelsParUniteX();
@@ -164,6 +163,7 @@ public class Scene extends JPanel implements Runnable {
 		});
 
 	}
+		// Par Jeremy
 		/**
 		 * Méthode qui permet de dessiner toutes les formes   
 		 */
@@ -222,27 +222,26 @@ public class Scene extends JPanel implements Runnable {
 
 		}
 
-		//creerLePersonnagePrincipal(g2d, mat);
-
-		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		//On dessine le personnage principal
+		creerLePersonnagePrincipal(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}
 
 	/**
 	 * Cette methode permet de dessiner le personnage principal, ainsi qu'un carre
-	 * autour de lui
+	 * autour de lui (utilisation pour la collision avec les balles)
 	 * 
 	 * @param g2d : le composant graphique
 	 * @param mat : la matrice de transformation
 	 */
 	// Miora
-	private void creerLePersonnagePrincipal(Graphics2D g2d, AffineTransform mat) {
-		principal.dessiner(g2d, mat, modele.getLargUnitesReelles(), modele.getHautUnitesReelles());
+	private void creerLePersonnagePrincipal(Graphics2D g2d, AffineTransform mat, double HAUTEUR_DU_MONDE,double LARGEUR_DU_MONDE) {
+		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 		fantomePerso = new Rectangle2D.Double(principal.getPositionX(),
 				modele.getHautUnitesReelles() - principal.getLONGUEUR_PERSO(), principal.getLARGEUR_PERSO(),
 				principal.getLONGUEUR_PERSO());
-		g2d.draw(mat.createTransformedShape(fantomePerso));
+		//g2d.draw(mat.createTransformedShape(fantomePerso));
 
 	}
 	
@@ -475,7 +474,7 @@ public class Scene extends JPanel implements Runnable {
 	 *  permet d'ajouter un miroir convexe via lediteur 
 	 */
 	public void ajoutMiroireConvexe() {
-		listeMiroireConvexe.add(new MiroirConvexe(4, 0, 1));
+		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 1));
 		repaint();
 	}
 

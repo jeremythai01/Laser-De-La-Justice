@@ -9,7 +9,7 @@ import interfaces.*;
 public class VecteurGraphique extends Vecteur implements Dessinable {
 
 	//caractéristiques supplemetaires utiles pour le dessin
-	private double origX=0, origY=0;			 //originep our dessiner le vecteur
+	private double origX=0, origY=0;			 //origine our dessiner le vecteur
 	private Line2D.Double corps, traitDeTete;    //pour tracer la flèche
 	private double angleTete = 0.5;              //angle entre les deux segments formant la tete de fleche
 	private double longueurTete = 20;            //longueur des segments formant la tete (en pixels)
@@ -54,13 +54,13 @@ public class VecteurGraphique extends Vecteur implements Dessinable {
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g2d.translate(origX, origY);
+		mat.translate(origX, origY);
 
-		g2d.draw( corps );  										//ligne formant le vecteur lui-meme
-		g2d.rotate(angleTete/2, x,  y);
-		g2d.draw(traitDeTete); 	//un des deux traits qui forment la tete du vecteur
-		g2d.rotate(-angleTete/2, x,  y);
-		g2d.draw(traitDeTete); //L'autre trait de tête
+		g2d.draw(mat.createTransformedShape(corps));  										//ligne formant le vecteur lui-meme
+		mat.rotate(angleTete/2, x,  y);
+		g2d.draw(mat.createTransformedShape(traitDeTete)); 	//un des deux traits qui forment la tete du vecteur
+		mat.rotate(-angleTete/2, x,  y);
+		g2d.draw(mat.createTransformedShape(traitDeTete)); //L'autre trait de tête
 
 	}// fin
 

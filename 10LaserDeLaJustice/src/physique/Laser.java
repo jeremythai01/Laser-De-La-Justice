@@ -106,7 +106,7 @@ public class Laser implements Dessinable{
 		ligneFinY -= vitesse.getY();
 		ligneDebutX+=vitesse.getX();
 		position = new Vecteur (ligneDebutX, ligneFinY);
-		System.out.println(position.toString());
+	//	System.out.println(position.toString());
 		//System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
 	}
 	

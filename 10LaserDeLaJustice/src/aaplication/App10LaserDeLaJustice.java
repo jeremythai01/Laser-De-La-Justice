@@ -31,8 +31,8 @@ import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Font;
 /**
- * 
- * @author Arezki
+ * Cette classe est la fenetre d'application du jeu
+ * @author Arezki et Miora
  *
  */
 public class App10LaserDeLaJustice extends JFrame {
@@ -52,9 +52,9 @@ public class App10LaserDeLaJustice extends JFrame {
 	private Scene scene;
 	
 	
-
+	// Par Arezki
 	/**
-	 * Launch the application.
+	 * Lancement de l'application
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -74,6 +74,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	/**
 	 * Creation de la fenêtre 
 	 */
+	// Par Arezki
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1389, 1034);
@@ -400,15 +401,15 @@ public class App10LaserDeLaJustice extends JFrame {
 		
 		
 	}
+	// Par Miora
 	/**
 	 * Methode qui donne le focus a la scene
-	 *@author Miora
 	 */
 	public void donneFocusALaScene() {
 		scene.requestFocusInWindow();
 	}
 
-	
+	// // Par Arezki
 	/**
 	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur
 	 */
@@ -424,6 +425,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnTrouNoir.setEnabled(true);
 		btnPetiteBalle.setEnabled(true);
 	}
+	// Par Arezki
 	/**
 	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons de l'éditeur
 	 */
