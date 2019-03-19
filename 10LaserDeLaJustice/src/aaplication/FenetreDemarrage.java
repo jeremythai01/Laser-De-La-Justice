@@ -17,7 +17,8 @@ import javax.swing.border.EmptyBorder;
 import options.Options;
 
 /**
- * 
+ * Cette fenetre est la première chose que l'utilisateur va voir.
+ * Elle donne accès à l'éditeur de niveau, aux options, aux règles et à la documentation du jeu.
  * @author Arezki Issaadi
  *
  */

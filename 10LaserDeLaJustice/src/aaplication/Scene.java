@@ -165,7 +165,9 @@ public class Scene extends JPanel implements Runnable {
 	}
 		// Par Jeremy
 		/**
-		 * Méthode qui permet de dessiner toutes les formes   
+		 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le personnage
+		 * et de savoir s'il y a des collisions entre le laser et les balles  
+		 * @author Arezki
 		 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -190,7 +192,7 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
 
-		if (editeurActiver) {
+		
 
 			for (Balle balle : listeBalles) {
 
@@ -220,13 +222,14 @@ public class Scene extends JPanel implements Runnable {
 				blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			}
 
-		}
+		
 
 		//On dessine le personnage principal
 		creerLePersonnagePrincipal(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}
 
+	// Par Miora
 	/**
 	 * Cette methode permet de dessiner le personnage principal, ainsi qu'un carre
 	 * autour de lui (utilisation pour la collision avec les balles)
@@ -234,7 +237,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param g2d : le composant graphique
 	 * @param mat : la matrice de transformation
 	 */
-	// Miora
+
 	private void creerLePersonnagePrincipal(Graphics2D g2d, AffineTransform mat, double HAUTEUR_DU_MONDE,double LARGEUR_DU_MONDE) {
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
@@ -244,12 +247,19 @@ public class Scene extends JPanel implements Runnable {
 		//g2d.draw(mat.createTransformedShape(fantomePerso));
 
 	}
-	
+	/**
+	 * Cette méthode permet d'arreter l'animation
+	 * @author Jeremy
+	 */
 	public void arreter() {
 		if (enCoursAnimation)
 			enCoursAnimation = false;
 	}
 	
+	/**
+	 * Cette méthode permet de démarrer l'animation
+	 * @author Jeremy
+	 */
 	public void demarrer() {
 		if (!enCoursAnimation) {
 			Thread proc = new Thread(this);
@@ -262,6 +272,7 @@ public class Scene extends JPanel implements Runnable {
 	
 	/**
 	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
+	 *  @author Jeremy
 	 */
 	private void calculerUneIterationPhysique() {
 
@@ -279,6 +290,7 @@ public class Scene extends JPanel implements Runnable {
 	@Override
 	/** 
 	 * Animation du bloc-ressort
+	 * @author Jeremy
 	 */
 	public void run() {
 		// TODO Auto-generated method stub
@@ -295,9 +307,10 @@ public class Scene extends JPanel implements Runnable {
 		System.out.println("Le thread est mort...");
 	}
 
+	//Par Miora
 	/**
 	 * Methode permettant de mettre un fond a la scene
-	 */ // Miora
+	**/
 	private void lireFond() {
 		URL fich = getClass().getClassLoader().getResource("space.jpg");
 		if (fich == null) {
@@ -310,19 +323,22 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
-
+	/**
+	 * Cette methode permet de modifier l'angle du laser
+	 * @param angle: C'est le nouveau angle du laser
+	 * @author Arnaud
+	 */
 	public void setAngle(double angle) {
 		laser.setAngleTir(angle);
 		principal.getPositionX();
 
 	}
 
+	// Par Miora
 	/**
 	 * Cette methode permet de lire le fichier option de la classe option modifie
 	 * avant le debut de la partie
 	 */
-	// Miora
-
 	private void lectureFichierOption() {
 		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
 		DataInputStream fluxEntree = null;
@@ -432,7 +448,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter une grosse balle via lediteur  
+	 * permet d'ajouter et de dessiner une grosse balle en appuyant sur le boutton grosse balle 
 	 */
 	public void ajoutBalleGrosse() {
 		listeBalles.add(new Balle(new Vecteur(), vitesse, "LARGE"));
@@ -442,7 +458,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter une balle medium via lediteur 
+	 * permet d'ajouter et de dessiner une balle medium en appuyant sur le boutton medium balle 
 	 */
 	public void ajoutBalleMedium() {
 		listeBalles.add(new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"));
@@ -452,7 +468,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter une petite balle via lediteur 
+	 * permet d'ajouter et de dessiner une petite balle en appuyant sur le boutton petite balle 
 	 */
 	public void ajoutBallePetite() {
 		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
@@ -462,7 +478,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 * permet d'ajouter un miroir concave via lediteur 
+	 * permet d'ajouter et de dessiner un miroir concave en appuyant sur le boutton miroire concave  
 	 */
 	public void ajoutMiroireConcave() {
 		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0),2));
@@ -471,7 +487,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un miroir convexe via lediteur 
+	 *  permet d'ajouter et de dessiner un miroir convexe en appuyant sur le boutton miroire convexe  
 	 */
 	public void ajoutMiroireConvexe() {
 		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 1));
@@ -480,7 +496,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un miroir plan via lediteur 
+	 *  permet d'ajouter et de dessiner un miroir plan en appuyant sur le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
 		listeMiroirePlan.add(new MiroirPlan(5, 0, 0));
@@ -490,7 +506,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un trou noir via lediteur 
+	 *  permet d'ajouter et de dessiner un trou noir en appuyant sur le boutton Trou noir
 	 */
 	public void ajoutTrouNoir() {
 		listeTrou.add(new TrouNoir(new Vecteur(7, 0)));
@@ -500,7 +516,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Arezki Issaadi
-	 *  permet d'ajouter un bloc d'eau via lediteur 
+	 *  permet d'ajouter et de dessiner un bloc d'eau en appuyant sur le boutton Bloc d'eau
 	 */
 	public void ajoutBlocEau() {
 		listeBlocEau.add(new BlocDEau(new Vecteur (9,0)));
@@ -528,7 +544,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 *@author Arezki
-	 *efface tous les dessins sur la scene
+	 *efface tous les dessins sur la scene en effaçant tous les objets dans les listes. Agisse comme une corbeille
 	 */
 	public void reinitialiserDessin() {
 		listeBalles.removeAll(listeBalles);

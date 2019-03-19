@@ -13,9 +13,8 @@ import geometrie.Vecteur;
 import interfaces.Dessinable;
 
 /**
- * Classe des miroirs convexe
+ * Classe des miroirs convexes
  * @author Miora
- *
  */
 public class MiroirConvexe implements Dessinable {
 

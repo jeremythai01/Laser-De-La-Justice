@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import geometrie.Vecteur;
 import interfaces.Dessinable;
 /**
- * 
+ * Cette classe permet de dessiner un pistolet qui sera au dessus du personnage et le suivra.( en construction) 
  * @author Arezki Issaadi
  *
  */
@@ -34,6 +34,13 @@ public class Pistolet extends JPanel implements Dessinable {
 	}
 
 	@Override
+	/**
+	 * Cette méthode permet de dessiner les objets
+	 * @param g: c'est le paramètre Graphics2D qui permettra de dessiner les objets
+	 * @param mat: c'est la matrice qui permettra de transformer le monde pixel en monde monde réel
+	 * @param hauteur: c'est la hauteur en pixel de la scene
+	 * @param largeur: C'est la largeure en pixel de la scene
+	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 
 		bloc = new Rectangle2D.Double(200 - LARGEUR_PISTOLET / 2, 200 - LARGEUR_PISTOLET / 2,
@@ -51,11 +58,17 @@ public class Pistolet extends JPanel implements Dessinable {
 		g.draw(bloc);
 		
 	}
-
+	/**
+	 * Cette méthode retourne la valeur de l'angle du pistolet en degrès
+	 * @return la valeur de l'angle 
+	 */
 	public double getAngle() {
 		return angle;
 	}
-
+	/**
+	 * Cette méthode met la nouvelle valeur de l'angle du pistolet em degrès
+	 * @param angle: C'est la nouvelle valeur de l'angle
+	 */
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}

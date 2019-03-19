@@ -23,8 +23,7 @@ import utilite.ModeleAffichage;
 /**
  * Cette classe permet de visualiser le test
  * @author Miora, Arezki, Jeremy et Arnaud
- *
- */
+**/
 public class SceneMiroir extends JPanel implements Runnable {
 
 	private int tempsDuSleep = 25;
@@ -199,7 +198,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	
 	//Jeremy
 	/**
-	 * Cette methode demare l'animation
+	 * Cette methode demarre l'animation
 	 */
 	public void run() {
 		// TODO Auto-generated method stub
@@ -214,12 +213,12 @@ public class SceneMiroir extends JPanel implements Runnable {
 		}//fin while
 		System.out.println("Le thread est mort...");
 	}
+	
 	//Arnaud
 	/**
 	 * Cette methode permet d'ecouter quel touche a ete actionne et s'il s'agit de la touche espace, le laser va s'actionner
 	 * @param e : la touche
 	 */
-
 	private void shoot(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
@@ -253,6 +252,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
 	 * avec un miroir plan
 	 * @throws Exception
+	 * @author Miora
 	 */
 
 	private void colisionLaserMiroirPlan() throws Exception{
@@ -281,6 +281,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	/**
 	 * Cette methode reoriente l'angle de depart du laser s'il y a une intersection
 	 * avec un miroir convexe
+	 * @author Miora
 	 * @throws Exception
 	 */
 
@@ -342,6 +343,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	/**
 	 * Cette methode permet de savoir si l'utilisateur veut oui ou non dessiner un miroir plan
 	 * @param reponse : vrai s'il veut dessiner un miroir plan
+	 *@author Miora
 	 */
 	public void setMiroirPlan(boolean reponse) {
 		miroirPlan = reponse;
@@ -351,6 +353,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	/**
 	 * Cette methode permet de savoir si l'utilisateur veut oui ou non dessiner un miroir convexe
 	 * @param reponse : vrai s'il veut dessiner un miroir plan
+	 * @author Miora
 	 */
 	public void setMiroirConvexe(boolean reponse) {
 		miroirConvexe = reponse;
@@ -360,6 +363,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	/**
 	 * Cette methode permet de savoir si l'utilisateur veut oui ou non dessiner un miroir concave
 	 * @param reponse : vrai s'il veut dessiner un miroir plan
+	 * @author Miora
 	 */
 	public void setMiroiConcave(boolean reponse) {
 		miroirConcave = reponse;
