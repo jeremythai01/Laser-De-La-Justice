@@ -33,6 +33,7 @@ import miroir.MiroirConcave;
 import miroir.MiroirConvexe;
 import miroir.MiroirPlan;
 import objets.BlocDEau;
+import objets.Echelle;
 import objets.TrouNoir;
 import personnage.Personnage;
 import physique.Balle;
@@ -94,6 +95,7 @@ public class Scene extends JPanel implements Runnable {
 	private int nombreVies=5;
 	private Coeurs coeurs = new Coeurs(nombreVies);
 
+	private Echelle echelle;
 
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
@@ -227,6 +229,8 @@ public class Scene extends JPanel implements Runnable {
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
+		echelle = new Echelle(30.0,LARGEUR_DU_MONDE-7.5, HAUTEUR_DU_MONDE-1);
+		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 	}
 
 	/**
