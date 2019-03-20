@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -258,4 +260,9 @@ public class Personnage implements Dessinable {
 	}
 
 
+	public Area airePersonnage() {
+	return new Area( new Rectangle2D.Double(positionX,
+			HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
+	}
+	
 }
