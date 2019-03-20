@@ -42,6 +42,7 @@ public class Personnage implements Dessinable {
 
 	private static final double VITESSE = 0.1;
 
+	private double tempsMort = 0;
 
 
 
@@ -259,10 +260,24 @@ public class Personnage implements Dessinable {
 		this.toucheDroite = toucheDroite;
 	}
 
-
+	
+	/**
+	 * Cree et retourne une aire en forme de rectangle du personnage 
+	 * @return aire du personnage 
+	 */
+	//Jeremy Thai
 	public Area airePersonnage() {
 	return new Area( new Rectangle2D.Double(positionX,
 			HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
 	}
+	
+	public double getTempsMort() {
+		return tempsMort;
+	}
+	public void setTempsMort(double tempsMort) {
+		this.tempsMort = tempsMort;
+	}
+	
+	
 	
 }

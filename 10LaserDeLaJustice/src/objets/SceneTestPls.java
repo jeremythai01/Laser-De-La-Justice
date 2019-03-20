@@ -152,7 +152,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
 		checkCollisionTrouLaserPersonnage( listeLasers );
 		checkCollisionBlocLaserPersonnage( listeLasers );
-
 		for(BlocDEau bloc:listeBloc) {
 			g2d.setColor(Color.blue);
 			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -191,7 +190,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	private void calculerUneIterationPhysique() {
 
-
+		
 		for(Balle balle: listeBalles) {
 			balle.unPasRK4(deltaT, tempsTotalEcoule);
 		}
@@ -323,7 +322,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 					//laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
 
 					try {
-						Vecteur ref=bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
+						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
 						laser.setAngleTir(90-Math.atan(ref.getY()/ref.getX()));
 						System.out.println(laser.getAngleTir());
 					} catch (Exception e) {

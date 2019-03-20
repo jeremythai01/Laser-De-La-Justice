@@ -61,7 +61,7 @@ public class BlocDEau extends Objet implements Dessinable {
 	public Vecteur refraction(Vecteur v, Vecteur N, double n1, double n2) {
 		Vecteur vecteur= new Vecteur();
 		double n= n1/n2;
-		Vecteur E=new Vecteur();
+		Vecteur E = new Vecteur();
 		E=v.multiplie(-1);
 		
 		// QUE FAIRE ICI !!!!! %???? /"%?"%?/"%?$ %
@@ -148,7 +148,7 @@ public class BlocDEau extends Objet implements Dessinable {
 	 * @return, l'aire du bloc sous forme d'area
 	 */
 	public Area getAireBloc() {
-		 Ellipse2D aire= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
+		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		 return new Area(aire);
 	}
 

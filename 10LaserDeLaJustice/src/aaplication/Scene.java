@@ -182,10 +182,6 @@ public class Scene extends JPanel implements Runnable {
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
 		
-		detectionCollisionBalleLaser(listeBalles, listeLasers);
-		detectionCollisionTrouLaser(listeLasers);
-		detectionCollisionBallePersonnage( listeBalles, principal);	
-		
 		for (Laser laser : listeLasers) {
 			if (laser.getLigneFinY() <= 0)
 				listeLasers.remove(laser);
@@ -257,7 +253,9 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	private void calculerUneIterationPhysique() {
 
-
+		detectionCollisionBalleLaser(listeBalles, listeLasers);
+		detectionCollisionTrouLaser(listeLasers);
+		detectionCollisionBallePersonnage( listeBalles, principal);	
 	
 		for (Balle balle : listeBalles) {
 			balle.unPasEuler(deltaT);
@@ -266,9 +264,11 @@ public class Scene extends JPanel implements Runnable {
 		for (Laser laser : listeLasers) {
 			laser.move();
 		}
-		tempsTotalEcoule += deltaT;
 		
+		tempsTotalEcoule += deltaT;
 		principal.bouge();
+		
+		
 	}
 
 	@Override
@@ -370,9 +370,10 @@ public class Scene extends JPanel implements Runnable {
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
 				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
-					listeLasers.remove(laser);
-					balle.shrink(listeBalles);
 					
+					listeLasers.remove(laser);
+					System.out.println("balle touche par laser");
+					//balle.shrink(listeBalles);
 				}
 			}
 		}
@@ -387,10 +388,13 @@ public class Scene extends JPanel implements Runnable {
 		private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
 				for (Balle balle : listeBalles) {
+					
 					if(enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
+						if(personnage.getTempsMort() <= tempsTotalEcoule) {
 						coeurs.setCombien(nombreVies-1);
 						nombreVies--;
-						
+						personnage.setTempsMort(tempsTotalEcoule*2);
+					}
 					}
 					
 				}

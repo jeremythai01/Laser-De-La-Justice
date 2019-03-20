@@ -218,13 +218,12 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
 
-		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		for(Laser laser : listeLasers) {
 			for(Balle balle : listeBalles ) {
 				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
-					listeLasers.remove(laser);   
-					listeBalleTouche.add(balle);
-					balle.shrink(listeBalles);
+					//listeLasers.remove(laser);   
+					//balle.shrink(listeBalles);
+					System.out.println("1");
 				}	
 
 			}
