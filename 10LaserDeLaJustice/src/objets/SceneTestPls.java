@@ -30,7 +30,7 @@ import java.awt.event.MouseEvent;
 
 /**
  * 
- * @author Jeremy
+ * @author Arnaud
  *
  */
 public class SceneTestPls extends JPanel implements Runnable {
