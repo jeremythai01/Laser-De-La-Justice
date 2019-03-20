@@ -46,6 +46,10 @@ public class MiroirConvexe implements Dessinable {
 
 	/**
 	 * Dessiner le miroir convexe
+	 * @param g2d : le composant graphique
+	 * @param mat : la matrice de transformation
+	 * @param hauteur : la hauteur de la scene
+	 * @param largeur : largeur de la scene 
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		matLocale = new AffineTransform(mat);

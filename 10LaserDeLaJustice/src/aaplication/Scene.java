@@ -105,14 +105,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	public Scene() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				System.out.println("mouse is being dragged at location (" + e.getX() / modele.getPixelsParUniteX()
-						+ ", " + e.getY() / modele.getPixelsParUniteY() + ")");
-
-			}
-		});
+		
 		lireFond();
 		lectureFichierOption();
 		angle = -90;
@@ -159,6 +152,16 @@ public class Scene extends JPanel implements Runnable {
 			public void keyReleased(KeyEvent e) {
 				principal.relacheTouche(e);
 				repaint();
+			}
+		});
+		
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				System.out.println("mouse is being dragged at location (" + e.getX() / modele.getPixelsParUniteX()
+						+ ", " + e.getY() / modele.getPixelsParUniteY() + ")");
+				
+
 			}
 		});
 

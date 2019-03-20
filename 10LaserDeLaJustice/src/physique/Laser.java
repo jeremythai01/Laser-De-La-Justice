@@ -170,7 +170,8 @@ public class Laser implements Dessinable{
 	 */
 	//auteur Arnaud Lefebvre
 	public Vecteur getPosition() {
-		return new Vecteur (position.getX(),position.getY());
+		//return new Vecteur (position.getX(),position.getY());
+		return new Vecteur (ligneDebutX, ligneFinY);
 	}
 
 	/**
