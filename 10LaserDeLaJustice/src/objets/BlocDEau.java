@@ -23,6 +23,7 @@ public class BlocDEau extends Objet implements Dessinable {
 	private Vecteur position;
 	private final int LARGEUR=2;
 	private Rectangle2D.Double bloc;
+	private boolean premiereCollision=true;
 	
 	/**
 	 * Constructeur du bloc deau qui prend en parametre la position du bloc
@@ -60,12 +61,12 @@ public class BlocDEau extends Objet implements Dessinable {
 	public Vecteur refraction(Vecteur v, Vecteur N, double n1, double n2) {
 		Vecteur vecteur= new Vecteur();
 		double n= n1/n2;
-		Vecteur E=new Vecteur();
+		Vecteur E = new Vecteur();
 		E=v.multiplie(-1);
 		
 		// QUE FAIRE ICI !!!!! %???? /"%?"%?/"%?$ %
-		//if(((1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N))))))) < 0)
-		//	throw new RuntimeException("OUPS !!!");
+		if(((1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N))))))) < 0)
+		throw new RuntimeException("OUPS !!!");
 		double resultat=1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)));
 		System.out.println("dsfsa"+resultat);
 		vecteur = v.multiplie(n).additionne(N.multiplie(((E.prodScalaire(N)*n)-Math.sqrt(1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)))))));
@@ -147,9 +148,20 @@ public class BlocDEau extends Objet implements Dessinable {
 	 * @return, l'aire du bloc sous forme d'area
 	 */
 	public Area getAireBloc() {
-		 Ellipse2D aire= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
+		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		 return new Area(aire);
 	}
+
+
+	public boolean isPremiereCollision() {
+		return premiereCollision;
+	}
+
+
+	public void setPremiereCollision(boolean premiereCollision) {
+		this.premiereCollision = premiereCollision;
+	}
+	
 	
 	
 	

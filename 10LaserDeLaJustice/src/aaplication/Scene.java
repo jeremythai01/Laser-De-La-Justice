@@ -33,6 +33,7 @@ import miroir.MiroirConcave;
 import miroir.MiroirConvexe;
 import miroir.MiroirPlan;
 import objets.BlocDEau;
+import objets.Echelle;
 import objets.TrouNoir;
 import personnage.Personnage;
 import physique.Balle;
@@ -56,9 +57,6 @@ public class Scene extends JPanel implements Runnable {
 	private Image fond = null;
 
 	private Personnage principal;
-
-	private Rectangle2D.Double fantomePerso;
-	private Shape fantomeTransfo;
 
 	private static final long serialVersionUID = 1L;
 
@@ -94,6 +92,10 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirConvexe miroireConvexe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
+	private int nombreVies=5;
+	private Coeurs coeurs = new Coeurs(nombreVies);
+
+	private Echelle echelle;
 
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
@@ -142,7 +144,6 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				principal.deplacerLePersoSelonTouche(e);
-				System.out.println(principal.getToucheDroite() + " " + principal.getToucheGauche());
 				tirLaser(e);
 				repaint();
 			}
@@ -166,12 +167,12 @@ public class Scene extends JPanel implements Runnable {
 		});
 
 	}
-		// Par Jeremy
-		/**
-		 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le personnage
-		 * et de savoir s'il y a des collisions entre le laser et les balles  
-		 * @author Arezki
-		 */
+	// Par Jeremy
+	/**
+	 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le personnage
+	 * et de savoir s'il y a des collisions entre le laser et les balles  
+	 * @author Arezki
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -185,6 +186,7 @@ public class Scene extends JPanel implements Runnable {
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
+		
 		for (Laser laser : listeLasers) {
 			if (laser.getLigneFinY() <= 0)
 				listeLasers.remove(laser);
@@ -192,64 +194,48 @@ public class Scene extends JPanel implements Runnable {
 			laser.dessiner(g2d, mat, 0, 0);
 		}
 
+
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
+		detectionCollisionBallePersonnage( listeBalles, principal);	
+	
 
-		
+		for (Balle balle : listeBalles) {
 
-			for (Balle balle : listeBalles) {
+			balle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
-				balle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			}
+		for (MiroirConcave miroirC : listeMiroireConcave) {
 
-			for (MiroirConcave miroirC : listeMiroireConcave) {
+			miroirC.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
-				miroirC.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			}
+		for (MiroirConvexe miroirV : listeMiroireConvexe) {
 
-			for (MiroirConvexe miroirV : listeMiroireConvexe) {
+			miroirV.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
-				miroirV.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			}
+		for (MiroirPlan miroirP : listeMiroirePlan) {
 
-			for (MiroirPlan miroirP : listeMiroirePlan) {
+			miroirP.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
-				miroirP.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			}
+		for (TrouNoir trou : listeTrou) {
+			trou.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
-			for (TrouNoir trou : listeTrou) {
-				trou.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			}
+		for(BlocDEau blocE : listeBlocEau) {
+			blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
-			for(BlocDEau blocE : listeBlocEau) {
-				blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			}
 
-		
-
-		//On dessine le personnage principal
-		creerLePersonnagePrincipal(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-
-	}
-
-	// Par Miora
-	/**
-	 * Cette methode permet de dessiner le personnage principal, ainsi qu'un carre
-	 * autour de lui (utilisation pour la collision avec les balles)
-	 * 
-	 * @param g2d : le composant graphique
-	 * @param mat : la matrice de transformation
-	 */
-
-	private void creerLePersonnagePrincipal(Graphics2D g2d, AffineTransform mat, double HAUTEUR_DU_MONDE,double LARGEUR_DU_MONDE) {
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
-		fantomePerso = new Rectangle2D.Double(principal.getPositionX(),
-				modele.getHautUnitesReelles() - principal.getLONGUEUR_PERSO(), principal.getLARGEUR_PERSO(),
-				principal.getLONGUEUR_PERSO());
-		//g2d.draw(mat.createTransformedShape(fantomePerso));
-
+		echelle = new Echelle(30.0,LARGEUR_DU_MONDE-7.5, HAUTEUR_DU_MONDE-1);
+		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 	}
+
 	/**
 	 * Cette méthode permet d'arreter l'animation
 	 * @author Jeremy
@@ -258,7 +244,7 @@ public class Scene extends JPanel implements Runnable {
 		if (enCoursAnimation)
 			enCoursAnimation = false;
 	}
-	
+
 	/**
 	 * Cette méthode permet de démarrer l'animation
 	 * @author Jeremy
@@ -272,7 +258,6 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	
 	/**
 	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
 	 *  @author Jeremy
@@ -280,14 +265,18 @@ public class Scene extends JPanel implements Runnable {
 	private void calculerUneIterationPhysique() {
 
 		for (Balle balle : listeBalles) {
-			balle.unPasRK4(deltaT, tempsTotalEcoule);
+			balle.unPasEuler(deltaT);
 		}
 
 		for (Laser laser : listeLasers) {
 			laser.move();
+			System.out.println("YEET"+laser.getPosition());
 		}
+		
 		tempsTotalEcoule += deltaT;
-		;
+		principal.bouge();
+		
+		
 	}
 
 	@Override
@@ -298,7 +287,6 @@ public class Scene extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
-			principal.bouge();
 			calculerUneIterationPhysique();
 			repaint();
 			try {
@@ -313,7 +301,7 @@ public class Scene extends JPanel implements Runnable {
 	//Par Miora
 	/**
 	 * Methode permettant de mettre un fond a la scene
-	**/
+	 **/
 	private void lireFond() {
 		URL fich = getClass().getClassLoader().getResource("space.jpg");
 		if (fich == null) {
@@ -390,23 +378,44 @@ public class Scene extends JPanel implements Runnable {
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
 				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
+					
 					listeLasers.remove(laser);
+					System.out.println("balle touche par laser");
 					balle.shrink(listeBalles);
 				}
 			}
 		}
 	}
-		
 
-	
-	
+	// Jeremy Thai
+		/**
+		 * Fait la detection d une collision entre toutes les balles et le personnage
+		 * @param listeBalles liste de balles
+		 * @param character personnage 
+		 */
+		private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
+
+				for (Balle balle : listeBalles) {
+					
+					if(enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
+						if(personnage.getTempsMort() <= tempsTotalEcoule) {
+						coeurs.setCombien(nombreVies-1);
+						nombreVies--;
+						personnage.setTempsMort(tempsTotalEcoule+1);
+						
+					}
+					}
+					
+				}
+			
+		}
+		
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
 		for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
 				if (enIntersection(trou.getAireTrou(), laser.getLaserAire())) {
 					listeLasers.remove(laser);
-
 				}
 			}
 		}
@@ -423,10 +432,10 @@ public class Scene extends JPanel implements Runnable {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
 				principal.neBougePas(); // Pour que 1 laser soit tirer a la fois
-					listeLasers.add(new Laser(
-							new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2, LARGEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
-							angle, new Vecteur(0, 0.5)));
-				
+				listeLasers.add(new Laser(
+						new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
+						angle, new Vecteur(0, 0.5)));
+
 			}
 		}
 	}

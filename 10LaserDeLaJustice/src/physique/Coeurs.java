@@ -59,8 +59,6 @@ public class Coeurs implements Dessinable {
 
 	}
 
-
-
 	@Override
 	/**
 	 * Cette méthode donnera la possibilité de dessiner les objets
