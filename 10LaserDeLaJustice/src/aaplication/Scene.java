@@ -397,7 +397,8 @@ public class Scene extends JPanel implements Runnable {
 						if(personnage.getTempsMort() <= tempsTotalEcoule) {
 						coeurs.setCombien(nombreVies-1);
 						nombreVies--;
-						personnage.setTempsMort(tempsTotalEcoule*2);
+						personnage.setTempsMort(tempsTotalEcoule+1);
+						
 					}
 					}
 					
