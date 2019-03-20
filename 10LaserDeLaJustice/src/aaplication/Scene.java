@@ -192,6 +192,10 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 
+		detectionCollisionBalleLaser(listeBalles, listeLasers);
+		detectionCollisionTrouLaser(listeLasers);
+		detectionCollisionBallePersonnage( listeBalles, principal);	
+	
 
 		for (Balle balle : listeBalles) {
 
@@ -257,16 +261,13 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	private void calculerUneIterationPhysique() {
 
-		detectionCollisionBalleLaser(listeBalles, listeLasers);
-		detectionCollisionTrouLaser(listeLasers);
-		detectionCollisionBallePersonnage( listeBalles, principal);	
-	
 		for (Balle balle : listeBalles) {
 			balle.unPasEuler(deltaT);
 		}
 
 		for (Laser laser : listeLasers) {
 			laser.move();
+			System.out.println("YEET"+laser.getPosition());
 		}
 		
 		tempsTotalEcoule += deltaT;
@@ -377,7 +378,7 @@ public class Scene extends JPanel implements Runnable {
 					
 					listeLasers.remove(laser);
 					System.out.println("balle touche par laser");
-					//balle.shrink(listeBalles);
+					balle.shrink(listeBalles);
 				}
 			}
 		}
@@ -429,7 +430,7 @@ public class Scene extends JPanel implements Runnable {
 			if (code == KeyEvent.VK_SPACE) {
 				principal.neBougePas(); // Pour que 1 laser soit tirer a la fois
 				listeLasers.add(new Laser(
-						new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2, LARGEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
+						new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
 						angle, new Vecteur(0, 0.5)));
 
 			}
