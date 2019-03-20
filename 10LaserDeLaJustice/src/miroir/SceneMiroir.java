@@ -328,7 +328,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			while (cmptMiroir< listeMiroirConvexe.size() && collision == false) {
 				System.out.println("je suis dans le while");
 				if(intersection(listeMiroirConvexe.get(cmptMiroir).getAireMiroirConvexe(), laser.getLaserAire())) {
-					System.out.println("Jai eu une intersection yey");
+					System.out.println("J ai eu une intersection yey");
 					collision = true;
 					double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
