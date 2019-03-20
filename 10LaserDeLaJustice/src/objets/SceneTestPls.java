@@ -30,7 +30,7 @@ import java.awt.event.MouseEvent;
 
 /**
  * 
- * @author Jeremy
+ * @author Arnaud
  *
  */
 public class SceneTestPls extends JPanel implements Runnable {
@@ -70,6 +70,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private Coeurs coeur;
 	private int nombreVies=3;
 
+	private Echelle echelle;
 
 
 	/**
@@ -182,6 +183,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeur.setCombien(nombreVies-1);
 		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		echelle = new Echelle(50, 3,4);
+		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}//fin paintComponent
 

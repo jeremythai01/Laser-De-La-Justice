@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -154,6 +155,16 @@ public class Options extends JFrame {
 		});
 		btnSauvegarder.setBounds(636, 399, 100, 43);
 		contentPane.add(btnSauvegarder);
+		
+		JButton btnChangerLaCouleur = new JButton("Changer la couleur");
+		btnChangerLaCouleur.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Color color = null;
+				color = JColorChooser.showDialog(null,"Sélectionner la couleur voulue", color);
+			}
+		});
+		btnChangerLaCouleur.setBounds(219, 374, 192, 21);
+		contentPane.add(btnChangerLaCouleur);
 	}
 	/**
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
