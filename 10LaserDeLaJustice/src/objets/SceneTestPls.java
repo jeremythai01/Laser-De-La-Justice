@@ -78,9 +78,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 	 */
 	public SceneTestPls() {
 
-		ordi= new Ordinateur(1, new Vecteur(20,20));
+		ordi= new Ordinateur(1, new Vecteur(20,44));
 		
-		angle = 90   ;
+		angle = 30   ;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -113,6 +113,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
 				shoot(e);
+				tirer(e);
 				repaint();
 			}
 		});
@@ -331,7 +332,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 					try {
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
-						laser.setAngleTir(90-Math.atan(ref.getY()/ref.getX()));
+						//laser.setAngleTir(90-Math.atan(ref.getY()/ref.getX()));
+						laser.setAngleTir(30);
 						System.out.println(laser.getAngleTir());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -361,9 +363,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 	}
 	
-	//public tirerOrdi() {
-		
-//	}
+	private void tirer(KeyEvent e) {
+		int code = e.getKeyCode();
+		//if(code == KeyEvent.VK_SPACE) 
+		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+	}
 }
 
 
