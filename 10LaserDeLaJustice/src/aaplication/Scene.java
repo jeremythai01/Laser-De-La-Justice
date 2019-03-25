@@ -58,11 +58,12 @@ public class Scene extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private double angle;
-	private double deltaT = 0.06;
+	private double deltaT = 0.006;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
-
+	private int tempsDuSleep = 30;
 	private double tempsTotalEcoule = 0;
+	
 	private double diametre = 2; // em mètres
 
 	private boolean enCoursAnimation = false;
@@ -97,7 +98,7 @@ public class Scene extends JPanel implements Runnable {
 
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
-	private int tempsDuSleep = 30;
+	
 
 	// Par Jeremy
 	/**
@@ -108,7 +109,7 @@ public class Scene extends JPanel implements Runnable {
 
 		lireFond();
 		lectureFichierOption();
-		angle = -90;
+		angle = 30;
 		principal = new Personnage(toucheGauche, toucheDroite);
 		pistoletPrincipal = new Pistolet();
 
@@ -260,12 +261,11 @@ public class Scene extends JPanel implements Runnable {
 	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
 	 *  @author Jeremy
 	 */
-	private void calculerUneIterationPhysique() {
+	public void calculerUneIterationPhysique() {
 
 		for (Balle balle : listeBalles) {
-			balle.unPasEuler(deltaT);
+			balle.unPasVerlet(deltaT);
 		}
-
 		for (Laser laser : listeLasers) {
 			laser.move();
 			System.out.println("YEET"+laser.getPosition());

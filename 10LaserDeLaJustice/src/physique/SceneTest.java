@@ -35,8 +35,8 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 30;
-	private double deltaT = 0.08;
-	private  double LARGEUR_DU_MONDE = 50; //en metres
+	private double deltaT = 0.006;
+	private  double LARGEUR_DU_MONDE = 30; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
@@ -136,15 +136,6 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 
-		for (int i = 0; i < listeBalles.size(); i++) {
-			for (int j = i+1; j < listeBalles.size(); j++) {
-				Balle balle1 = listeBalles.get(i);
-				Balle balle2 = listeBalles.get(j);
-				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
-			}
-		}
-
-
 		for(Balle balle: listeBalles) {
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
@@ -170,15 +161,25 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private void calculerUneIterationPhysique() {
 		
+		for (int i = 0; i < listeBalles.size(); i++) {
+			for (int j = i+1; j < listeBalles.size(); j++) {
+				Balle balle1 = listeBalles.get(i);
+				Balle balle2 = listeBalles.get(j);
+				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+			}
+		}
+
+		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+		
 		for(Balle balle: listeBalles) {
-			balle.unPasRK4(deltaT, tempsTotalEcoule);
+			balle.unPasVerlet(deltaT);
 		}
 
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
 
-
+		character.bouge();
 
 		tempsTotalEcoule += deltaT;;
 	}
@@ -201,7 +202,6 @@ public class SceneTest extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
-			character.bouge();
 			calculerUneIterationPhysique();
 			repaint();
 			try {
@@ -221,8 +221,8 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			for(Balle balle : listeBalles ) {
 				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
-					//listeLasers.remove(laser);   
-					//balle.shrink(listeBalles);
+					listeLasers.remove(laser);   
+					balle.shrink(listeBalles);
 					System.out.println("1");
 				}	
 
@@ -264,7 +264,7 @@ public class SceneTest extends JPanel implements Runnable {
 				if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 					listeLasers.add(
 							new Laser(new Vecteur(
-									character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE) , angle, new Vecteur(0, 1 )));
+									character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
 					System.out.println("nb de laser :"+ listeLasers.size());
 					repaint();
 				}
