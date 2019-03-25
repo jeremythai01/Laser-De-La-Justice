@@ -71,7 +71,9 @@ public class MiroirConvexe implements Dessinable {
 	 * @return l'aire du miroir convexe
 	 */
 	public Area getAireMiroirConvexe() {
+		System.out.println("je cherche l'aire miroir convexe");
 		return new Area (miroir);
+		
 	}
 
 	/**

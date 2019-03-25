@@ -4,30 +4,31 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import java.awt.Image;
-import java.awt.Shape;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.URL;
-
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-
 import javax.swing.JPanel;
+
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
 import miroir.MiroirConvexe;
@@ -37,14 +38,10 @@ import objets.Echelle;
 import objets.TrouNoir;
 import personnage.Personnage;
 import physique.Balle;
-
-import pistolet.Pistolet;
-
 import physique.Coeurs;
 import physique.Laser;
 import pistolet.Pistolet;
 import utilite.ModeleAffichage;
-import java.awt.event.MouseMotionAdapter;
 
 /**
  * Cette classe contient la scene d'animation du jeu.
@@ -94,6 +91,7 @@ public class Scene extends JPanel implements Runnable {
 	private BlocDEau bloc;
 	private int nombreVies=5;
 	private Coeurs coeurs = new Coeurs(nombreVies);
+	private int grosseBalle =0, moyenneBalle =0, petiteBalle=0;
 
 	private Echelle echelle;
 
@@ -107,7 +105,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	public Scene() {
-		
+
 		lireFond();
 		lectureFichierOption();
 		angle = -90;
@@ -155,13 +153,13 @@ public class Scene extends JPanel implements Runnable {
 				repaint();
 			}
 		});
-		
+
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				System.out.println("mouse is being dragged at location (" + e.getX() / modele.getPixelsParUniteX()
 						+ ", " + e.getY() / modele.getPixelsParUniteY() + ")");
-				
+
 
 			}
 		});
@@ -186,7 +184,7 @@ public class Scene extends JPanel implements Runnable {
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
-		
+
 		for (Laser laser : listeLasers) {
 			if (laser.getLigneFinY() <= 0)
 				listeLasers.remove(laser);
@@ -198,7 +196,7 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
 		detectionCollisionBallePersonnage( listeBalles, principal);	
-	
+
 
 		for (Balle balle : listeBalles) {
 
@@ -272,11 +270,11 @@ public class Scene extends JPanel implements Runnable {
 			laser.move();
 			System.out.println("YEET"+laser.getPosition());
 		}
-		
+
 		tempsTotalEcoule += deltaT;
 		principal.bouge();
-		
-		
+
+
 	}
 
 	@Override
@@ -378,7 +376,7 @@ public class Scene extends JPanel implements Runnable {
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
 				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
-					
+
 					listeLasers.remove(laser);
 					System.out.println("balle touche par laser");
 					balle.shrink(listeBalles);
@@ -388,28 +386,28 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	// Jeremy Thai
-		/**
-		 * Fait la detection d une collision entre toutes les balles et le personnage
-		 * @param listeBalles liste de balles
-		 * @param character personnage 
-		 */
-		private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
+	/**
+	 * Fait la detection d une collision entre toutes les balles et le personnage
+	 * @param listeBalles liste de balles
+	 * @param character personnage 
+	 */
+	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
-				for (Balle balle : listeBalles) {
-					
-					if(enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
-						if(personnage.getTempsMort() <= tempsTotalEcoule) {
-						coeurs.setCombien(nombreVies-1);
-						nombreVies--;
-						personnage.setTempsMort(tempsTotalEcoule+1);
-						
-					}
-					}
-					
+		for (Balle balle : listeBalles) {
+
+			if(enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
+				if(personnage.getTempsMort() <= tempsTotalEcoule) {
+					coeurs.setCombien(nombreVies-1);
+					nombreVies--;
+					personnage.setTempsMort(tempsTotalEcoule+1);
+
 				}
-			
+			}
+
 		}
-		
+
+	}
+
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
 		for (Laser laser : listeLasers) {
@@ -464,6 +462,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleGrosse() {
 		listeBalles.add(new Balle(new Vecteur(), vitesse, "LARGE"));
+		grosseBalle++;
 		repaint();
 
 	}
@@ -474,6 +473,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleMedium() {
 		listeBalles.add(new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"));
+		moyenneBalle++;
 		repaint();
 
 	}
@@ -484,6 +484,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBallePetite() {
 		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
+		petiteBalle++;
 		repaint();
 
 	}
@@ -566,5 +567,40 @@ public class Scene extends JPanel implements Runnable {
 		listeMiroirePlan.removeAll(listeMiroirePlan);
 		listeTrou.removeAll(listeTrou);
 		repaint();
+	}
+
+	//Miora
+	/**
+	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles, la position du joueur, 
+	 * la couleur du rayon et les touches utilisées
+	 */
+	public void ecritureFichierSauvegarde(){
+		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
+		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+
+		ObjectOutputStream fluxSortie = null;
+		try {
+			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
+			fluxSortie.writeInt(nombreVies);
+			fluxSortie.writeObject(listeBalles);
+			fluxSortie.writeObject(principal);
+			fluxSortie.writeObject(Color.black);
+			fluxSortie.writeInt(toucheDroite);
+			fluxSortie.writeInt(toucheGauche);
+			JOptionPane.showMessageDialog(null,"Votre partie a ete sauvegarde");
+		} 
+		catch (IOException e) {
+			System.out.println("Erreur lors de l'écriture!");
+			e.printStackTrace();
+		}
+		finally {
+			//on exécutera toujours ceci, erreur ou pas
+			try { 
+				fluxSortie.close();  
+			}
+			catch (IOException e) { 
+				System.out.println("Erreur rencontrée lors de la fermeture!"); 
+			}
+		}//fin finally
 	}
 }

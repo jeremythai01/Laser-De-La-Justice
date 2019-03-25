@@ -46,15 +46,14 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private VecteurGraphique q;
 	private Vecteur origin;
 	private boolean afficherVec =false;
-	
-	
-	
-	
-	private int cmptMiroir = 0;
-	private boolean collision = false;
-	
-	
-	
+
+
+
+
+	private int nbCollison = 0;
+
+
+
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private MiroirPlan plan;
@@ -69,7 +68,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Constructeur de la classe
 	 */
 	public SceneMiroir() {
-		angle = 90;
+		angle = 30;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);
@@ -168,6 +167,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Cette methode permet de calculer une iteration physique
 	 */
 	private void calculerUneIterationPhysique() {
+		System.out.println("dans calcul it phys...");
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
@@ -205,8 +205,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
-			calculerUneIterationPhysique();
-			repaint();
+		
 
 			try {
 				colisionLaserMiroirPlan();
@@ -220,6 +219,8 @@ public class SceneMiroir extends JPanel implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			calculerUneIterationPhysique();
+			repaint();
 		}//fin while
 		System.out.println("Le thread est mort...");
 	}
@@ -295,47 +296,26 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 	private void colisionLaserMiroirConvexe() throws Exception{
 		System.out.println("entree dans colisionLaserMiroirConvexe");
-		/*for(MiroirConvexe miroir : listeMiroirConvexe ) {
-			for(Laser laser : listeLasers) {
-				System.out.println("j'ai lancé un laser");
-				if(intersection(miroir.getAireMiroirConvexe(), laser.getLaserAire()) ) {
-					comptInter++;
-					if(comptInter == 1) {
-						double angleLaser = Math.toRadians(laser.getAngleTir());
-						Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
-
-						//n vecteur normal au miroir
-						Vecteur n = miroir.getNormalPosition(laser.getPosition()).normalise();	
-						//arreter();
-						System.out.println("la normal " + n);
-
-						//e = -v
-						Vecteur e = v.multiplie(-1);
-
-						double angle2=  Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
-						laser.setAngleTir(angle2);
-						System.out.println("Intersection totale" + comptInter);
-					}
-
-				}
-			}
-		}
-		 */
-
+		//int nbMiroirsTestes =0;
 		for (Laser laser : listeLasers) {
-			//System.out.println(listeMiroirConvexe.size() + "               " + collision);
-		//	System.out.println("cmptMiroir" + cmptMiroir );
-			while (cmptMiroir< listeMiroirConvexe.size() && collision == false) {
-				System.out.println("je suis dans le while");
-				if(intersection(listeMiroirConvexe.get(cmptMiroir).getAireMiroirConvexe(), laser.getLaserAire())) {
-					System.out.println("J ai eu une intersection yey");
+			boolean collision = false;
+			int nbMiroirsTestes = 0;
+			System.out.println("la longueur de la liste laser " + listeLasers.size() );
+			System.out.println("le nombre de d'intersection : " + nbCollison);
+			System.out.println("taille liste miroir " + listeMiroirConvexe.size());
+			System.out.println( "collision ? " + collision);
+			int nbMiroir = listeMiroirConvexe.size();
+			while (nbMiroirsTestes< listeMiroirConvexe.size() && collision == false) {
+				nbMiroir = nbMiroirsTestes;
+				System.out.println("je suis dans le while et je suis au miroir " + listeMiroirConvexe.get(0) );
+				//System.out.println("liste miroir" + listeMiroirConvexe.toString());
+				if(intersection(listeMiroirConvexe.get(nbMiroir).getAireMiroirConvexe(), laser.getLaserAire())) {
 					collision = true;
 					double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
 
 					//n vecteur normal au miroir
-					Vecteur n = listeMiroirConvexe.get(cmptMiroir).getNormalPosition(laser.getPosition()).normalise();	
-					//arreter();
+					Vecteur n = listeMiroirConvexe.get(nbCollison).getNormalPosition(laser.getPosition()).normalise();	
 					System.out.println("la normal " + n);
 
 					//e = -v
@@ -343,12 +323,13 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 					double angle2=  Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
 					laser.setAngleTir(angle2);
-					cmptMiroir++;
-				}
+				} // fin if
 				
-			}
-		}
-	}
+				
+				nbMiroirsTestes++;
+			} // fin while miroir
+		} // fin laser
+	} // fin methode
 
 	//Miora et Arezki
 	/**
