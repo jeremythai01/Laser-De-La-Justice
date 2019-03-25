@@ -262,7 +262,7 @@ public class Scene extends JPanel implements Runnable {
 	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
 	 *  @author Jeremy
 	 */
-	private void calculerUneIterationPhysique() {
+	public void calculerUneIterationPhysique() {
 
 		for (Balle balle : listeBalles) {
 			balle.unPasEuler(deltaT);
