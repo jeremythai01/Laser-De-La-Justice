@@ -112,6 +112,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnImage = new JButton("image");
 		btnImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				scene.calculerUneIterationPhysique();
+				repaint();
 			}
 		});
 		btnImage.setBounds(144, 61, 40, 38);

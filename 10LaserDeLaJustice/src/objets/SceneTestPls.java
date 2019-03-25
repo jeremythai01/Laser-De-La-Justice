@@ -72,12 +72,14 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	private Echelle echelle;
 
-
+	private Ordinateur ordi;
 	/**
 	 * Create the panel.
 	 */
 	public SceneTestPls() {
 
+		ordi= new Ordinateur(1, new Vecteur(20,20));
+		
 		angle = 90   ;
 		character = new Personnage();
 
@@ -185,6 +187,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		echelle = new Echelle(50, 3,4);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		
+		g2d.setColor(Color.yellow);
+		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}//fin paintComponent
 
@@ -202,9 +207,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 			laser.move();
 		}
 
-
-
-		tempsTotalEcoule += deltaT;;
+		
+		tempsTotalEcoule += deltaT;
+		ordi.bouge();
 	}
 
 	public void arreter( ) {
@@ -355,6 +360,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 			}
 		}
 	}
+	
+	//public tirerOrdi() {
+		
+//	}
 }
 
 
