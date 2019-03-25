@@ -109,6 +109,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.arreter();
+				tempsJeu.stop();
 			}
 		});
 		btnPause.setBounds(94, 61, 40, 38);
@@ -142,6 +143,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Options fenetreOpt = new Options();
 				fenetreOpt.setVisible(true);
+				tempsJeu.stop();
 			}
 		});
 		btnOption.setBounds(1281, 61, 40, 38);
@@ -157,6 +159,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				scene.arreter();
 				activerEditeur();
 				scene.ActiverEditeur();
+				tempsJeu.stop();
 			}
 		});
 		btnEditeur.setBounds(1231, 61, 40, 38);
@@ -169,6 +172,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				desactiverEditeur();
 				scene.DesactiverEditeur();
 				donneFocusALaScene();
+				tempsJeu.stop();
 			}
 		});
 		btnEnregistrer.setBounds(1181, 61, 40, 38);
@@ -401,6 +405,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				scene.reinitialiserDessin();
 				donneFocusALaScene();
+				
 			}
 		});
 		btnViderScene.setBounds(1131, 61, 40, 38);
@@ -409,7 +414,7 @@ public class App10LaserDeLaJustice extends JFrame {
 
 		JProgressBar tempsDuJeu = new JProgressBar();
 		tempsDuJeu.setMaximum(60);
-		tempsDuJeu.setString("0 s");
+		tempsDuJeu.setString("60.0 secondes restantes");
 		tempsDuJeu.setValue(60);
 		tempsDuJeu.setForeground(new Color(0, 0, 255));
 		tempsDuJeu.setOpaque(true);
@@ -435,7 +440,9 @@ public class App10LaserDeLaJustice extends JFrame {
 					tempsJeu.stop();
 					scene.arreter();
 
-					JOptionPane.showMessageDialog(null, "Game over", "Informatiom", getDefaultCloseOperation());
+					FenetreGameOver gameOver = new FenetreGameOver();
+							setVisible(false);
+							gameOver.setVisible(true);
 				}
 			}
 		};
