@@ -264,24 +264,28 @@ public class Balle implements Dessinable {
 
 	public void shrink(ArrayList<Balle> liste) {
 
-		Balle newBall1;
-		Balle newBall2;
+		Balle nouvBalle1;
+		Balle nouvBalle2;
 		switch(type)	{
 
 		case LARGE:
-			newBall1 = new Balle(position, vitesse, "MEDIUM");
-			liste.add(newBall1);
-			newBall2 = new Balle(position, vitesse, "MEDIUM");
-			newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
-			liste.add(newBall2);
+			nouvBalle1 = new Balle(position, vitesse, "MEDIUM");
+			nouvBalle1.getPosition().setX(position.getX()+1);
+			liste.add(nouvBalle1);
+			nouvBalle2 = new Balle(position, vitesse, "MEDIUM");
+			nouvBalle2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
+			nouvBalle2.getPosition().setX(position.getX()-1);
+			liste.add(nouvBalle2);
 			liste.remove(this);
 			break;
 		case MEDIUM:
-			newBall1 = new Balle(position, vitesse, "SMALL");
-			liste.add(newBall1);
-			newBall2 = new Balle(position, vitesse, "SMALL");
-			newBall2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
-			liste.add(newBall2);
+			nouvBalle1 = new Balle(position, vitesse, "SMALL");
+			nouvBalle1.getPosition().setX(position.getX()+1);
+			liste.add(nouvBalle1);
+			nouvBalle2 = new Balle(position, vitesse, "SMALL");
+			nouvBalle2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
+			nouvBalle2.getPosition().setX(position.getX()-1);
+			liste.add(nouvBalle2);
 			liste.remove(this);
 			break;
 
