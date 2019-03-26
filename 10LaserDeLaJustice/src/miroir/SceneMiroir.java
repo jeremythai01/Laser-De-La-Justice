@@ -68,7 +68,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Constructeur de la classe
 	 */
 	public SceneMiroir() {
-		angle = 30;
+		angle = 90;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);
@@ -236,7 +236,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			//	if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 			listeLasers.add(
 					new Laser(new Vecteur(
-							character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+							character.getPositionX() + character.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.5)));
 			//}
 		}
 	}
@@ -311,7 +311,10 @@ public class SceneMiroir extends JPanel implements Runnable {
 				//System.out.println("liste miroir" + listeMiroirConvexe.toString());
 				if(intersection(listeMiroirConvexe.get(nbMiroir).getAireMiroirConvexe(), laser.getLaserAire())) {
 					collision = true;
-					double angleLaser = Math.toRadians(laser.getAngleTir());
+					//arreter();
+					//laser.setPosition(laser.getPosition());
+					laser.setAngleTir(45);
+					/*double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
 
 					//n vecteur normal au miroir
@@ -322,7 +325,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 					Vecteur e = v.multiplie(-1);
 
 					double angle2=  Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
-					laser.setAngleTir(angle2);
+					laser.setAngleTir(angle2);*/
 				} // fin if
 				
 				

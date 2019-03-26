@@ -153,7 +153,7 @@ public class Laser implements Dessinable{
 	 */
 	//auteur Jeremy Thai
 	public Area getLaserAire(){ // pour detecter lintersection
-		return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,LONGUEUR,position.getY()));
+		return new Area(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(),LONGUEUR,0.01));
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class Laser implements Dessinable{
 	//auteur Arnaud Lefebvre
 	public Vecteur getPosition() {
 		//return new Vecteur (position.getX(),position.getY());
-		return new Vecteur (ligneDebutX, ligneFinY);
+		return new Vecteur (ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 	}
 
 	/**
