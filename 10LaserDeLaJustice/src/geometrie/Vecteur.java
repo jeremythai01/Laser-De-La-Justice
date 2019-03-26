@@ -198,13 +198,13 @@ public class Vecteur {
 	 * @return Le vecteur normalise.
 	 * @throws Exception Si le vecteur ne peut pas etre normalise etant trop petit ou de longueur nulle.
 	 */
-	public Vecteur normalise() throws Exception
+	public Vecteur normalise() throws RuntimeException
 	{
 		double mod = module();			//obtenir le module du vecteur
 		
 		//Verification du module. S'il est trop petit, nous ne pouvons pas numeriquement normaliser ce vecteur
 		if(mod < EPSILON) 
-		  throw new Exception("Erreur Vecteur: Le vecteur " + this.toString() + " étant nul ou presque nul ne peut pas etre normalisé.");
+		  throw new RuntimeException("Erreur Vecteur: Le vecteur " + this.toString() + " étant nul ou presque nul ne peut pas etre normalisé.");
 		else
 			return new Vecteur(x/mod, y/mod);
 	}

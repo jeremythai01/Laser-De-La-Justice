@@ -1,14 +1,11 @@
 package aaplication;
 
 import java.awt.BasicStroke;
-
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -16,10 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -48,7 +42,7 @@ import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
-
+import pistolet.Pistolet;
 import utilite.ModeleAffichage;
 
 /**
@@ -184,16 +178,14 @@ public class Scene extends JPanel implements Runnable {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-<<<<<<< HEAD
+
 				dragGrosseCercle();
 				dragBalleMedium();
 				dragPetiteBalle();
-=======
+
 				System.out.println("mouse is being dragged at location (" + e.getX() / modele.getPixelsParUniteX()
 						+ ", " + e.getY() / modele.getPixelsParUniteY() + ")");
 
-
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 			}
 		});
 
@@ -219,10 +211,7 @@ public class Scene extends JPanel implements Runnable {
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
-<<<<<<< HEAD
-=======
 
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 		for (Laser laser : listeLasers) {
 			if (laser.getLigneFinY() <= 0)
 				listeLasers.remove(laser);
@@ -232,12 +221,9 @@ public class Scene extends JPanel implements Runnable {
 
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
-<<<<<<< HEAD
 		detectionCollisionBallePersonnage(listeBalles, principal);
-=======
 		detectionCollisionBallePersonnage( listeBalles, principal);	
 
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 
 		for (Balle balle : listeBalles) {
 
@@ -317,10 +303,7 @@ public class Scene extends JPanel implements Runnable {
 		tempsTotalEcoule += deltaT;
 		principal.bouge();
 
-<<<<<<< HEAD
-=======
 
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 	}
 
 	@Override
@@ -438,7 +421,6 @@ public class Scene extends JPanel implements Runnable {
 	// Jeremy Thai
 	/**
 	 * Fait la detection d une collision entre toutes les balles et le personnage
-<<<<<<< HEAD
 	 * 
 	 * @param listeBalles liste de balles
 	 * @param character   personnage
@@ -450,20 +432,11 @@ public class Scene extends JPanel implements Runnable {
 	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
 		for (Balle balle : listeBalles) {
-
-<<<<<<< HEAD
 			if (enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
 				if (personnage.getTempsMort() <= tempsTotalEcoule) {
 					coeurs.setCombien(nombreVies - 1);
 					nombreVies--;
 					personnage.setTempsMort(tempsTotalEcoule + 1);
-=======
-			if(enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
-				if(personnage.getTempsMort() <= tempsTotalEcoule) {
-					coeurs.setCombien(nombreVies-1);
-					nombreVies--;
-					personnage.setTempsMort(tempsTotalEcoule+1);
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 
 				}
 			}
@@ -525,13 +498,9 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton grosse balle
 	 */
 	public void ajoutBalleGrosse() {
-<<<<<<< HEAD
-		balle = new Balle(new Vecteur(), vitesse, "LARGE");
-		listeBalles.add(balle);
-=======
+
 		listeBalles.add(new Balle(new Vecteur(), vitesse, "LARGE"));
 		grosseBalle++;
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 		repaint();
 
 	}
@@ -541,13 +510,9 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton medium balle
 	 */
 	public void ajoutBalleMedium() {
-<<<<<<< HEAD
-		balle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
-		listeBalles.add(balle);
-=======
+
 		listeBalles.add(new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"));
 		moyenneBalle++;
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 		repaint();
 
 	}
@@ -557,13 +522,9 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton petite balle
 	 */
 	public void ajoutBallePetite() {
-<<<<<<< HEAD
-		balle = new Balle(new Vecteur(1, 0), vitesse, "SMALL");
-		listeBalles.add(balle);
-=======
+	
 		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
 		petiteBalle++;
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 		repaint();
 
 	}
@@ -647,7 +608,6 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
-<<<<<<< HEAD
 	private void dragGrosseCercle() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -701,7 +661,6 @@ public class Scene extends JPanel implements Runnable {
 		});
 	}
 
-=======
 	//Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles, la position du joueur, 
@@ -736,5 +695,4 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}//fin finally
 	}
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 }
