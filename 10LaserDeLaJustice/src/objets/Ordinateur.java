@@ -84,6 +84,9 @@ public class Ordinateur implements Dessinable {
 	public Vecteur getPosition() {
 		return position;
 	}
+	public double getPositionX() {
+		return position.getX();
+	}
 
 	public void setPosition(Vecteur position) {
 		this.position = position;

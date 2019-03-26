@@ -93,33 +93,33 @@ public class MoteurPhysique {
 
 		double tempsF1 = temps+deltaT; // Évaluer le temps final #1
 
-		//on evalue pas a car a est constant
+		Vecteur axf1 = vF1.soustrait(vitesse).multiplie(1/tempsF1);
 
 		//Calculs a la position a demie-temps
 
 		Vecteur posMilieu = vitesse.multiplie(deltaT/2).additionne( a.multiplie(Math.pow(deltaT/2,2)).multiplie(1/2)).additionne(pos); // Évaluer la position milieu
 
-		Vecteur vMilieu =  vitesse.additionne(Vecteur.multiplie(a, deltaT/2)); //Evaluer la vitesse milieu ( axi = axf1 car a est constant)
+		Vecteur vMilieu =  vitesse.additionne(   Vecteur.multiplie(a, 3/4).additionne(Vecteur.multiplie(axf1, 1/4)).multiplie(deltaT/2)); //Evaluer la vitesse milieu ( axi = axf1 car a est constant)
 
 		double tempsMilieu = temps+ deltaT/2;
 
-		//on evalue pas a car a est constant
+		Vecteur axMid = vMilieu.soustrait(vF1).multiplie(1/tempsMilieu); //on evalue pas a car a est constant
 
 		//Calcul a la 2e position finale
 
 		Vecteur posF2 = vitesse.multiplie(deltaT).additionne( a.multiplie(Math.pow(deltaT,2)).multiplie(1/2)).additionne(pos); // Évaluer la position finale #2
 
-		Vecteur vF2 =  vitesse.additionne(Vecteur.multiplie(a, deltaT)); // Évaluer la vitesse finale #2 
+		Vecteur vF2 =  vitesse.additionne(   Vecteur.multiplie(a, 1/2).additionne(Vecteur.multiplie(axf1, 1/2)).multiplie(deltaT)); //Evaluer la vitesse milieu ( axi = axf1 car a est constant)
 
 		double tempsFinal2 = temps+ deltaT; // Évaluer le temps final #2 :
 
-		//on evalue pas a car a est constant
+		Vecteur axF2 = vF2.soustrait(vMilieu).multiplie(1/tempsFinal2);//on evalue pas a car a est constant
 
 		//Calcul de la position finale avec pondération de l’accélération
 
-		Vecteur posF = vitesse.multiplie(deltaT).additionne( a.multiplie(Math.pow(deltaT,2)).multiplie(1/2)).additionne(pos); // Évaluer la position finale
+		Vecteur posF = vitesse.multiplie(deltaT).additionne( Vecteur.multiplie(a, 1/3).additionne(Vecteur.multiplie(axMid, 2/3).multiplie(deltaT*deltaT).multiplie(1/2)).additionne(pos)); // Évaluer la position finale
 
-		Vecteur vF =  vitesse.additionne(Vecteur.multiplie(a, deltaT)); // Évaluer la vitesse finale 
+		Vecteur vF =  vitesse.additionne( Vecteur.multiplie(a, 1/6).additionne(Vecteur.multiplie(axMid, 4/6)).additionne(Vecteur.multiplie(axF2, 1/6)).multiplie(deltaT)); // Évaluer la vitesse finale 
 
 		double tempsF = temps + deltaT; // Évaluer le temps final 
 
@@ -189,8 +189,8 @@ public class MoteurPhysique {
 			return tab;
 		}
 	}
-
-
+	
+	
 	/**
 	 * Methode qui permet de faire la detection de balles et s il y en a une, realiser la collision entre celles-ci
 	 * @param balle1 une balle
@@ -204,10 +204,10 @@ public class MoteurPhysique {
 		Vecteur rA0 = balle1.getPosition();
 		double rayonB = balle2.getDiametre()/2; 
 		Vecteur rB0 = balle2.getPosition();
-		//	Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
+		//		Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
 		Vecteur vB =  balle2.getVitesse();
-		
-	
+
+
 		Vecteur v = vB.soustrait(vA);
 		Vecteur r0 = rB0.soustrait(rA0);
 
@@ -219,38 +219,49 @@ public class MoteurPhysique {
 
 		double temps[] = quadricRealRoot( A, B, C); 
 
-		if( temps.length == 0) 
-			return;
-		
-			for(int i = 0; i< temps.length; i++) {
-				if( temps[i] > 0) {
-					Vecteur rA = rA0.additionne(vA.multiplie(temps[i]));
-					Vecteur rB = rB0.additionne(vB.multiplie(temps[i]));
-					
-					Vecteur nAB = rB.soustrait(rA).multiplie(1/rB.soustrait(rA).module());
-					
-					double masseA = balle1.getMasse();
-					double masseB = balle2.getMasse();
-					
-					Vecteur vAB0 = vA.soustrait(vB);
-					
-					double vNAB0 = vAB0.prodScalaire(nAB);
-					
-					double masseBA = masseB/masseA;
-					double vNAB = vNAB0*(1-masseBA)/(1+masseBA);
-					
-					Vecteur vBb =  nAB.multiplie(vNAB-vNAB0).multiplie(-(masseA/masseB));
-					
-					Vecteur vAB = vAB0.additionne(nAB.multiplie(vNAB-vNAB0));
-					
-					Vecteur vAfinal = vAB.additionne(vB);
-					Vecteur vBfinal = vBb.additionne(vB);
-					
-					balle1.setVitesse(vAfinal);
-					balle2.setVitesse(vBfinal);
-					return;
-				}
-			}	
-		}
+		if( temps.length == 1 || temps.length == 2) 
+			collisionBalles( balle1, balle2, temps);
 	}
+
+	private static void collisionBalles(Balle balle1, Balle balle2, double[] temps) {
+
+		//Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
+		Vecteur vA =  balle1.getVitesse();
+		Vecteur rA0 = balle1.getPosition();
+		Vecteur rB0 = balle2.getPosition();
+		//	Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
+		Vecteur vB =  balle2.getVitesse();
+
+
+		for(int i = 0; i< temps.length; i++) {
+			if( temps[i] > 0) {
+				Vecteur rA = rA0.additionne(vA.multiplie(temps[i]));
+				Vecteur rB = rB0.additionne(vB.multiplie(temps[i]));
+
+				Vecteur nAB = rB.soustrait(rA).multiplie(1/rB.soustrait(rA).module());
+
+				double masseA = balle1.getMasse();
+				double masseB = balle2.getMasse();
+
+				Vecteur vAB0 = vA.soustrait(vB);
+
+				double vNAB0 = vAB0.prodScalaire(nAB);
+
+				double masseBA = masseB/masseA;
+				double vNAB = vNAB0*(1-masseBA)/(1+masseBA);
+
+				Vecteur vBb =  nAB.multiplie(vNAB-vNAB0).multiplie(-(masseA/masseB));
+
+				Vecteur vAB = vAB0.additionne(nAB.multiplie(vNAB-vNAB0));
+
+				Vecteur vAfinal = vAB.additionne(vB);
+				Vecteur vBfinal = vBb.additionne(vB);
+
+				balle1.setVitesse(vAfinal);
+				balle2.setVitesse(vBfinal);
+				return;
+			}
+		}	
+	}
+}
 

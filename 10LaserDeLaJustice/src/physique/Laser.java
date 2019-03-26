@@ -49,7 +49,8 @@ public class Laser implements Dessinable{
 		accel = new Vecteur(0,0);
 		ligneFinY = position.getY();
 		ligneDebutX=position.getX();
-		//updaterAngleVitesse(angleTir);
+		updaterAngleVitesse(angleTir);
+		
 
 
 	}
@@ -65,8 +66,10 @@ public class Laser implements Dessinable{
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		trace = new Path2D.Double();
 		AffineTransform matLocal = new AffineTransform(mat);
-		trace.moveTo(ligneDebutX, ligneFinY);
-		trace.lineTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		trace.moveTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
+		//trace.moveTo(position.getX(), position.getY());
+		trace.lineTo(ligneDebutX, ligneFinY);
+		
 		trace.closePath();
 		randomColor(g2d);
 		g2d.draw(matLocal.createTransformedShape(((trace))));
@@ -106,8 +109,9 @@ public class Laser implements Dessinable{
 		ligneFinY -= vitesse.getY();
 		ligneDebutX+=vitesse.getX();
 		position = new Vecteur (ligneDebutX, ligneFinY);
+		//updaterAngleVitesse(angleTir);
 	//	System.out.println(position.toString());
-		//System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
+		System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
 	}
 	
 	/**
@@ -151,7 +155,7 @@ public class Laser implements Dessinable{
 	 */
 	//auteur Jeremy Thai
 	public Area getLaserAire(){ // pour detecter lintersection
-		return new Area(new Rectangle2D.Double(position.getX(), ligneFinY,LONGUEUR,position.getY()));
+		return new Area(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(),LONGUEUR,0.01));
 	}
 
 	/**
@@ -171,7 +175,7 @@ public class Laser implements Dessinable{
 	//auteur Arnaud Lefebvre
 	public Vecteur getPosition() {
 		//return new Vecteur (position.getX(),position.getY());
-		return new Vecteur (ligneDebutX, ligneFinY);
+		return new Vecteur (ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 	}
 
 	/**
