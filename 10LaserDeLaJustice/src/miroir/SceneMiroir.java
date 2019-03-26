@@ -313,6 +313,8 @@ public class SceneMiroir extends JPanel implements Runnable {
 					collision = true;
 					//arreter();
 					//laser.setPosition(laser.getPosition());
+					laser.setLigneDebutX(laser.getPosition().getX());
+					laser.setLigneFinY(laser.getPosition().getY());
 					laser.setAngleTir(45);
 					/*double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
