@@ -1,19 +1,19 @@
 package aaplication;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import java.awt.Image;
-import java.awt.Shape;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Rectangle2D;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -42,7 +42,7 @@ import pistolet.Pistolet;
 
 import physique.Coeurs;
 import physique.Laser;
-import pistolet.Pistolet;
+
 import utilite.ModeleAffichage;
 import java.awt.event.MouseMotionAdapter;
 
@@ -71,6 +71,9 @@ public class Scene extends JPanel implements Runnable {
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
 	private boolean editeurActiver = false;
+	private boolean isGrCercleCliquer = false;
+	private boolean isMedCercleCliquer = false;
+	private boolean isPetCercleCliquer = false;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -92,7 +95,7 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirConvexe miroireConvexe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
-	private int nombreVies=5;
+	private int nombreVies = 5;
 	private Coeurs coeurs = new Coeurs(nombreVies);
 
 	private Echelle echelle;
@@ -103,11 +106,12 @@ public class Scene extends JPanel implements Runnable {
 
 	// Par Jeremy
 	/**
-	 * Constructeur de la scene et permet de mettre les objets avec le clique de la souris 
+	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
+	 * souris
 	 */
 
 	public Scene() {
-		
+
 		lireFond();
 		lectureFichierOption();
 		angle = -90;
@@ -123,19 +127,33 @@ public class Scene extends JPanel implements Runnable {
 				double eXR = e.getX() / modele.getPixelsParUniteX();
 				double eYR = e.getY() / modele.getPixelsParUniteY();
 
-				/*balle = new Balle(new Vecteur(eXR - diametre / 2, eYR - diametre / 2), vitesse, "LARGE");
-				trou = new TrouNoir(new Vecteur(eXR, eYR));
-				miroireConvexe = new MiroirConvexe(eXR, eYR, 1);
-				miroirConcave = new MiroirConcave(new Vecteur(eXR, eYR),2);
-				bloc = new BlocDEau(new Vecteur(eXR,eYR));
+				if (balle.getAireBalle().contains(eXR, eYR)) {
 
-				listeBalles.add(balle);
-				listeTrou.add(trou);
-				listeMiroireConcave.add(miroirConcave);
-				listeMiroireConvexe.add(miroireConvexe);
-				listeBlocEau.add(bloc);*/
+					if (balle.getMasse() == 15)
+						isGrCercleCliquer = true;
+				} else if (balle.getMasse() == 10) {
+					isMedCercleCliquer = true;
+				} else if (balle.getMasse() == 5) {
+					isPetCercleCliquer = true;
+				}
+
+				/*
+				 * balle = new Balle(new Vecteur(eXR - diametre / 2, eYR - diametre / 2),
+				 * vitesse, "LARGE"); trou = new TrouNoir(new Vecteur(eXR, eYR)); miroireConvexe
+				 * = new MiroirConvexe(eXR, eYR, 1); miroirConcave = new MiroirConcave(new
+				 * Vecteur(eXR, eYR),2); bloc = new BlocDEau(new Vecteur(eXR,eYR));
+				 * 
+				 * listeBalles.add(balle); listeTrou.add(trou);
+				 * listeMiroireConcave.add(miroirConcave);
+				 * listeMiroireConvexe.add(miroireConvexe); listeBlocEau.add(bloc);
+				 */
 
 				repaint();
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				if(!balle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY()))
+				System.out.println("chui pas dans le cercle");
 			}
 		});
 
@@ -155,22 +173,23 @@ public class Scene extends JPanel implements Runnable {
 				repaint();
 			}
 		});
-		
+
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				System.out.println("mouse is being dragged at location (" + e.getX() / modele.getPixelsParUniteX()
-						+ ", " + e.getY() / modele.getPixelsParUniteY() + ")");
-				
-
+				dragGrosseCercle();
+				dragBalleMedium();
+				dragPetiteBalle();
 			}
 		});
 
 	}
+
 	// Par Jeremy
 	/**
-	 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le personnage
-	 * et de savoir s'il y a des collisions entre le laser et les balles  
+	 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le
+	 * personnage et de savoir s'il y a des collisions entre le laser et les balles
+	 * 
 	 * @author Arezki
 	 */
 	public void paintComponent(Graphics g) {
@@ -186,7 +205,6 @@ public class Scene extends JPanel implements Runnable {
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
-		
 		for (Laser laser : listeLasers) {
 			if (laser.getLigneFinY() <= 0)
 				listeLasers.remove(laser);
@@ -194,11 +212,9 @@ public class Scene extends JPanel implements Runnable {
 			laser.dessiner(g2d, mat, 0, 0);
 		}
 
-
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
-		detectionCollisionBallePersonnage( listeBalles, principal);	
-	
+		detectionCollisionBallePersonnage(listeBalles, principal);
 
 		for (Balle balle : listeBalles) {
 
@@ -224,20 +240,20 @@ public class Scene extends JPanel implements Runnable {
 			trou.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
-		for(BlocDEau blocE : listeBlocEau) {
+		for (BlocDEau blocE : listeBlocEau) {
 			blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-
 
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
-		echelle = new Echelle(30.0,LARGEUR_DU_MONDE-7.5, HAUTEUR_DU_MONDE-1);
+		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 7.5, HAUTEUR_DU_MONDE - 1);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 	}
 
 	/**
 	 * Cette méthode permet d'arreter l'animation
+	 * 
 	 * @author Jeremy
 	 */
 	public void arreter() {
@@ -247,6 +263,7 @@ public class Scene extends JPanel implements Runnable {
 
 	/**
 	 * Cette méthode permet de démarrer l'animation
+	 * 
 	 * @author Jeremy
 	 */
 	public void demarrer() {
@@ -259,8 +276,10 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 *  permet de calculer les collision la vitessse des balles et tout autres animation ayant de la physiques
-	 *  @author Jeremy
+	 * permet de calculer les collision la vitessse des balles et tout autres
+	 * animation ayant de la physiques
+	 * 
+	 * @author Jeremy
 	 */
 	public void calculerUneIterationPhysique() {
 
@@ -270,18 +289,18 @@ public class Scene extends JPanel implements Runnable {
 
 		for (Laser laser : listeLasers) {
 			laser.move();
-			System.out.println("YEET"+laser.getPosition());
+			System.out.println("YEET" + laser.getPosition());
 		}
-		
+
 		tempsTotalEcoule += deltaT;
 		principal.bouge();
-		
-		
+
 	}
 
 	@Override
-	/** 
+	/**
 	 * Animation du bloc-ressort
+	 * 
 	 * @author Jeremy
 	 */
 	public void run() {
@@ -298,7 +317,7 @@ public class Scene extends JPanel implements Runnable {
 		System.out.println("Le thread est mort...");
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Methode permettant de mettre un fond a la scene
 	 **/
@@ -314,8 +333,10 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
+
 	/**
 	 * Cette methode permet de modifier l'angle du laser
+	 * 
 	 * @param angle: C'est le nouveau angle du laser
 	 * @author Arnaud
 	 */
@@ -369,16 +390,17 @@ public class Scene extends JPanel implements Runnable {
 	// Jeremy Thai
 	/**
 	 * Fait la detection d une collision entre toutes les balles et tous les lasers
+	 * 
 	 * @param listeBalles liste de balles
 	 * @param listeLasers liste de lasers
-	 * @param character personnage 
+	 * @param character   personnage
 	 */
 	private void detectionCollisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
 
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
 				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
-					
+
 					listeLasers.remove(laser);
 					System.out.println("balle touche par laser");
 					balle.shrink(listeBalles);
@@ -388,28 +410,29 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	// Jeremy Thai
-		/**
-		 * Fait la detection d une collision entre toutes les balles et le personnage
-		 * @param listeBalles liste de balles
-		 * @param character personnage 
-		 */
-		private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
+	/**
+	 * Fait la detection d une collision entre toutes les balles et le personnage
+	 * 
+	 * @param listeBalles liste de balles
+	 * @param character   personnage
+	 */
+	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
-				for (Balle balle : listeBalles) {
-					
-					if(enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
-						if(personnage.getTempsMort() <= tempsTotalEcoule) {
-						coeurs.setCombien(nombreVies-1);
-						nombreVies--;
-						personnage.setTempsMort(tempsTotalEcoule+1);
-						
-					}
-					}
-					
+		for (Balle balle : listeBalles) {
+
+			if (enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
+				if (personnage.getTempsMort() <= tempsTotalEcoule) {
+					coeurs.setCombien(nombreVies - 1);
+					nombreVies--;
+					personnage.setTempsMort(tempsTotalEcoule + 1);
+
 				}
-			
+			}
+
 		}
-		
+
+	}
+
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
 		for (Laser laser : listeLasers) {
@@ -424,17 +447,18 @@ public class Scene extends JPanel implements Runnable {
 
 	// Jeremy Thai
 	/**
-	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne touche de clavier
-	 * @param e touche du clavier 
+	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne
+	 * touche de clavier
+	 * 
+	 * @param e touche du clavier
 	 */
 	private void tirLaser(KeyEvent e) {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
 				principal.neBougePas(); // Pour que 1 laser soit tirer a la fois
-				listeLasers.add(new Laser(
-						new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
-						angle, new Vecteur(0, 0.5)));
+				listeLasers.add(new Laser(new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
+						HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()), angle, new Vecteur(0, 0.5)));
 
 			}
 		}
@@ -443,9 +467,10 @@ public class Scene extends JPanel implements Runnable {
 	// Jeremy Thai
 	/**
 	 * Retourne vrai si deux aires de formes sont en intersection, sinon faux.
-	 * @param aire1 aire de la premiere forme 
+	 * 
+	 * @param aire1 aire de la premiere forme
 	 * @param aire2 aire de la deuxieme forme
-	 * @return boolean true or false 
+	 * @return boolean true or false
 	 */
 	private boolean enIntersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
@@ -456,50 +481,51 @@ public class Scene extends JPanel implements Runnable {
 		return false;
 	}
 
-
-
 	/**
-	 * Arezki Issaadi
-	 * permet d'ajouter et de dessiner une grosse balle en appuyant sur le boutton grosse balle 
+	 * Arezki Issaadi permet d'ajouter et de dessiner une grosse balle en appuyant
+	 * sur le boutton grosse balle
 	 */
 	public void ajoutBalleGrosse() {
-		listeBalles.add(new Balle(new Vecteur(), vitesse, "LARGE"));
+		balle = new Balle(new Vecteur(), vitesse, "LARGE");
+		listeBalles.add(balle);
 		repaint();
 
 	}
 
 	/**
-	 * Arezki Issaadi
-	 * permet d'ajouter et de dessiner une balle medium en appuyant sur le boutton medium balle 
+	 * Arezki Issaadi permet d'ajouter et de dessiner une balle medium en appuyant
+	 * sur le boutton medium balle
 	 */
 	public void ajoutBalleMedium() {
-		listeBalles.add(new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"));
+		balle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
+		listeBalles.add(balle);
 		repaint();
 
 	}
 
 	/**
-	 * Arezki Issaadi
-	 * permet d'ajouter et de dessiner une petite balle en appuyant sur le boutton petite balle 
+	 * Arezki Issaadi permet d'ajouter et de dessiner une petite balle en appuyant
+	 * sur le boutton petite balle
 	 */
 	public void ajoutBallePetite() {
-		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
+		balle = new Balle(new Vecteur(1, 0), vitesse, "SMALL");
+		listeBalles.add(balle);
 		repaint();
 
 	}
 
 	/**
-	 * Arezki Issaadi
-	 * permet d'ajouter et de dessiner un miroir concave en appuyant sur le boutton miroire concave  
+	 * Arezki Issaadi permet d'ajouter et de dessiner un miroir concave en appuyant
+	 * sur le boutton miroire concave
 	 */
 	public void ajoutMiroireConcave() {
-		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0),2));
+		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0), 2));
 		repaint();
 	}
 
 	/**
-	 * Arezki Issaadi
-	 *  permet d'ajouter et de dessiner un miroir convexe en appuyant sur le boutton miroire convexe  
+	 * Arezki Issaadi permet d'ajouter et de dessiner un miroir convexe en appuyant
+	 * sur le boutton miroire convexe
 	 */
 	public void ajoutMiroireConvexe() {
 		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 1));
@@ -507,8 +533,8 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi
-	 *  permet d'ajouter et de dessiner un miroir plan en appuyant sur le boutton miroire plan
+	 * Arezki Issaadi permet d'ajouter et de dessiner un miroir plan en appuyant sur
+	 * le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
 		listeMiroirePlan.add(new MiroirPlan(5, 0, 0));
@@ -517,8 +543,8 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi
-	 *  permet d'ajouter et de dessiner un trou noir en appuyant sur le boutton Trou noir
+	 * Arezki Issaadi permet d'ajouter et de dessiner un trou noir en appuyant sur
+	 * le boutton Trou noir
 	 */
 	public void ajoutTrouNoir() {
 		listeTrou.add(new TrouNoir(new Vecteur(7, 0)));
@@ -527,17 +553,17 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi
-	 *  permet d'ajouter et de dessiner un bloc d'eau en appuyant sur le boutton Bloc d'eau
+	 * Arezki Issaadi permet d'ajouter et de dessiner un bloc d'eau en appuyant sur
+	 * le boutton Bloc d'eau
 	 */
 	public void ajoutBlocEau() {
-		listeBlocEau.add(new BlocDEau(new Vecteur (9,0)));
+		listeBlocEau.add(new BlocDEau(new Vecteur(9, 0)));
 		repaint();
 
 	}
+
 	/**
-	 * Arezki Issaadi
-	 * permet aux dessins de safficher a chaque clic
+	 * Arezki Issaadi permet aux dessins de safficher a chaque clic
 	 */
 	public void ActiverEditeur() {
 		editeurActiver = true;
@@ -545,8 +571,7 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi
-	 * permet d'empecher que les dessins saffichent a chaque clic
+	 * Arezki Issaadi permet d'empecher que les dessins saffichent a chaque clic
 	 */
 
 	public void DesactiverEditeur() {
@@ -555,8 +580,8 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 *@author Arezki
-	 *efface tous les dessins sur la scene en effaçant tous les objets dans les listes. Agisse comme une corbeille
+	 * @author Arezki efface tous les dessins sur la scene en effaçant tous les
+	 *         objets dans les listes. Agisse comme une corbeille
 	 */
 	public void reinitialiserDessin() {
 		listeBalles.removeAll(listeBalles);
@@ -567,4 +592,58 @@ public class Scene extends JPanel implements Runnable {
 		listeTrou.removeAll(listeTrou);
 		repaint();
 	}
+
+	private void dragGrosseCercle() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (isGrCercleCliquer && !enCoursAnimation) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+
+				}
+				repaint();
+
+			}
+		});
+	}
+
+	private void dragBalleMedium() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (isMedCercleCliquer && !enCoursAnimation) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+
+				}else {
+					System.out.println("chui pas selectionné");
+				}
+				repaint();
+
+			}
+		});
+	}
+
+	private void dragPetiteBalle() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (isPetCercleCliquer && !enCoursAnimation) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+
+				}
+				repaint();
+
+			}
+		});
+	}
+
 }
