@@ -253,13 +253,13 @@ public class SceneTest extends JPanel implements Runnable {
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_SPACE) {
 				character.neBougePas();
-				if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
+			//	if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 					listeLasers.add(
 							new Laser(new Vecteur(
 									character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
 					System.out.println("nb de laser :"+ listeLasers.size());
 					repaint();
-				}
+			//	}
 			}
 		}
 

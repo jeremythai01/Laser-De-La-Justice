@@ -3,7 +3,6 @@ package objets;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -13,20 +12,18 @@ import physique.Laser;
  * classe qui permet la création d'un ordinateur de plusieurs niveaux de talent
  *@author Arnaud Lefebvre
  */
-public class Ordinateur implements Dessinable {
+public class OrdinateurNiveau2 implements Dessinable {
 	
 	private double largeurOrdi=1;
 	private double longueurOrdi=1;
-	private double vitesseNiveau1=0.2;
-	private double vitesseNiveau2=0.3;
+	private double vitesseNiveau2=0.6;
 	//private int talent;
 	private Rectangle2D.Double forme;
 	private Vecteur position;
 	private boolean enCoursAnimation=false;
-	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private double hauteurDuMonde;
 	
-	public Ordinateur(int talent, Vecteur position) {
+	public OrdinateurNiveau2(Vecteur position) {
 		//talent(talent);
 		this.position=position;
 	}
@@ -51,39 +48,46 @@ public class Ordinateur implements Dessinable {
 		forme = new Rectangle2D.Double(position.getX(), position.getY(), largeurOrdi, longueurOrdi);
 		g.fill(matLocal.createTransformedShape(forme));
 		hauteurDuMonde=hauteur;
-		
 	}
 
 	
 	public void bouge() {
 		
-		if(position.getX()+vitesseNiveau1>45) {
-			vitesseNiveau1=-vitesseNiveau1;
+		if(position.getX()+vitesseNiveau2>45) {
+			vitesseNiveau2=-vitesseNiveau2;
 		}
-		if(position.getX()+vitesseNiveau1<5) {
-			vitesseNiveau1=-vitesseNiveau1;
+		if(position.getX()+vitesseNiveau2<5) {
+			vitesseNiveau2=-vitesseNiveau2;
 		}
 		
 		
 		
-		position.setX(position.getX()+vitesseNiveau1);
+		position.setX(position.getX()+vitesseNiveau2);
+		changerVitesse();
 		
+	}
+	
+	public void changerVitesse() { 
+		if((Math.floor(Math.random() * (2)) + 1)%2==0) {
+			//vitesseNiveau2=-vitesseNiveau2;
+		}
 	}
 	
 	public Laser tirer() {
 		return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAleatoire(), new Vecteur(0,0.5)));
-		
-	}
-	private int angleAleatoire() {
-		return (int) (Math.floor(Math.random() * (180 - 1 +1)) + 1);
-	}
 
+	}
+	
+	public int angleAleatoire() {
+		return (int) (Math.floor(Math.random() * (125 - 45 +1)) + 45);
+	}
+	
 	public double getVitesseNiveau1() {
-		return vitesseNiveau1;
+		return vitesseNiveau2;
 	}
 
 	public void setVitesseNiveau1(double vitesseNiveau1) {
-		this.vitesseNiveau1 = vitesseNiveau1;
+		this.vitesseNiveau2 = vitesseNiveau1;
 	}
 
 	public double getVitesseNiveau2() {

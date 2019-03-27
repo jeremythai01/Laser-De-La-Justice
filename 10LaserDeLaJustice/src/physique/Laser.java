@@ -204,6 +204,7 @@ public class Laser implements Dessinable{
 	 * Permet de modifier l'angle de tir du laser
 	 * @param angleTir, le nouvel angle de tir desire
 	 */
+	//auteur Arnaud Lefebvre
 	public void setAngleTir(double angleTir) {
 		this.angleTir = angleTir;
 		updaterAngleVitesse(angleTir);

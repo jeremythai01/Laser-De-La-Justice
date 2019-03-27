@@ -73,12 +73,14 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private Echelle echelle;
 
 	private Ordinateur ordi;
+	private OrdinateurNiveau2 ordi2;
 	/**
 	 * Create the panel.
 	 */
 	public SceneTestPls() {
 
 		ordi= new Ordinateur(1, new Vecteur(20,44));
+		ordi2= new OrdinateurNiveau2(new Vecteur(30,44));
 		
 		angle = 30   ;
 		character = new Personnage();
@@ -113,7 +115,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
 				shoot(e);
-				tirer(e);
+				//tirer();
 				repaint();
 			}
 		});
@@ -191,6 +193,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		
 		g2d.setColor(Color.yellow);
 		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}//fin paintComponent
 
@@ -211,6 +214,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		
 		tempsTotalEcoule += deltaT;
 		ordi.bouge();
+		ordi2.bouge();
 	}
 
 	public void arreter( ) {
@@ -227,11 +231,19 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	}
 
+	
+	private int compteur=0;
+	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
 		while (enCoursAnimation) {	
+			compteur++;
 			calculerUneIterationPhysique();
+			if(compteur==60) {
+				tirer();
+				compteur=0;
+			}
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -249,7 +261,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			//if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 			listeLasers.add(
 					new Laser(new Vecteur(
-							character.getPositionX()+character.getLARGEUR_PERSO()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+							character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.5)));
 			//}
 		}
 	}
@@ -332,8 +344,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 					try {
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
-						//laser.setAngleTir(90-Math.atan(ref.getY()/ref.getX()));
-						laser.setAngleTir(30);
+						laser.setAngleTir(90-Math.atan(ref.getY()/ref.getX()));
+						//laser.setAngleTir(30);
 						System.out.println(laser.getAngleTir());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -363,10 +375,13 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 	}
 	
-	private void tirer(KeyEvent e) {
-		int code = e.getKeyCode();
-		//if(code == KeyEvent.VK_SPACE) 
-		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,LARGEUR_DU_MONDE), angle, new Vecteur(0,0.5)));
+	private void tirer() {
+		
+			
+			listeLasers.add(ordi.tirer());
+			listeLasers.add(ordi2.tirer());
+		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()), angle, new Vecteur(0,0.5)));
+			
 	}
 }
 
