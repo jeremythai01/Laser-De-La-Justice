@@ -99,6 +99,11 @@ public class Laser implements Dessinable{
 		changerCouleurPerso(g2d);
 		
 		g2d.draw(matLocal.createTransformedShape(((trace))));
+		
+		Rectangle2D.Double rect = new Rectangle2D.Double(ligneDebutX, ligneFinY,LONGUEUR,0.01);
+		 matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX ,ligneFinY);
+		 g2d.setColor(Color.blue);
+		 g2d.draw(matLocal.createTransformedShape(rect));
 
 	
 	}
@@ -249,6 +254,7 @@ public class Laser implements Dessinable{
 	 * Permet de modifier l'angle de tir du laser
 	 * @param angleTir, le nouvel angle de tir desire
 	 */
+	//auteur Arnaud Lefebvre
 	public void setAngleTir(double angleTir) {
 		this.angleTir = angleTir;
 		updaterAngleVitesse(angleTir);

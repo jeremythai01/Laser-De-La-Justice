@@ -63,13 +63,13 @@ public class MoteurPhysique implements Serializable {
 	public static void unPasVerlet( double deltaT, Vecteur position, Vecteur vitesse, Vecteur accel) {
 
 		Vecteur  resultP = position.additionne(vitesse.multiplie(deltaT)).additionne(accel.multiplie(deltaT).multiplie(deltaT).multiplie(0.5));
-		
+
 		//Vecteur  resultP =  position.additionne(  (vitesse.additionne(accel.multiplie(deltaT).multiplie(1/2))) );
 		Vecteur resultV = vitesse.additionne(accel.multiplie(deltaT));
 
 		position.setX(resultP.getX());
 		position.setY(resultP.getY());
-		
+
 		vitesse.setX(resultV.getX());			// ajout du prof de physique !!!
 		vitesse.setY(resultV.getY());
 
@@ -204,20 +204,22 @@ public class MoteurPhysique implements Serializable {
 	public static void detectionCollisionBalles(Balle balle1, Balle balle2) {
 
 		double rayonA = balle1.getDiametre()/2 ;
+		
 		Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
-		Vecteur vA =  balle1.getVitesse();
-		//Vecteur rA0 = balle1.getPosition();
+	
 		double rayonB = balle2.getDiametre()/2; 
-		//Vecteur rB0 = balle2.getPosition();
+		
 		Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
-		Vecteur vB =  balle2.getVitesse();
 
-
-		Vecteur v = vB.soustrait(vA);
 		Vecteur r0 = rB0.soustrait(rA0);
 
 		double D = rayonA + rayonB;
+		
 
+		if(D >= r0.module()) 
+			collisionBalles(balle1, balle2);
+		
+		/*
 		double A = v.prodScalaire(v);
 		double B = r0.multiplie(2).prodScalaire(v);
 		double C = r0.prodScalaire(r0) - D*D;
@@ -225,8 +227,35 @@ public class MoteurPhysique implements Serializable {
 		double temps[] = quadricRealRoot( A, B, C); 
 
 		if( temps.length == 1 || temps.length == 2) 
-			collisionBalles( balle1, balle2, temps);
+			collisionBalles( balle1, balle2);
+		 */
 	}
+
+
+	private static void collisionBalles(Balle balle1, Balle balle2) {
+		
+		double rayonA = balle1.getDiametre()/2 ;
+		Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
+		Vecteur vA =  balle1.getVitesse();
+		double rayonB = balle2.getDiametre()/2; 
+		Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
+		Vecteur vB =  balle2.getVitesse();
+
+
+		Vecteur nAB = rB0.soustrait(rA0).normalise();
+
+		double masseA = balle1.getMasse();
+		double masseB = balle2.getMasse();
+
+		double impulsion = nAB.prodScalaire(vA.soustrait(vB))*(-2)/(1/masseA + 1/masseB);
+
+		balle1.setVitesse(vA.additionne(nAB.multiplie(impulsion/masseA)));
+		balle2.setVitesse(vB.soustrait(nAB.multiplie(impulsion/masseB)));
+
+
+
+	}
+
 
 	private static void collisionBalles(Balle balle1, Balle balle2, double[] temps) {
 		double rayonA = balle1.getDiametre()/2 ;
@@ -241,14 +270,14 @@ public class MoteurPhysique implements Serializable {
 
 		for(int i = 0; i< temps.length; i++) {
 			if( temps[i] > 0) {
-				
+
 				Vecteur rA = rA0.additionne(vA.multiplie(temps[i]));
 				Vecteur rB = rB0.additionne(vB.multiplie(temps[i]));
 
 				// Vecteur nAB = rB.soustrait(rA).multiplie(1/rB.soustrait(rA).module());
 				// Version avec normalisation de la normale de l'impulsion.
 				Vecteur nAB = rB.soustrait(rA).normalise();
-				
+
 				double masseA = balle1.getMasse();
 				double masseB = balle2.getMasse();
 

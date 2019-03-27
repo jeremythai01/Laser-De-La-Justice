@@ -43,7 +43,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private double tempsTotalEcoule = 0;
 	private double diametre = 2;  //em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
-	private Balle balle;
+
 	private boolean premiereFois = true;
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -56,8 +56,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
 
-
-	private ArrayList<SceneListener> listeEcouteurs = new ArrayList<SceneListener>();
+	private ArrayList<Mur> listeMurs = new ArrayList<Mur>();
 
 
 	/**
@@ -68,25 +67,29 @@ public class SceneTest extends JPanel implements Runnable {
 		character = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite);
 
 		angle = 30;
-		vitesse = new Vecteur(0.5 ,0);
-
+		vitesse = new Vecteur(2 ,0);
+/*
+		Mur mur = new Mur(new Vecteur(0,0),0, HAUTEUR_DU_MONDE); // mur gauche 
+		listeMurs.add(mur);
+		 mur = new Mur(new Vecteur(LARGEUR_DU_MONDE,0), 0.1,  HAUTEUR_DU_MONDE); // mur droit 
+		listeMurs.add(mur);
+		mur = new Mur(new Vecteur(0, HAUTEUR_DU_MONDE), LARGEUR_DU_MONDE,  0); // sol 
+		listeMurs.add(mur);
+	*/	
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
+				Balle balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
 				listeBalles.add(balle);
-
-				//	trou= new TrouNoir(new Vecteur(eXR,eYR));
-				//listeTrou.add(trou);
-
+			//	Mur mur = new Mur ( new Vecteur(eXR+5, eYR+5),0.5, 5);
+				//listeMurs.add(mur);
 				repaint();
 			}
 		});
-
-
+		
 		addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -101,13 +104,8 @@ public class SceneTest extends JPanel implements Runnable {
 				repaint();
 			}
 		});
-
 	}
-
-
 	public void paintComponent(Graphics g) {
-
-
 
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
@@ -120,8 +118,6 @@ public class SceneTest extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 
-
-
 			for(Laser laser : listeLasers) { 
 
 				if(laser.getLigneFinY() <= 0 ) {
@@ -131,8 +127,14 @@ public class SceneTest extends JPanel implements Runnable {
 				laser.dessiner(g2d, mat, 0, 0);
 			}
 			
+	/*		
+			for(Mur mur : listeMurs) {
+				mur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			}
+		*/	
 			collisionBalleLaser( listeBalles,  listeLasers);
 
+		//	 collisionBalleMur( listeBalles, listeMurs);
 
 		for(Balle balle: listeBalles) {
 
@@ -153,15 +155,15 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	private void calculerUneIterationPhysique() {
-		
+	
 		for (int i = 0; i < listeBalles.size(); i++) {
 			for (int j = i+1; j < listeBalles.size(); j++) {
 				Balle balle1 = listeBalles.get(i);
 				Balle balle2 = listeBalles.get(j);
 				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+			
 			}
 		}
-
 	
 		
 		for(Balle balle: listeBalles) {
@@ -232,51 +234,37 @@ public class SceneTest extends JPanel implements Runnable {
 		return false;
 	}
 
-	/*
-	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
+	private void collisionBalleMur(ArrayList<Balle> listeBalles, ArrayList<Mur> listeMurs) {
 
-		for(Laser laser : listeLasers) {
-			for(TrouNoir trou : listeTrou ) {
-				if(intersection(trou.getAireTrou(), laser.getLaserAire())) {
-					listeLasers.remove(laser);   
-
+		for(Mur mur : listeMurs) {
+			for(Balle balle : listeBalles ) {
+				if(intersection( mur.getAireMur(), balle.getAireBalle())) { 
+					mur.collisionsMurBalles(balle);
 				}	
 			}
 		}
-
-
-	}
-	 */
+}
+	
+	
+	
+	
 	private void shootEtAddLaser(KeyEvent e) {
 		if(enCoursAnimation == true) {
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_SPACE) {
 				character.neBougePas();
-				if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 					listeLasers.add(
 							new Laser(new Vecteur(
 									character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
-					System.out.println("nb de laser :"+ listeLasers.size());
 					repaint();
-				}
+
+			
+
 			}
 		}
 
 	}
-	/**
-	 * prend un ecouteur en parametre pour être ajouté par le ArrayList d'écouteur
-	 * @param ecouteur
-	 */
-	public void addSceneListener(SceneListener ecouteur) {
-		listeEcouteurs.add(ecouteur);
-	}
-
-
-
-
-
-
-
+	
 }
 

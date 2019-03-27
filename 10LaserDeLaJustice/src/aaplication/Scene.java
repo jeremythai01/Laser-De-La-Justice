@@ -57,7 +57,7 @@ public class Scene extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private double angle;
-	private double deltaT = 0.006;
+	private double deltaT = 0.06;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
 	private double tempsTotalEcoule = 0;
