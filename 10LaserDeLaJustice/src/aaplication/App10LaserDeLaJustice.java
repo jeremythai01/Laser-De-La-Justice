@@ -387,11 +387,12 @@ public class App10LaserDeLaJustice extends JFrame {
 
 
 		if(isPartieNouv) {
+			System.out.println("sc'est une nouvelle partie app10");
 			sceneFinale = new Scene(isPartieNouv);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}else {
-			System.out.println("should be false");
+			System.out.println("c'est une npartie charge app10");
 			sceneFinale = new Scene(isPartieNouv);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);

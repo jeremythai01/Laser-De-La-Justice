@@ -59,7 +59,7 @@ public class FenetrePartie extends JFrame {
 		btnCharge.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jeu = new App10LaserDeLaJustice(false);
-				jeu.setNouveauOption(false);
+			//	jeu.setNouveauOption(false);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();
 				setVisible(false);
@@ -74,7 +74,7 @@ public class FenetrePartie extends JFrame {
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jeu = new App10LaserDeLaJustice(true);
-				jeu.setNouveauOption(true);
+			//	jeu.setNouveauOption(true);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();
 				jeu.setPartieNouv(true);

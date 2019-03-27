@@ -120,7 +120,7 @@ public class Scene extends JPanel implements Runnable {
 	 * souris
 	 */
 
-	public Scene(boolean isNouvelleScene) {
+	public Scene(boolean isPartieNouveau) {
 
 		lireFond();
 		
@@ -128,7 +128,7 @@ public class Scene extends JPanel implements Runnable {
 
 		pistoletPrincipal = new Pistolet();
 
-		nouvellePartie(isNouvelleScene);
+		nouvellePartie(isPartieNouveau);
 		
 		lectureFichierOption();
 		vitesse = new Vecteur(3, 0);
@@ -421,6 +421,7 @@ public class Scene extends JPanel implements Runnable {
 	 * avant le debut de la partie
 	 */
 	private void lectureFichierOption() {
+		System.out.println("je suis lecture option");
 		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
 		ObjectInputStream fluxEntree = null;
 		double acceleration = 9.8;
@@ -855,13 +856,15 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	private void nouvellePartie(boolean isNouvelle) {
 		if(!isNouvelle) {
-			System.out.println("je suis une partie charge");
-			lectureFichierSauvegarde("sauvegarde.d3t");
+			//partie chage
+			System.out.println("scene partie charge " + isNouvelle);
+			//lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
 			principal = new Personnage (positionPerso,toucheGauche, toucheDroite );
 		}else {
+			//partie nouvelle
+			System.out.println("nouvelle partie come on");
 			principal = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite);
-			coeurs.setCombien(nombreVies);
 		}
 	}
 }
