@@ -141,7 +141,7 @@ public class Laser implements Dessinable{
 		Rectangle2D.Double rect = new Rectangle2D.Double(ligneDebutX, ligneFinY,LONGUEUR,0.01);
 		 matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX ,ligneFinY);
 		return new Area(matLocal.createTransformedShape(((rect))));
-	 
+	 //
 	}
 
 	/**
