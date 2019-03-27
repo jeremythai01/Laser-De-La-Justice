@@ -65,7 +65,7 @@ public class SceneTest extends JPanel implements Runnable {
 	 */
 	public SceneTest() {
 
-		character = new Personnage(toucheGauche, toucheDroite);
+		character = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite);
 
 		angle = 30;
 		vitesse = new Vecteur(0.5 ,0);

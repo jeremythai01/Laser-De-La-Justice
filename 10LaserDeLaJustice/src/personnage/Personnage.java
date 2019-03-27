@@ -13,6 +13,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import geometrie.Vecteur;
 import interfaces.Dessinable;
 
 /**
@@ -50,7 +51,8 @@ public class Personnage implements Dessinable, Serializable {
 	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage va aller a droite
 	 */
 	//Miora
-	public Personnage(int gauche, int droite) {
+	public Personnage(double position, int gauche, int droite) {
+		
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
@@ -61,6 +63,7 @@ public class Personnage implements Dessinable, Serializable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
+		this.positionIni = position;
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
 	}
@@ -80,6 +83,7 @@ public class Personnage implements Dessinable, Serializable {
 			}
 		}
 	}
+
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
 	 * gauche.
@@ -91,15 +95,19 @@ public class Personnage implements Dessinable, Serializable {
 	}
 	/**
 	 * Methode permettant de dessiner le personnage
+	 * @param g2d : le contexte graphique
+	 * @param mat : la matrice de transformation
+	 * @param hauteurScene : la hauteur de la scene
+	 * @param largeurScene : la largeur de la scene
 	 */
 	//Miora
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteurScene, double largeurScene) {
-
+		//System.out.println("je suis dans dessiner " + getPositionX() );
 		AffineTransform matLocale = new AffineTransform(mat);
 		largeurCompo = largeurScene;
 		HAUTEUR_COMPO = hauteurScene;
-		positionIni=largeurCompo/2;
 		if(premiereFois) {
+			System.out.println("je suis dans dessiner " + positionIni);
 			positionX = positionIni-LARGEUR_PERSO/2;
 			premiereFois = false;
 		}

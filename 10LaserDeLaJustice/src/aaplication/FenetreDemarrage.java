@@ -20,6 +20,7 @@ import options.Options;
  * Cette fenetre est la première chose que l'utilisateur va voir.
  * Elle donne accès à l'éditeur de niveau, aux options, aux règles et à la documentation du jeu.
  * @author Arezki Issaadi
+ * @author Miora R. Rakoto
  *
  */
 public class FenetreDemarrage extends JFrame {
@@ -96,9 +97,7 @@ public class FenetreDemarrage extends JFrame {
 		JButton btnJouer = new JButton("jouer");
 		btnJouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				jouerPartie = new FenetrePartie();
-				jouerPartie.setVisible(true);
-				setVisible(false);
+				nouvellePartie();
 			}
 		});
 		btnJouer.setBounds(277, 173, 86, 85);
@@ -140,6 +139,16 @@ public class FenetreDemarrage extends JFrame {
 		// on se debarrasse des images intermediaires
 		imgLue.flush();
 		imgRedim.flush();
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de savoir si il s'agit d'une nouvelle partie ou d'une partie charge
+	 */
+	private void nouvellePartie() {
+		jouerPartie = new FenetrePartie();
+		jouerPartie.setVisible(true);
+		setVisible(false);
 	}
 
 

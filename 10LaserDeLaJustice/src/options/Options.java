@@ -8,10 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -27,7 +27,8 @@ import javax.swing.border.EmptyBorder;
 /**
  * Cette classe permet a l'utilisateur de modifier les parametres du jeu. 
  * Ces parametres sont le niveau, la gravite, les touches de clavier et la couleur du rayon 
- * @author Miora R. Rakoto
+ * @author Miora R. Rakoto 
+ * @author Arnaud
  */
 
 public class Options extends JFrame {
@@ -38,6 +39,9 @@ public class Options extends JFrame {
 	private JTable table;
 	private JSpinner snpDif;
 	private JSpinner snpAcc;
+	private JButton btnG;
+	private JButton btnD;
+	private Color couleurLaser = null;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -110,7 +114,7 @@ public class Options extends JFrame {
 		lblDroiteTxt.setBounds(564, 304, 63, 19);
 		contentPane.add(lblDroiteTxt);
 
-		JButton btnG = new JButton("Gauche");
+		btnG = new JButton("Gauche");
 		btnG.setBackground(Color.WHITE);
 		btnG.setFont(new Font("Lucida Sans", Font.PLAIN, 12));
 		btnG.setOpaque(true);
@@ -120,8 +124,7 @@ public class Options extends JFrame {
 				btnG.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent e) {
-						toucheGauche =e.getKeyCode() ;
-						btnG.setText(KeyEvent.getKeyText(e.getKeyCode()));
+						modificationGauche(e);
 					}
 				});
 			}
@@ -129,7 +132,7 @@ public class Options extends JFrame {
 		btnG.setBounds(434, 304, 100, 55);
 		contentPane.add(btnG);
 
-		JButton btnD = new JButton("Droite");
+		btnD = new JButton("Droite");
 		btnD.setFont(new Font("Lucida Sans Typewriter", Font.PLAIN, 12));
 		btnD.setBackground(Color.WHITE);
 		btnD.setBounds(636, 304, 100, 55);
@@ -138,8 +141,7 @@ public class Options extends JFrame {
 				btnD.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent e) {
-						toucheDroite = e.getKeyCode() ;
-						btnD.setText(KeyEvent.getKeyText(e.getKeyCode()));
+						modificationDroite(e);
 					}
 				});
 			}
@@ -159,13 +161,14 @@ public class Options extends JFrame {
 		JButton btnChangerLaCouleur = new JButton("Changer la couleur");
 		btnChangerLaCouleur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Color color = null;
-				color = JColorChooser.showDialog(null,"Sélectionner la couleur voulue", color);
+				choixCouleur();
 			}
 		});
 		btnChangerLaCouleur.setBounds(219, 374, 192, 21);
 		contentPane.add(btnChangerLaCouleur);
 	}
+	
+	// Par Miora
 	/**
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
 	 */
@@ -173,13 +176,14 @@ public class Options extends JFrame {
 		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
-		DataOutputStream fluxSortie = null;
+		ObjectOutputStream fluxSortie = null;
 		try {
-			fluxSortie = new DataOutputStream(new BufferedOutputStream(	new FileOutputStream(fichierDeTravail)));
+			fluxSortie = new ObjectOutputStream(new BufferedOutputStream(	new FileOutputStream(fichierDeTravail)));
 			fluxSortie.writeInt(Integer.parseInt(snpDif.getValue().toString()));
 			fluxSortie.writeDouble(Double.parseDouble(snpAcc.getValue().toString()));
 			fluxSortie.writeInt(toucheGauche);
 			fluxSortie.writeInt(toucheDroite);
+			fluxSortie.writeObject(couleurLaser);
 			JOptionPane.showMessageDialog(null,"Vos modifications ont ete sauvegardees avec succes");
 		} 
 		catch (IOException e) {
@@ -196,4 +200,33 @@ public class Options extends JFrame {
 			}
 		}//fin finally
 	}
+	
+	// Par Miora
+	/**
+	 * Cette methode permet d'initialiser la touche de gauche a la touche du clavier
+	 * @param e : la touche du clavier
+	 */
+	private void modificationGauche(KeyEvent e) {
+		toucheGauche = e.getKeyCode() ;
+		btnG.setText(KeyEvent.getKeyText(e.getKeyCode()));
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet d'initialiser la touche de droite a la touche du clavier
+	 * @param e : la touche du clavier
+	 */
+	private void modificationDroite (KeyEvent e) {
+		toucheDroite = e.getKeyCode() ;
+		btnD.setText(KeyEvent.getKeyText(e.getKeyCode()));
+	}
+	
+	// Par Arnaud 
+	/**
+	 * Cette methode permet a l'utilisateur de modifier la couleur de son laser
+	 */
+	private void choixCouleur() {
+		couleurLaser = JColorChooser.showDialog(null,"Sélectionner la couleur voulue", couleurLaser);
+	}
+	
 }

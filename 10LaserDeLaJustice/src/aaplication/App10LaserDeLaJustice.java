@@ -56,6 +56,9 @@ public class App10LaserDeLaJustice extends JFrame {
 	private JLabel lblValeur;
 	private Scene scene;
 
+	private boolean isNouveauOption = true;
+	
+
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
@@ -555,6 +558,24 @@ public class App10LaserDeLaJustice extends JFrame {
 	 */
 	public void setPartieNouv(boolean reponse) {
 		this.isPartieNouv = reponse;
+	}
+	
+	// Miora
+	/**
+	 * Cette methode permet de savoir si les options ont été modifié
+	 * @return vrai si il'sagit d'un nouveau fichier option
+	 */
+	public boolean isNouveauOption() {
+		return isNouveauOption;
+	}
+
+	// Miora
+	/**
+	 * Cette methode defini si les options doivent etre change ou non 
+	 * @param isNouveauOption : s'il y a un changement ou non S
+	 */
+	public void setNouveauOption(boolean isNouveauOption) {
+		this.isNouveauOption = isNouveauOption;
 	}
 
 }

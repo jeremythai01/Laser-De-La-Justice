@@ -100,8 +100,9 @@ public class Scene extends JPanel implements Runnable {
 
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
-	private Color couleurLaser = Color.black;
-	private double positionPerso = 0;
+	private Color couleurLaser = null;
+	private double positionPerso;
+	private boolean couleurPersoLaser = false;
 
 
 
@@ -111,19 +112,17 @@ public class Scene extends JPanel implements Runnable {
 	 * souris
 	 */
 
-	public Scene(boolean isNouvelleScene ) {
+	public Scene(boolean isNouvelleScene) {
 
 		lireFond();
-		lectureFichierOption();
 		
 		angle = 30;
-		principal = new Personnage(toucheGauche, toucheDroite);
+
 		pistoletPrincipal = new Pistolet();
+
+		nouvellePartie(isNouvelleScene);
 		
-		if(!isNouvelleScene) {
-			lectureFichierSauvegarde("sauvegarde.d3t");
-		}
-		coeurs.setCombien(nombreVies);
+		lectureFichierOption();
 		vitesse = new Vecteur(3, 0);
 
 		addMouseListener(new MouseAdapter() {
@@ -367,17 +366,32 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	private void lectureFichierOption() {
 		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
-		DataInputStream fluxEntree = null;
+		ObjectInputStream fluxEntree = null;
 		double acceleration = 9.8;
 		int niveau = 0;
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
 		try {
-			fluxEntree = new DataInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
+			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
 			acceleration = fluxEntree.readDouble();
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
+			try {
+				Color couleurOption;
+				couleurOption = (Color) fluxEntree.readObject();
+				if(couleurOption == null) {
+					couleurPersoLaser = false;
+					couleurLaser = null;
+					System.out.println("On ne m'a pas donne de couleur");
+				}else {
+					couleurPersoLaser = true;
+					couleurLaser = couleurOption;
+					System.out.println("On m'a donné une couleur");
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -470,8 +484,16 @@ public class Scene extends JPanel implements Runnable {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
 				principal.neBougePas(); // Pour que 1 laser soit tirer a la fois
-				listeLasers.add(new Laser(new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
-						HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()), angle, new Vecteur(0, 0.5)));
+
+				if(couleurPersoLaser == false) {
+					System.out.println("tir laser false");
+					listeLasers.add(new Laser(new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
+							HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()), angle, new Vecteur(0, 0.5)));
+				}else {
+					System.out.println("tir laser false");
+					listeLasers.add(new Laser(new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
+							HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()), angle, new Vecteur(0, 0.5),couleurLaser ));
+				}
 
 			}
 		}
@@ -677,9 +699,13 @@ public class Scene extends JPanel implements Runnable {
 			fluxSortie.writeInt(nombreVies); // nombre de vie
 			fluxSortie.writeObject(listeBalles);		// la liste des balles
 			fluxSortie.writeDouble(principal.getPositionX());			// les caracteristiques du personnage
-			fluxSortie.writeObject(Color.black);		// la couleur du rayon
-			fluxSortie.writeInt(toucheDroite);			// la touche gauche
-			fluxSortie.writeInt(toucheGauche);			// la touche droite
+			if(couleurLaser == null) {
+				fluxSortie.writeObject(null);
+			}else {
+				fluxSortie.writeObject(couleurLaser);
+			}// la couleur du rayon
+			fluxSortie.writeInt(toucheGauche);			// la touche gauche
+			fluxSortie.writeInt(toucheDroite);			// la touche droite
 			JOptionPane.showMessageDialog(null,"Votre partie a ete sauvegarde");
 		} 
 		catch (IOException e) {
@@ -718,8 +744,12 @@ public class Scene extends JPanel implements Runnable {
 			positionPerso = fluxEntree.readDouble();
 			try {
 				couleurLaser = (Color) fluxEntree.readObject();
+				if(couleurLaser == null) {
+					couleurPersoLaser = false;
+				}else {
+					couleurPersoLaser = true;
+				}
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			toucheGauche = fluxEntree.readInt();
@@ -735,6 +765,23 @@ public class Scene extends JPanel implements Runnable {
 			JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture");
 			e.printStackTrace();
 			System.exit(0);
+		}
+	}
+
+	//Par Miora 
+	/**
+	 *Cette methode definie si la scene est une nouvelle scene ou une scene charge 
+	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
+	 */
+	private void nouvellePartie(boolean isNouvelle) {
+		if(!isNouvelle) {
+			System.out.println("je suis une partie charge");
+			lectureFichierSauvegarde("sauvegarde.d3t");
+			coeurs.setCombien(nombreVies);
+			principal = new Personnage (positionPerso,toucheGauche, toucheDroite );
+		}else {
+			principal = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite);
+			coeurs.setCombien(nombreVies);
 		}
 	}
 }

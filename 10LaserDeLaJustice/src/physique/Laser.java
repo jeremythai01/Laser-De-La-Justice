@@ -19,6 +19,7 @@ import interfaces.Dessinable;
  * Un laser mémorise sa position, sa longueur et son angle
  * @author Arnaud Lefebvre
  * @author Jeremy Thai
+ * @author Miora R. Rakoto
  *
  */
 public class Laser implements Dessinable{
@@ -27,7 +28,11 @@ public class Laser implements Dessinable{
 	private double angleTir;
 	private Vecteur accel;
 	private Path2D.Double trace;
+	private Color couleurLaser = null;
+	private boolean isCouleurPerso = false;
 	private double ligneFinY;
+	
+	
 	public void setLigneFinY(double ligneFinY) {
 		this.ligneFinY = ligneFinY;
 	}
@@ -51,10 +56,31 @@ public class Laser implements Dessinable{
 		ligneFinY = position.getY();
 		ligneDebutX=position.getX();
 		updaterAngleVitesse(angleTir);
-		
-
+		isCouleurPerso = false;
 
 	}
+	
+	
+	//Par Miora
+	/**
+	 * Constructeur du laser dont la position, la couleur personnalisé du laser, la vitesse ainsi que l'angle de tir sont specifies
+	 * @param position: la position de depart du laser
+	 * @param angleTir: l'angle selon lequel le laser est tire
+	 * @param vitesse: la vitesse du laser
+	 */
+	public Laser(Vecteur position, double angleTir, Vecteur vitesse, Color couleurLaser) {
+		this.position=position;
+		this.angleTir=angleTir;
+		this.vitesse= vitesse;
+		this.couleurLaser = couleurLaser;
+		accel = new Vecteur(0,0);
+		ligneFinY = position.getY();
+		ligneDebutX=position.getX();
+		updaterAngleVitesse(angleTir);
+		isCouleurPerso = true;
+		System.out.println("2e constructeur");
+	}
+	
 	/**
 	 * Permet de dessiner le laser selon le contexte graphique en parametre.
 	 * @param g2d contexte graphique
@@ -70,11 +96,30 @@ public class Laser implements Dessinable{
 		trace.moveTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
 		trace.lineTo(ligneDebutX, ligneFinY);
 		trace.closePath();
-		randomColor(g2d);
+		changerCouleurPerso(g2d);
+		
 		g2d.draw(matLocal.createTransformedShape(((trace))));
 
 	
 	}
+
+	//Par Miora
+	/**
+	 * Cette methode change la couleur du laser selon si c'est une couleure personnalisee ou non.
+	 * Si oui, la couleur personnalisee sera applique au laser. Si non, la couleur du laser sera au hasard
+	 * @param g2d : le contexte graphique
+	 */
+	private void changerCouleurPerso(Graphics2D g2d) {
+		if(!isCouleurPerso) {
+			randomColor(g2d);
+			System.out.println("on ne change pas la couleur");
+		}
+		else {
+			g2d.setColor(couleurLaser);
+			System.out.println("on va changer la couleur");
+		}
+	}
+
 
 	/**
 	 * Methode qui permet de donner une couleur aleatoire au laser
