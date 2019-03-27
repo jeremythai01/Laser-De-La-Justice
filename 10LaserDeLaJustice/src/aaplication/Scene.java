@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -13,16 +12,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -65,7 +62,7 @@ public class Scene extends JPanel implements Runnable {
 	private double HAUTEUR_DU_MONDE;
 	private int tempsDuSleep = 30;
 	private double tempsTotalEcoule = 0;
-	
+
 	private double diametre = 2; // em mètres
 
 	private boolean enCoursAnimation = false;
@@ -103,7 +100,10 @@ public class Scene extends JPanel implements Runnable {
 
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
-	
+	private Color couleurLaser = Color.black;
+	private double positionPerso = 0;
+
+
 
 	// Par Jeremy
 	/**
@@ -111,14 +111,19 @@ public class Scene extends JPanel implements Runnable {
 	 * souris
 	 */
 
-	public Scene() {
+	public Scene(boolean isNouvelleScene ) {
 
 		lireFond();
 		lectureFichierOption();
+		
 		angle = 30;
 		principal = new Personnage(toucheGauche, toucheDroite);
 		pistoletPrincipal = new Pistolet();
-
+		
+		if(!isNouvelleScene) {
+			lectureFichierSauvegarde("sauvegarde.d3t");
+		}
+		coeurs.setCombien(nombreVies);
 		vitesse = new Vecteur(3, 0);
 
 		addMouseListener(new MouseAdapter() {
@@ -154,7 +159,7 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				if(!balle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY()))
-				System.out.println("chui pas dans le cercle");
+					System.out.println("chui pas dans le cercle");
 			}
 		});
 
@@ -424,10 +429,6 @@ public class Scene extends JPanel implements Runnable {
 	 * 
 	 * @param listeBalles liste de balles
 	 * @param character   personnage
-=======
-	 * @param listeBalles liste de balles
-	 * @param character personnage 
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice.git
 	 */
 	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
@@ -522,7 +523,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton petite balle
 	 */
 	public void ajoutBallePetite() {
-	
+
 		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
 		petiteBalle++;
 		repaint();
@@ -673,12 +674,12 @@ public class Scene extends JPanel implements Runnable {
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
-			fluxSortie.writeInt(nombreVies);
-			fluxSortie.writeObject(listeBalles);
-			fluxSortie.writeObject(principal);
-			fluxSortie.writeObject(Color.black);
-			fluxSortie.writeInt(toucheDroite);
-			fluxSortie.writeInt(toucheGauche);
+			fluxSortie.writeInt(nombreVies); // nombre de vie
+			fluxSortie.writeObject(listeBalles);		// la liste des balles
+			fluxSortie.writeDouble(principal.getPositionX());			// les caracteristiques du personnage
+			fluxSortie.writeObject(Color.black);		// la couleur du rayon
+			fluxSortie.writeInt(toucheDroite);			// la touche gauche
+			fluxSortie.writeInt(toucheGauche);			// la touche droite
 			JOptionPane.showMessageDialog(null,"Votre partie a ete sauvegarde");
 		} 
 		catch (IOException e) {
@@ -694,5 +695,46 @@ public class Scene extends JPanel implements Runnable {
 				System.out.println("Erreur rencontrée lors de la fermeture!"); 
 			}
 		}//fin finally
+	}
+
+	// Par Miora
+	/**
+	 * Cette methode permet de lire le fichier qui sauvegarde le  nombre de vie, le nombre des balles, la position du joueur, 
+	 * la couleur du rayon et les touches utilisées
+	 */
+	private void lectureFichierSauvegarde(String nomFichier) {
+		final String NOM_FICHIER_OPTION = nomFichier;
+		ObjectInputStream fluxEntree = null;
+		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+
+		try {
+			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
+			nombreVies = fluxEntree.readInt();
+			try {
+				listeBalles = (ArrayList<Balle>) fluxEntree.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			positionPerso = fluxEntree.readDouble();
+			try {
+				couleurLaser = (Color) fluxEntree.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			toucheGauche = fluxEntree.readInt();
+			toucheDroite = fluxEntree.readInt();
+		} // fin try
+
+		catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Fichier  " + fichierDeTravail.getAbsolutePath() + "  introuvable!");
+			System.exit(0);
+		}
+
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture");
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 }

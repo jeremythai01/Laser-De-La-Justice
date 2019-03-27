@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -22,7 +23,7 @@ import interfaces.Dessinable;
  * @author Arnaud Lefebvre
  *
  */
-public class Coeurs implements Dessinable {
+public class Coeurs implements Dessinable,  Serializable {
 
 	private Image img=null;
 	private Image imgGris=null;

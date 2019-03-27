@@ -1,6 +1,5 @@
 package personnage;
 
-import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -8,13 +7,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
-import geometrie.Vecteur;
 import interfaces.Dessinable;
 
 /**
@@ -23,7 +21,7 @@ import interfaces.Dessinable;
  *  @author Jeremy Thai
  *
  */
-public class Personnage implements Dessinable {
+public class Personnage implements Dessinable, Serializable {
 	private final double LONGUEUR_PERSO = 1.6;
 	private final double LARGEUR_PERSO = 1;
 	private double largeurCompo;
@@ -209,6 +207,7 @@ public class Personnage implements Dessinable {
 	//Miora
 	public void setPositionX(double positionX) {
 		this.positionX = positionX;
+		System.out.println(this.positionX);
 	}
 	/**
 	 * Methode permettant qui retourne la longueur du personnage.

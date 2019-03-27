@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import geometrie.Vecteur;
@@ -15,7 +16,7 @@ import interfaces.Dessinable;
  * @author Jeremy Thai 
  */
 
-public class Balle implements Dessinable { 
+public class Balle implements Dessinable, Serializable { 
 	private double diametre = 3;
 	private double masse = 15;
 	private Ellipse2D.Double cercle;

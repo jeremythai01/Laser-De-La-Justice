@@ -27,6 +27,7 @@ public class FenetreDemarrage extends JFrame {
 	private JPanel contentPane;
 	private Options fenetreOption;
 	private App10LaserDeLaJustice jeu;
+	private FenetrePartie jouerPartie;
 
 	/**
 	 * Launch the application.
@@ -95,9 +96,8 @@ public class FenetreDemarrage extends JFrame {
 		JButton btnJouer = new JButton("jouer");
 		btnJouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				jeu = new App10LaserDeLaJustice();
-				jeu.setVisible(true);
-				jeu.donneFocusALaScene();
+				jouerPartie = new FenetrePartie();
+				jouerPartie.setVisible(true);
 				setVisible(false);
 			}
 		});
