@@ -72,6 +72,11 @@ public class Laser implements Dessinable{
 		trace.closePath();
 		randomColor(g2d);
 		g2d.draw(matLocal.createTransformedShape(((trace))));
+		
+		Rectangle2D.Double rect = new Rectangle2D.Double(ligneDebutX, ligneFinY,LONGUEUR,0.01);
+		 matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX ,ligneFinY);
+		 g2d.setColor(Color.blue);
+		 g2d.draw(matLocal.createTransformedShape(rect));
 
 	
 	}
