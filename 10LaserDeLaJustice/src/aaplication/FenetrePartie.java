@@ -61,7 +61,7 @@ public class FenetrePartie extends JFrame {
 				jeu = new App10LaserDeLaJustice(false);
 				jeu.setNouveauOption(false);
 				jeu.setVisible(true);
-				jeu.donneFocusALaScene();
+				jeu.donneFocusALasceneFinale();
 				setVisible(false);
 			}
 		});
@@ -76,7 +76,7 @@ public class FenetrePartie extends JFrame {
 				jeu = new App10LaserDeLaJustice(true);
 				jeu.setNouveauOption(true);
 				jeu.setVisible(true);
-				jeu.donneFocusALaScene();
+				jeu.donneFocusALasceneFinale();
 				jeu.setPartieNouv(true);
 				setVisible(false);
 			}

@@ -54,10 +54,10 @@ public class App10LaserDeLaJustice extends JFrame {
 	private JButton btnMiroirConvexe;
 	private JButton btnMiroirPlan;
 	private JLabel lblValeur;
-	private Scene scene;
+	private Scene sceneFinale;
 
 	private boolean isNouveauOption = true;
-	
+
 
 	private ActionListener listener;
 	private Timer tempsJeu;
@@ -75,7 +75,7 @@ public class App10LaserDeLaJustice extends JFrame {
 					App10LaserDeLaJustice frame;
 					frame = new App10LaserDeLaJustice(isPartieNouv);
 					frame.setVisible(true);
-					frame.scene.requestFocusInWindow();
+					frame.sceneFinale.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -102,9 +102,9 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnPlay.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				scene.demarrer();
+				sceneFinale.demarrer();
 				tempsJeu.start();
-				donneFocusALaScene();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnPlay.setBounds(44, 61, 40, 38);
@@ -114,7 +114,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnPause = new JButton("pause");
 		btnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.arreter();
+				sceneFinale.arreter();
 				tempsJeu.stop();
 			}
 		});
@@ -125,7 +125,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnImage = new JButton("image");
 		btnImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.calculerUneIterationPhysique();
+				sceneFinale.calculerUneIterationPhysique();
 				repaint();
 			}
 		});
@@ -159,8 +159,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnEnregistrer = new JButton("enregistrer");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ecritureFichierSauvegarde();
-				donneFocusALaScene();
+				sceneFinale.ecritureFichierSauvegarde();
+				donneFocusALasceneFinale();
 				tempsJeu.stop();
 			}
 		});
@@ -171,8 +171,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMiroirPlan = new JButton("miroir Plan");
 		btnMiroirPlan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ajoutMiroirPlan();
-				donneFocusALaScene();
+				sceneFinale.ajoutMiroirPlan();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnMiroirPlan.setEnabled(false);
@@ -182,8 +182,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMiroirConvexe = new JButton("miroir Convexe");
 		btnMiroirConvexe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ajoutMiroireConvexe();
-				donneFocusALaScene();
+				sceneFinale.ajoutMiroireConvexe();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnMiroirConvexe.setEnabled(false);
@@ -193,8 +193,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMiroirConcave = new JButton("miroir Concave");
 		btnMiroirConcave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ajoutMiroireConcave();
-				donneFocusALaScene();
+				sceneFinale.ajoutMiroireConcave();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnMiroirConcave.setEnabled(false);
@@ -204,8 +204,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnTrouNoir = new JButton("Trou Noir");
 		btnTrouNoir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ajoutTrouNoir();
-				donneFocusALaScene();
+				sceneFinale.ajoutTrouNoir();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnTrouNoir.setEnabled(false);
@@ -215,8 +215,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnBlocDeau = new JButton("bloc D'eau ");
 		btnBlocDeau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ajoutBlocEau();
-				donneFocusALaScene();
+				sceneFinale.ajoutBlocEau();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnBlocDeau.setEnabled(false);
@@ -226,7 +226,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnGrosseBalle = new JButton("Grosse Balle");
 		btnGrosseBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ajoutBalleGrosse();
+				sceneFinale.ajoutBalleGrosse();
 			}
 		});
 		btnGrosseBalle.setEnabled(false);
@@ -236,8 +236,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnMediumBalle = new JButton("Medium Balle");
 		btnMediumBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.ajoutBalleMedium();
-				donneFocusALaScene();
+				sceneFinale.ajoutBalleMedium();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnMediumBalle.setEnabled(false);
@@ -247,8 +247,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnPetiteBalle = new JButton("petite balle ");
 		btnPetiteBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				scene.ajoutBallePetite();
-				donneFocusALaScene();
+				sceneFinale.ajoutBallePetite();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnPetiteBalle.setEnabled(false);
@@ -387,28 +387,28 @@ public class App10LaserDeLaJustice extends JFrame {
 
 
 		if(isPartieNouv) {
-			scene = new Scene(isPartieNouv);
-			scene.setBounds(30, 107, 1303, 727);
-			contentPane.add(scene);
+			sceneFinale = new Scene(isPartieNouv);
+			sceneFinale.setBounds(30, 107, 1303, 727);
+			contentPane.add(sceneFinale);
 		}else {
 			System.out.println("should be false");
-			scene = new Scene(isPartieNouv);
-			scene.setBounds(30, 107, 1303, 727);
-			contentPane.add(scene);
+			sceneFinale = new Scene(isPartieNouv);
+			sceneFinale.setBounds(30, 107, 1303, 727);
+			contentPane.add(sceneFinale);
 		}
 
 
-		JButton btnViderScene = new JButton("Vider Scene");
-		btnViderScene.addActionListener(new ActionListener() {
+		JButton btnVidersceneFinale = new JButton("Vider sceneFinale");
+		btnVidersceneFinale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				scene.reinitialiserDessin();
-				donneFocusALaScene();
+				sceneFinale.reinitialiserDessin();
+				donneFocusALasceneFinale();
 
 			}
 		});
-		btnViderScene.setBounds(1131, 61, 40, 38);
-		contentPane.add(btnViderScene);
-		associerBoutonAvecImage(btnViderScene, "corbeille.png");
+		btnVidersceneFinale.setBounds(1131, 61, 40, 38);
+		contentPane.add(btnVidersceneFinale);
+		associerBoutonAvecImage(btnVidersceneFinale, "corbeille.png");
 
 		JProgressBar tempsDuJeu = new JProgressBar();
 		tempsDuJeu.setMaximum(60);
@@ -425,21 +425,25 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnEditeur.isSelected()) {
-					scene.requestFocusInWindow();
-					scene.arreter();
+					sceneFinale.requestFocusInWindow();
+					sceneFinale.arreter();
 					activerEditeur();
-					scene.ActiverEditeur();
+					sceneFinale.ActiverEditeur();
 					tempsJeu.stop();
 				}else {
 					desactiverEditeur();
-					scene.DesactiverEditeur();
-					donneFocusALaScene();
+					sceneFinale.DesactiverEditeur();
+					donneFocusALasceneFinale();
 					tempsJeu.stop();
 				}
 			}
 		});
 		btnEditeur.setBounds(1231, 61, 46, 38);
 		contentPane.add(btnEditeur);
+
+		Scene sceneFinaleFinale = new Scene(false);
+		sceneFinaleFinale.setBounds(30, 110, 1303, 724);
+		contentPane.add(sceneFinaleFinale);
 
 		listener = new ActionListener() {
 
@@ -456,7 +460,7 @@ public class App10LaserDeLaJustice extends JFrame {
 
 				} else {
 					tempsJeu.stop();
-					scene.arreter();
+					sceneFinale.arreter();
 
 					FenetreGameOver gameOver = new FenetreGameOver();
 					setVisible(false);
@@ -470,16 +474,16 @@ public class App10LaserDeLaJustice extends JFrame {
 
 	// Par Miora
 	/**
-	 * Methode qui donne le focus a la scene
+	 * Methode qui donne le focus a la sceneFinale
 	 */
-	public void donneFocusALaScene() {
-		scene.requestFocusInWindow();
+	public void donneFocusALasceneFinale() {
+		sceneFinale.requestFocusInWindow();
 	}
 
 	// // Par Arezki
 	/**
 	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
-	 * les objets dans la scene
+	 * les objets dans la sceneFinale
 	 * 
 	 * @author Arezki
 	 */
@@ -552,14 +556,15 @@ public class App10LaserDeLaJustice extends JFrame {
 	}
 
 	/**
-	 * Cette methode permet de choisir une scene sauvegarde ou une nouvelle
-	 * scene
+	 * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
+	 * sceneFinale
 	 * @param reponse
 	 */
 	public void setPartieNouv(boolean reponse) {
 		this.isPartieNouv = reponse;
 	}
-	
+
+
 	// Miora
 	/**
 	 * Cette methode permet de savoir si les options ont été modifié

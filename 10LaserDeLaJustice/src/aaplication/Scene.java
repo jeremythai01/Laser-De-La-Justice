@@ -60,21 +60,27 @@ public class Scene extends JPanel implements Runnable {
 	private double deltaT = 0.006;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
-	private int tempsDuSleep = 30;
 	private double tempsTotalEcoule = 0;
-
 	private double diametre = 2; // em mètres
-
+	private int tempsDuSleep = 30;
+	private int compteurBalle = 0;
+	private int nombreVies = 5;
+	private int toucheGauche = 37;
+	private int toucheDroite = 39;
+	private double positionPerso = 0;
+	
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
 	private boolean editeurActiver = false;
 	private boolean isGrCercleCliquer = false;
 	private boolean isMedCercleCliquer = false;
 	private boolean isPetCercleCliquer = false;
-
+	private boolean isCercleCliquer;
+	private boolean bonneBalle = false;
+	
 	private ModeleAffichage modele;
 	private AffineTransform mat;
-	private Vecteur vitesse;
+	private Vecteur vitesse = new Vecteur(1,1);
 
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
@@ -92,18 +98,20 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirConvexe miroireConvexe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
-	private int nombreVies = 5;
 	private Coeurs coeurs = new Coeurs(nombreVies);
-	private int grosseBalle =0, moyenneBalle =0, petiteBalle=0;
 
 	private Echelle echelle;
 
-	private int toucheGauche = 37;
-	private int toucheDroite = 39;
 	private Color couleurLaser = null;
-	private double positionPerso;
 	private boolean couleurPersoLaser = false;
 
+	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE") ;
+	private Balle moyenneBalle  = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"); 
+	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL") ;
+
+	
+	
+	
 
 
 	// Par Jeremy
@@ -131,17 +139,48 @@ public class Scene extends JPanel implements Runnable {
 
 				double eXR = e.getX() / modele.getPixelsParUniteX();
 				double eYR = e.getY() / modele.getPixelsParUniteY();
-
-				if (balle.getAireBalle().contains(eXR, eYR)) {
-
-					if (balle.getMasse() == 15)
-						isGrCercleCliquer = true;
-				} else if (balle.getMasse() == 10) {
-					isMedCercleCliquer = true;
-				} else if (balle.getMasse() == 5) {
-					isPetCercleCliquer = true;
+				System.out.println("taille de la liste des balles: "+compteurBalle);
+				System.out.println();
+				while (!bonneBalle) {
+					System.out.println("je suis dans mouse pressed");
+					if(listeBalles.get(compteurBalle-1).getAireBalle().contains(eXR, eYR)) {
+						
+						System.out.println("jai trouver la balle");
+						bonneBalle = true;
+					}else {
+						System.out.println("jai pas trouver la balle :(");
+						compteurBalle--;
+					}
+					dragBalle();
 				}
-
+					
+				
+				
+				
+				if(moyenneBalle.getAireBalle().contains(eXR, eYR)) {
+					isMedCercleCliquer = true;
+					isGrCercleCliquer = false;
+					isPetCercleCliquer = false;
+					dragBalleMedium();
+					
+				}
+						
+				else if(grosseBalle.getAireBalle().contains(eXR, eYR)) {
+					isGrCercleCliquer = true;
+					isMedCercleCliquer = false;
+					isPetCercleCliquer = false;
+					dragGrosseCercle();
+					
+				}
+				
+				else if (petiteBalle.getAireBalle().contains(eXR, eYR)) {
+					isPetCercleCliquer = true;
+					isGrCercleCliquer = false;
+					isMedCercleCliquer = false;
+					dragPetiteBalle();
+					
+				}
+						
 				/*
 				 * balle = new Balle(new Vecteur(eXR - diametre / 2, eYR - diametre / 2),
 				 * vitesse, "LARGE"); trou = new TrouNoir(new Vecteur(eXR, eYR)); miroireConvexe
@@ -155,10 +194,26 @@ public class Scene extends JPanel implements Runnable {
 
 				repaint();
 			}
+			
+			
+			
+
+
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				if(!balle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY()))
-					System.out.println("chui pas dans le cercle");
+				if(isMedCercleCliquer&& moyenneBalle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY())){
+					isMedCercleCliquer = false;
+					}
+				else if(isGrCercleCliquer&& grosseBalle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY())){
+					isGrCercleCliquer = false;
+				
+				}
+			
+				else if(isPetCercleCliquer&& petiteBalle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY())){
+					isPetCercleCliquer = false;
+				
+				}
+			
 			}
 		});
 
@@ -182,17 +237,18 @@ public class Scene extends JPanel implements Runnable {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-
+				
 				dragGrosseCercle();
 				dragBalleMedium();
 				dragPetiteBalle();
 
-				System.out.println("mouse is being dragged at location (" + e.getX() / modele.getPixelsParUniteX()
-						+ ", " + e.getY() / modele.getPixelsParUniteY() + ")");
+				
 
 			}
 		});
 
+		
+		
 	}
 
 	// Par Jeremy
@@ -522,8 +578,9 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleGrosse() {
 
-		listeBalles.add(new Balle(new Vecteur(), vitesse, "LARGE"));
-		grosseBalle++;
+		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
+		listeBalles.add(grosseBalle);
+		compteurBalle++;
 		repaint();
 
 	}
@@ -534,8 +591,9 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleMedium() {
 
-		listeBalles.add(new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"));
-		moyenneBalle++;
+		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
+		listeBalles.add(moyenneBalle);
+		compteurBalle++;
 		repaint();
 
 	}
@@ -546,8 +604,10 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBallePetite() {
 
-		listeBalles.add(new Balle(new Vecteur(2, 2), vitesse, "SMALL"));
-		petiteBalle++;
+		//System.out.println("avant :"+petiteBalle.toString());
+		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
+		listeBalles.add(petiteBalle);
+		compteurBalle++;
 		repaint();
 
 	}
@@ -631,18 +691,39 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
+	
+	private void dragBalle() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (isCercleCliquer && !enCoursAnimation) {
+					System.out.println("je suis dans dragMed");
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					listeBalles.get(compteurBalle).setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+					
+					repaint();
+				}
+				
+
+			}
+		});
+		
+	}
+	
+	
 	private void dragGrosseCercle() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (isGrCercleCliquer && !enCoursAnimation) {
-
+					System.out.println("je suis dans dragGrosse");
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-
+					grosseBalle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+					repaint();
 				}
-				repaint();
+				
 
 			}
 		});
@@ -653,15 +734,14 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (isMedCercleCliquer && !enCoursAnimation) {
-
+					System.out.println("je suis dans dragMed");
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-
-				}else {
-					System.out.println("chui pas selectionné");
+					moyenneBalle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+					
+					repaint();
 				}
-				repaint();
+				
 
 			}
 		});
@@ -675,7 +755,7 @@ public class Scene extends JPanel implements Runnable {
 
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+					petiteBalle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
 
 				}
 				repaint();
