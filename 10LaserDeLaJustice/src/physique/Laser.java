@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
@@ -67,13 +68,12 @@ public class Laser implements Dessinable{
 		trace = new Path2D.Double();
 		AffineTransform matLocal = new AffineTransform(mat);
 		trace.moveTo(ligneDebutX+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), ligneFinY-(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
-		//trace.moveTo(position.getX(), position.getY());
 		trace.lineTo(ligneDebutX, ligneFinY);
-		
 		trace.closePath();
 		randomColor(g2d);
 		g2d.draw(matLocal.createTransformedShape(((trace))));
 
+	
 	}
 
 	/**
@@ -109,9 +109,7 @@ public class Laser implements Dessinable{
 		ligneFinY -= vitesse.getY();
 		ligneDebutX+=vitesse.getX();
 		position = new Vecteur (ligneDebutX, ligneFinY);
-		//updaterAngleVitesse(angleTir);
-	//	System.out.println(position.toString());
-		System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
+	//	System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
 	}
 	
 	/**
@@ -133,29 +131,17 @@ public class Laser implements Dessinable{
 	}
 
 
-/*
-	public Area getAireLaser() {
-		Path2D.Double trace = new Path2D.Double();
-		trace.moveTo(position.getX(), position.getY());
-		trace.lineTo(position.getX()+(LONGUEUR*Math.cos(Math.toRadians(angleTir))), position.getY()+(LONGUEUR*Math.sin(Math.toRadians(angleTir))));
-		trace.closePath();
-		return new Area(trace);
-	}
-*/
-
-	/*
-	public Rectangle2D getLine(){ // pour detecter lintersection
-        return new Rectangle2D.Double(position.getX(), ligneFinY,0.1,position.getY());
-    }
-	 */
-
 	/**
 	 * Retourne l'aire en forme de rectangle du laser
 	 * @return l'aire en forme de rectangle du laser
 	 */
 	//auteur Jeremy Thai
 	public Area getLaserAire(){ // pour detecter lintersection
-		return new Area(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(),LONGUEUR,0.01));
+		AffineTransform matLocal = new AffineTransform(); // pourquoi mat ne fonctionne pas ?
+		Rectangle2D.Double rect = new Rectangle2D.Double(ligneDebutX, ligneFinY,LONGUEUR,0.01);
+		 matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX ,ligneFinY);
+		return new Area(matLocal.createTransformedShape(((rect))));
+	 
 	}
 
 	/**
@@ -249,7 +235,7 @@ public class Laser implements Dessinable{
 		double vitesseEnX=0.5*Math.cos(Math.toRadians(angle));
 		double vitesseEnY=0.5*Math.sin(Math.toRadians(angle));
 		Vecteur vec = new Vecteur(vitesseEnX,vitesseEnY);
-		setVitesse(new Vecteur(vitesseEnX,vitesseEnY));
+		setVitesse(vec);
 	//	System.out.println("modification vitesse"+ vec );
 	}
 

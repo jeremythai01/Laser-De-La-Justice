@@ -53,8 +53,6 @@ public class SceneTest extends JPanel implements Runnable {
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
-	//private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
-	private TrouNoir trou;
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
 
@@ -69,7 +67,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 		character = new Personnage(toucheGauche, toucheDroite);
 
-		angle = -90;
+		angle = 30;
 		vitesse = new Vecteur(0.5 ,0);
 
 		addMouseListener(new MouseAdapter() {
@@ -132,9 +130,8 @@ public class SceneTest extends JPanel implements Runnable {
 				g2d.setStroke( new BasicStroke(3));
 				laser.dessiner(g2d, mat, 0, 0);
 			}
-		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
-	//	checkCollisionTrouLaserPersonnage( listeLasers );
-
+			
+			collisionBalleLaser( listeBalles,  listeLasers);
 
 
 		for(Balle balle: listeBalles) {
@@ -142,11 +139,6 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-		/*
-		for(TrouNoir trou: listeTrou) {
-			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		}
-		 */
 		
 		character.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 
@@ -170,7 +162,7 @@ public class SceneTest extends JPanel implements Runnable {
 			}
 		}
 
-		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+	
 		
 		for(Balle balle: listeBalles) {
 			balle.unPasVerlet(deltaT);
@@ -217,14 +209,13 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 
-	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
+	private void collisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
 
 		for(Laser laser : listeLasers) {
 			for(Balle balle : listeBalles ) {
 				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
 					listeLasers.remove(laser);   
 					balle.shrink(listeBalles);
-					System.out.println("1");
 				}	
 
 			}
