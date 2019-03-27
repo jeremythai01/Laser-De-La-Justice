@@ -258,7 +258,9 @@ public class SceneTest extends JPanel implements Runnable {
 							new Laser(new Vecteur(
 									character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
 					repaint();
+
 			
+
 			}
 		}
 
