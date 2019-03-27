@@ -32,6 +32,7 @@ import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Font;
 import javax.swing.JProgressBar;
+import javax.swing.JToggleButton;
 
 /**
  * 
@@ -58,7 +59,9 @@ public class App10LaserDeLaJustice extends JFrame {
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
-	// Par Arezki
+	private static boolean isPartieNouv = true;
+
+	// Par Arezki 
 	/**
 	 * Lancement de l'application
 	 */
@@ -67,7 +70,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void run() {
 				try {
 					App10LaserDeLaJustice frame;
-					frame = new App10LaserDeLaJustice();
+					frame = new App10LaserDeLaJustice(isPartieNouv);
 					frame.setVisible(true);
 					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
@@ -81,7 +84,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 * Creation de la fenêtre
 	 */
 	// Par Arezki
-	public App10LaserDeLaJustice() {
+	public App10LaserDeLaJustice(boolean isPartieNouv) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1389, 1034);
 		contentPane = new JPanel();
@@ -146,31 +149,14 @@ public class App10LaserDeLaJustice extends JFrame {
 				tempsJeu.stop();
 			}
 		});
-		btnOption.setBounds(1281, 61, 40, 38);
+		btnOption.setBounds(1293, 61, 40, 38);
 		contentPane.add(btnOption);
 		associerBoutonAvecImage(btnOption, "reglage.png");
-
-		JButton btnEditeur = new JButton("editeur");
-		btnEditeur.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				// editeur.setVisible(true);
-				scene.requestFocusInWindow();
-				scene.arreter();
-				activerEditeur();
-				scene.ActiverEditeur();
-				tempsJeu.stop();
-			}
-		});
-		btnEditeur.setBounds(1231, 61, 40, 38);
-		contentPane.add(btnEditeur);
-		associerBoutonAvecImage(btnEditeur, "editeur.png");
 
 		JButton btnEnregistrer = new JButton("enregistrer");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				desactiverEditeur();
-				scene.DesactiverEditeur();
+				scene.ecritureFichierSauvegarde();
 				donneFocusALaScene();
 				tempsJeu.stop();
 			}
@@ -396,16 +382,25 @@ public class App10LaserDeLaJustice extends JFrame {
 		lblLesSorties.setBounds(40, 856, 69, 14);
 		contentPane.add(lblLesSorties);
 
-		scene = new Scene();
-		scene.setBounds(30, 107, 1303, 727);
-		contentPane.add(scene);
+
+		if(isPartieNouv) {
+			scene = new Scene(isPartieNouv);
+			scene.setBounds(30, 107, 1303, 727);
+			contentPane.add(scene);
+		}else {
+			System.out.println("should be false");
+			scene = new Scene(isPartieNouv);
+			scene.setBounds(30, 107, 1303, 727);
+			contentPane.add(scene);
+		}
+
 
 		JButton btnViderScene = new JButton("Vider Scene");
 		btnViderScene.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				scene.reinitialiserDessin();
 				donneFocusALaScene();
-				
+
 			}
 		});
 		btnViderScene.setBounds(1131, 61, 40, 38);
@@ -423,26 +418,46 @@ public class App10LaserDeLaJustice extends JFrame {
 		tempsDuJeu.setBounds(194, 61, 927, 38);
 		contentPane.add(tempsDuJeu);
 
+		JToggleButton btnEditeur = new JToggleButton("New toggle button");
+		btnEditeur.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnEditeur.isSelected()) {
+					scene.requestFocusInWindow();
+					scene.arreter();
+					activerEditeur();
+					scene.ActiverEditeur();
+					tempsJeu.stop();
+				}else {
+					desactiverEditeur();
+					scene.DesactiverEditeur();
+					donneFocusALaScene();
+					tempsJeu.stop();
+				}
+			}
+		});
+		btnEditeur.setBounds(1231, 61, 46, 38);
+		contentPane.add(btnEditeur);
+
 		listener = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				if (tempsDuJeu.getValue() > 00 && secondes >= 0) {
-					
+
 					tempsDuJeu.setValue(tempsDuJeu.getValue() - 1);
-					
+
 					tempsDuJeu.setString(secondes-- + " secondes restantes");
-					
-					
+
+
 				} else {
 					tempsJeu.stop();
 					scene.arreter();
 
 					FenetreGameOver gameOver = new FenetreGameOver();
-							setVisible(false);
-							gameOver.setVisible(true);
+					setVisible(false);
+					gameOver.setVisible(true);
 				}
 			}
 		};
@@ -532,4 +547,14 @@ public class App10LaserDeLaJustice extends JFrame {
 		imgLue.flush();
 		imgRedim.flush();
 	}
+
+	/**
+	 * Cette methode permet de choisir une scene sauvegarde ou une nouvelle
+	 * scene
+	 * @param reponse
+	 */
+	public void setPartieNouv(boolean reponse) {
+		this.isPartieNouv = reponse;
+	}
+
 }

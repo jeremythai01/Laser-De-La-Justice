@@ -1,5 +1,7 @@
 package geometrie;
 
+import java.io.Serializable;
+
 /**
  * La classe Vecteur permet de realiser les operations de base sur un vecteur Euclidien en deux dimensions (x,y), où x et y sont les 
  * composantes du vecteur.
@@ -10,7 +12,7 @@ package geometrie;
  * @author Caroline Houle
  */
 
-public class Vecteur {
+public class Vecteur implements Serializable {
 	//champs de base
 	private static final double EPSILON = 1e-10; //tolerance utilisee dans les comparaisons reeles avec zero
 	protected double x;	//composante x du vecteur 2d

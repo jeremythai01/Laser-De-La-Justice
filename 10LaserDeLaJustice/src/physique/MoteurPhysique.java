@@ -1,5 +1,7 @@
 package physique;
 
+import java.io.Serializable;
+
 import geometrie.Vecteur;
 
 /**
@@ -9,7 +11,7 @@ import geometrie.Vecteur;
  *  @author Caroline Houle 
  *
  */
-public class MoteurPhysique {
+public class MoteurPhysique implements Serializable {
 
 	// Caroline Houle 
 	/**
