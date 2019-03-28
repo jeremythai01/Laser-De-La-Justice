@@ -213,10 +213,10 @@ public class MoteurPhysique implements Serializable {
 
 		Vecteur r0 = rB0.soustrait(rA0);
 
-		double D = rayonA + rayonB;
+		double distance = rayonA + rayonB;
 		
 
-		if(D >= r0.module()) 
+		if(distance >= r0.module()) 
 			collisionBalles(balle1, balle2);
 		
 		/*
@@ -231,6 +231,9 @@ public class MoteurPhysique implements Serializable {
 		 */
 	}
 
+	
+	
+	
 
 	private static void collisionBalles(Balle balle1, Balle balle2) {
 		
@@ -247,59 +250,107 @@ public class MoteurPhysique implements Serializable {
 		double masseA = balle1.getMasse();
 		double masseB = balle2.getMasse();
 
-		double impulsion = nAB.prodScalaire(vA.soustrait(vB))*(-2)/(1/masseA + 1/masseB);
+		double e = 1;
+		double impulsion = nAB.prodScalaire(vA.soustrait(vB))*(-1-e)/(1/masseA + 1/masseB);
 
 		balle1.setVitesse(vA.additionne(nAB.multiplie(impulsion/masseA)));
 		balle2.setVitesse(vB.soustrait(nAB.multiplie(impulsion/masseB)));
+		
+		
 
 
 
 	}
+	
 
+	
+	public static void detectionCollisionMurBalle(Balle balle, Mur mur) {
 
-	private static void collisionBalles(Balle balle1, Balle balle2, double[] temps) {
-		double rayonA = balle1.getDiametre()/2 ;
-		Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
-		Vecteur vA =  balle1.getVitesse();
-		//Vecteur rA0 = balle1.getPosition();
-		//Vecteur rB0 = balle2.getPosition();
-		double rayonB = balle2.getDiametre()/2; 
-		Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
-		Vecteur vB =  balle2.getVitesse();
+		double rayonA = balle.getDiametre()/2 ;
+		Vecteur rA0 = new Vecteur(balle.getPosition().getX()+ rayonA ,balle.getPosition().getY() +  rayonA );
 
+		Vecteur vA = balle.getVitesse();
+		Vecteur rP0 =  new Vecteur(mur.getPosition().getX()  ,mur.getPosition().getY() );
+		
+		double distance = rayonA;
+		
+		Vecteur nP = mur.getNormal().normalise();
+		
+		double v = vA.prodScalaire(nP);
+		double R = nP.prodScalaire(rA0.soustrait(rP0));
+		
+		
+		 if(distance <= nP.prodScalaire(rP0.soustrait(rA0)))
+			collisionMurBalle(balle, mur);
+		
+		
+	/*	double A = v*v;
+		double B = v*R*2;
+		double C = R*R - distance*distance;
 
-		for(int i = 0; i< temps.length; i++) {
-			if( temps[i] > 0) {
+		double temps[] = quadricRealRoot( A, B, C); 
 
-				Vecteur rA = rA0.additionne(vA.multiplie(temps[i]));
-				Vecteur rB = rB0.additionne(vB.multiplie(temps[i]));
+		if( temps.length == 1 || temps.length == 2) 
+			collisionMurBalle(balle, mur);
+		*/ 
+		
 
-				// Vecteur nAB = rB.soustrait(rA).multiplie(1/rB.soustrait(rA).module());
-				// Version avec normalisation de la normale de l'impulsion.
-				Vecteur nAB = rB.soustrait(rA).normalise();
+	}
+	
+	public static void collisionMurBalle(Balle balle, Mur mur) {
+	/*	
+		Vecteur v = balle.getVitesse();
+		
+		Vecteur n = mur.getNormal().normalise();
+		
+		Vecteur E = v.multiplie(-1);
+		
+		Vecteur R = v.additionne(n.multiplie(n.prodScalaire(E)*2));
+		
+		balle.setVitesse(R);
+		*/
+		
+		double rayon = balle.getDiametre()/2;
+		Vecteur rA = new Vecteur(balle.getPosition().getX()+ rayon ,balle.getPosition().getY() +  rayon );
 
-				double masseA = balle1.getMasse();
-				double masseB = balle2.getMasse();
-
-				Vecteur vAB0 = vA.soustrait(vB);
-
-				double vNAB0 = vAB0.prodScalaire(nAB);
-
-				double masseBA = masseB/masseA;
-				double vNAB = vNAB0*(1-masseBA)/(1+masseBA);
-
-				Vecteur vBb =  nAB.multiplie(vNAB-vNAB0).multiplie(-(masseA/masseB));
-
-				Vecteur vAB = vAB0.additionne(nAB.multiplie(vNAB-vNAB0));
-
-				Vecteur vAfinal = vAB.additionne(vB);
-				Vecteur vBfinal = vBb.additionne(vB);
-
-				balle1.setVitesse(vAfinal);
-				balle2.setVitesse(vBfinal);
+		Vecteur rB = mur.getPosition();
+		double largeur = mur.getLargeur();
+		double hauteur = mur.getHauteur();
+		
+		
+		switch(mur.getType().toString()) {
+		
+		case "HORIZONTAL":
+			
+			if(rA.getY() - rayon <= rB.getY() + hauteur){ // balle en bas du mur 
+				balle.getVitesse().setY(-balle.getVitesse().getY());
+				//System.out.println("en bas ");
 				return;
 			}
-		}	
+	/*	
+			if(rA.getY() + rayon >= rB.getY() ) { // balle en haut du mur
+				balle.getVitesse().setY(-balle.getVitesse().getY());
+				System.out.println("en haut");	
+			}
+			*/
+			break;
+			
+			
+		case "VERTICAL":
+
+			if(rA.getX() >= rB.getX() + largeur) {// balle a droite du mur 
+				balle.getVitesse().setX(-balle.getVitesse().getX());
+				System.out.println("a droite ");
+				return;
+			}
+			if(rA.getX() + rayon >= rB.getX()) { // balle a gauche du mur 
+				balle.getVitesse().setX(-balle.getVitesse().getX());
+				System.out.println("a gauche ");
+				return;
+			}
+			break;
+		}
 	}
 }
+
 

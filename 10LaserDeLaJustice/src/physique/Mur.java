@@ -17,31 +17,71 @@ public class Mur implements Dessinable {
 	private Vecteur position;
 	private double largeur, hauteur;
 	private double largeurMonde, hauteurMonde;
+	private double angle; 
+	private Vecteur normal;
+	private double coefE;
 	private Type type;
 
+
+
 	/**
-	 * Classe enumeration des types de mur
+	 * Classe enumeration des types de balle
 	 * @author Jeremy Thai
 	 *
 	 */
-	private enum Type {
-		HORIZONTAL,VERTICAL;
+	public enum Type {
+		HORIZONTAL, VERTICAL;
 	}
 
 
-
-	public Mur( Vecteur position, double largeur, double hauteur) {
+	public Mur( Vecteur position, double largeur, double hauteur, double angle, String choix ) {
 		setPosition( position );
 		this.hauteur = hauteur ; 
 		this.largeur = largeur;
+		this.coefE = 19/20;
+
+		switch(choix) {
+		case "HORIZONTAL":
+			type = Type.HORIZONTAL;
+			break;
+		case "VERTICAL":
+			type = Type.VERTICAL;
+			break;
+		}
+
+	}
+	
+	
+	
+	
+
+	public Type getType() {
+		return type;
 	}
 
 
 
-	public Mur( Vecteur position, String choix) {
-		setPosition( position );
 
+
+	public void setType(Type type) {
+		this.type = type;
 	}
+
+
+
+
+
+	public double getCoefE() {
+		return coefE;
+	}
+
+
+
+	public void setCoefE(double coefE) {
+		this.coefE = coefE;
+	}
+
+
 	/**
 	 * Modifie la position de la balle
 	 * @param pos vecteur des positions x et y
@@ -50,6 +90,16 @@ public class Mur implements Dessinable {
 		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
 		this.position = newVec;
 	}
+
+	/**
+	 * Retourne la position courante
+	 * @return la position courante
+	 */
+	public Vecteur getPosition() { return (position); }
+
+
+
+
 
 
 	public Area getAireMur() {
@@ -61,41 +111,47 @@ public class Mur implements Dessinable {
 	@Override
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteurMonde, double largeurMonde) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		g2d.setColor(Color.blue);
+		g2d.setColor(Color.black);
+		matLocal.rotate(-angle,position.getX(), position.getY());
 		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(), largeur, hauteur );
-		g2d.draw(matLocal.createTransformedShape(rect));
-
+		g2d.fill(matLocal.createTransformedShape(rect));
 	}
 
-	public void collisionsMurBalles(Balle balle) {
-
-
-		if(balle.getPosition().getX() >= position.getX()+ largeur) {// balle a droite du mur 
-			balle.getVitesse().setX(-balle.getVitesse().getX());
-			System.out.println("a droite ");
-			return;
-		}
-
-		if(balle.getPosition().getX() + balle.getDiametre() >= position.getX()) { // balle a gauche du mur 
-			balle.getVitesse().setX(-balle.getVitesse().getX());
-			return;
-		}
-
-		if(balle.getPosition().getY() + balle.getDiametre() <= position.getY()){ // balle en haut du mur 
-			balle.getVitesse().setY(-balle.getVitesse().getY());
-			return;
-		}
-		
-		if(balle.getPosition().getY() <= position.getY() + hauteur) { // balle en bas du mur
-			balle.getVitesse().setY(-balle.getVitesse().getY());
-			return;
-		}
-		
+	public double getLargeur() {
+		return largeur;
 	}
+
+
+
+	public void setLargeur(double largeur) {
+		this.largeur = largeur;
+	}
+
+
+
+	public double getHauteur() {
+		return hauteur;
+	}
+
+
+
+	public void setHauteur(double hauteur) {
+		this.hauteur = hauteur;
+	}
+
+
+
+	public Vecteur getNormal() {
+		angle = Math.toRadians(angle);
+		Vecteur vecMur = new Vecteur (Math.cos(angle), Math.sin(angle));
+		normal = new Vecteur(-vecMur.getY(), vecMur.getX());
+		return normal;
+	}
+
+
+
 
 }
-
-
 
 
 
