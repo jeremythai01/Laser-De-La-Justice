@@ -30,7 +30,7 @@ public class Ordinateur implements Dessinable {
 		//talent(talent);
 		this.position=position;
 	}
-	
+	//if talent==2
 	/*private void talent(int talent) {
 		switch(talent) {
 		

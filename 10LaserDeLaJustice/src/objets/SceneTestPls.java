@@ -37,6 +37,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
+	//private double deltaT = 0.07;
 	private double deltaT = 0.07;
 	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
@@ -74,13 +75,16 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	private Ordinateur ordi;
 	private OrdinateurNiveau2 ordi2;
+	private OrdinateurNiveau3 ordi3;
 	/**
 	 * Create the panel.
 	 */
 	public SceneTestPls() {
 
-		ordi= new Ordinateur(1, new Vecteur(20,44));
-		ordi2= new OrdinateurNiveau2(new Vecteur(30,44));
+		//ordi= new Ordinateur(1, new Vecteur(20,44));
+		//ordi2= new OrdinateurNiveau2(new Vecteur(30,44));
+		ordi3= new OrdinateurNiveau3(new Vecteur(40,44));
+		ordi3.ajouterListesObstacles(listeBalles);
 		
 		angle = 30   ;
 		character = new Personnage();
@@ -172,10 +176,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 
 
-		/*for(Balle balle: listeBalles) {
+		for(Balle balle: listeBalles) {
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		}*/
+		}
 
 		/*
 	for(TrouNoir trou: listeTrou) {
@@ -192,8 +196,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		
 		g2d.setColor(Color.yellow);
-		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		//ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		//ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		ordi3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 	}//fin paintComponent
 
@@ -213,8 +218,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 		
 		tempsTotalEcoule += deltaT;
-		ordi.bouge();
-		ordi2.bouge();
+		//ordi.bouge();
+		//ordi2.bouge();
+		ordi3.bouge();
 	}
 
 	public void arreter( ) {
@@ -378,8 +384,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private void tirer() {
 		
 			
-			listeLasers.add(ordi.tirer());
-			listeLasers.add(ordi2.tirer());
+		//	listeLasers.add(ordi.tirer());
+		//	listeLasers.add(ordi2.tirer());
+			listeLasers.add(ordi3.tirer());
 		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()), angle, new Vecteur(0,0.5)));
 			
 	}
