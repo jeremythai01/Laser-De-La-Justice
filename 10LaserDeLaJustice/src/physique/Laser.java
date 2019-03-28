@@ -1,5 +1,6 @@
 package physique;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -9,6 +10,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 import geometrie.Vecteur;
@@ -31,15 +33,15 @@ public class Laser implements Dessinable{
 	private Color couleurLaser = null;
 	private boolean isCouleurPerso = false;
 	private double ligneFinY;
-	
-	
+
+
 	public void setLigneFinY(double ligneFinY) {
 		this.ligneFinY = ligneFinY;
 	}
 	private double ligneDebutX;
 
 	Random rand = new Random();
-	
+
 	/**
 	 * Constructeur du laser dont la position, la vitesse ainsi que l'angle de tir sont specifies
 	 * @param position, la position de depart du laser
@@ -48,7 +50,7 @@ public class Laser implements Dessinable{
 	 */
 	//auteur Arnaud Lefebvre
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
-		
+
 		this.position=position;
 		this.angleTir=angleTir;
 		this.vitesse= vitesse;
@@ -59,8 +61,8 @@ public class Laser implements Dessinable{
 		isCouleurPerso = false;
 
 	}
-	
-	
+
+
 	//Par Miora
 	/**
 	 * Constructeur du laser dont la position, la couleur personnalisé du laser, la vitesse ainsi que l'angle de tir sont specifies
@@ -80,7 +82,7 @@ public class Laser implements Dessinable{
 		isCouleurPerso = true;
 		System.out.println("2e constructeur");
 	}
-	
+
 	/**
 	 * Permet de dessiner le laser selon le contexte graphique en parametre.
 	 * @param g2d contexte graphique
@@ -97,15 +99,12 @@ public class Laser implements Dessinable{
 		trace.lineTo(ligneDebutX, ligneFinY);
 		trace.closePath();
 		changerCouleurPerso(g2d);
-		
-		g2d.draw(matLocal.createTransformedShape(((trace))));
-		
-		Rectangle2D.Double rect = new Rectangle2D.Double(ligneDebutX, ligneFinY,LONGUEUR,0.01);
-		 matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX ,ligneFinY);
-		 g2d.setColor(Color.blue);
-		 g2d.draw(matLocal.createTransformedShape(rect));
 
-	
+		g2d.setStroke( new BasicStroke(3));
+		g2d.draw(matLocal.createTransformedShape(((trace))));
+
+
+
 	}
 
 	//Par Miora
@@ -159,9 +158,9 @@ public class Laser implements Dessinable{
 		ligneFinY -= vitesse.getY();
 		ligneDebutX+=vitesse.getX();
 		position = new Vecteur (ligneDebutX, ligneFinY);
-	//	System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
+		//	System.out.println("position de laser quand il bouge" + ligneDebutX +" "+ ligneFinY) ;
 	}
-	
+
 	/**
 	 * retourne le point initial en x du trace
 	 * @return ligneDebutX retourne le point initial en x du trace
@@ -189,9 +188,9 @@ public class Laser implements Dessinable{
 	public Area getLaserAire(){ // pour detecter lintersection
 		AffineTransform matLocal = new AffineTransform(); // pourquoi mat ne fonctionne pas ?
 		Rectangle2D.Double rect = new Rectangle2D.Double(ligneDebutX, ligneFinY,LONGUEUR,0.01);
-		 matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX ,ligneFinY);
+		matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX ,ligneFinY);
 		return new Area(matLocal.createTransformedShape(((rect))));
-	 //
+		//
 	}
 
 	/**
@@ -287,8 +286,27 @@ public class Laser implements Dessinable{
 		double vitesseEnY=0.5*Math.sin(Math.toRadians(angle));
 		Vecteur vec = new Vecteur(vitesseEnX,vitesseEnY);
 		setVitesse(vec);
-	//	System.out.println("modification vitesse"+ vec );
+		//	System.out.println("modification vitesse"+ vec );
 	}
 
 
-}
+	public static void voirLimiteLasers(ArrayList<Laser> listeLasers, double largeurDuMonde, double hauteurDuMonde) {
+		for(Laser laser : listeLasers) { 
+			
+			if(laser.getLigneFinY() <= 0 ) 
+				listeLasers.remove(laser);
+			
+			if(laser.getLigneDebutX() >= hauteurDuMonde) 
+				listeLasers.remove(laser);
+			
+			
+			if(laser.getLigneDebutX() <= 0) 
+				listeLasers.remove(laser);
+			
+			if(laser.getLigneDebutX() >= largeurDuMonde) 
+				listeLasers.remove(laser);
+			
+		}
+	}
+
+	}

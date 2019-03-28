@@ -238,14 +238,15 @@ public class Balle implements Dessinable, Serializable {
 	public void checkCollisions(double width, double height) {
 
 		if(position.getY()+diametre >= height) { // touche le sol 
-			if(toucheSolPremiereFois) {
+			/*if(toucheSolPremiereFois) {
 				vInitY = vitesse.getY();
 				vitesse.setY(-vInitY);
 				toucheSolPremiereFois = false;
 			} else {
+			*/
 				vitesse.setY(-vInitY);
 			}
-		}
+		//}
 
 		if(position.getX()+diametre >= width) // touche le mur droite 
 			if(vitesse.getX() >0 )
