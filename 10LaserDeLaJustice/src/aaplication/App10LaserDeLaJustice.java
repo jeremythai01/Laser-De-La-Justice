@@ -89,7 +89,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	// Par Arezki
 	public App10LaserDeLaJustice(boolean isPartieNouv) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1389, 1034);
+		setBounds(100, 100, 1390, 1033);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(Color.DARK_GRAY);

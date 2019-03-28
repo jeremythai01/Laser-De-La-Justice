@@ -14,6 +14,7 @@ import physique.Laser;
 /**
  * Classe des miroirs plan
  * @author Miora
+ * @author Arezki
  *
  */
 public class MiroirPlan implements Dessinable {
@@ -30,6 +31,7 @@ public class MiroirPlan implements Dessinable {
 	 * @param x : la position la plus a gauche du miroir en x
 	 * @param y : la position la plus a droite du miroir en y
 	 * @param angle : angle de miroir avec une rotation en degre a partir de x,y
+	 // Miora
 	 */
 	public MiroirPlan(double x, double y, double angle) {
 		super();
@@ -43,6 +45,7 @@ public class MiroirPlan implements Dessinable {
 	 * @param mat : la matrice de transformation
 	 * @param hauteur : la hauteur du composant acceuillant le miroir
 	 * @param largeur : la largeur du composant acceuillant le miroir
+	 //Miora
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		matLocale = new AffineTransform(mat);
@@ -55,6 +58,7 @@ public class MiroirPlan implements Dessinable {
 	/**
 	 * Methode qui retourne aire du miroir
 	 * @return aire du miroir
+	 //Miora
 	 */
 	public Area getAireMiroir() {
 		return new Area (miroir);
@@ -63,6 +67,7 @@ public class MiroirPlan implements Dessinable {
 	/**
 	 * Methode pour obtenir le vecteur normal au miroir
 	 * @return le vecteur perpendiculaire au miroir
+	 //Miora
 	 */
 	public Vecteur getNormal() {
 		angle = Math.toRadians(angle);
@@ -71,5 +76,16 @@ public class MiroirPlan implements Dessinable {
 		return normal;
 	}
 	
+	/**
+	 * Cette méthode permet de faire la mis à jour de la position du miroir plan 
+	 * @param x c'est la nouvelle position x du miroir dans les unités du réel
+	 * @param y c'est la nouvelle position y du miroir dans les unités du réel
+	 //Arezki 
+	 */
+	
+	public void setPosition(double x , double y) {
+		this.x = x;
+		this.y = y;
+	}
 
 }

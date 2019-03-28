@@ -7,4 +7,5 @@ import java.util.EventListener;
  */
 public interface SceneListener extends EventListener{
 	
+	public void couleurLaserListener();
 }

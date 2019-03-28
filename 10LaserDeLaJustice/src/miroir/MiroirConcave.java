@@ -22,7 +22,7 @@ import physique.Laser;
  */
 public class MiroirConcave extends JPanel implements Dessinable {
 
-	private Vecteur positionIni;
+	private Vecteur position;
 
 	private double angleDebut;
 	private double grosseurMiroire;
@@ -35,7 +35,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	 * @param grosseurMiroire c'est le paramètre qui permet d'ajuster la largeur du miroir.(mesures réelle)
 	 */
 	public MiroirConcave(Vecteur position, double grosseurMiroire) {
-		positionIni = position;
+		this.position = position;
 		angleDebut = 100;
 		this.grosseurMiroire = grosseurMiroire;
 
@@ -52,7 +52,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 
-		miroirConcave = new Arc2D.Double(positionIni.getX(), positionIni.getY(), grosseurMiroire, grosseurMiroire, 180,
+		miroirConcave = new Arc2D.Double(position.getX(), position.getY(), grosseurMiroire, grosseurMiroire, 180,
 				-180, Arc2D.OPEN);
 		// matLocal.rotate(90);
 		// En rouge
@@ -143,8 +143,8 @@ public class MiroirConcave extends JPanel implements Dessinable {
  */
 	public Vecteur calculNormal(Laser laser, MiroirConcave miroire) {
 
-		return new Vecteur(laser.getPosition().getX() - miroire.getPositionIni().getX(),
-				laser.getPosition().getY() - miroire.getPositionIni().getY());
+		return new Vecteur(laser.getPosition().getX() - miroire.getPosition().getX(),
+				laser.getPosition().getY() - miroire.getPosition().getY());
 
 	}
 	
@@ -170,7 +170,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	 * @return un vecteur de la normal entre le laser et le miroir
 	 */
 	public Vecteur getNormalPosition(Vecteur position) {
-		return new Vecteur (positionIni.getX()-position.getX(), positionIni.getY()-position.getY());
+		return new Vecteur (position.getX()-position.getX(), position.getY()-position.getY());
 		
 	}
 	/**
@@ -184,15 +184,15 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	 * Cette méthode retourne la position initiale du miroir concave en vecteur dans les mesures du réel
 	 * @return la position initiale du miroir concave 
 	 */
-	public Vecteur getPositionIni() {
-		return positionIni;
+	public Vecteur getPosition() {
+		return position;
 	}
 	/**
 	 * methode qui permet de modifier la position du miroir dans les mesures du réel
-	 * @param positionIni nouvelle position du miroire concave 
+	 * @param position nouvelle position du miroire concave 
 	 */
-	public void setPositionIni(Vecteur positionIni) {
-		this.positionIni = positionIni;
+	public void setPosition(Vecteur position) {
+		this.position = position;
 	}
 	/**
 	 * Permet de modifier l'angle du miroir en degrès. Elle sera utile lors des calculs pour trouver le rayon reflechi
@@ -217,4 +217,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 		this.grosseurMiroire = grosseurMiroire;
 	}
 
+	public Area getAireMiroirConcave() {
+		return new Area (miroirConcave);
+	}
 }

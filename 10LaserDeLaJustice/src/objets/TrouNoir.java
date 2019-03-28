@@ -17,6 +17,7 @@ import physique.Laser;
  * Classe qui cree un trou noir et qui memorise sa position
  * Un trou noir, lorsqu'un laser rentre en contact avec, fait disparaitre le laser
  * @author Arnaud Lefebvre
+ * @author Arezki Issaadi
  *
  */
 public class TrouNoir extends Objet implements Dessinable {
@@ -34,6 +35,8 @@ public class TrouNoir extends Objet implements Dessinable {
 	public TrouNoir(Vecteur position) {
 		this.position=position;
 	}
+	
+
 	
 
 	@Override
@@ -69,4 +72,32 @@ public class TrouNoir extends Objet implements Dessinable {
 		 Ellipse2D aire= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		 return new Area(aire);
 	}
+
+
+
+	/**
+	 * Cette méthode permet d'avoir accès à la valeur de la position
+	 * @return le vecteur de la position du trou noir
+	 // Arezki
+	 */
+	public Vecteur getPosition() {
+		return position;
+	}
+
+
+
+	/**
+	 * Cette méthode permet de modifier la valeur de la position du trou noir
+	 * @param position est la nouvelle position en vecteur du trou noir dans les mesures du réel
+	 //Arezki
+	 */
+	public void setPosition(Vecteur position) {
+		this.position = position;
+	}
+
+
+
+
+
+
 }

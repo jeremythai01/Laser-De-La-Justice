@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
+import interfaces.SceneListener;
 import miroir.MiroirConcave;
 import miroir.MiroirConvexe;
 import miroir.MiroirPlan;
@@ -63,24 +64,27 @@ public class Scene extends JPanel implements Runnable {
 	private double tempsTotalEcoule = 0;
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
-	private int compteurBalle = 0;
 	private int nombreVies = 5;
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
-	
+
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
-	private boolean editeurActiver = false;
 	private boolean isGrCercleCliquer = false;
 	private boolean isMedCercleCliquer = false;
 	private boolean isPetCercleCliquer = false;
-	private boolean isCercleCliquer;
 	private boolean bonneBalle = false;
-	
+	private boolean bonMiroirConvexe = false;
+	private boolean bonMiroirConcave = false;
+	private boolean bonMiroirPlan = false;
+	private boolean bonTrouNoir = false;
+	private boolean bonBlocEau = false;
+	private boolean editeurActiver = false;
+
 	private ModeleAffichage modele;
 	private AffineTransform mat;
-	private Vecteur vitesse = new Vecteur(1,1);
+	private Vecteur vitesse = new Vecteur(1, 1);
 
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
@@ -105,14 +109,11 @@ public class Scene extends JPanel implements Runnable {
 	private Color couleurLaser = null;
 	private boolean couleurPersoLaser = false;
 
-	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE") ;
-	private Balle moyenneBalle  = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM"); 
-	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL") ;
+	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
+	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
+	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
 
-	
-	
-	
-
+	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	// Par Jeremy
 	/**
@@ -123,13 +124,13 @@ public class Scene extends JPanel implements Runnable {
 	public Scene(boolean isPartieNouveau) {
 
 		lireFond();
-		
+
 		angle = 30;
 
 		pistoletPrincipal = new Pistolet();
 
 		nouvellePartie(isPartieNouveau);
-		
+
 		lectureFichierOption();
 		vitesse = new Vecteur(3, 0);
 
@@ -139,81 +140,103 @@ public class Scene extends JPanel implements Runnable {
 
 				double eXR = e.getX() / modele.getPixelsParUniteX();
 				double eYR = e.getY() / modele.getPixelsParUniteY();
-				System.out.println("taille de la liste des balles: "+compteurBalle);
-				System.out.println();
-				while (!bonneBalle) {
-					System.out.println("je suis dans mouse pressed");
-					if(listeBalles.get(compteurBalle-1).getAireBalle().contains(eXR, eYR)) {
-						
-						System.out.println("jai trouver la balle");
+				// System.out.println("taille de la liste des balles: "+compteurBalle);
+
+				// pour drag toutes les balles
+
+				for (int i = 0; i < listeBalles.size(); i++) {
+					if ((listeBalles.get(i).getAireBalle().contains(eXR, eYR))) {
+
+						balle = listeBalles.get(i);
 						bonneBalle = true;
-					}else {
-						System.out.println("jai pas trouver la balle :(");
-						compteurBalle--;
+
+						i = listeBalles.size();
 					}
-					dragBalle();
 				}
-					
-				
-				
-				
-				if(moyenneBalle.getAireBalle().contains(eXR, eYR)) {
-					isMedCercleCliquer = true;
-					isGrCercleCliquer = false;
-					isPetCercleCliquer = false;
-					dragBalleMedium();
-					
+
+				for (int i = 0; i < listeMiroireConvexe.size(); i++) {
+					if (listeMiroireConvexe.get(i).getAireMiroirConvexe().contains(eXR, eYR)) {
+
+						bonMiroirConvexe = true;
+						miroireConvexe = listeMiroireConvexe.get(i);
+
+						i = listeMiroireConvexe.size();
+					}
 				}
-						
-				else if(grosseBalle.getAireBalle().contains(eXR, eYR)) {
-					isGrCercleCliquer = true;
-					isMedCercleCliquer = false;
-					isPetCercleCliquer = false;
-					dragGrosseCercle();
-					
+
+				for (int i = 0; i < listeMiroireConcave.size(); i++) {
+					if (listeMiroireConcave.get(i).getAireMiroirConcave().contains(eXR, eYR)) {
+
+						bonMiroirConcave = true;
+						miroirConcave = listeMiroireConcave.get(i);
+
+						i = listeMiroireConcave.size();
+					}
 				}
-				
-				else if (petiteBalle.getAireBalle().contains(eXR, eYR)) {
-					isPetCercleCliquer = true;
-					isGrCercleCliquer = false;
-					isMedCercleCliquer = false;
-					dragPetiteBalle();
-					
+
+				for (int i = 0; i < listeMiroirePlan.size(); i++) {
+					if (listeMiroirePlan.get(i).getAireMiroir().contains(eXR, eYR)) {
+
+						bonMiroirPlan = true;
+						miroirePlan = listeMiroirePlan.get(i);
+
+						i = listeMiroirePlan.size();
+					}
 				}
-						
-				/*
-				 * balle = new Balle(new Vecteur(eXR - diametre / 2, eYR - diametre / 2),
-				 * vitesse, "LARGE"); trou = new TrouNoir(new Vecteur(eXR, eYR)); miroireConvexe
-				 * = new MiroirConvexe(eXR, eYR, 1); miroirConcave = new MiroirConcave(new
-				 * Vecteur(eXR, eYR),2); bloc = new BlocDEau(new Vecteur(eXR,eYR));
-				 * 
-				 * listeBalles.add(balle); listeTrou.add(trou);
-				 * listeMiroireConcave.add(miroirConcave);
-				 * listeMiroireConvexe.add(miroireConvexe); listeBlocEau.add(bloc);
-				 */
+
+				for (int i = 0; i < listeTrou.size(); i++) {
+					if (listeTrou.get(i).getAireTrou().contains(eXR, eYR)) {
+
+						bonTrouNoir = true;
+						trou = listeTrou.get(i);
+
+						i = listeTrou.size();
+					}
+				}
+
+				for (int i = 0; i < listeBlocEau.size(); i++) {
+					if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)) {
+
+						bonBlocEau = true;
+						bloc = listeBlocEau.get(i);
+
+						i = listeBlocEau.size();
+					}
+				}
 
 				repaint();
 			}
-			
-			
-			
-
 
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				if(isMedCercleCliquer&& moyenneBalle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY())){
-					isMedCercleCliquer = false;
-					}
-				else if(isGrCercleCliquer&& grosseBalle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY())){
-					isGrCercleCliquer = false;
-				
+
+				bonneBalle = false;
+				bonMiroirConvexe = false;
+				bonMiroirConcave = false;
+				bonMiroirPlan = false;
+				bonTrouNoir = false;
+
+			}
+		});
+
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent arg0) {
+
+				if (bonneBalle) {
+					dragBalle();
+				} else if (bonMiroirConvexe) {
+					dragMiroirConvexe();
+				} else if (bonMiroirConcave) {
+					dragMiroirConcave();
+				} else if (bonMiroirPlan) {
+					dragMiroirPlan();
+				} else if (bonTrouNoir) {
+					dragTrouNoir();
+				}else if(bonBlocEau) {
+					dragBlocEau();
 				}
-			
-				else if(isPetCercleCliquer&& petiteBalle.getAireBalle().contains(arg0.getX()/modele.getPixelsParUniteX(), arg0.getY()/modele.getPixelsParUniteY())){
-					isPetCercleCliquer = false;
-				
-				}
-			
+
 			}
 		});
 
@@ -234,21 +257,6 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				
-				dragGrosseCercle();
-				dragBalleMedium();
-				dragPetiteBalle();
-
-				
-
-			}
-		});
-
-		
-		
 	}
 
 	// Par Jeremy
@@ -271,7 +279,6 @@ public class Scene extends JPanel implements Runnable {
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
-
 		for (Laser laser : listeLasers) {
 			if (laser.getLigneFinY() <= 0)
 				listeLasers.remove(laser);
@@ -282,8 +289,7 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
 		detectionCollisionBallePersonnage(listeBalles, principal);
-		detectionCollisionBallePersonnage( listeBalles, principal);	
-
+		detectionCollisionBallePersonnage(listeBalles, principal);
 
 		for (Balle balle : listeBalles) {
 
@@ -363,7 +369,6 @@ public class Scene extends JPanel implements Runnable {
 		tempsTotalEcoule += deltaT;
 		principal.bouge();
 
-
 	}
 
 	@Override
@@ -437,11 +442,11 @@ public class Scene extends JPanel implements Runnable {
 			try {
 				Color couleurOption;
 				couleurOption = (Color) fluxEntree.readObject();
-				if(couleurOption == null) {
+				if (couleurOption == null) {
 					couleurPersoLaser = false;
 					couleurLaser = null;
 					System.out.println("On ne m'a pas donne de couleur");
-				}else {
+				} else {
 					couleurPersoLaser = true;
 					couleurLaser = couleurOption;
 					System.out.println("On m'a donné une couleur");
@@ -542,14 +547,16 @@ public class Scene extends JPanel implements Runnable {
 			if (code == KeyEvent.VK_SPACE) {
 				principal.neBougePas(); // Pour que 1 laser soit tirer a la fois
 
-				if(couleurPersoLaser == false) {
+				if (couleurPersoLaser == false) {
 					System.out.println("tir laser false");
 					listeLasers.add(new Laser(new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
 							HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()), angle, new Vecteur(0, 0.5)));
-				}else {
+				} else {
 					System.out.println("tir laser false");
-					listeLasers.add(new Laser(new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
-							HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()), angle, new Vecteur(0, 0.5),couleurLaser ));
+					listeLasers.add(new Laser(
+							new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
+									HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
+							angle, new Vecteur(0, 0.5), couleurLaser));
 				}
 
 			}
@@ -581,7 +588,6 @@ public class Scene extends JPanel implements Runnable {
 
 		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
 		listeBalles.add(grosseBalle);
-		compteurBalle++;
 		repaint();
 
 	}
@@ -594,7 +600,7 @@ public class Scene extends JPanel implements Runnable {
 
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
 		listeBalles.add(moyenneBalle);
-		compteurBalle++;
+
 		repaint();
 
 	}
@@ -605,10 +611,10 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBallePetite() {
 
-		//System.out.println("avant :"+petiteBalle.toString());
+		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
 		listeBalles.add(petiteBalle);
-		compteurBalle++;
+
 		repaint();
 
 	}
@@ -692,85 +698,116 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
-	
 	private void dragBalle() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				if (isCercleCliquer && !enCoursAnimation) {
-					System.out.println("je suis dans dragMed");
+				if (bonneBalle) {
+
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					listeBalles.get(compteurBalle).setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-					
+					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+
 					repaint();
 				}
-				
 
 			}
 		});
-		
+
+	}
+
+	private void dragMiroirConvexe() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (bonMiroirConvexe) {
+					System.out.println("je suis dans dragMiroirConvexe");
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+
+			}
+		});
+	}
+
+	private void dragMiroirConcave() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (bonMiroirConcave) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					miroirConcave.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+
+			}
+		});
+	}
+
+	private void dragMiroirPlan() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (bonMiroirPlan) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					miroirePlan.setPosition(xDrag, yDrag);
+
+					repaint();
+				}
+
+			}
+		});
+	}
+
+	private void dragTrouNoir() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (bonTrouNoir) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					trou.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+
+			}
+		});
+	}
+
+	
+	private void dragBlocEau() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (bonBlocEau) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					bloc.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+
+			}
+		});
 	}
 	
-	
-	private void dragGrosseCercle() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (isGrCercleCliquer && !enCoursAnimation) {
-					System.out.println("je suis dans dragGrosse");
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					grosseBalle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-					repaint();
-				}
-				
-
-			}
-		});
-	}
-
-	private void dragBalleMedium() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (isMedCercleCliquer && !enCoursAnimation) {
-					System.out.println("je suis dans dragMed");
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					moyenneBalle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-					
-					repaint();
-				}
-				
-
-			}
-		});
-	}
-
-	private void dragPetiteBalle() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (isPetCercleCliquer && !enCoursAnimation) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					petiteBalle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-
-				}
-				repaint();
-
-			}
-		});
-	}
-
-	//Miora
+	// Miora
 	/**
-	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles, la position du joueur, 
-	 * la couleur du rayon et les touches utilisées
+	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
+	 * la position du joueur, la couleur du rayon et les touches utilisées
 	 */
-	public void ecritureFichierSauvegarde(){
+	public void ecritureFichierSauvegarde() {
 		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
@@ -778,36 +815,34 @@ public class Scene extends JPanel implements Runnable {
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
 			fluxSortie.writeInt(nombreVies); // nombre de vie
-			fluxSortie.writeObject(listeBalles);		// la liste des balles
-			fluxSortie.writeDouble(principal.getPositionX());			// les caracteristiques du personnage
-			if(couleurLaser == null) {
+			fluxSortie.writeObject(listeBalles); // la liste des balles
+			fluxSortie.writeDouble(principal.getPositionX()); // les caracteristiques du personnage
+			if (couleurLaser == null) {
 				fluxSortie.writeObject(null);
-			}else {
+			} else {
 				fluxSortie.writeObject(couleurLaser);
-			}// la couleur du rayon
-			fluxSortie.writeInt(toucheGauche);			// la touche gauche
-			fluxSortie.writeInt(toucheDroite);			// la touche droite
-			JOptionPane.showMessageDialog(null,"Votre partie a ete sauvegarde");
-		} 
-		catch (IOException e) {
+			} // la couleur du rayon
+			fluxSortie.writeInt(toucheGauche); // la touche gauche
+			fluxSortie.writeInt(toucheDroite); // la touche droite
+			JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
+		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
-		}
-		finally {
-			//on exécutera toujours ceci, erreur ou pas
-			try { 
-				fluxSortie.close();  
+		} finally {
+			// on exécutera toujours ceci, erreur ou pas
+			try {
+				fluxSortie.close();
+			} catch (IOException e) {
+				System.out.println("Erreur rencontrée lors de la fermeture!");
 			}
-			catch (IOException e) { 
-				System.out.println("Erreur rencontrée lors de la fermeture!"); 
-			}
-		}//fin finally
+		} // fin finally
 	}
 
 	// Par Miora
 	/**
-	 * Cette methode permet de lire le fichier qui sauvegarde le  nombre de vie, le nombre des balles, la position du joueur, 
-	 * la couleur du rayon et les touches utilisées
+	 * Cette methode permet de lire le fichier qui sauvegarde le nombre de vie, le
+	 * nombre des balles, la position du joueur, la couleur du rayon et les touches
+	 * utilisées
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
 		final String NOM_FICHIER_OPTION = nomFichier;
@@ -825,9 +860,9 @@ public class Scene extends JPanel implements Runnable {
 			positionPerso = fluxEntree.readDouble();
 			try {
 				couleurLaser = (Color) fluxEntree.readObject();
-				if(couleurLaser == null) {
+				if (couleurLaser == null) {
 					couleurPersoLaser = false;
-				}else {
+				} else {
 					couleurPersoLaser = true;
 				}
 			} catch (ClassNotFoundException e) {
@@ -849,22 +884,34 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	//Par Miora 
+	// Par Miora
 	/**
-	 *Cette methode definie si la scene est une nouvelle scene ou une scene charge 
+	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
+	 * 
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
 	 */
 	private void nouvellePartie(boolean isNouvelle) {
-		if(!isNouvelle) {
-			//partie chage
+		if (!isNouvelle) {
+			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
-			//lectureFichierSauvegarde("sauvegarde.d3t");
+			// lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
-			principal = new Personnage (positionPerso,toucheGauche, toucheDroite );
-		}else {
-			//partie nouvelle
+			principal = new Personnage(positionPerso, toucheGauche, toucheDroite);
+		} else {
+			// partie nouvelle
 			System.out.println("nouvelle partie come on");
-			principal = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite);
+			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite);
 		}
 	}
+
+	public void addScemeListener(SceneListener ecouteur) {
+		listeEcouteur.add(ecouteur);
+	}
+
+	public void leverEvenCouleurLaser() {
+		for (SceneListener ecout : listeEcouteur) {
+			ecout.couleurLaserListener();
+		}
+	}
+
 }
