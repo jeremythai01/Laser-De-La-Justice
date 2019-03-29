@@ -115,6 +115,8 @@ public class Scene extends JPanel implements Runnable {
 
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
+	private int toucheTir = 32;
+
 	// Par Jeremy
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
@@ -896,11 +898,11 @@ public class Scene extends JPanel implements Runnable {
 			System.out.println("scene partie charge " + isNouvelle);
 			// lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
-			principal = new Personnage(positionPerso, toucheGauche, toucheDroite);
+			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
 		} else {
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
-			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite);
+			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
 		}
 	}
 

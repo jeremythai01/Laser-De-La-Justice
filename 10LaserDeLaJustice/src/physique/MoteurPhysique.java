@@ -205,21 +205,23 @@ public class MoteurPhysique implements Serializable {
 
 		double rayonA = balle1.getDiametre()/2 ;
 		
+		Vecteur vA = balle1.getVitesse();
 		Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
 	
 		double rayonB = balle2.getDiametre()/2; 
 		
 		Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
-
+		Vecteur vB= balle2.getVitesse();
 		Vecteur r0 = rB0.soustrait(rA0);
 
-		double distance = rayonA + rayonB;
+		double D = rayonA + rayonB;
 		
 
-		if(distance >= r0.module()) 
+		if(D >= r0.module()) 
 			collisionBalles(balle1, balle2);
 		
-		/*
+		
+	/*	Vecteur v = vB.soustrait(vA);
 		double A = v.prodScalaire(v);
 		double B = r0.multiplie(2).prodScalaire(v);
 		double C = r0.prodScalaire(r0) - D*D;
