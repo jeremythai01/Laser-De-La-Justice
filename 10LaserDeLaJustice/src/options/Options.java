@@ -179,6 +179,7 @@ public class Options extends JFrame {
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new BufferedOutputStream(	new FileOutputStream(fichierDeTravail)));
+			
 			fluxSortie.writeInt(Integer.parseInt(snpDif.getValue().toString()));
 			fluxSortie.writeDouble(Double.parseDouble(snpAcc.getValue().toString()));
 			fluxSortie.writeInt(toucheGauche);

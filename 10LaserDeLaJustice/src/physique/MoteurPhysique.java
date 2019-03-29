@@ -11,7 +11,10 @@ import geometrie.Vecteur;
  *  @author Caroline Houle 
  *
  */
+
 public class MoteurPhysique implements Serializable {
+	
+	  private static final long serialVersionUID = 2057630780843954427L;
 
 	// Caroline Houle 
 	/**
