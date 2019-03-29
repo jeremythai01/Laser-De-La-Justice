@@ -23,6 +23,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 
 
@@ -50,6 +51,8 @@ public class SceneTest extends JPanel implements Runnable {
 	private Vecteur vitesse;
 	private Personnage personnage1;
 	private Personnage personnage2;
+	private Personnage personnage3;
+
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
@@ -62,18 +65,21 @@ public class SceneTest extends JPanel implements Runnable {
 	private ArrayList<Personnage> listePerso = new ArrayList<Personnage>();
 
 	private Mur mur;
-
+	private double posSouris;
 
 	/**
 	 * Create the panel.
 	 */
 	public SceneTest() {
 
-		personnage1 = new Personnage(LARGEUR_DU_MONDE/2 -5, toucheGauche, toucheDroite,toucheTir ,  "JOUEUR1");
+		personnage1 = new Personnage(LARGEUR_DU_MONDE/2 -5, toucheGauche, toucheDroite,toucheTir,  "JOUEUR1");
 		listePerso.add(personnage1);
 		personnage2 = new Personnage(LARGEUR_DU_MONDE/2 + 5, toucheGauche, toucheDroite,toucheTir, "JOUEUR2");
 		listePerso.add(personnage2);
 
+		
+		personnage3 = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite,toucheTir,  "JOUEUR1");
+		personnage3.setModeSouris(true);
 		angle = 90;
 		vitesse = new Vecteur(0.5 ,0);
 		/*
@@ -88,14 +94,40 @@ public class SceneTest extends JPanel implements Runnable {
 		mur = new Mur ( new Vecteur(0,25), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
 		listeMurs.add(mur);
 		 */
+		
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				//debut
+				
+				
+				personnage3.setPosSouris(e.getX()/modele.getPixelsParUniteX());
+				//fin
+			}
+		});
+		
+		
+		
+		
+		
+		
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
+				
+				if(!enCoursAnimation) {
 				Balle balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
 				listeBalles.add(balle);
+				}
+				
+				
+				if(personnage3.isModeSouris()) {
+					shootEtAddLaser(e, personnage3);
+				}
+				
 				repaint();
 			}
 		});
@@ -152,17 +184,14 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-
+/*
 		for(Personnage perso : listePerso) {
 			perso.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 		}
 
-
-
+*/
+		personnage3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 	}//fin paintComponent
-
-
-
 
 
 
@@ -177,8 +206,6 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 		collisionBalleMur(listeBalles, listeMurs);
 
-
-
 		for(Balle balle: listeBalles) {
 			balle.unPasVerlet(deltaT);
 		}
@@ -186,10 +213,12 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
-		
+/*
 		for(Personnage perso : listePerso) {
-		perso.bouge();
+			perso.bouge();
 		}
+		*/
+		personnage3.bouge();
 		tempsTotalEcoule += deltaT;
 	}
 
@@ -283,11 +312,20 @@ public class SceneTest extends JPanel implements Runnable {
 				listeLasers.add(
 						new Laser(new Vecteur(
 								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
-
 			}
 		}
 
 	}
+	
+	private void shootEtAddLaser(MouseEvent e, Personnage perso) {
+		if(enCoursAnimation == true) {
+				perso.neBougePas();
+				listeLasers.add(
+						new Laser(new Vecteur(
+								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
+			}
+		}
+	}
+	
 
-}
 

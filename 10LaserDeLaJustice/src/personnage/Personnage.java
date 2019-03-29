@@ -39,6 +39,8 @@ public class Personnage implements Dessinable, Serializable {
 	private static final double VITESSE = 0.1;
 	private double tempsMort = 0;
 	private Type type;
+	private boolean modeSouris = false;
+	private double posSouris;
 
 
 	/**
@@ -188,6 +190,7 @@ public class Personnage implements Dessinable, Serializable {
 	 */
 	public void bouge() { 
 		positionX += vitesseX;
+		update();
 	}
 
 	//Jeremy Thai
@@ -195,14 +198,30 @@ public class Personnage implements Dessinable, Serializable {
 	 * Méthode qui permet de modifier la vitesse du personnage selon la touche enfoncee
 	 */
 	public void update() {
-		vitesseX = 0;
-		if(gauche) 
-			vitesseX = -VITESSE;
-		if(droite) 
-			vitesseX = VITESSE;
-		if(bougePas) 
-			vitesseX = 0;
+		
+		if(modeSouris) {
+			if(posSouris < positionX) {
+				vitesseX = -VITESSE;
+				return;
+			}
+			if(posSouris > positionX) {
+				vitesseX = VITESSE;
+				return;
+			}
+			if(posSouris == positionX+ LARGEUR_PERSO /2 ) {
+				vitesseX = 0;
+				return;
+			}
+		} else {
 
+			vitesseX = 0;
+			if(gauche) 
+				vitesseX = -VITESSE;
+			if(droite) 
+				vitesseX = VITESSE;
+			if(bougePas) 
+				vitesseX = 0;
+		}
 	}
 
 	//Jeremy Thai
@@ -299,14 +318,15 @@ public class Personnage implements Dessinable, Serializable {
 				HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
 	}
 
+
+
+
 	/**
 	 * Methode permettant de savoir la touche utilise pour tirer un laser 
 	 * @return toucheTir touche pour tirer un laser
 	 */
 	//Jeremy Thai
-	public int getToucheTir() {
-		return toucheTir;
-	}
+	public int getToucheTir() {return toucheTir; }
 
 	/**
 	 * Methode pour changer la touche utilise pour tirer un laser
@@ -318,17 +338,30 @@ public class Personnage implements Dessinable, Serializable {
 	}
 
 
+	//Jeremy Thai
+	public boolean isModeSouris() {return modeSouris;}
+
+	//Jeremy Thai
+	public void setModeSouris(boolean modeSouris) {
+		this.modeSouris = modeSouris;
+	}
+	//Jeremy Thai
+	public double getPosSouris() {return posSouris;}
+
+	//Jeremy Thai
+	public void setPosSouris(double posSouris) {
+		this.posSouris = posSouris;
+	}
+
 
 	public double getTempsMort() {
 		return tempsMort;
 	}
 
-
-
-
 	public void setTempsMort(double tempsMort) {
 		this.tempsMort = tempsMort;
 	}
+
 
 
 
