@@ -228,6 +228,7 @@ public class Personnage implements Dessinable, Serializable {
 			
 		} else {
 
+			vitesseX = 0;
 			if(gauche) 
 				vitesseX = -VITESSE;
 			if(droite) 

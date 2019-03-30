@@ -369,19 +369,31 @@ public class Balle implements Dessinable, Serializable {
 
 	}
 
-
+/**
+ * merhode qui retourne la valeur booleenne de la premiere collision
+ * @return premiereCollision variable d'une balle qui verifie si celle-ci est entré en collision avec une autre balle.
+ */
 
 	public boolean isPremiereCollision() {
 		return premiereCollision;
 	}
 
 
-
+	/**
+	 * merhode qui modifie  la valeur booleenne de la premiere collision
+	 * @param premiereCollision variable d'une balle qui verifie si celle-ci est entré en collision avec une autre balle.
+	 */
 	public void setPremiereCollision(boolean premiereCollision) {
 		this.premiereCollision = premiereCollision;
 	}
 
-
+		/**
+		 * Retourne vrai si deux aires de formes sont en intersection, sinon faux.
+		 * 
+		 * @param aire1 aire de la premiere forme
+		 * @param aire2 aire de la deuxieme forme
+		 * @return boolean true or false
+		 */
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -391,7 +403,11 @@ public class Balle implements Dessinable, Serializable {
 		return false;
 	}
 
-
+/**
+ * Méthode qui vérifie si une balle qui vient juste d'etre créée est en contact avec une autre balle et si c'est le cas
+ * @param listeBalles liste de balles en jeu
+ * @param listeNouvBalles liste de balles qui viennent juste d'etre créées 
+ */
 	private void intervalTempsSansCollision(ArrayList<Balle>listeBalles, ArrayList<Balle>listeNouvBalles)  {
 
 		for(Balle balleNouv : listeNouvBalles) {
@@ -408,6 +424,10 @@ public class Balle implements Dessinable, Serializable {
 
 	}
 
+	/**
+	 * Methode qui retourne le type de la balle 
+	 * @return type type de la balle
+	 */
 	public Type getType() {
 		return type;
 	}

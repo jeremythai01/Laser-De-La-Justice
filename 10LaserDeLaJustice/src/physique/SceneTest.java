@@ -72,8 +72,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	private double xSouris ;
-
-
+	
 	/**
 	 * Create the panel.
 	 */
@@ -90,18 +89,11 @@ public class SceneTest extends JPanel implements Runnable {
 		angle = 90;
 		vitesse = new Vecteur(0.5 ,0);
 
-		/*
+		
 		mur = new Mur ( new Vecteur(0,5), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
 		listeMurs.add(mur);
 		mur = new Mur ( new Vecteur(0,10), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
 		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,15), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
-		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,20), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
-		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,25), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
-		listeMurs.add(mur);
-		 */
 
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -215,12 +207,12 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-		/*
+		
 		for(Personnage perso : listePerso) {
 			perso.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 		}
 
-		 */
+		 
 		personnage3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 	}//fin paintComponent
 
@@ -271,11 +263,11 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
-		/*
+		
 		for(Personnage perso : listePerso) {
 			perso.bouge();
 		}
-		 */
+		 
 		personnage3.bouge();
 		tempsTotalEcoule += deltaT;
 	}
@@ -284,7 +276,7 @@ public class SceneTest extends JPanel implements Runnable {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
 	}
-//coucoudan
+	
 	public void demarrer() {
 		if (!enCoursAnimation) { 
 			Thread proc = new Thread(this);
@@ -349,6 +341,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	}
+	
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);

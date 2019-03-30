@@ -184,6 +184,14 @@ public class MoteurPhysique implements Serializable {
 		return new Vecteur(0, masse*accel.getY());
 	}
 
+	/**
+	 *  Methode qui calcule le temps ou les temps  exactes lors  dune collision a l'aide de la formule quadratique
+	 * @param A 1er element   de l'equation
+	 * @param B 2e element   de l'equation
+	 * @param C 3e element   de l'equation
+	 * @return tab tableau contenant les valeurs de temps en ordre croissants 
+	 */
+	//Jeremy Thai
 	public static double[] quadricRealRoot(double A, double B, double C)
 	{
 		double dis = B*B-(4*A*C);
@@ -204,20 +212,16 @@ public class MoteurPhysique implements Serializable {
 	 * @param balle1 une balle
 	 * @param balle2 une autre balle 
 	 */
+	//Jeremy Thai
 	public static void detectionCollisionBalles(Balle balle1, Balle balle2) {
 
-
-		
-		
 		double rayonA = balle1.getDiametre()/2 ;
 		
-		Vecteur vA = balle1.getVitesse();
 		Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
 	
 		double rayonB = balle2.getDiametre()/2; 
 		
 		Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
-		Vecteur vB= balle2.getVitesse();
 		Vecteur r0 = rB0.soustrait(rA0);
 
 		double D = rayonA + rayonB;
@@ -225,23 +229,14 @@ public class MoteurPhysique implements Serializable {
 
 		if(D >= r0.module()) 
 			collisionBalles(balle1, balle2);
-		
-		
-	/*	Vecteur v = vB.soustrait(vA);
-		double A = v.prodScalaire(v);
-		double B = r0.multiplie(2).prodScalaire(v);
-		double C = r0.prodScalaire(r0) - D*D;
-
-		double temps[] = quadricRealRoot( A, B, C); 
-
-		if( temps.length == 1 || temps.length == 2) 
-			collisionBalles( balle1, balle2);
-		 */
 	}
 
-	
-	
-	
+	/**
+	 * Methode qui permet de realiser la collision entre 2 balles 
+	 * @param balle1 une balle
+	 * @param balle2 une autre balle 
+	 */
+	//Jeremy Thai
 
 	private static void collisionBalles(Balle balle1, Balle balle2) {
 		
@@ -263,15 +258,14 @@ public class MoteurPhysique implements Serializable {
 
 		balle1.setVitesse(vA.additionne(nAB.multiplie(impulsion/masseA)));
 		balle2.setVitesse(vB.soustrait(nAB.multiplie(impulsion/masseB)));
-		
-		
-
-
-
 	}
 	
-
-	
+	/**
+	 * Methode qui permet de faire la detection de balles et murs  et s il y en a une, realiser la collision entre celles-ci
+	 * @param balle1 une balle
+	 * @param mur un mur 
+	 */
+	//Jeremy Thai
 	public static void detectionCollisionMurBalle(Balle balle, Mur mur) {
 
 		double rayonA = balle.getDiametre()/2 ;
@@ -305,6 +299,13 @@ public class MoteurPhysique implements Serializable {
 
 	}
 	
+	
+	/**
+	 * Methode qui permet de  realiser la collision entre une balle et un mur 
+	 * @param balle1 une balle
+	 * @param mur un mur 
+	 */
+	//Jeremy Thai
 	public static void collisionMurBalle(Balle balle, Mur mur) {
 	/*	
 		Vecteur v = balle.getVitesse();
@@ -359,6 +360,13 @@ public class MoteurPhysique implements Serializable {
 			break;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
 }
 
 
