@@ -147,10 +147,6 @@ public class Personnage implements Dessinable, Serializable {
 		matLocale.translate( (positionX) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
 		g2d.drawImage(imgPerso, matLocale, null); 
 
-	
-		flecheAngle = new VecteurGraphique(2.0,2.0,positionX, hauteurScene-LONGUEUR_PERSO/2);
-		flecheAngle.dessiner(g2d, mat, hauteurScene, largeurScene);
-
 	}
 	/**
 	 * Cette methode permet de deplacer le personnage  selon les touches du clavier dans option de jeu.

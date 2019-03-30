@@ -272,15 +272,17 @@ public class Balle implements Dessinable, Serializable {
 		switch(type)	{
 
 		case LARGE:
+			ArrayList<Balle> listeNouvBalles = new ArrayList<Balle> ();
+
 			nouvBalle1 = new Balle(position, vitesse, "MEDIUM");
 			nouvBalle2 = new Balle(position, vitesse, "MEDIUM");
 			if(vitesse.getX() < 0) {
-				
+
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-1.000005);
 				liste.add(nouvBalle1);
-				
+
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+1.000005);
@@ -292,32 +294,39 @@ public class Balle implements Dessinable, Serializable {
 				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-1.000005);
 				liste.add(nouvBalle1);
-				
+
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+1.000005);
 				liste.add(nouvBalle2);
 			}
-		
-			
+/*
+			for(Balle balleNouv : listeNouvBalles) {
 				
-			
+				for( Balle balle : liste) {
+
+					if(intersection(balle.getAireBalle(), balleNouv.getAireBalle() ) )  {
+						
+		//			} else 
+				}
+			}
+*/
 			liste.remove(this);
 
 			break;
-			
+
 		case MEDIUM:
-			
+
 			nouvBalle1 = new Balle(position, vitesse, "SMALL");
 			nouvBalle2 = new Balle(position, vitesse, "SMALL");
-			
+
 			if(vitesse.getX() < 0) {
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-0.7);
 				liste.add(nouvBalle1);
 
-				
+
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+0.7);
@@ -325,7 +334,7 @@ public class Balle implements Dessinable, Serializable {
 			}
 
 			if(vitesse.getX() > 0) {
-				
+
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-0.7);
@@ -338,11 +347,15 @@ public class Balle implements Dessinable, Serializable {
 
 			liste.remove(this);
 			break;
-			
+
 		case SMALL:
 			liste.remove(this);
 			break;
 		}		
+
+
+
+
 	}
 
 	/**
@@ -367,11 +380,19 @@ public class Balle implements Dessinable, Serializable {
 		this.premiereCollision = premiereCollision;
 	}
 
-	
-	
-	
-	
-	
+
+	private boolean intersection(Area aire1, Area aire2) {
+		Area aireInter = new Area(aire1);
+		aireInter.intersect(aire2);
+		if(!aireInter.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
+
+
+
 
 }//fin classe
 
