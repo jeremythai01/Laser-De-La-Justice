@@ -164,7 +164,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				tempsJeu.stop();
 			}
 		});
-		btnEnregistrer.setBounds(1181, 61, 40, 38);
+		btnEnregistrer.setBounds(1193, 61, 40, 38);
 		contentPane.add(btnEnregistrer);
 		associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
 
@@ -407,7 +407,7 @@ public class App10LaserDeLaJustice extends JFrame {
 
 			}
 		});
-		btnVidersceneFinale.setBounds(1131, 61, 40, 38);
+		btnVidersceneFinale.setBounds(1143, 61, 40, 38);
 		contentPane.add(btnVidersceneFinale);
 		associerBoutonAvecImage(btnVidersceneFinale, "corbeille.png");
 
@@ -419,7 +419,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		tempsDuJeu.setOpaque(true);
 
 		tempsDuJeu.setStringPainted(true);
-		tempsDuJeu.setBounds(194, 61, 927, 38);
+		tempsDuJeu.setBounds(194, 61, 939, 38);
 		contentPane.add(tempsDuJeu);
 
 		JToggleButton btnEditeur = new JToggleButton("New toggle button");
@@ -439,12 +439,32 @@ public class App10LaserDeLaJustice extends JFrame {
 				}
 			}
 		});
-		btnEditeur.setBounds(1231, 61, 46, 38);
+		btnEditeur.setBounds(1243, 61, 40, 38);
 		contentPane.add(btnEditeur);
+		
+	
 
 		Scene sceneFinaleFinale = new Scene(false);
 		sceneFinaleFinale.setBounds(30, 110, 1303, 724);
 		contentPane.add(sceneFinaleFinale);
+		
+		JSlider sliderAngleLaser = new JSlider();
+		sliderAngleLaser.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				//sceneFinale.setAngle((double)sliderAngleLaser.getValue());
+				repaint();
+			}
+		});
+		sliderAngleLaser.setAutoscrolls(true);
+		//sliderAngleLaser.setValueIsAdjusting(true);
+		sliderAngleLaser.setPaintTicks(true);
+		sliderAngleLaser.setPaintLabels(true);
+		sliderAngleLaser.setSnapToTicks(true);
+		sliderAngleLaser.setValue(30);
+		sliderAngleLaser.setMaximum(100);
+		sliderAngleLaser.setOrientation(SwingConstants.VERTICAL);
+		sliderAngleLaser.setBounds(1346, 361, 24, 473);
+		contentPane.add(sliderAngleLaser);
 
 		listener = new ActionListener() {
 
@@ -583,5 +603,4 @@ public class App10LaserDeLaJustice extends JFrame {
 	public void setNouveauOption(boolean isNouveauOption) {
 		this.isNouveauOption = isNouveauOption;
 	}
-
 }
