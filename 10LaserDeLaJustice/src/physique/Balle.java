@@ -26,7 +26,7 @@ public class Balle implements Dessinable, Serializable {
 	private Vecteur forceGravi;
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
-	private boolean premiereCollision = true;
+	private boolean premiereCollision = false;
 
 
 
@@ -35,7 +35,7 @@ public class Balle implements Dessinable, Serializable {
 	 * @author Jeremy Thai
 	 *
 	 */
-	private enum Type {
+	enum Type {
 		SMALL, MEDIUM, LARGE;
 	}
 
@@ -269,10 +269,12 @@ public class Balle implements Dessinable, Serializable {
 
 		Balle nouvBalle1;
 		Balle nouvBalle2;
+		ArrayList<Balle> listeNouvBalles = new ArrayList<Balle> ();
+
 		switch(type)	{
 
 		case LARGE:
-			ArrayList<Balle> listeNouvBalles = new ArrayList<Balle> ();
+
 
 			nouvBalle1 = new Balle(position, vitesse, "MEDIUM");
 			nouvBalle2 = new Balle(position, vitesse, "MEDIUM");
@@ -281,37 +283,29 @@ public class Balle implements Dessinable, Serializable {
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-1.000005);
-				liste.add(nouvBalle1);
 
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+1.000005);
-				liste.add(nouvBalle2);
 			}
 
 			if(vitesse.getX() > 0) {
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-1.000005);
-				liste.add(nouvBalle1);
 
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+1.000005);
-				liste.add(nouvBalle2);
 			}
-/*
-			for(Balle balleNouv : listeNouvBalles) {
-				
-				for( Balle balle : liste) {
 
-					if(intersection(balle.getAireBalle(), balleNouv.getAireBalle() ) )  {
-						
-		//			} else 
-				}
-			}
-*/
+			listeNouvBalles.add(nouvBalle1);
+			listeNouvBalles.add(nouvBalle2);
 			liste.remove(this);
+			intervalTempsSansCollision(liste, listeNouvBalles);
+			liste.add(nouvBalle1);
+			liste.add(nouvBalle2);
+			
 
 			break;
 
@@ -324,28 +318,35 @@ public class Balle implements Dessinable, Serializable {
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-0.7);
-				liste.add(nouvBalle1);
 
 
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+0.7);
-				liste.add(nouvBalle2);
+
 			}
+
+
 
 			if(vitesse.getX() > 0) {
 
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
 				nouvBalle1.getPosition().setX(position.getX()-0.7);
-				liste.add(nouvBalle1);
+
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+0.7);
-				liste.add(nouvBalle2);
 			}
 
+			listeNouvBalles.add(nouvBalle1);
+			listeNouvBalles.add(nouvBalle2);
 			liste.remove(this);
+			intervalTempsSansCollision(liste, listeNouvBalles);
+			liste.add(nouvBalle1);
+			liste.add(nouvBalle2);
+			
+
 			break;
 
 		case SMALL:
@@ -391,9 +392,30 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
+	private void intervalTempsSansCollision(ArrayList<Balle>listeBalles, ArrayList<Balle>listeNouvBalles)  {
+
+		for(Balle balleNouv : listeNouvBalles) {
+
+			boucleInterieure :
+			for( Balle balle : listeBalles) {
+
+				if(intersection(balle.getAireBalle(), balleNouv.getAireBalle() ) )  {
+						balleNouv.setPremiereCollision(true);
+						break boucleInterieure;
+				}
+			}
+		}
+
+	}
+
+	public Type getType() {
+		return type;
+	}
 
 
-
+	
+	
+	
 }//fin classe
 
 
