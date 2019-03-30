@@ -422,7 +422,14 @@ public class Scene extends JPanel implements Runnable {
 	 * @author Arnaud
 	 */
 	public void setAngle(double angle) {
-		laser.setAngleTir(angle);
+	//	System.out.println("Angle: " + angle);
+		/*try {
+			laser.setAngleTir(angle);
+			System.out.println("Angle: " + angle);
+		} catch (NullPointerException e) {
+			System.out.println("Laser existe pas, enlevez vos Sysout");
+		}*/
+		this.angle = angle;
 		principal.getPositionX();
 
 	}

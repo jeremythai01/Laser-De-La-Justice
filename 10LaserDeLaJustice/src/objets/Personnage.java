@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 
@@ -134,6 +136,16 @@ public class Personnage implements Dessinable {
 	 */
 	public double getLARGEUR_PERSO() {
 		return LARGEUR_PERSO;
+	}
+	
+	/**
+	 * Cree et retourne une aire en forme de rectangle du personnage 
+	 * @return aire du personnage 
+	 */
+	//Jeremy Thai
+	public Area airePersonnage() {
+		return new Area( new Rectangle2D.Double(positionX,
+				HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
 	}
 	
 	

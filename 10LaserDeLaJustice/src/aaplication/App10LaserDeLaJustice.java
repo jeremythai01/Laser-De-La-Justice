@@ -447,7 +447,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JSlider sliderAngleLaser = new JSlider();
 		sliderAngleLaser.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				//sceneFinale.setAngle((double)sliderAngleLaser.getValue());
+				sceneFinale.setAngle((double)sliderAngleLaser.getValue());
 				repaint();
 			}
 		});

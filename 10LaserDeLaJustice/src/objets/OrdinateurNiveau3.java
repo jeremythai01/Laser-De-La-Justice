@@ -25,6 +25,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	private boolean enCoursAnimation=false;
 	private double hauteurDuMonde;
 	private ArrayList<Balle> listeBalle = new ArrayList<Balle>();
+	private ArrayList<Vecteur> listeDistance = new ArrayList<Vecteur>();
 	private ArrayList<Vecteur> listePosition = new ArrayList<Vecteur>();
 	
 	public OrdinateurNiveau3(Vecteur position) {
@@ -57,7 +58,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	}
 	
 	public void changerVitesse() { 
-		System.out.println((int)Math.random()*3+1);
+		//System.out.println((int)Math.random()*3+1);
 		if((Math.floor(Math.random() * (2)) + 1)%2==0) {
 			//vitesseNiveau2=-vitesseNiveau2;
 		}
@@ -84,33 +85,62 @@ public class OrdinateurNiveau3 implements Dessinable {
 		if(listeBalle.size()>0) {
 			//System.out.println("je suis dans le if");
 			for(Balle balle: listeBalle) {
-				listePosition.add(new Vecteur((balle.getPosition().soustrait(getPosition()).getX()),(balle.getPosition().soustrait(getPosition()).getY())));
-			//	listePosition.add(new Vecteur(10,10));
+				listeDistance.add(new Vecteur((balle.getPosition().soustrait(getPosition()).getX()),(balle.getPosition().soustrait(getPosition()).getY())));
 			}
 
 			int avant=0;
-			Vecteur reponse= listePosition.get(avant);
-			for(int i =1; i<listePosition.size();i++) {
-				if(listePosition.get(i).module()<listePosition.get(avant).module()) {
-					reponse=listePosition.get(i);
+			Vecteur reponse= listeDistance.get(avant);
+			for(int i =1; i<listeDistance.size();i++) {
+				if(listeDistance.get(i).module()<listeDistance.get(avant).module()) {
+					reponse=listeDistance.get(i);
 				}
 				avant++;
 			}
 		//	System.out.println(reponse+" allo");
 			return reponse;
 		}else
-			return new Vecteur(1,1);
+			return new Vecteur(0,1);
 
 		
 	}
+	
+	public Vecteur calculerViserAvecVitesse(Vecteur distance, Vecteur vitesse) {
+		if(listeBalle.size()>0) {
+			//System.out.println("je suis dans le if");
+			for(Balle balle: listeBalle) {
+				listeDistance.add(new Vecteur((balle.getPosition().soustrait(getPosition()).getX()),(balle.getPosition().soustrait(getPosition()).getY())));
+				listePosition.add(new Vecteur(balle.getPosition().getX(), balle.getPosition().getY()));
+			
+			}
+
+			int avant=0;
+			Vecteur reponse= listeDistance.get(avant);
+			for(int i =1; i<listeDistance.size();i++) {
+				if(listeDistance.get(i).module()<listeDistance.get(avant).module()) {
+					reponse=listeDistance.get(i);
+				}
+				avant++;
+			}
+		//	System.out.println(reponse+" allo");
+			return reponse;
+		}else
+			return new Vecteur(0,1);
+		
+		
+		
+		//return new Vecteur(0,0);
+	}
+	
 	public double calculerAngleTir(Vecteur distance) {
 		//System.out.println("la distance a faire est de " + distance);
 		//System.out.println("calcuer "+  Math.toDegrees(Math.atan(((-distance.getY()/distance.getX())))));
 		double resultat= Math.atan(((-distance.getY()/distance.getX()))); // si jamais le calcul donne la valeur negative
+		
 		if(resultat<0) {
-			resultat=-resultat;
-		}
-		return Math.toDegrees(resultat);
+			System.out.println(90.0+90.0+Math.toDegrees(resultat));
+			return 90.0+90.0+Math.toDegrees(resultat);
+		}else
+		     return Math.toDegrees(resultat);
 	}
 	
 	public double getVitesseNiveau1() {

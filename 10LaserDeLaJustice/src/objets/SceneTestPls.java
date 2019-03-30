@@ -25,6 +25,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 
 
@@ -38,7 +39,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
 	//private double deltaT = 0.07;
-	private double deltaT = 0.07;
+	private double deltaT = 0.01;
 	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
@@ -86,7 +87,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3= new OrdinateurNiveau3(new Vecteur(40,44));
 		ordi3.ajouterListesObstacles(listeBalles);
 		
-		angle = 30   ;
+		angle = 60   ;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -101,13 +102,33 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
-				listeBalles.add(balle);
-				bloc= new BlocDEau(new Vecteur(eXR,eYR));
-				listeBloc.add(bloc);
+				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
+				//listeBalles.add(balle);
+				//bloc= new BlocDEau(new Vecteur(eXR,eYR));
+				//listeBloc.add(bloc);
 
 				//	trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
+				
+				
+				if(character.airePersonnage().contains(eXR, eYR)) {
+					//System.out.println("je suis dans le personnage");
+					addMouseMotionListener(new MouseMotionAdapter() {
+						@Override
+						public void mouseDragged(MouseEvent f) {
+							double fX=f.getX()/modele.getPixelsParUniteX();
+							//double fY= f.getY()/modele.getPixelsParUniteY();
+							if(fX>eXR) {
+								System.out.println("je vais vers la droite");
+							}
+						}
+					});
+				}
+				
+				
+				
+				
+				
 				repaint();
 			}
 		});
@@ -350,7 +371,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 					try {
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
-						laser.setAngleTir(90-Math.atan(ref.getY()/ref.getX()));
+						laser.setAngleTir(180+Math.toDegrees(Math.atan(ref.getY()/ref.getX())));
 						//laser.setAngleTir(30);
 						System.out.println(laser.getAngleTir());
 					} catch (Exception e) {
@@ -383,7 +404,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	
 	private void tirer() {
 		
-			
+			ordi3.ajouterListesObstacles(listeBalles);
 		//	listeLasers.add(ordi.tirer());
 		//	listeLasers.add(ordi2.tirer());
 			listeLasers.add(ordi3.tirer());
