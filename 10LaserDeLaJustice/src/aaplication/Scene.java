@@ -42,6 +42,8 @@ import physique.Coeurs;
 import physique.Laser;
 import pistolet.Pistolet;
 import utilite.ModeleAffichage;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
 
 /**
  * Cette classe contient la scene d'animation du jeu.
@@ -68,6 +70,7 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
+	private double valeurAngleRoulette =90;
 	
 	private final int TOUCHE_GAUCHE_INI = 37;
 	private final int TOUCHE_DROITE_INI = 39;
@@ -127,6 +130,11 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	public Scene(boolean isPartieNouveau) {
+		addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+			setAngleRoulette();
+			}
+		});
 
 		lireFond();
 
@@ -815,6 +823,31 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 	}
+	
+	
+	private void setAngleRoulette() {
+		addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+			System.out.println("wheel rotation:"+ arg0.getWheelRotation());
+			if(arg0.getWheelRotation()==-1) {
+				valeurAngleRoulette--;
+				setAngle(valeurAngleRoulette);
+				System.out.println(valeurAngleRoulette);
+			}else if(arg0.getWheelRotation()==1) {
+				valeurAngleRoulette++;
+				setAngle(valeurAngleRoulette);
+				System.out.println();
+				System.out.println(valeurAngleRoulette);
+			}
+			
+			
+			}
+		});
+	
+			repaint();
+	}
+	
+	
 	
 	// Miora
 	/**
