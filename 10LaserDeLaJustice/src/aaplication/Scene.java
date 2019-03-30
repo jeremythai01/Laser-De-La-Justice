@@ -902,7 +902,7 @@ public class Scene extends JPanel implements Runnable {
 		if (!isNouvelle) {
 			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
-			lectureFichierSauvegarde("sauvegarde.d3t");
+			//lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
 			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
 		} else {

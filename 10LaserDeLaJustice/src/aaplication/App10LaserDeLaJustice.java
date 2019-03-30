@@ -444,12 +444,6 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnEditeur.setBounds(1243, 61, 40, 38);
 		contentPane.add(btnEditeur);
 		
-	
-
-		Scene sceneFinaleFinale = new Scene(false);
-		sceneFinaleFinale.setBounds(30, 110, 1303, 724);
-		contentPane.add(sceneFinaleFinale);
-		
 		JSlider sliderAngleLaser = new JSlider();
 		sliderAngleLaser.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -467,6 +461,10 @@ public class App10LaserDeLaJustice extends JFrame {
 		sliderAngleLaser.setOrientation(SwingConstants.VERTICAL);
 		sliderAngleLaser.setBounds(1346, 361, 24, 473);
 		contentPane.add(sliderAngleLaser);
+		
+		Scene sceneFinaleFinale = new Scene(false);
+		sceneFinaleFinale.setBounds(30, 110, 1303, 724);
+		contentPane.add(sceneFinaleFinale);
 
 		listener = new ActionListener() {
 
@@ -606,6 +604,4 @@ public class App10LaserDeLaJustice extends JFrame {
 	public void isNouvelle(boolean reponse) {
 		isNouvelle = reponse;
 	}
-
-
 }
