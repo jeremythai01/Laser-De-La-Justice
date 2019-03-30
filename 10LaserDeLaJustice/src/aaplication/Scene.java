@@ -132,7 +132,7 @@ public class Scene extends JPanel implements Runnable {
 
 		angle = 30;
 
-		pistoletPrincipal = new Pistolet();
+		//pistoletPrincipal = new Pistolet();
 		
 		lectureFichierOption(); // on lit le fichier option pour initialiser les touches et la couleur
 		
@@ -735,7 +735,7 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (bonMiroirConvexe) {
-					System.out.println("je suis dans dragMiroirConvexe");
+					
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
 					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
@@ -920,7 +920,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	public void addScemeListener(SceneListener ecouteur) {
+	public void addSceneListener(SceneListener ecouteur) {
 		listeEcouteur.add(ecouteur);
 	}
 

@@ -70,15 +70,14 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private Mur mur;
 
-	
+
 	private double xSouris ;
-	
 	
 	/**
 	 * Create the panel.
 	 */
 	public SceneTest() {
-		
+
 		personnage1 = new Personnage(LARGEUR_DU_MONDE/2 -5, toucheGauche, toucheDroite,toucheTir,  "JOUEUR1");
 		listePerso.add(personnage1);
 		personnage2 = new Personnage(LARGEUR_DU_MONDE/2 + 5, toucheGauche, toucheDroite,toucheTir, "JOUEUR2");
@@ -89,45 +88,36 @@ public class SceneTest extends JPanel implements Runnable {
 		personnage3.setModeSouris(true);
 		angle = 90;
 		vitesse = new Vecteur(0.5 ,0);
+
 		
-		/*
 		mur = new Mur ( new Vecteur(0,5), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
 		listeMurs.add(mur);
 		mur = new Mur ( new Vecteur(0,10), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
 		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,15), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
-		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,20), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
-		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,25), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
-		listeMurs.add(mur);
-		 */
-		
+
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				//debut
-				
+
 				//fin
 			}
 		});
 
-	
-		
+
+
 
 		addMouseMotionListener(new MouseMotionAdapter() {
-			
+
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				//debut
 
-				 xSouris= e.getX()/modele.getPixelsParUniteX();
+				xSouris= e.getX()/modele.getPixelsParUniteX();
 				personnage3.setPosSouris(xSouris);
-				System.out.println("position du personnage = " +personnage3.getPositionX() );
-				System.out.println("position de la souris  = " + xSouris);
 				repaint();
 				//fin
-				
+
 			}
 		});
 
@@ -203,8 +193,8 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			laser.dessiner(g2d, mat, 0, 0);
 		}
-		
-		
+
+
 		for(Mur mur : listeMurs) {
 			mur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
@@ -217,12 +207,12 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-		/*
+		
 		for(Personnage perso : listePerso) {
 			perso.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 		}
 
-		 */
+		 
 		personnage3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 	}//fin paintComponent
 
@@ -231,12 +221,39 @@ public class SceneTest extends JPanel implements Runnable {
 	private void calculerUneIterationPhysique() {
 
 		for (int i = 0; i < listeBalles.size(); i++) {
+			Balle balle1 = listeBalles.get(i);
+			double n = 0;
+			if (balle1.getType().toString().equals("SMALL"))
+				System.out.println("balle rouge   = "+ balle1.isPremiereCollision() );
+
 			for (int j = i+1; j < listeBalles.size(); j++) {
-				Balle balle1 = listeBalles.get(i);
+				
 				Balle balle2 = listeBalles.get(j);
-				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+
+				if(intersection(balle1.getAireBalle(), balle2.getAireBalle())) 
+					n++;
+			}
+			if(n ==0) 
+				balle1.setPremiereCollision(false);
+		}
+
+		for (int i = 0; i < listeBalles.size(); i++) {
+
+			Balle balle1 = listeBalles.get(i);
+
+			if(balle1.isPremiereCollision() == false) {
+
+				for (int j = i+1; j < listeBalles.size(); j++) {
+
+					Balle balle2 = listeBalles.get(j);
+					if (balle2.isPremiereCollision() == false) 
+						MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+				}
 			}
 		}
+
+
+
 		collisionBalleMur(listeBalles, listeMurs);
 
 		for(Balle balle: listeBalles) {
@@ -246,11 +263,11 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
-		/*
+		
 		for(Personnage perso : listePerso) {
 			perso.bouge();
 		}
-		 */
+		 
 		personnage3.bouge();
 		tempsTotalEcoule += deltaT;
 	}
@@ -259,7 +276,7 @@ public class SceneTest extends JPanel implements Runnable {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
 	}
-
+	
 	public void demarrer() {
 		if (!enCoursAnimation) { 
 			Thread proc = new Thread(this);
@@ -289,12 +306,12 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private void collisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
 
-			for(Laser laser : listeLasers) {
-				if(listeBalles.size()>0) {
-					for(Balle balle : listeBalles ) {
-						if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
-							listeLasers.remove(laser);   
-							balle.shrink(listeBalles);
+		for(Laser laser : listeLasers) {
+			if(listeBalles.size()>0) {
+				for(Balle balle : listeBalles ) {
+					if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
+						listeLasers.remove(laser);   
+						balle.shrink(listeBalles);
 					}
 				}
 			}
@@ -324,6 +341,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	}
+	
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);

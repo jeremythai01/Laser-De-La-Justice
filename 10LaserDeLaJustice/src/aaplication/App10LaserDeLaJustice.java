@@ -91,7 +91,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		this.isNouvelle = isNouvelle;
 		System.out.println("isNouvelle app10" + isNouvelle);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1390, 1033);
+		setBounds(100, 100, 1389, 1058);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(Color.DARK_GRAY);
@@ -178,7 +178,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnMiroirPlan.setEnabled(false);
-		btnMiroirPlan.setBounds(1443, 107, 105, 23);
+		btnMiroirPlan.setBounds(1443, 107, 105, 26);
 		contentPane.add(btnMiroirPlan);
 
 		btnMiroirConvexe = new JButton("miroir Convexe");
@@ -189,7 +189,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnMiroirConvexe.setEnabled(false);
-		btnMiroirConvexe.setBounds(1443, 175, 105, 23);
+		btnMiroirConvexe.setBounds(1463, 171, 69, 47);
 		contentPane.add(btnMiroirConvexe);
 
 		btnMiroirConcave = new JButton("miroir Concave");
@@ -200,7 +200,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnMiroirConcave.setEnabled(false);
-		btnMiroirConcave.setBounds(1443, 255, 105, 23);
+		btnMiroirConcave.setBounds(1463, 246, 69, 47);
 		contentPane.add(btnMiroirConcave);
 
 		btnTrouNoir = new JButton("Trou Noir");
@@ -211,7 +211,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnTrouNoir.setEnabled(false);
-		btnTrouNoir.setBounds(1443, 335, 105, 23);
+		btnTrouNoir.setBounds(1479, 326, 53, 47);
 		contentPane.add(btnTrouNoir);
 
 		btnBlocDeau = new JButton("bloc D'eau ");
@@ -222,7 +222,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnBlocDeau.setEnabled(false);
-		btnBlocDeau.setBounds(1443, 418, 105, 23);
+		btnBlocDeau.setBounds(1465, 409, 67, 47);
 		contentPane.add(btnBlocDeau);
 
 		btnGrosseBalle = new JButton("Grosse Balle");
@@ -232,7 +232,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnGrosseBalle.setEnabled(false);
-		btnGrosseBalle.setBounds(1443, 509, 105, 23);
+		btnGrosseBalle.setBounds(1481, 500, 53, 47);
 		contentPane.add(btnGrosseBalle);
 
 		btnMediumBalle = new JButton("Medium Balle");
@@ -243,7 +243,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnMediumBalle.setEnabled(false);
-		btnMediumBalle.setBounds(1443, 600, 105, 23);
+		btnMediumBalle.setBounds(1481, 604, 51, 47);
 		contentPane.add(btnMediumBalle);
 
 		btnPetiteBalle = new JButton("petite balle ");
@@ -254,7 +254,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		});
 		btnPetiteBalle.setEnabled(false);
-		btnPetiteBalle.setBounds(1443, 702, 105, 23);
+		btnPetiteBalle.setBounds(1481, 706, 53, 47);
 		contentPane.add(btnPetiteBalle);
 
 		btnPrisme = new JButton("prisme");
@@ -333,12 +333,12 @@ public class App10LaserDeLaJustice extends JFrame {
 
 		JLabel lblMediumBalle = new JLabel("Medium Balle");
 		lblMediumBalle.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblMediumBalle.setBounds(1581, 604, 117, 14);
+		lblMediumBalle.setBounds(1569, 617, 117, 14);
 		contentPane.add(lblMediumBalle);
 
 		JLabel lblPetiteBalle = new JLabel("Petite balle");
 		lblPetiteBalle.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblPetiteBalle.setBounds(1581, 706, 117, 14);
+		lblPetiteBalle.setBounds(1581, 719, 117, 14);
 		contentPane.add(lblPetiteBalle);
 
 		JLabel lblPrisme = new JLabel("Prisme");
@@ -462,9 +462,16 @@ public class App10LaserDeLaJustice extends JFrame {
 		sliderAngleLaser.setBounds(1346, 361, 24, 473);
 		contentPane.add(sliderAngleLaser);
 		
-		Scene sceneFinaleFinale = new Scene(false);
-		sceneFinaleFinale.setBounds(30, 110, 1303, 724);
-		contentPane.add(sceneFinaleFinale);
+		JButton btnDemarrage = new JButton("demarrage\r\n");
+		btnDemarrage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FenetreDemarrage demarrage = new FenetreDemarrage();
+				demarrage.setVisible(true);
+				
+			}
+		});
+		btnDemarrage.setBounds(0, 0, 89, 23);
+		contentPane.add(btnDemarrage);
 
 		listener = new ActionListener() {
 
@@ -491,6 +498,21 @@ public class App10LaserDeLaJustice extends JFrame {
 		};
 
 		tempsJeu = new Timer(1000, listener);
+	
+	
+	associerBoutonAvecImage(btnBlocDeau, "Bloc.JPG");
+	associerBoutonAvecImage(btnGrosseBalle, "GrBalle.JPG");
+	associerBoutonAvecImage(btnMediumBalle, "MedBalle.JPG");
+	associerBoutonAvecImage(btnMiroirConcave, "convex.JPG");
+	associerBoutonAvecImage(btnMiroirConvexe, "Concave.JPG");
+	associerBoutonAvecImage(btnPetiteBalle, "PetBalle.JPG");
+	associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
+	associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
+	
+	Scene sceneFinaleFinale = new Scene(false);
+	sceneFinaleFinale.setBounds(30, 110, 1303, 724);
+	contentPane.add(sceneFinaleFinale);
+	
 	}
 
 	// Par Miora

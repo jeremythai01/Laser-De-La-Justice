@@ -9,6 +9,12 @@ import java.awt.geom.Rectangle2D;
 import geometrie.Vecteur;
 import interfaces.Dessinable;
 
+/**
+ * Classe qui s'occupe de créer  un mur en mémorisant sa position et ses dimensions. 
+ * @author Jeremy Thai
+ */
+
+
 public class Mur implements Dessinable {
 
 

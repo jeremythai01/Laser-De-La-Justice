@@ -116,7 +116,7 @@ public class Laser implements Dessinable{
 	private void changerCouleurPerso(Graphics2D g2d) {
 		if(!isCouleurPerso) {
 			randomColor(g2d);
-			System.out.println("on ne change pas la couleur");
+	//		System.out.println("on ne change pas la couleur");
 		}
 		else {
 			g2d.setColor(couleurLaser);
