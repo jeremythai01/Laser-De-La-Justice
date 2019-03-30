@@ -206,6 +206,9 @@ public class MoteurPhysique implements Serializable {
 	 */
 	public static void detectionCollisionBalles(Balle balle1, Balle balle2) {
 
+
+		
+		
 		double rayonA = balle1.getDiametre()/2 ;
 		
 		Vecteur vA = balle1.getVitesse();

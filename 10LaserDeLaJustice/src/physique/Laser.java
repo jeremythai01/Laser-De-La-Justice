@@ -290,23 +290,4 @@ public class Laser implements Dessinable{
 	}
 
 
-	public static void voirLimiteLasers(ArrayList<Laser> listeLasers, double largeurDuMonde, double hauteurDuMonde) {
-		for(Laser laser : listeLasers) { 
-			
-			if(laser.getLigneFinY() <= 0 ) 
-				listeLasers.remove(laser);
-			
-			if(laser.getLigneDebutX() >= hauteurDuMonde) 
-				listeLasers.remove(laser);
-			
-			
-			if(laser.getLigneDebutX() <= 0) 
-				listeLasers.remove(laser);
-			
-			if(laser.getLigneDebutX() >= largeurDuMonde) 
-				listeLasers.remove(laser);
-			
-		}
-	}
-
-	}
+}

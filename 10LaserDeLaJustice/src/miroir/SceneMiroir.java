@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -157,6 +158,13 @@ public class SceneMiroir extends JPanel implements Runnable {
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			//	g2d.setColor(Color.yellow);
 		}
+		
+		Rectangle2D.Double ligne = new Rectangle2D.Double(getWidth()/2, 0, 0 , getHeight() );
+		//System.out.println("position de la souris  = " + xSouris);
+	g2d.setColor(Color.black);
+	g2d.draw(ligne);
+	
+		
 
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 

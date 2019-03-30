@@ -3,6 +3,7 @@ package personnage;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -14,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import geometrie.Vecteur;
+import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
 
 /**
@@ -41,7 +43,7 @@ public class Personnage implements Dessinable, Serializable {
 	private Type type;
 	private boolean modeSouris = false;
 	private double posSouris;
-
+	private VecteurGraphique flecheAngle ;
 
 	/**
 	 * Classe enumeration des types de joueurs
@@ -88,7 +90,7 @@ public class Personnage implements Dessinable, Serializable {
 		this.positionIni = position;
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
-		this.toucheTir = toucheTir;
+		this.toucheTir = tir;
 	}
 	/**
 	 Constructeur 2 de la classe.
@@ -145,6 +147,9 @@ public class Personnage implements Dessinable, Serializable {
 		matLocale.translate( (positionX) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
 		g2d.drawImage(imgPerso, matLocale, null); 
 
+	
+		flecheAngle = new VecteurGraphique(2.0,2.0,positionX, hauteurScene-LONGUEUR_PERSO/2);
+		flecheAngle.dessiner(g2d, mat, hauteurScene, largeurScene);
 
 	}
 	/**
@@ -184,6 +189,13 @@ public class Personnage implements Dessinable, Serializable {
 		update();
 	}
 
+	public void relacheTouche() {
+
+		bougePas = false;
+		update();
+	}
+
+
 	//Jeremy Thai
 	/**
 	 * Méthode qui permet de modifier la position du personnage selon la vitesse en x 
@@ -198,9 +210,18 @@ public class Personnage implements Dessinable, Serializable {
 	 * Méthode qui permet de modifier la vitesse du personnage selon la touche enfoncee
 	 */
 	public void update() {
-		
+
 		if(modeSouris) {
-			if(posSouris < positionX) {
+			if(bougePas) {
+				vitesseX = 0;
+				return;
+			}
+			
+			if(Math.abs(posSouris-positionX) < 0.1 ) {
+				vitesseX = 0;
+				return;
+			}
+			if(posSouris < positionX ){
 				vitesseX = -VITESSE;
 				return;
 			}
@@ -208,13 +229,9 @@ public class Personnage implements Dessinable, Serializable {
 				vitesseX = VITESSE;
 				return;
 			}
-			if(posSouris == positionX+ LARGEUR_PERSO /2 ) {
-				vitesseX = 0;
-				return;
-			}
+			
 		} else {
 
-			vitesseX = 0;
 			if(gauche) 
 				vitesseX = -VITESSE;
 			if(droite) 

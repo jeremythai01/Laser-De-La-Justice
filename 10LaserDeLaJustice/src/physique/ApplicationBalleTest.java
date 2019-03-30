@@ -43,7 +43,7 @@ public class ApplicationBalleTest extends JFrame {
 	public ApplicationBalleTest() {
 		setTitle("Test de collision entre balles");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 989, 808);
+		setBounds(100, 100, 996, 506);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -56,7 +56,7 @@ public class ApplicationBalleTest extends JFrame {
 				scene.demarrer();
 			}
 		});
-		btnStart.setBounds(10, 735, 89, 23);
+		btnStart.setBounds(52, 433, 89, 23);
 		contentPane.add(btnStart);
 		
 		JButton btnStop = new JButton("stop");
@@ -65,11 +65,11 @@ public class ApplicationBalleTest extends JFrame {
 				scene.arreter();
 			}
 		});
-		btnStop.setBounds(109, 735, 89, 23);
+		btnStop.setBounds(151, 433, 89, 23);
 		contentPane.add(btnStop);
 		
 		scene = new SceneTest();
-		scene.setBounds(10, 11, 953, 713);
+		scene.setBounds(32, 11, 869, 411);
 		contentPane.add(scene);
 		
 	

@@ -26,9 +26,10 @@ public class Balle implements Dessinable, Serializable {
 	private Vecteur forceGravi;
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
+	private boolean premiereCollision = true;
 
-	
-	
+
+
 	/**
 	 * Classe enumeration des types de balle
 	 * @author Jeremy Thai
@@ -52,7 +53,7 @@ public class Balle implements Dessinable, Serializable {
 		setVitesse( vitesse );
 		setAccel( new Vecteur(0,9.8) );
 		forceGravi = mt.forceGravi(masse, accel);
-		
+
 		switch(size) {
 		case "SMALL":
 			type = Type.SMALL;
@@ -243,18 +244,18 @@ public class Balle implements Dessinable, Serializable {
 				vitesse.setY(-vInitY);
 				toucheSolPremiereFois = false;
 			} else {
-			
+
 				vitesse.setY(-vInitY);
 			}
 		}
 
 		if(position.getX()+diametre >= width) // touche le mur droite 
 			if(vitesse.getX() >0 )
-			vitesse.setX(-vitesse.getX());
+				vitesse.setX(-vitesse.getX());
 
 		if(position.getX() <= 0) // touche le mur gauche 
 			if(vitesse.getX() < 0 )
-			vitesse.setX(-vitesse.getX());
+				vitesse.setX(-vitesse.getX());
 
 
 	}
@@ -272,25 +273,72 @@ public class Balle implements Dessinable, Serializable {
 
 		case LARGE:
 			nouvBalle1 = new Balle(position, vitesse, "MEDIUM");
-			nouvBalle1.getPosition().setX(position.getX()+1);
-			liste.add(nouvBalle1);
 			nouvBalle2 = new Balle(position, vitesse, "MEDIUM");
-			nouvBalle2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
-			nouvBalle2.getPosition().setX(position.getX()-1);
-			liste.add(nouvBalle2);
-			liste.remove(this);
-			break;
-		case MEDIUM:
-			nouvBalle1 = new Balle(position, vitesse, "SMALL");
-			nouvBalle1.getPosition().setX(position.getX()+1);
-			liste.add(nouvBalle1);
-			nouvBalle2 = new Balle(position, vitesse, "SMALL");
-			nouvBalle2.setVitesse(new Vecteur(-(vitesse.getX()),vitesse.getY())); 
-			nouvBalle2.getPosition().setX(position.getX()-1);
-			liste.add(nouvBalle2);
-			liste.remove(this);
-			break;
+			if(vitesse.getX() < 0) {
+				
+				//gauche
+				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
+				nouvBalle1.getPosition().setX(position.getX()-1.000005);
+				liste.add(nouvBalle1);
+				
+				//droite
+				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
+				nouvBalle2.getPosition().setX(position.getX()+1.000005);
+				liste.add(nouvBalle2);
+			}
 
+			if(vitesse.getX() > 0) {
+				//gauche
+				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
+				nouvBalle1.getPosition().setX(position.getX()-1.000005);
+				liste.add(nouvBalle1);
+				
+				//droite
+				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
+				nouvBalle2.getPosition().setX(position.getX()+1.000005);
+				liste.add(nouvBalle2);
+			}
+		
+			
+				
+			
+			liste.remove(this);
+
+			break;
+			
+		case MEDIUM:
+			
+			nouvBalle1 = new Balle(position, vitesse, "SMALL");
+			nouvBalle2 = new Balle(position, vitesse, "SMALL");
+			
+			if(vitesse.getX() < 0) {
+				//gauche
+				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
+				nouvBalle1.getPosition().setX(position.getX()-0.7);
+				liste.add(nouvBalle1);
+
+				
+				//droite
+				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
+				nouvBalle2.getPosition().setX(position.getX()+0.7);
+				liste.add(nouvBalle2);
+			}
+
+			if(vitesse.getX() > 0) {
+				
+				//gauche
+				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
+				nouvBalle1.getPosition().setX(position.getX()-0.7);
+				liste.add(nouvBalle1);
+				//droite
+				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
+				nouvBalle2.getPosition().setX(position.getX()+0.7);
+				liste.add(nouvBalle2);
+			}
+
+			liste.remove(this);
+			break;
+			
 		case SMALL:
 			liste.remove(this);
 			break;
@@ -307,6 +355,23 @@ public class Balle implements Dessinable, Serializable {
 
 	}
 
+
+
+	public boolean isPremiereCollision() {
+		return premiereCollision;
+	}
+
+
+
+	public void setPremiereCollision(boolean premiereCollision) {
+		this.premiereCollision = premiereCollision;
+	}
+
+	
+	
+	
+	
+	
 
 }//fin classe
 
