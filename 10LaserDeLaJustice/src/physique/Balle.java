@@ -381,7 +381,7 @@ public class Balle implements Dessinable, Serializable {
 
 	/**
 	 * merhode qui modifie  la valeur booleenne de la premiere collision
-	 * @param premiereCollision variable d'une balle qui verifie si celle-ci est entré en collision avec une autre balle.
+	 * @param premiereCollision nouvelle valeur boolenne  passée en parametres.
 	 */
 	public void setPremiereCollision(boolean premiereCollision) {
 		this.premiereCollision = premiereCollision;

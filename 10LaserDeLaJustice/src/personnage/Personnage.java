@@ -353,25 +353,50 @@ public class Personnage implements Dessinable, Serializable {
 
 
 	//Jeremy Thai
+	/**
+	 * Methode qui retourne la valeur booleenne du mode de souris 
+	 * @return modeSouris variable qui montre si le mode souris est activé ou non.
+	 */
 	public boolean isModeSouris() {return modeSouris;}
 
 	//Jeremy Thai
+	/**
+	 * Methode qui modifie  la valeur booleenne du mode de souris 
+	 * @param modeSouris nouvelle valeur du mode de la souris passée en parametres
+	 */
 	public void setModeSouris(boolean modeSouris) {
 		this.modeSouris = modeSouris;
 	}
+	
+	/**
+	 * Methode qui retourne la position x  courante de la souris 
+	 * @return posSouris position courante de la souris en x
+	 */
 	//Jeremy Thai
 	public double getPosSouris() {return posSouris;}
 
+	/**
+	 * Methode qui modifie  la position x  courante de la souris 
+	 * @param posSouris nouvelle position  de la souris en x passée en parametres
+	 */
 	//Jeremy Thai
 	public void setPosSouris(double posSouris) {
 		this.posSouris = posSouris;
 	}
 
-
+/**
+ * Methode qui retourne le temps d'invicibilite du personnage pendant qu'il  est mort 
+ * @return tempsMort temps d'invicibilite du personnage pendant qu'il est mort 
+ */
+	//Jeremy Thai
 	public double getTempsMort() {
 		return tempsMort;
 	}
-
+	/**
+	 * Methode qui modifie le temps d'invicibilite du personnage pendant qu'il  est mort 
+	 * @param tempsMort temps d'invicibilite du personnage pendant qu'il est mort 
+	 */
+		//Jeremy Thai
 	public void setTempsMort(double tempsMort) {
 		this.tempsMort = tempsMort;
 	}
