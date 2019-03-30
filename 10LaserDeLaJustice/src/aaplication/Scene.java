@@ -68,6 +68,9 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
+	
+	private final int TOUCHE_GAUCHE_INI = 37;
+	private final int TOUCHE_DROITE_INI = 39;
 
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
@@ -115,6 +118,8 @@ public class Scene extends JPanel implements Runnable {
 
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
+	private int toucheTir = 32;
+
 	// Par Jeremy
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
@@ -128,10 +133,12 @@ public class Scene extends JPanel implements Runnable {
 		angle = 30;
 
 		pistoletPrincipal = new Pistolet();
-
+		
+		lectureFichierOption(); // on lit le fichier option pour initialiser les touches et la couleur
+		
 		nouvellePartie(isPartieNouveau);
 
-		lectureFichierOption();
+		
 		vitesse = new Vecteur(3, 0);
 
 		addMouseListener(new MouseAdapter() {
@@ -870,6 +877,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
+			System.out.println("touche gauche lecture fichier" + toucheGauche );
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -894,13 +902,14 @@ public class Scene extends JPanel implements Runnable {
 		if (!isNouvelle) {
 			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
-			// lectureFichierSauvegarde("sauvegarde.d3t");
+			lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
-			principal = new Personnage(positionPerso, toucheGauche, toucheDroite);
+			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
 		} else {
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
-			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite);
+			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
+			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
 		}
 	}
 

@@ -62,7 +62,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
-	private static boolean isPartieNouv = true;
+	private static boolean  isNouvelle = true;
 
 	// Par Arezki 
 	/**
@@ -73,7 +73,7 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void run() {
 				try {
 					App10LaserDeLaJustice frame;
-					frame = new App10LaserDeLaJustice(isPartieNouv);
+					frame = new App10LaserDeLaJustice(isNouvelle);
 					frame.setVisible(true);
 					frame.sceneFinale.requestFocusInWindow();
 				} catch (Exception e) {
@@ -87,7 +87,9 @@ public class App10LaserDeLaJustice extends JFrame {
 	 * Creation de la fenêtre
 	 */
 	// Par Arezki
-	public App10LaserDeLaJustice(boolean isPartieNouv) {
+	public App10LaserDeLaJustice(boolean isNouvelle) {
+		this.isNouvelle = isNouvelle;
+		System.out.println("isNouvelle app10" + isNouvelle);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1390, 1033);
 		contentPane = new JPanel();
@@ -386,14 +388,14 @@ public class App10LaserDeLaJustice extends JFrame {
 		contentPane.add(lblLesSorties);
 
 
-		if(isPartieNouv) {
+		if(isNouvelle) {
 			System.out.println("sc'est une nouvelle partie app10");
-			sceneFinale = new Scene(isPartieNouv);
+			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}else {
-			System.out.println("c'est une npartie charge app10");
-			sceneFinale = new Scene(isPartieNouv);
+			System.out.println("c'est une partie charge app10" + isNouvelle);
+			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}
@@ -576,16 +578,6 @@ public class App10LaserDeLaJustice extends JFrame {
 		imgRedim.flush();
 	}
 
-	/**
-	 * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
-	 * sceneFinale
-	 * @param reponse
-	 */
-	public void setPartieNouv(boolean reponse) {
-		this.isPartieNouv = reponse;
-	}
-
-
 	// Miora
 	/**
 	 * Cette methode permet de savoir si les options ont été modifié
@@ -603,4 +595,17 @@ public class App10LaserDeLaJustice extends JFrame {
 	public void setNouveauOption(boolean isNouveauOption) {
 		this.isNouveauOption = isNouveauOption;
 	}
+
+	
+	
+	/**
+	 * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
+	 * sceneFinale
+	 * @param reponse : oui ou non s'il s'agit d'une nouvelle scene
+	 */
+	public void isNouvelle(boolean reponse) {
+		isNouvelle = reponse;
+	}
+
+
 }

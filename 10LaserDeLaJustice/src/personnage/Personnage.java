@@ -3,6 +3,7 @@ package personnage;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -14,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import geometrie.Vecteur;
+import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
 
 /**
@@ -31,17 +33,25 @@ public class Personnage implements Dessinable, Serializable {
 	private double HAUTEUR_COMPO;
 	private double positionX ;
 	private boolean premiereFois = true;
-	private int toucheGauche = 37, toucheDroite = 39;
-
-
+	private int toucheGauche = 37, toucheDroite = 39, toucheTir = 32;
 	private double vitesseX =0;
 	private boolean gauche;
 	private boolean droite;
 	private boolean bougePas;
-
 	private static final double VITESSE = 0.1;
-
 	private double tempsMort = 0;
+	private Type type;
+	private boolean modeSouris = false;
+	private double posSouris;
+	private VecteurGraphique flecheAngle ;
+
+	/**
+	 * Classe enumeration des types de joueurs
+	 * @author Jeremy Thai
+	 */
+	private enum Type {
+		JOUEUR1, JOUEUR2;
+	}
 
 
 
@@ -51,8 +61,9 @@ public class Personnage implements Dessinable, Serializable {
 	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage va aller a droite
 	 */
 	//Miora
-	public Personnage(double position, int gauche, int droite) {
-		
+	public Personnage(double position, int gauche, int droite, int tir, String type) {
+
+
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
@@ -63,9 +74,23 @@ public class Personnage implements Dessinable, Serializable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
+
+		switch(type) {
+
+		case "JOUEUR1" : 
+			this.type = Type.JOUEUR1;
+			break;
+
+		case "JOUEUR2" : 
+			this.type = Type.JOUEUR2;
+			break;
+		}
+
+
 		this.positionIni = position;
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
+		this.toucheTir = tir;
 	}
 	/**
 	 Constructeur 2 de la classe.
@@ -122,6 +147,9 @@ public class Personnage implements Dessinable, Serializable {
 		matLocale.translate( (positionX) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
 		g2d.drawImage(imgPerso, matLocale, null); 
 
+	
+		flecheAngle = new VecteurGraphique(2.0,2.0,positionX, hauteurScene-LONGUEUR_PERSO/2);
+		flecheAngle.dessiner(g2d, mat, hauteurScene, largeurScene);
 
 	}
 	/**
@@ -155,11 +183,18 @@ public class Personnage implements Dessinable, Serializable {
 		if(code == toucheDroite) {
 			droite = false;
 		}
-		if(code == KeyEvent.VK_SPACE) {
+		if(code == toucheTir) {
 			bougePas = false;
 		}
 		update();
 	}
+
+	public void relacheTouche() {
+
+		bougePas = false;
+		update();
+	}
+
 
 	//Jeremy Thai
 	/**
@@ -167,6 +202,7 @@ public class Personnage implements Dessinable, Serializable {
 	 */
 	public void bouge() { 
 		positionX += vitesseX;
+		update();
 	}
 
 	//Jeremy Thai
@@ -174,14 +210,35 @@ public class Personnage implements Dessinable, Serializable {
 	 * Méthode qui permet de modifier la vitesse du personnage selon la touche enfoncee
 	 */
 	public void update() {
-		vitesseX = 0;
-		if(gauche) 
-			vitesseX = -VITESSE;
-		if(droite) 
-			vitesseX = VITESSE;
-		if(bougePas) 
-			vitesseX = 0;
 
+		if(modeSouris) {
+			if(bougePas) {
+				vitesseX = 0;
+				return;
+			}
+			
+			if(Math.abs(posSouris-positionX) < 0.1 ) {
+				vitesseX = 0;
+				return;
+			}
+			if(posSouris < positionX ){
+				vitesseX = -VITESSE;
+				return;
+			}
+			if(posSouris > positionX) {
+				vitesseX = VITESSE;
+				return;
+			}
+			
+		} else {
+
+			if(gauche) 
+				vitesseX = -VITESSE;
+			if(droite) 
+				vitesseX = VITESSE;
+			if(bougePas) 
+				vitesseX = 0;
+		}
 	}
 
 	//Jeremy Thai
@@ -233,7 +290,7 @@ public class Personnage implements Dessinable, Serializable {
 	public double getLARGEUR_PERSO() {
 		return LARGEUR_PERSO;
 	}
-	
+
 	/**
 	 * Methode permettant de savoir la touche utilise pour bouger le personnage a gauche
 	 * @return la latouche pour bouger le personnage a gauche
@@ -267,24 +324,66 @@ public class Personnage implements Dessinable, Serializable {
 		this.toucheDroite = toucheDroite;
 	}
 
-	
+
 	/**
 	 * Cree et retourne une aire en forme de rectangle du personnage 
 	 * @return aire du personnage 
 	 */
 	//Jeremy Thai
 	public Area airePersonnage() {
-	return new Area( new Rectangle2D.Double(positionX,
-			HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
+		return new Area( new Rectangle2D.Double(positionX,
+				HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
 	}
-	
+
+
+
+
+	/**
+	 * Methode permettant de savoir la touche utilise pour tirer un laser 
+	 * @return toucheTir touche pour tirer un laser
+	 */
+	//Jeremy Thai
+	public int getToucheTir() {return toucheTir; }
+
+	/**
+	 * Methode pour changer la touche utilise pour tirer un laser
+	 * @param touchetir touche pour tirer un laser
+	 */
+	//Jeremy Thai
+	public void setToucheTir(int toucheTir) {
+		this.toucheTir = toucheTir;
+	}
+
+
+	//Jeremy Thai
+	public boolean isModeSouris() {return modeSouris;}
+
+	//Jeremy Thai
+	public void setModeSouris(boolean modeSouris) {
+		this.modeSouris = modeSouris;
+	}
+	//Jeremy Thai
+	public double getPosSouris() {return posSouris;}
+
+	//Jeremy Thai
+	public void setPosSouris(double posSouris) {
+		this.posSouris = posSouris;
+	}
+
+
 	public double getTempsMort() {
 		return tempsMort;
 	}
+
 	public void setTempsMort(double tempsMort) {
 		this.tempsMort = tempsMort;
 	}
-	
-	
-	
+
+
+
+
+
+
+
+
 }

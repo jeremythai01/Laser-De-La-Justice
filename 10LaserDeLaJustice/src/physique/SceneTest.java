@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -23,6 +25,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
 
 
 
@@ -36,7 +41,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 30;
 	//private double deltaT = 0.006;
-	private double deltaT = 0.04;
+	private double deltaT = 0.01;
 	private  double LARGEUR_DU_MONDE = 30; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
@@ -48,29 +53,44 @@ public class SceneTest extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 	private Vecteur vitesse;
-	private Personnage character;
+	private Personnage personnage1;
+	private Personnage personnage2;
+	private Personnage personnage3;
 
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
 	private int toucheGauche = 37;
 	private int toucheDroite = 39;
+	private int toucheTir = 32;
 
 	private ArrayList<Mur> listeMurs = new ArrayList<Mur>();
 
+	private ArrayList<Personnage> listePerso = new ArrayList<Personnage>();
+
 	private Mur mur;
 
-
+	
+	private double xSouris ;
+	
+	
 	/**
 	 * Create the panel.
 	 */
 	public SceneTest() {
+		
+		personnage1 = new Personnage(LARGEUR_DU_MONDE/2 -5, toucheGauche, toucheDroite,toucheTir,  "JOUEUR1");
+		listePerso.add(personnage1);
+		personnage2 = new Personnage(LARGEUR_DU_MONDE/2 + 5, toucheGauche, toucheDroite,toucheTir, "JOUEUR2");
+		listePerso.add(personnage2);
 
-		character = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite);
 
+		personnage3 = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite,toucheTir,  "JOUEUR1");
+		personnage3.setModeSouris(true);
 		angle = 90;
 		vitesse = new Vecteur(0.5 ,0);
-
+		
+		/*
 		mur = new Mur ( new Vecteur(0,5), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
 		listeMurs.add(mur);
 		mur = new Mur ( new Vecteur(0,10), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
@@ -81,6 +101,40 @@ public class SceneTest extends JPanel implements Runnable {
 		listeMurs.add(mur);
 		mur = new Mur ( new Vecteur(0,25), LARGEUR_DU_MONDE, 0.5 , 0, "HORIZONTAL");
 		listeMurs.add(mur);
+		 */
+		
+		addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+				//debut
+				
+				//fin
+			}
+		});
+
+	
+		
+
+		addMouseMotionListener(new MouseMotionAdapter() {
+			
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				//debut
+
+				 xSouris= e.getX()/modele.getPixelsParUniteX();
+				personnage3.setPosSouris(xSouris);
+				System.out.println("position du personnage = " +personnage3.getPositionX() );
+				System.out.println("position de la souris  = " + xSouris);
+				repaint();
+				//fin
+				
+			}
+		});
+
+
+
+
+
 
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -88,8 +142,21 @@ public class SceneTest extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				Balle balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
-				listeBalles.add(balle);
+
+				if(!enCoursAnimation) {
+					Balle balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
+					listeBalles.add(balle);
+				}
+
+				shootEtAddLaser(e, personnage3);
+
+				repaint();
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+
+				personnage3.relacheTouche();
+
 				repaint();
 			}
 		});
@@ -98,13 +165,18 @@ public class SceneTest extends JPanel implements Runnable {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				character.deplacerLePersoSelonTouche( e );
-				shootEtAddLaser(e);
+				for(Personnage perso : listePerso) {
+					perso.deplacerLePersoSelonTouche( e );
+					shootEtAddLaser(e, perso);
+				}
 				repaint();
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {
-				character.relacheTouche(e);
+				for(Personnage perso : listePerso) {
+					perso.relacheTouche(e);
+
+				}
 				repaint();
 			}
 		});
@@ -122,13 +194,17 @@ public class SceneTest extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 
-		Laser.voirLimiteLasers(listeLasers, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
-		
+		for(Laser laser : listeLasers) { 
+
+			if(laser.getLigneFinY() <= 0 ) 
+				listeLasers.remove(laser);
+		}
+
 		for(Laser laser : listeLasers) {
 			laser.dessiner(g2d, mat, 0, 0);
 		}
-
-
+		
+		
 		for(Mur mur : listeMurs) {
 			mur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
@@ -141,16 +217,14 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
+		/*
+		for(Personnage perso : listePerso) {
+			perso.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
+		}
 
-		character.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
-
-
-
-
+		 */
+		personnage3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE );
 	}//fin paintComponent
-
-
-
 
 
 
@@ -165,8 +239,6 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 		collisionBalleMur(listeBalles, listeMurs);
 
-
-
 		for(Balle balle: listeBalles) {
 			balle.unPasVerlet(deltaT);
 		}
@@ -174,9 +246,12 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
-
-		character.bouge();
-
+		/*
+		for(Personnage perso : listePerso) {
+			perso.bouge();
+		}
+		 */
+		personnage3.bouge();
 		tempsTotalEcoule += deltaT;
 	}
 
@@ -214,15 +289,12 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private void collisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
 
-		if(listeLasers.size()>0) {
 			for(Laser laser : listeLasers) {
 				if(listeBalles.size()>0) {
 					for(Balle balle : listeBalles ) {
 						if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
 							listeLasers.remove(laser);   
 							balle.shrink(listeBalles);
-						}	
-
 					}
 				}
 			}
@@ -262,22 +334,30 @@ public class SceneTest extends JPanel implements Runnable {
 	}
 
 
-	private void shootEtAddLaser(KeyEvent e) {
+	private void shootEtAddLaser(KeyEvent e, Personnage perso) {
 		if(enCoursAnimation == true) {
 			int code = e.getKeyCode();
-			if(code == KeyEvent.VK_SPACE) {
-				character.neBougePas();
+			if(code == perso.getToucheTir()) {
+				perso.neBougePas();
 				listeLasers.add(
 						new Laser(new Vecteur(
-								character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
-				repaint();
-
-
-
+								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
 			}
 		}
 
 	}
 
+	private void shootEtAddLaser(MouseEvent e, Personnage perso) {
+		if(perso.isModeSouris()) {
+			if(enCoursAnimation == true) {
+				perso.neBougePas();
+				listeLasers.add(
+						new Laser(new Vecteur(
+								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
+			}
+		}
+	}
 }
+
+
 
