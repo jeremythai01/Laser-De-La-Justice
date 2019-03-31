@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -78,6 +79,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private Ordinateur ordi;
 	private OrdinateurNiveau2 ordi2;
 	private OrdinateurNiveau3 ordi3;
+	private boolean enMouvement=false;
 	/**
 	 * Create the panel.
 	 */
@@ -119,17 +121,19 @@ public class SceneTestPls extends JPanel implements Runnable {
 						public void mouseDragged(MouseEvent f) {
 							double fX=f.getX()/modele.getPixelsParUniteX();
 							//double fY= f.getY()/modele.getPixelsParUniteY();
-							if(fX>eXR&&angle<175) {
+							if(fX>eXR&&angle>5) {
 								System.out.println("je vais vers la droite");
 								double distance=fX-eXR;
-								angle=angle+(int)distance;
+								angle=angle-(int)distance;
 								System.out.println("angle33 "+ angle);
 							}
-							if(fX<eXR&&angle>5) {
+							if(fX<eXR&&angle<175) {
 								double distance=eXR-fX;
-								angle=angle-(int)distance;
+								angle=angle+(int)distance;
 								System.out.println("angle "+ angle);
 							}
+							enMouvement=true;
+							repaint();
 						}
 					});
 				}
@@ -236,11 +240,23 @@ public class SceneTestPls extends JPanel implements Runnable {
 		//ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		ordi3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
+		
+		if(enMouvement) {
+			//dessinerTracerAngle(g2d);
+			g2d.setColor(Color.RED);
+			Path2D.Double trace= new Path2D.Double();
+			trace.moveTo(character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO());
+			trace.lineTo(character.getPositionX()+character.getLARGEUR_PERSO()/2+2*Math.cos(Math.toRadians(angle)), HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()-2*Math.sin(Math.toRadians(angle)));
+			g2d.draw(mat.createTransformedShape(trace));
+		}
+		
 	}//fin paintComponent
 
 
-
-
+	/*private void dessinerTracerAngle(Graphics2D g) {
+		g.draw(arg0);
+	}*/
+	
 	private void calculerUneIterationPhysique() {
 
 		
