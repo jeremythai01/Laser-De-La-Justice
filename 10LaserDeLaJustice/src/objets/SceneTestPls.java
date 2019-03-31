@@ -10,6 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import javax.swing.JPanel;
 
@@ -87,7 +88,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3= new OrdinateurNiveau3(new Vecteur(40,44));
 		ordi3.ajouterListesObstacles(listeBalles);
 		
-		angle = 60   ;
+		angle = 60;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -118,8 +119,16 @@ public class SceneTestPls extends JPanel implements Runnable {
 						public void mouseDragged(MouseEvent f) {
 							double fX=f.getX()/modele.getPixelsParUniteX();
 							//double fY= f.getY()/modele.getPixelsParUniteY();
-							if(fX>eXR) {
+							if(fX>eXR&&angle<175) {
 								System.out.println("je vais vers la droite");
+								double distance=fX-eXR;
+								angle=angle+(int)distance;
+								System.out.println("angle33 "+ angle);
+							}
+							if(fX<eXR&&angle>5) {
+								double distance=eXR-fX;
+								angle=angle-(int)distance;
+								System.out.println("angle "+ angle);
 							}
 						}
 					});
@@ -171,7 +180,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 
 
-
+		try {
+			
+		
 		for(Laser laser : listeLasers) { 
 
 			if(laser.getLigneFinY() <= 0 ) {
@@ -179,6 +190,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 			}
 			g2d.setStroke( new BasicStroke(3));
 			laser.dessiner(g2d, mat, 0, 0);
+		}
+		
+		}catch(ConcurrentModificationException e) {
+			System.out.println("le laser nexiste pas");
 		}
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
 		checkCollisionTrouLaserPersonnage( listeLasers );

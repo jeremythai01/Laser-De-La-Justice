@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -294,11 +295,17 @@ public class Scene extends JPanel implements Runnable {
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
+		try {
+
 		for (Laser laser : listeLasers) {
 			if (laser.getLigneFinY() <= 0)
 				listeLasers.remove(laser);
 			g2d.setStroke(new BasicStroke(3));
 			laser.dessiner(g2d, mat, 0, 0);
+		}
+		
+		}catch(ConcurrentModificationException e) {
+			
 		}
 
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
