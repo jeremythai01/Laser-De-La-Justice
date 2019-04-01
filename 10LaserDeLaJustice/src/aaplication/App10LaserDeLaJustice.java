@@ -62,7 +62,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
-	private static boolean  isNouvelle = true;
+	private static boolean  isNouvelle = true, isOptiPerso = true;
 
 	// Par Arezki 
 	/**
@@ -85,11 +85,11 @@ public class App10LaserDeLaJustice extends JFrame {
 
 	/**
 	 * Creation de la fenêtre
+	 * @param isNouvelle : retourne vrai si il s'agit d'une nouvelle partie
 	 */
 	// Par Arezki
 	public App10LaserDeLaJustice(boolean isNouvelle) {
 		this.isNouvelle = isNouvelle;
-		System.out.println("isNouvelle app10" + isNouvelle);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1389, 1058);
 		contentPane = new JPanel();
@@ -151,6 +151,9 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Options fenetreOpt = new Options();
 				fenetreOpt.setVisible(true);
+				sceneFinale.ecritureFichierSauvegarde(); // je sauvegarde
+				///setVisible(false);
+				sceneFinale.arreter();
 				tempsJeu.stop();
 			}
 		});
@@ -163,7 +166,9 @@ public class App10LaserDeLaJustice extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				sceneFinale.ecritureFichierSauvegarde();
 				donneFocusALasceneFinale();
+				sceneFinale.arreter();
 				tempsJeu.stop();
+				JOptionPane.showMessageDialog(null, "Votre partie a été sauvegardée");
 			}
 		});
 		btnEnregistrer.setBounds(1193, 61, 40, 38);
@@ -389,13 +394,11 @@ public class App10LaserDeLaJustice extends JFrame {
 
 
 		if(isNouvelle) {
-			System.out.println("sc'est une nouvelle partie app10");
-			sceneFinale = new Scene(isNouvelle);
+			sceneFinale = new Scene(isNouvelle, isOptiPerso);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}else {
-			System.out.println("c'est une partie charge app10" + isNouvelle);
-			sceneFinale = new Scene(isNouvelle);
+			sceneFinale = new Scene(isNouvelle, isOptiPerso);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}
@@ -509,10 +512,11 @@ public class App10LaserDeLaJustice extends JFrame {
 	associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
 	associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
 	
+	/*
 	Scene sceneFinaleFinale = new Scene(false);
 	sceneFinaleFinale.setBounds(30, 110, 1303, 724);
 	contentPane.add(sceneFinaleFinale);
-	
+	*/
 	}
 
 	// Par Miora

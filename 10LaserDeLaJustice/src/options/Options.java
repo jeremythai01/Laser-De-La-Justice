@@ -20,10 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+
+import aaplication.App10LaserDeLaJustice;
 /**
  * Cette classe permet a l'utilisateur de modifier les parametres du jeu. 
  * Ces parametres sont le niveau, la gravite, les touches de clavier et la couleur du rayon 
@@ -36,12 +37,15 @@ public class Options extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private int toucheGauche = 37, toucheDroite = 39;
-	private JTable table;
 	private JSpinner snpDif;
 	private JSpinner snpAcc;
 	private JButton btnG;
 	private JButton btnD;
 	private Color couleurLaser = null;
+	private static boolean dansScene = false;
+	private App10LaserDeLaJustice jeu;
+	private boolean isModifie = false;
+
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -58,6 +62,7 @@ public class Options extends JFrame {
 
 	/**
 	 * Creation de la fenetre.
+	 * @param dansScene retourne vrai si la scene jouait deja
 	 */
 	public Options() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -152,10 +157,17 @@ public class Options extends JFrame {
 		JButton btnSauvegarder = new JButton("Sauvegarder");
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ecritureFichier();
+				if(dansScene) { // dans app10
+					ecritureFichier();
+					jeu = new App10LaserDeLaJustice (false);
+					jeu.setVisible(true);
+				}else {
+					ecritureFichier();
+					isModifie = true;
+				}
 			}
 		});
-		btnSauvegarder.setBounds(636, 399, 100, 43);
+		btnSauvegarder.setBounds(610, 399, 139, 43);
 		contentPane.add(btnSauvegarder);
 		
 		JButton btnChangerLaCouleur = new JButton("Changer la couleur");
@@ -228,6 +240,14 @@ public class Options extends JFrame {
 	 */
 	private void choixCouleur() {
 		couleurLaser = JColorChooser.showDialog(null,"Sélectionner la couleur voulue", couleurLaser);
+	}
+	
+	/**
+	 * Cette methode retourne vrai si le fichier option a ete modifie
+	 * @return vrai si le fichier option a ete modifie
+	 */
+	public boolean getIsModifie() {
+		return isModifie;
 	}
 	
 }

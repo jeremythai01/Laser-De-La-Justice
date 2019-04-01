@@ -22,6 +22,7 @@ public class FenetrePartie extends JFrame {
 
 	private JPanel contentPane;
 	private App10LaserDeLaJustice jeu;
+	private static boolean isOptionModifie = true;
 
 	/**
 	 * Lancer l'application
@@ -41,8 +42,10 @@ public class FenetrePartie extends JFrame {
 
 	/**
 	 * Creation de la fenetre
+	 * @param isOptionModifie : retourne vrai si le fichier option a ete modife
 	 */
 	public FenetrePartie() {
+		this.isOptionModifie = isOptionModifie;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -75,7 +78,7 @@ public class FenetrePartie extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				jeu = new App10LaserDeLaJustice(true);  // isNouvelle = true
 				jeu.isNouvelle(true);
-			//	jeu.setNouveauOption(true);
+				jeu.setNouveauOption(true);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();
 				setVisible(false);

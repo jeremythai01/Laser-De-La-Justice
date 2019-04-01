@@ -72,7 +72,7 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
 	private double valeurAngleRoulette =90;
-	
+
 	private final int TOUCHE_GAUCHE_INI = 37;
 	private final int TOUCHE_DROITE_INI = 39;
 
@@ -128,12 +128,13 @@ public class Scene extends JPanel implements Runnable {
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
 	 * souris
+	 * @param isPartieNouveau : retourne vrai s'il s'agit d'une nouvelle partie ou d'une partie sauvegardée
 	 */
 
-	public Scene(boolean isPartieNouveau) {
+	public Scene(boolean isPartieNouveau, boolean isOptiPerso) {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-			setAngleRoulette();
+				setAngleRoulette();
 			}
 		});
 
@@ -142,12 +143,11 @@ public class Scene extends JPanel implements Runnable {
 		angle = 30;
 
 		//pistoletPrincipal = new Pistolet();
-		
-		lectureFichierOption(); // on lit le fichier option pour initialiser les touches et la couleur
-		
-		nouvellePartie(isPartieNouveau);
 
-		
+		lectureFichierOption(); // on lit le fichier option pour initialiser les touches et la couleur
+
+		nouvellePartie(isPartieNouveau, isOptiPerso);
+
 		vitesse = new Vecteur(3, 0);
 
 		addMouseListener(new MouseAdapter() {
@@ -297,15 +297,15 @@ public class Scene extends JPanel implements Runnable {
 
 		try {
 
-		for (Laser laser : listeLasers) {
-			if (laser.getLigneFinY() <= 0)
-				listeLasers.remove(laser);
-			g2d.setStroke(new BasicStroke(3));
-			laser.dessiner(g2d, mat, 0, 0);
-		}
-		
+			for (Laser laser : listeLasers) {
+				if (laser.getLigneFinY() <= 0)
+					listeLasers.remove(laser);
+				g2d.setStroke(new BasicStroke(3));
+				laser.dessiner(g2d, mat, 0, 0);
+			}
+
 		}catch(ConcurrentModificationException e) {
-			
+
 		}
 
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
@@ -437,7 +437,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @author Arnaud
 	 */
 	public void setAngle(double angle) {
-	//	System.out.println("Angle: " + angle);
+		//	System.out.println("Angle: " + angle);
 		/*try {
 			laser.setAngleTir(angle);
 			System.out.println("Angle: " + angle);
@@ -750,7 +750,7 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if (bonMiroirConvexe) {
-					
+
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
 					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
@@ -813,7 +813,7 @@ public class Scene extends JPanel implements Runnable {
 		});
 	}
 
-	
+
 	private void dragBlocEau() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -830,32 +830,32 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 	}
-	
-	
+
+
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-			System.out.println("wheel rotation:"+ arg0.getWheelRotation());
-			if(arg0.getWheelRotation()==-1) {
-				valeurAngleRoulette--;
-				setAngle(valeurAngleRoulette);
-				System.out.println(valeurAngleRoulette);
-			}else if(arg0.getWheelRotation()==1) {
-				valeurAngleRoulette++;
-				setAngle(valeurAngleRoulette);
-				System.out.println();
-				System.out.println(valeurAngleRoulette);
-			}
-			
-			
+				System.out.println("wheel rotation:"+ arg0.getWheelRotation());
+				if(arg0.getWheelRotation()==-1) {
+					valeurAngleRoulette--;
+					setAngle(valeurAngleRoulette);
+					System.out.println(valeurAngleRoulette);
+				}else if(arg0.getWheelRotation()==1) {
+					valeurAngleRoulette++;
+					setAngle(valeurAngleRoulette);
+					System.out.println();
+					System.out.println(valeurAngleRoulette);
+				}
+
+
 			}
 		});
-	
-			repaint();
+
+		repaint();
 	}
-	
-	
-	
+
+
+
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -878,7 +878,7 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
+			//	JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
@@ -897,8 +897,10 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de lire le fichier qui sauvegarde le nombre de vie, le
 	 * nombre des balles, la position du joueur, la couleur du rayon et les touches
 	 * utilisées
+	 * @param nomFichier : le nom du fichier de sauvegarde
+	 * @param isOptiPerso : retourve vrai si les options sont personnalises
 	 */
-	private void lectureFichierSauvegarde(String nomFichier) {
+	private void lectureFichierSauvegarde(String nomFichier, boolean isOptiPerso) {
 		final String NOM_FICHIER_OPTION = nomFichier;
 		ObjectInputStream fluxEntree = null;
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
@@ -922,8 +924,10 @@ public class Scene extends JPanel implements Runnable {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			toucheGauche = fluxEntree.readInt();
-			toucheDroite = fluxEntree.readInt();
+			if(isOptiPerso) {
+				toucheGauche = fluxEntree.readInt();
+				toucheDroite = fluxEntree.readInt();
+			}
 			System.out.println("touche gauche lecture fichier" + toucheGauche );
 		} // fin try
 
@@ -944,12 +948,13 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
+	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
 	 */
-	private void nouvellePartie(boolean isNouvelle) {
+	private void nouvellePartie(boolean isNouvelle, boolean isOptiPerso) {
 		if (!isNouvelle) {
 			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
-			//lectureFichierSauvegarde("sauvegarde.d3t");
+			lectureFichierSauvegarde("sauvegarde.d3t", isOptiPerso);
 			coeurs.setCombien(nombreVies);
 			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
 		} else {
