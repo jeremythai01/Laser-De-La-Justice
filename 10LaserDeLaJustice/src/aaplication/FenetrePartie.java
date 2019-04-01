@@ -42,7 +42,6 @@ public class FenetrePartie extends JFrame {
 
 	/**
 	 * Creation de la fenetre
-	 * @param isOptionModifie : retourne vrai si le fichier option a ete modife
 	 */
 	public FenetrePartie() {
 		this.isOptionModifie = isOptionModifie;
