@@ -36,7 +36,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	 */
 	public MiroirConcave(Vecteur position, double grosseurMiroire) {
 		this.position = position;
-		angleDebut = 100;
+		angleDebut = 90;
 		this.grosseurMiroire = grosseurMiroire;
 
 	}
@@ -54,7 +54,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 
 		miroirConcave = new Arc2D.Double(position.getX(), position.getY(), grosseurMiroire, grosseurMiroire, 180,
 				-180, Arc2D.OPEN);
-		// matLocal.rotate(90);
+		//matLocal.rotate(angleDebut, position.getX(), position.getY());
 		// En rouge
 		g.setColor(Color.red);
 		// Demi cercle plein

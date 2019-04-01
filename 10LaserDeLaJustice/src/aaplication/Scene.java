@@ -69,7 +69,21 @@ public class Scene extends JPanel implements Runnable {
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
 	private int toucheGauche = 37;
-	
+	public int getToucheGauche() {
+		return toucheGauche;
+	}
+
+	public void setToucheGauche(int toucheGauche) {
+		this.toucheGauche = toucheGauche;
+	}
+
+	public int getToucheDroite() {
+		return toucheDroite;
+	}
+
+	public void setToucheDroite(int toucheDroite) {
+		this.toucheDroite = toucheDroite;
+	}
 
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
@@ -120,9 +134,6 @@ public class Scene extends JPanel implements Runnable {
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
 	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
-	private int tempsEcoule = 60;
-
-	
 
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
@@ -234,6 +245,7 @@ public class Scene extends JPanel implements Runnable {
 				bonMiroirConcave = false;
 				bonMiroirPlan = false;
 				bonTrouNoir = false;
+				bonBlocEau = false;
 
 			}
 		});
@@ -860,7 +872,6 @@ public class Scene extends JPanel implements Runnable {
 
 
 
-	
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -883,7 +894,7 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			fluxSortie.writeInt(tempsEcoule);
+			//	JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
@@ -932,7 +943,6 @@ public class Scene extends JPanel implements Runnable {
 				toucheGauche = fluxEntree.readInt();
 				toucheDroite = fluxEntree.readInt();
 			System.out.println("touche gauche lecture fichier" + toucheGauche );
-			tempsEcoule = fluxEntree.readInt();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -952,16 +962,19 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
+	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
 	 */
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
+			System.out.println("scene partie charge " + isNouvelle);
 			lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
 			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
-			
 		} else {
 			// partie nouvelle
+			System.out.println("nouvelle partie come on");
+			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
 			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
 		}
 	}
@@ -974,50 +987,6 @@ public class Scene extends JPanel implements Runnable {
 		for (SceneListener ecout : listeEcouteur) {
 			ecout.couleurLaserListener();
 		}
-	}
-	
-	//Par Miora
-	/**
-	 * Cette methode permet d'obtenir le numero de la touche gauche
-	 * @return toucheGauche: le keyCode de la touche gauche
-	 */
-	public int getToucheGauche() {
-		return toucheGauche;
-	}
-
-	//Par Miora
-	/**
-	 * Cette methode permet de changer la valeur du keyCode de la touche gauche
-	 * @param toucheGauche : la nouvelle valeur KeyCode de la nouvelle touche gauche
-	 */
-	public void setToucheGauche(int toucheGauche) {
-		this.toucheGauche = toucheGauche;
-	}
-
-	//Par Miora
-		/**
-		 * Cette methode permet d'obtenir le numero de la touche droite
-		 * @return toucheGauche: le keyCode de la touche droite
-		 */
-	public int getToucheDroite() {
-		return toucheDroite;
-	}
-
-	//Par Miora
-		/**
-		 * Cette methode permet de changer la valeur du keyCode de la touche droite
-		 * @param toucheGauche : la nouvelle valeur KeyCode de la nouvelle touche droite
-		 */
-	public void setToucheDroite(int toucheDroite) {
-		this.toucheDroite = toucheDroite;
-	}
-	
-	//Par Miora
-	/**
-	 * Cette methode permet de modifier le temps ecoule depuis le debut de la partie
-	 */
-	public void setTempsEcoule(int temps) {
-		this.tempsEcoule = temps;
 	}
 
 }
