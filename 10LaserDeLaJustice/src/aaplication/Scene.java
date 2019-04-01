@@ -10,10 +10,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,14 +38,13 @@ import miroir.MiroirPlan;
 import objets.BlocDEau;
 import objets.Echelle;
 import objets.TrouNoir;
+import options.Options;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
 import pistolet.Pistolet;
 import utilite.ModeleAffichage;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
 
 /**
  * Cette classe contient la scene d'animation du jeu.
@@ -69,6 +69,22 @@ public class Scene extends JPanel implements Runnable {
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
 	private int toucheGauche = 37;
+	public int getToucheGauche() {
+		return toucheGauche;
+	}
+
+	public void setToucheGauche(int toucheGauche) {
+		this.toucheGauche = toucheGauche;
+	}
+
+	public int getToucheDroite() {
+		return toucheDroite;
+	}
+
+	public void setToucheDroite(int toucheDroite) {
+		this.toucheDroite = toucheDroite;
+	}
+
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
 	private double valeurAngleRoulette =90;
@@ -115,7 +131,6 @@ public class Scene extends JPanel implements Runnable {
 
 	private Color couleurLaser = null;
 	private boolean couleurPersoLaser = false;
-
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
 	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
@@ -131,7 +146,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isPartieNouveau : retourne vrai s'il s'agit d'une nouvelle partie ou d'une partie sauvegardée
 	 */
 
-	public Scene(boolean isPartieNouveau, boolean isOptiPerso) {
+	public Scene(boolean isPartieNouveau) {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				setAngleRoulette();
@@ -143,11 +158,10 @@ public class Scene extends JPanel implements Runnable {
 		angle = valeurAngleRoulette;
 
 		//pistoletPrincipal = new Pistolet();
-
-		lectureFichierOption(); // on lit le fichier option pour initialiser les touches et la couleur
-
-		nouvellePartie(isPartieNouveau, isOptiPerso);
-
+		nouvellePartie(isPartieNouveau);
+		lectureFichierOption();
+		//JOptionPane.showMessageDialog(null, "Vos touches ont été initialisé a " + KeyEvent.getKeyText(toucheGauche) + " et " + KeyEvent.getKeyText(toucheDroite));
+		    
 		vitesse = new Vecteur(3, 0);
 
 		addMouseListener(new MouseAdapter() {
@@ -480,6 +494,7 @@ public class Scene extends JPanel implements Runnable {
 					couleurLaser = couleurOption;
 					System.out.println("On m'a donné une couleur");
 				}
+				principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -900,7 +915,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 * @param isOptiPerso : retourve vrai si les options sont personnalises
 	 */
-	private void lectureFichierSauvegarde(String nomFichier, boolean isOptiPerso) {
+	private void lectureFichierSauvegarde(String nomFichier) {
 		final String NOM_FICHIER_OPTION = nomFichier;
 		ObjectInputStream fluxEntree = null;
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
@@ -924,10 +939,8 @@ public class Scene extends JPanel implements Runnable {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			if(isOptiPerso) {
 				toucheGauche = fluxEntree.readInt();
 				toucheDroite = fluxEntree.readInt();
-			}
 			System.out.println("touche gauche lecture fichier" + toucheGauche );
 		} // fin try
 
@@ -950,11 +963,11 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
 	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
 	 */
-	private void nouvellePartie(boolean isNouvelle, boolean isOptiPerso) {
+	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
-			lectureFichierSauvegarde("sauvegarde.d3t", isOptiPerso);
+			lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
 			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
 		} else {
