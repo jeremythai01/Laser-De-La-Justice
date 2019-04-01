@@ -14,6 +14,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
@@ -158,13 +159,13 @@ public class SceneMiroir extends JPanel implements Runnable {
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 			//	g2d.setColor(Color.yellow);
 		}
-		
-		Rectangle2D.Double ligne = new Rectangle2D.Double(getWidth()/2, 0, 0 , getHeight() );
+
+		//Rectangle2D.Double ligne = new Rectangle2D.Double(getWidth()/2, 0, 0 , getHeight() );
 		//System.out.println("position de la souris  = " + xSouris);
-	g2d.setColor(Color.black);
-	g2d.draw(ligne);
-	
-		
+		g2d.setColor(Color.black);
+		//g2d.draw(ligne);
+
+
 
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
@@ -213,7 +214,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
-		
+
 
 			try {
 				colisionLaserMiroirPlan();
@@ -303,45 +304,32 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 */
 
 	private void colisionLaserMiroirConvexe() throws Exception{
-		System.out.println("entree dans colisionLaserMiroirConvexe");
-		//int nbMiroirsTestes =0;
-		for (Laser laser : listeLasers) {
+		for(Laser laser : listeLasers) {
+			int n=0;
 			boolean collision = false;
-			int nbMiroirsTestes = 0;
-			System.out.println("la longueur de la liste laser " + listeLasers.size() );
-			System.out.println("le nombre de d'intersection : " + nbCollison);
-			System.out.println("taille liste miroir " + listeMiroirConvexe.size());
-			System.out.println( "collision ? " + collision);
-			int nbMiroir = listeMiroirConvexe.size();
-			while (nbMiroirsTestes< listeMiroirConvexe.size() && collision == false) {
-				nbMiroir = nbMiroirsTestes;
-				System.out.println("je suis dans le while et je suis au miroir " + listeMiroirConvexe.get(0) );
-				//System.out.println("liste miroir" + listeMiroirConvexe.toString());
-				if(intersection(listeMiroirConvexe.get(nbMiroir).getAireMiroirConvexe(), laser.getLaserAire())) {
-					collision = true;
-					//arreter();
-					//laser.setPosition(laser.getPosition());
+			while(n< listeMiroirConvexe.size() && !collision) {
+				if(intersection(listeMiroirConvexe.get(n).getAireMiroirConvexe(), laser.getLaserAire())) {
 					laser.setLigneDebutX(laser.getPosition().getX());
 					laser.setLigneFinY(laser.getPosition().getY());
-					laser.setAngleTir(45);
-					/*double angleLaser = Math.toRadians(laser.getAngleTir());
+					
+				//	laser.setAngleTir(-45);
+					collision = true;
+					
+					double angleLaser = Math.toRadians(laser.getAngleTir());
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
-
+					
 					//n vecteur normal au miroir
-					Vecteur n = listeMiroirConvexe.get(nbCollison).getNormalPosition(laser.getPosition()).normalise();	
-					System.out.println("la normal " + n);
-
-					//e = -v
+					Vecteur normal = listeMiroirConvexe.get(n).getNormalPosition(laser.getLigneDebutX(), laser.getLigneFinY()).normalise();
+					System.out.println("la normal"  + normal);
 					Vecteur e = v.multiplie(-1);
+					double angle2 =  Math.toDegrees(Math.atan( (v.additionne(normal.multiplie(2*(e.prodScalaire(normal)))).getY() / ((v.additionne(normal.multiplie(2*(e.prodScalaire(normal))))).getX()))));
+					laser.setAngleTir(angle2);
+					
+				}
+				n++;
+			}
 
-					double angle2=  Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
-					laser.setAngleTir(angle2);*/
-				} // fin if
-				
-				
-				nbMiroirsTestes++;
-			} // fin while miroir
-		} // fin laser
+		}
 	} // fin methode
 
 	//Miora et Arezki

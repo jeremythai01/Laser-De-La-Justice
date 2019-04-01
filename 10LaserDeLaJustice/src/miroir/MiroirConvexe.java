@@ -28,7 +28,7 @@ public class MiroirConvexe implements Dessinable {
 	private double hauteur =0;
 	private double largeur = 0;
 	private Ellipse2D.Double centre;
-	private Vecteur posLaser;
+	private Vecteur vecLaser;
 	private boolean laser=false;
 
 	/**
@@ -59,11 +59,6 @@ public class MiroirConvexe implements Dessinable {
 		miroir = new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN);
 		g2d.draw(matLocale.createTransformedShape(miroir));
 		g2d.draw(matLocale.createTransformedShape(centre));
-		
-		//dessine la normal ( verification : utilisation meme variablle que la methode getNormalPosition() ) 
-		if(laser) {
-			g2d.draw(mat.createTransformedShape(new Line2D.Double(centreMiroir.getX(), centreMiroir.getY(),posLaser.getX() , posLaser.getY())));
-		}
 	}
 
 	/**
@@ -83,9 +78,12 @@ public class MiroirConvexe implements Dessinable {
 	 * @return le vecteur normal au miroir
 	 */
 	public Vecteur getNormalPosition(Vecteur posLaser) {
-		this.posLaser = posLaser;
-		laser= true;
-		return centreMiroir.soustrait(posLaser) ;
+		return posLaser.soustrait(centreMiroir) ;
+	}
+	
+	public Vecteur getNormalPosition(double x, double y) {
+		Vecteur laser = new Vecteur (x,y);
+		return laser.soustrait(centreMiroir) ;
 	}
 	/**
 	 * Methode qui retourne la position du miroir
