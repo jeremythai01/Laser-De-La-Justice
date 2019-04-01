@@ -1,38 +1,34 @@
 package aaplication;
 
 import java.awt.Color;
-
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import options.Editeur;
-import options.Options;
-import javax.swing.JSpinner;
-import javax.swing.JLabel;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.JProgressBar;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.JSeparator;
-import java.awt.Component;
-import java.awt.Rectangle;
-import java.awt.SystemColor;
-import java.awt.Font;
-import javax.swing.JProgressBar;
-import javax.swing.JToggleButton;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import options.Options;
 
 /**
  * 
@@ -55,6 +51,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	private JButton btnMiroirPlan;
 	private JLabel lblValeur;
 	private Scene sceneFinale;
+	private Options optionJeu;
 
 	private boolean isNouveauOption = true;
 
@@ -149,12 +146,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnOption = new JButton("Option");
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Options fenetreOpt = new Options();
-				fenetreOpt.setVisible(true);
-				sceneFinale.ecritureFichierSauvegarde(); // je sauvegarde
-				///setVisible(false);
-				sceneFinale.arreter();
-				tempsJeu.stop();
+				choixOption();
 			}
 		});
 		btnOption.setBounds(1293, 61, 40, 38);
@@ -394,16 +386,16 @@ public class App10LaserDeLaJustice extends JFrame {
 
 
 		if(isNouvelle) {
-			sceneFinale = new Scene(isNouvelle, isOptiPerso);
+			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}else {
-			sceneFinale = new Scene(isNouvelle, isOptiPerso);
+			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}
 
-
+		toucheScene();
 		JButton btnVidersceneFinale = new JButton("Vider sceneFinale");
 		btnVidersceneFinale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -446,7 +438,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		});
 		btnEditeur.setBounds(1243, 61, 40, 38);
 		contentPane.add(btnEditeur);
-		
+
 		JSlider sliderAngleLaser = new JSlider();
 		sliderAngleLaser.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -464,13 +456,13 @@ public class App10LaserDeLaJustice extends JFrame {
 		sliderAngleLaser.setOrientation(SwingConstants.VERTICAL);
 		sliderAngleLaser.setBounds(1346, 361, 24, 473);
 		contentPane.add(sliderAngleLaser);
-		
+
 		JButton btnDemarrage = new JButton("demarrage\r\n");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FenetreDemarrage demarrage = new FenetreDemarrage();
 				demarrage.setVisible(true);
-				
+
 			}
 		});
 		btnDemarrage.setBounds(0, 0, 89, 23);
@@ -501,22 +493,25 @@ public class App10LaserDeLaJustice extends JFrame {
 		};
 
 		tempsJeu = new Timer(1000, listener);
-	
-	
-	associerBoutonAvecImage(btnBlocDeau, "Bloc.JPG");
-	associerBoutonAvecImage(btnGrosseBalle, "GrBalle.JPG");
-	associerBoutonAvecImage(btnMediumBalle, "MedBalle.JPG");
-	associerBoutonAvecImage(btnMiroirConcave, "convex.JPG");
-	associerBoutonAvecImage(btnMiroirConvexe, "Concave.JPG");
-	associerBoutonAvecImage(btnPetiteBalle, "PetBalle.JPG");
-	associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
-	associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
-	
-	/*
-	Scene sceneFinaleFinale = new Scene(false);
-	sceneFinaleFinale.setBounds(30, 110, 1303, 724);
-	contentPane.add(sceneFinaleFinale);
-	*/
+
+
+		associerBoutonAvecImage(btnBlocDeau, "Bloc.JPG");
+		associerBoutonAvecImage(btnGrosseBalle, "GrBalle.JPG");
+		associerBoutonAvecImage(btnMediumBalle, "MedBalle.JPG");
+		associerBoutonAvecImage(btnMiroirConcave, "convex.JPG");
+		associerBoutonAvecImage(btnMiroirConvexe, "Concave.JPG");
+		associerBoutonAvecImage(btnPetiteBalle, "PetBalle.JPG");
+		associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
+		associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de montrer a l'utilisateur les touches pour jouer
+	 */
+	private void toucheScene() {
+		JOptionPane.showMessageDialog(null, " " + "Vos touches ont été initialisé a " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + " et " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()));
+
 	}
 
 	// Par Miora
@@ -602,14 +597,6 @@ public class App10LaserDeLaJustice extends JFrame {
 		imgRedim.flush();
 	}
 
-	// Miora
-	/**
-	 * Cette methode permet de savoir si les options ont été modifié
-	 * @return vrai si il'sagit d'un nouveau fichier option
-	 */
-	public boolean isNouveauOption() {
-		return isNouveauOption;
-	}
 
 	// Miora
 	/**
@@ -620,8 +607,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		this.isNouveauOption = isNouveauOption;
 	}
 
-	
-	
+
+	//Miora
 	/**
 	 * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
 	 * sceneFinale
@@ -630,4 +617,20 @@ public class App10LaserDeLaJustice extends JFrame {
 	public void isNouvelle(boolean reponse) {
 		isNouvelle = reponse;
 	}
+	
+	//Par Miora
+	/**
+	 * Cette methode ouvre le menu option lorsque la touche option est cliquee
+	 */
+	private void choixOption() {
+		optionJeu = new Options();
+		optionJeu.setDansScene(true);
+		optionJeu.setVisible(true);
+		sceneFinale.ecritureFichierSauvegarde(); // je sauvegarde
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		setVisible(false);
+	}
+	
+	
 }

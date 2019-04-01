@@ -42,7 +42,17 @@ public class Options extends JFrame {
 	private JButton btnG;
 	private JButton btnD;
 	private Color couleurLaser = null;
-	private static boolean dansScene = false;
+	private boolean dansScene = false;
+
+
+	public boolean isDansScene() {
+		return dansScene;
+	}
+
+	public void setDansScene(boolean dansScene) {
+		this.dansScene = dansScene;
+	}
+
 	private App10LaserDeLaJustice jeu;
 	private boolean isModifie = false;
 
@@ -157,19 +167,18 @@ public class Options extends JFrame {
 		JButton btnSauvegarder = new JButton("Sauvegarder");
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(dansScene) { // dans app10
-					ecritureFichier();
+				if(dansScene) {
+					System.out.println("dans scene option");
 					jeu = new App10LaserDeLaJustice (false);
 					jeu.setVisible(true);
-				}else {
-					ecritureFichier();
-					isModifie = true;
 				}
+				ecritureFichier();
+				setVisible(false);
 			}
 		});
 		btnSauvegarder.setBounds(610, 399, 139, 43);
 		contentPane.add(btnSauvegarder);
-		
+
 		JButton btnChangerLaCouleur = new JButton("Changer la couleur");
 		btnChangerLaCouleur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -179,7 +188,7 @@ public class Options extends JFrame {
 		btnChangerLaCouleur.setBounds(219, 374, 192, 21);
 		contentPane.add(btnChangerLaCouleur);
 	}
-	
+
 	// Par Miora
 	/**
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
@@ -191,7 +200,7 @@ public class Options extends JFrame {
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new BufferedOutputStream(	new FileOutputStream(fichierDeTravail)));
-			
+
 			fluxSortie.writeInt(Integer.parseInt(snpDif.getValue().toString()));
 			fluxSortie.writeDouble(Double.parseDouble(snpAcc.getValue().toString()));
 			fluxSortie.writeInt(toucheGauche);
@@ -213,7 +222,7 @@ public class Options extends JFrame {
 			}
 		}//fin finally
 	}
-	
+
 	// Par Miora
 	/**
 	 * Cette methode permet d'initialiser la touche de gauche a la touche du clavier
@@ -223,7 +232,7 @@ public class Options extends JFrame {
 		toucheGauche = e.getKeyCode() ;
 		btnG.setText(KeyEvent.getKeyText(e.getKeyCode()));
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet d'initialiser la touche de droite a la touche du clavier
@@ -233,7 +242,7 @@ public class Options extends JFrame {
 		toucheDroite = e.getKeyCode() ;
 		btnD.setText(KeyEvent.getKeyText(e.getKeyCode()));
 	}
-	
+
 	// Par Arnaud 
 	/**
 	 * Cette methode permet a l'utilisateur de modifier la couleur de son laser
@@ -241,7 +250,7 @@ public class Options extends JFrame {
 	private void choixCouleur() {
 		couleurLaser = JColorChooser.showDialog(null,"Sélectionner la couleur voulue", couleurLaser);
 	}
-	
+
 	/**
 	 * Cette methode retourne vrai si le fichier option a ete modifie
 	 * @return vrai si le fichier option a ete modifie
@@ -249,5 +258,5 @@ public class Options extends JFrame {
 	public boolean getIsModifie() {
 		return isModifie;
 	}
-	
+
 }
