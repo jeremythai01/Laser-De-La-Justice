@@ -169,6 +169,7 @@ public class Options extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(dansScene) {
 					System.out.println("dans scene option");
+					ecritureFichier();
 					jeu = new App10LaserDeLaJustice (false);
 					jeu.setVisible(true);
 				}

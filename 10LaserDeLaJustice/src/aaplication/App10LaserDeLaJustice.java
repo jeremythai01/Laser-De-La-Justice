@@ -477,7 +477,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				if (tempsDuJeu.getValue() > 00 && secondes >= 0) {
 
 					tempsDuJeu.setValue(tempsDuJeu.getValue() - 1);
-
+					sceneFinale.setTempsEcoule(tempsDuJeu.getValue());
 					tempsDuJeu.setString(secondes-- + " secondes restantes");
 
 
