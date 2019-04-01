@@ -871,6 +871,7 @@ public class Scene extends JPanel implements Runnable {
 
 
 
+	
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
