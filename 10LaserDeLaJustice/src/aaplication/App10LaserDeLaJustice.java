@@ -29,6 +29,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import options.Options;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 /**
  * 
@@ -86,17 +88,20 @@ public class App10LaserDeLaJustice extends JFrame {
 	 */
 	// Par Arezki
 	public App10LaserDeLaJustice(boolean isNouvelle) {
+		setTitle("Laser de la Justice.exe");
+		setBackground(Color.GRAY);
 		this.isNouvelle = isNouvelle;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1389, 1058);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
-		contentPane.setForeground(Color.DARK_GRAY);
+		contentPane.setForeground(new Color(255, 175, 175));
 		contentPane.setBounds(new Rectangle(2, 0, 0, 0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
 
@@ -355,7 +360,7 @@ public class App10LaserDeLaJustice extends JFrame {
 
 		JSeparator separator_5 = new JSeparator();
 		separator_5.setForeground(SystemColor.activeCaption);
-		separator_5.setBounds(30, 852, 1303, 2);
+		separator_5.setBounds(30, 852, 900, 2);
 		contentPane.add(separator_5);
 
 		JSeparator separator_6 = new JSeparator();
@@ -365,12 +370,12 @@ public class App10LaserDeLaJustice extends JFrame {
 
 		JSeparator separator_7 = new JSeparator();
 		separator_7.setForeground(SystemColor.activeCaption);
-		separator_7.setBounds(30, 975, 1303, 2);
+		separator_7.setBounds(30, 975, 900, 2);
 		contentPane.add(separator_7);
 
 		JSeparator separator_8 = new JSeparator();
 		separator_8.setOrientation(SwingConstants.VERTICAL);
-		separator_8.setBounds(1331, 852, 9, 125);
+		separator_8.setBounds(930, 852, 9, 125);
 		contentPane.add(separator_8);
 
 		JLabel lblditeur = new JLabel("\u00C9DITEUR");
@@ -439,24 +444,6 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnEditeur.setBounds(1243, 61, 40, 38);
 		contentPane.add(btnEditeur);
 
-		JSlider sliderAngleLaser = new JSlider();
-		sliderAngleLaser.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				sceneFinale.setAngle((double)sliderAngleLaser.getValue());
-				repaint();
-			}
-		});
-		sliderAngleLaser.setAutoscrolls(true);
-		//sliderAngleLaser.setValueIsAdjusting(true);
-		sliderAngleLaser.setPaintTicks(true);
-		sliderAngleLaser.setPaintLabels(true);
-		sliderAngleLaser.setSnapToTicks(true);
-		sliderAngleLaser.setValue(30);
-		sliderAngleLaser.setMaximum(100);
-		sliderAngleLaser.setOrientation(SwingConstants.VERTICAL);
-		sliderAngleLaser.setBounds(1346, 361, 24, 473);
-		contentPane.add(sliderAngleLaser);
-
 		JButton btnDemarrage = new JButton("demarrage\r\n");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -477,7 +464,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				if (tempsDuJeu.getValue() > 00 && secondes >= 0) {
 
 					tempsDuJeu.setValue(tempsDuJeu.getValue() - 1);
-					sceneFinale.setTempsEcoule(tempsDuJeu.getValue());
+
 					tempsDuJeu.setString(secondes-- + " secondes restantes");
 
 
@@ -631,6 +618,4 @@ public class App10LaserDeLaJustice extends JFrame {
 		tempsJeu.stop();
 		setVisible(false);
 	}
-	
-	
 }

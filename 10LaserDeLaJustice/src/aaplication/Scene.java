@@ -43,6 +43,7 @@ import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
+import physique.Prisme;
 import pistolet.Pistolet;
 import utilite.ModeleAffichage;
 
@@ -69,7 +70,7 @@ public class Scene extends JPanel implements Runnable {
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
 	private int toucheGauche = 37;
-	
+
 
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
@@ -90,6 +91,7 @@ public class Scene extends JPanel implements Runnable {
 	private boolean bonTrouNoir = false;
 	private boolean bonBlocEau = false;
 	private boolean editeurActiver = false;
+	private boolean couleurPersoLaser = false;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -102,6 +104,8 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<MiroirConvexe> listeMiroireConvexe = new ArrayList<MiroirConvexe>();
 	private ArrayList<MiroirPlan> listeMiroirePlan = new ArrayList<MiroirPlan>();
 	private ArrayList<BlocDEau> listeBlocEau = new ArrayList<BlocDEau>();
+	private ArrayList<Prisme> listePrisme = new ArrayList<Prisme>();
+	
 
 	private Balle balle;
 	private TrouNoir trou;
@@ -112,17 +116,15 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
 	private Coeurs coeurs = new Coeurs(nombreVies);
-
+	private Prisme prisme = new Prisme (new Vecteur (10,10));
+	
 	private Echelle echelle;
 
 	private Color couleurLaser = null;
-	private boolean couleurPersoLaser = false;
+	
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
 	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
-	private int tempsEcoule = 60;
-
-	
 
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
@@ -142,6 +144,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 
+		listePrisme.add(prisme);
+		
 		lireFond();
 
 		angle = valeurAngleRoulette;
@@ -234,6 +238,7 @@ public class Scene extends JPanel implements Runnable {
 				bonMiroirConcave = false;
 				bonMiroirPlan = false;
 				bonTrouNoir = false;
+				bonBlocEau = false;
 
 			}
 		});
@@ -344,6 +349,10 @@ public class Scene extends JPanel implements Runnable {
 			blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
+		for(Prisme pri : listePrisme) {
+			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
+		
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
@@ -860,7 +869,6 @@ public class Scene extends JPanel implements Runnable {
 
 
 
-	
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -883,7 +891,7 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			fluxSortie.writeInt(tempsEcoule);
+			//	JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
@@ -932,7 +940,6 @@ public class Scene extends JPanel implements Runnable {
 				toucheGauche = fluxEntree.readInt();
 				toucheDroite = fluxEntree.readInt();
 			System.out.println("touche gauche lecture fichier" + toucheGauche );
-			tempsEcoule = fluxEntree.readInt();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -952,16 +959,19 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
+	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
 	 */
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
+			System.out.println("scene partie charge " + isNouvelle);
 			lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
 			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
-			
 		} else {
 			// partie nouvelle
+			System.out.println("nouvelle partie come on");
+			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
 			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
 		}
 	}
@@ -975,49 +985,25 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
+
 	
-	//Par Miora
-	/**
-	 * Cette methode permet d'obtenir le numero de la touche gauche
-	 * @return toucheGauche: le keyCode de la touche gauche
-	 */
+	
 	public int getToucheGauche() {
 		return toucheGauche;
 	}
 
-	//Par Miora
-	/**
-	 * Cette methode permet de changer la valeur du keyCode de la touche gauche
-	 * @param toucheGauche : la nouvelle valeur KeyCode de la nouvelle touche gauche
-	 */
 	public void setToucheGauche(int toucheGauche) {
 		this.toucheGauche = toucheGauche;
 	}
 
-	//Par Miora
-		/**
-		 * Cette methode permet d'obtenir le numero de la touche droite
-		 * @return toucheGauche: le keyCode de la touche droite
-		 */
 	public int getToucheDroite() {
 		return toucheDroite;
 	}
 
-	//Par Miora
-		/**
-		 * Cette methode permet de changer la valeur du keyCode de la touche droite
-		 * @param toucheGauche : la nouvelle valeur KeyCode de la nouvelle touche droite
-		 */
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
 	
-	//Par Miora
-	/**
-	 * Cette methode permet de modifier le temps ecoule depuis le debut de la partie
-	 */
-	public void setTempsEcoule(int temps) {
-		this.tempsEcoule = temps;
-	}
-
+	
+	
 }
