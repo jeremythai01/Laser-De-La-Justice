@@ -140,7 +140,7 @@ public class Scene extends JPanel implements Runnable {
 
 		lireFond();
 
-		angle = 30;
+		angle = valeurAngleRoulette;
 
 		//pistoletPrincipal = new Pistolet();
 
@@ -385,7 +385,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 		for (Laser laser : listeLasers) {
 			laser.move();
-			System.out.println("YEET" + laser.getPosition());
+			//System.out.println("YEET" + laser.getPosition());
 		}
 
 		tempsTotalEcoule += deltaT;
@@ -835,12 +835,12 @@ public class Scene extends JPanel implements Runnable {
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				System.out.println("wheel rotation:"+ arg0.getWheelRotation());
-				if(arg0.getWheelRotation()==-1) {
+				//System.out.println("wheel rotation:"+ arg0.getWheelRotation());
+				if(arg0.getWheelRotation()==-1 && (valeurAngleRoulette<=180)&&(valeurAngleRoulette>0)) {
 					valeurAngleRoulette--;
 					setAngle(valeurAngleRoulette);
 					System.out.println(valeurAngleRoulette);
-				}else if(arg0.getWheelRotation()==1) {
+				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)&&(valeurAngleRoulette>=0)) {
 					valeurAngleRoulette++;
 					setAngle(valeurAngleRoulette);
 					System.out.println();
