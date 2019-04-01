@@ -105,19 +105,22 @@ public class OrdinateurNiveau3 implements Dessinable {
 	}
 	
 	public Vecteur calculerViserAvecVitesse(Vecteur distance, Vecteur vitesse) {
+		Balle balleAViser;
 		if(listeBalle.size()>0) {
 			//System.out.println("je suis dans le if");
 			for(Balle balle: listeBalle) {
 				listeDistance.add(new Vecteur((balle.getPosition().soustrait(getPosition()).getX()),(balle.getPosition().soustrait(getPosition()).getY())));
-				listePosition.add(new Vecteur(balle.getPosition().getX(), balle.getPosition().getY()));
 			
 			}
 
 			int avant=0;
 			Vecteur reponse= listeDistance.get(avant);
+			balleAViser=listeBalle.get(avant);
 			for(int i =1; i<listeDistance.size();i++) {
 				if(listeDistance.get(i).module()<listeDistance.get(avant).module()) {
 					reponse=listeDistance.get(i);
+					balleAViser=listeBalle.get(i);
+					
 				}
 				avant++;
 			}
@@ -173,7 +176,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	public boolean isEnCoursAnimation() {
 		return enCoursAnimation;
 	}
-
+	
 	public void setEnCoursAnimation(boolean enCoursAnimation) {
 		this.enCoursAnimation = enCoursAnimation;
 	}

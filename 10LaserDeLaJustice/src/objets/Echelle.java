@@ -7,12 +7,22 @@ import java.awt.geom.Path2D;
 
 import interfaces.Dessinable;
 
+/**
+ * Classe qui permet la creation d'une echelle de mesure pour identifier la difference entre le monde reel et pixel
+ * @author Arnaud
+ *
+ */
 public class Echelle extends Objet implements Dessinable{
 	private double largeur; 
 	private Path2D.Double trace;
 	private double posX, posY;
 	
-	
+	/**
+	 * Constructeur de l'echelle qui prend en parametre ou nous voulons dessiner l'echelle et la largeur du monde reel
+	 * @param largeur, la largeur du monde reel 
+	 * @param posX, la position en x ou sera dessiner l'echelle
+	 * @param posY, la position en y ou sera dessiner l'echelle
+	 */
 	public Echelle(double largeur, double posX, double posY) {
 		this.largeur=largeur;
 		this.posX=posX;
@@ -20,6 +30,13 @@ public class Echelle extends Objet implements Dessinable{
 	}
 
 	@Override
+	/**
+	 * Permet de dessiner l'echelle selon le contexte graphique en parametre.
+	 * @param g contexte graphique
+	 * @param mat matrice de transformation monde-vers-composant
+	 * @param hauteur hauteur du monde reelle
+	 * @param largeur largeur du monde reelle
+	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		g.setColor(Color.GREEN);
