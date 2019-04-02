@@ -28,7 +28,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	private ArrayList<Balle> listeBalle = new ArrayList<Balle>();
 	private ArrayList<Vecteur> listeDistance = new ArrayList<Vecteur>();
 	private ArrayList<Vecteur> listePosition = new ArrayList<Vecteur>();
-
+	double angle;
 	public OrdinateurNiveau3(Vecteur position) {
 		this.position=position;
 	}
@@ -66,7 +66,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	}
 
 	public Laser tirer() {
-		double angle=calculerAngleTir(savoirViser(listeBalle));
+		angle=calculerAngleTir(savoirViser(listeBalle));
 		calculerBalleAViser();
 		System.out.println(savoirViser(listeBalle)+" anglecxczc");
 		return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angle, new Vecteur(0,0.5)));
@@ -144,7 +144,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	
 	
 	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
-		double deltaT=0.6;
+		double deltaT=0.8;
 		Balle balleSimuler=viser;
 		balleSimuler.unPasEuler(deltaT);
 		System.out.println("position de la balle simulee "+balleSimuler.getPosition());
@@ -154,13 +154,17 @@ public class OrdinateurNiveau3 implements Dessinable {
 		for(int i=0;i<50; i++) {
 			//System.out.println("je suis cici");
 			if(!verifierCollisionBalleEtLaserSimulation(balleSimuler, test)) {
-				test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser+i, new Vecteur(0,0.5));
+				angleAViser=angleAViser+i;
+				test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
 			}
 			else {
 				System.out.println("les simules se sont touches");
 				break;
 			}
+			System.out.println("angle a viser dans el for="+ angleAViser);
 		}
+		System.out.println("angle a viser ="+ angleAViser);
+		angle=angleAViser+210;
 	}
 
 	public void simulerMouvementLaser(Laser laser) {
