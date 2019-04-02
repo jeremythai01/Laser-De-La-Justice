@@ -2,6 +2,7 @@ package objets;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ import physique.Laser;
  *@author Arnaud Lefebvre
  */
 public class OrdinateurNiveau3 implements Dessinable {
-	
+
 	private double largeurOrdi=1;
 	private double longueurOrdi=1;
 	private double vitesseNiveau2=0.6;
@@ -27,7 +28,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	private ArrayList<Balle> listeBalle = new ArrayList<Balle>();
 	private ArrayList<Vecteur> listeDistance = new ArrayList<Vecteur>();
 	private ArrayList<Vecteur> listePosition = new ArrayList<Vecteur>();
-	
+
 	public OrdinateurNiveau3(Vecteur position) {
 		this.position=position;
 	}
@@ -40,47 +41,48 @@ public class OrdinateurNiveau3 implements Dessinable {
 		hauteurDuMonde=hauteur;
 	}
 
-	
+
 	public void bouge() {
-		
+
 		if(position.getX()+vitesseNiveau2>45) {
 			vitesseNiveau2=-vitesseNiveau2;
 		}
 		if(position.getX()+vitesseNiveau2<5) {
 			vitesseNiveau2=-vitesseNiveau2;
 		}
-		
-		
-		
+
+
+
 		position.setX(position.getX()+vitesseNiveau2);
 		changerVitesse();
-		
+
 	}
-	
+
 	public void changerVitesse() { 
 		//System.out.println((int)Math.random()*3+1);
 		if((Math.floor(Math.random() * (2)) + 1)%2==0) {
 			//vitesseNiveau2=-vitesseNiveau2;
 		}
 	}
-	
+
 	public Laser tirer() {
 		double angle=calculerAngleTir(savoirViser(listeBalle));
-		System.out.println(savoirViser(listeBalle)+" angle");
+		calculerBalleAViser();
+		System.out.println(savoirViser(listeBalle)+" anglecxczc");
 		return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angle, new Vecteur(0,0.5)));
 		//return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAleatoire(), new Vecteur(0,0.5)));
 
 	}
-	
+
 	public int angleAleatoire() {
 		return (int) (Math.floor(Math.random() * (75 - 45 +1)) + 45);
 	}
-	
+
 	public void ajouterListesObstacles(ArrayList<Balle> listeBalle) {
 		this.listeBalle=listeBalle;
-		
+
 	}
-	
+
 	public Vecteur savoirViser(ArrayList<Balle> listeBalle) {
 		if(listeBalle.size()>0) {
 			//System.out.println("je suis dans le if");
@@ -96,56 +98,106 @@ public class OrdinateurNiveau3 implements Dessinable {
 				}
 				avant++;
 			}
-		//	System.out.println(reponse+" allo");
+			listeDistance.clear();
+			//	System.out.println(reponse+" allo");
 			return reponse;
 		}else
 			return new Vecteur(0,1);
 
-		
+
 	}
-	
-	public Vecteur calculerViserAvecVitesse(Vecteur distance, Vecteur vitesse) {
+
+	public Balle calculerBalleAViser() {
 		Balle balleAViser;
-		if(listeBalle.size()>0) {
+		if(listeBalle.size()>0) 
 			//System.out.println("je suis dans le if");
 			for(Balle balle: listeBalle) {
 				listeDistance.add(new Vecteur((balle.getPosition().soustrait(getPosition()).getX()),(balle.getPosition().soustrait(getPosition()).getY())));
-			
+
 			}
 
-			int avant=0;
-			Vecteur reponse= listeDistance.get(avant);
-			balleAViser=listeBalle.get(avant);
-			for(int i =1; i<listeDistance.size();i++) {
-				if(listeDistance.get(i).module()<listeDistance.get(avant).module()) {
-					reponse=listeDistance.get(i);
-					balleAViser=listeBalle.get(i);
-					
-				}
-				avant++;
+		int avant=0;
+		balleAViser=listeBalle.get(avant);
+		Vecteur reponse= listeDistance.get(avant);
+		for(int i =1; i<listeDistance.size();i++) {
+			if(listeDistance.get(i).module()<listeDistance.get(avant).module()) {
+				balleAViser=listeBalle.get(i);
+				reponse=listeDistance.get(i);
+
 			}
-		//	System.out.println(reponse+" allo");
-			return reponse;
-		}else
-			return new Vecteur(0,1);
-		
-		
-		
+			avant++;
+			listeDistance.clear();
+		}
+		System.out.println("position de la vrai balle "+balleAViser.getPosition());
+		simulerMouvementBalle(balleAViser, reponse);
+
+		return balleAViser;
+
+
+
 		//return new Vecteur(0,0);
 	}
+
 	
+	
+	//doit on dessiner un objet pour quil ait une aire 
+	
+	
+	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
+		double deltaT=0.6;
+		Balle balleSimuler=viser;
+		balleSimuler.unPasEuler(deltaT);
+		System.out.println("position de la balle simulee "+balleSimuler.getPosition());
+		double angleAViser=calculerAngleTir(distance);
+		Laser test= new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
+		simulerMouvementLaser(test);
+		for(int i=0;i<50; i++) {
+			//System.out.println("je suis cici");
+			if(!verifierCollisionBalleEtLaserSimulation(balleSimuler, test)) {
+				test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser+i, new Vecteur(0,0.5));
+			}
+			else {
+				System.out.println("les simules se sont touches");
+				break;
+			}
+		}
+	}
+
+	public void simulerMouvementLaser(Laser laser) {
+		laser.move();
+		System.out.println("position du laser "+laser.getPosition());
+	}
+
+	public boolean verifierCollisionBalleEtLaserSimulation(Balle balle, Laser laser) {
+		if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
+			return true;
+
+		}else
+
+			return false;
+	}
+
+	private boolean intersection(Area aire1, Area aire2) {
+		Area aireInter = new Area(aire1);
+		aireInter.intersect(aire2);
+		if(!aireInter.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
 	public double calculerAngleTir(Vecteur distance) {
 		//System.out.println("la distance a faire est de " + distance);
 		//System.out.println("calcuer "+  Math.toDegrees(Math.atan(((-distance.getY()/distance.getX())))));
 		double resultat= Math.atan(((-distance.getY()/distance.getX()))); // si jamais le calcul donne la valeur negative
-		
+
 		if(resultat<0) {
 			System.out.println(90.0+90.0+Math.toDegrees(resultat));
 			return 90.0+90.0+Math.toDegrees(resultat);
 		}else
-		     return Math.toDegrees(resultat);
+			return Math.toDegrees(resultat);
 	}
-	
+
 	public double getVitesseNiveau1() {
 		return vitesseNiveau2;
 	}
@@ -176,7 +228,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	public boolean isEnCoursAnimation() {
 		return enCoursAnimation;
 	}
-	
+
 	public void setEnCoursAnimation(boolean enCoursAnimation) {
 		this.enCoursAnimation = enCoursAnimation;
 	}
