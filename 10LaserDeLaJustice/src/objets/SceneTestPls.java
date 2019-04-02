@@ -240,15 +240,15 @@ public class SceneTestPls extends JPanel implements Runnable {
 		//ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		ordi3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
-
-		if(enMouvement) {
+		tracerVecteurGraphique(g2d);
+		/*if(enMouvement) {
 			//dessinerTracerAngle(g2d);
 			g2d.setColor(Color.RED);
 			Path2D.Double trace= new Path2D.Double();
 			trace.moveTo(character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO());
 			trace.lineTo(character.getPositionX()+character.getLARGEUR_PERSO()/2+2*Math.cos(Math.toRadians(angle)), HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()-2*Math.sin(Math.toRadians(angle)));
 			g2d.draw(mat.createTransformedShape(trace));
-		}
+		}*/
 
 	}//fin paintComponent
 
@@ -257,6 +257,17 @@ public class SceneTestPls extends JPanel implements Runnable {
 		g.draw(arg0);
 	}*/
 
+	private void tracerVecteurGraphique(Graphics2D g) {
+		if(enMouvement) {
+			g.setColor(Color.red);
+			Path2D.Double trace= new Path2D.Double();
+			trace.moveTo(character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO());
+			trace.lineTo(character.getPositionX()+character.getLARGEUR_PERSO()/2+2*Math.cos(Math.toRadians(angle)), HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()-2*Math.sin(Math.toRadians(angle)));
+			g.draw(mat.createTransformedShape(trace));
+		}
+	}
+
+	
 	private void calculerUneIterationPhysique() {
 
 
