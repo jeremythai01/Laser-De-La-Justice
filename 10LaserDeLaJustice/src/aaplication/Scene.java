@@ -684,7 +684,7 @@ public class Scene extends JPanel implements Runnable {
 	 * le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
-		listeMiroirePlan.add(new MiroirPlan(5, 0, 0));
+		listeMiroirePlan.add(new MiroirPlan(new Vecteur (0,0), 0));
 		repaint();
 
 	}

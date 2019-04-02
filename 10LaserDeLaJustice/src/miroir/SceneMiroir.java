@@ -55,7 +55,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private int nbCollison = 0;
 
 
-
+	private final double ANGLE_DE_MIROIR = 90;
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private MiroirPlan plan;
@@ -89,7 +89,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 				if(miroirPlan == true && miroirConcave == false && miroirConvexe == false) {
 					double posX = e.getX()/modele.getPixelsParUniteX();
 					double posY = e.getY()/modele.getPixelsParUniteY();
-					plan = new MiroirPlan (posX,posY, 0);
+					plan = new MiroirPlan (new Vecteur (posX,posY), ANGLE_DE_MIROIR);
 					listeMiroirPlan.add(plan);
 					repaint();
 				}
@@ -309,8 +309,8 @@ public class SceneMiroir extends JPanel implements Runnable {
 			boolean collision = false;
 			while(n< listeMiroirConvexe.size() && !collision) {
 				if(intersection(listeMiroirConvexe.get(n).getAireMiroirConvexe(), laser.getLaserAire())) {
-					laser.setLigneDebutX(laser.getPosition().getX());
-					laser.setLigneFinY(laser.getPosition().getY());
+					//laser.setLigneDebutX(laser.getPosition().getX());
+					//laser.setLigneFinY(laser.getPosition().getY());
 					
 				//	laser.setAngleTir(-45);
 					collision = true;
@@ -324,6 +324,21 @@ public class SceneMiroir extends JPanel implements Runnable {
 					Vecteur e = v.multiplie(-1);
 					double angle2 =  Math.toDegrees(Math.atan( (v.additionne(normal.multiplie(2*(e.prodScalaire(normal)))).getY() / ((v.additionne(normal.multiplie(2*(e.prodScalaire(normal))))).getX()))));
 					laser.setAngleTir(angle2);
+					
+					/*
+					Vecteur intersection = ???;
+					
+					Vecteur normal = intersection.soustrait(listeMiroirConvexe.get(n).getPosition()).normalise();
+					Vecteur reflexion = laser.getVitesse().additionne(normal.multiplie(2.0*laser.getVitesse().multiplie(-1.0).prodScalaire(normal)));
+					Vecteur nouvelle_pointe = intersection.additionne(reflexion.normalise().multiplie(laser.getLONGUEUR()));
+					laser.setVitesse(reflexion);
+					
+					// position début
+					laser.setPosition(intersection);
+					
+					// position pointe
+					laser.setPositionFIN(nouvelle_pointe);
+					*/
 					
 				}
 				n++;
