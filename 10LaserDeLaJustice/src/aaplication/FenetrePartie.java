@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 public class FenetrePartie extends JFrame {
 
 	private JPanel contentPane;
-	private App10LaserDeLaJustice jeu;
+	private FenetreJeu jeu;
 	private static boolean isOptionModifie = true;
 
 	/**
@@ -60,7 +60,7 @@ public class FenetrePartie extends JFrame {
 		JButton btnCharge = new JButton("Charger une partie");
 		btnCharge.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jeu = new App10LaserDeLaJustice(false); // isNouvelle = false
+				jeu = new FenetreJeu(false); // isNouvelle = false
 				jeu.isNouvelle(false);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();
@@ -75,7 +75,7 @@ public class FenetrePartie extends JFrame {
 		JButton btnNouv = new JButton("Nouvelle partie");
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jeu = new App10LaserDeLaJustice(true);  // isNouvelle = true
+				jeu = new FenetreJeu(true);  // isNouvelle = true
 				jeu.isNouvelle(true);
 				jeu.setNouveauOption(true);
 				jeu.setVisible(true);
