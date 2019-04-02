@@ -70,7 +70,26 @@ public class Balle implements Dessinable, Serializable {
 			break;
 		}
 	}
+	
 
+	public Balle ( Balle balle ) {
+		this.diametre = balle.getDiametre();
+		this.accel = balle.getAccel();
+		this.masse = balle.getMasse();
+		this.vInitY = balle.getvInitY();
+		this.position = balle.getPosition();
+		this.vitesse = balle.getVitesse();
+		this.forceGravi = balle.getForceGravi();
+		this.type = balle.getType();
+		this.premiereCollision = balle.isPremiereCollision();
+		this.toucheSolPremiereFois = balle.isToucheSolPremiereFois();
+	}
+
+
+
+	public boolean isToucheSolPremiereFois() {
+		return toucheSolPremiereFois;
+	}
 
 
 	/**
@@ -433,7 +452,10 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
-	
+
+	public double getvInitY() {
+		return vInitY;
+	}
 	
 	
 }//fin classe
