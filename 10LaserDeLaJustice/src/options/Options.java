@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
-import aaplication.App10LaserDeLaJustice;
+import aaplication.FenetreJeu;
 /**
  * Cette classe permet a l'utilisateur de modifier les parametres du jeu. 
  * Ces parametres sont le niveau, la gravite, les touches de clavier et la couleur du rayon 
@@ -53,7 +53,7 @@ public class Options extends JFrame {
 		this.dansScene = dansScene;
 	}
 
-	private App10LaserDeLaJustice jeu;
+	private FenetreJeu jeu;
 	private boolean isModifie = false;
 
 
@@ -170,7 +170,7 @@ public class Options extends JFrame {
 				if(dansScene) {
 					System.out.println("dans scene option");
 					ecritureFichier();
-					jeu = new App10LaserDeLaJustice (false);
+					jeu = new FenetreJeu (false);
 					jeu.setVisible(true);
 				}
 				ecritureFichier();

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -690,7 +691,7 @@ public class Scene extends JPanel implements Runnable {
 	 * le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
-		listeMiroirePlan.add(new MiroirPlan(5, 0, 0));
+		listeMiroirePlan.add(new MiroirPlan(new Vecteur (0,0), 0));
 		repaint();
 
 	}
@@ -855,11 +856,14 @@ public class Scene extends JPanel implements Runnable {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				//System.out.println("wheel rotation:"+ arg0.getWheelRotation());
-				if(arg0.getWheelRotation()==-1 && (valeurAngleRoulette<=180)&&(valeurAngleRoulette>=3)) {
-					valeurAngleRoulette-=0.5;
-					setAngle(valeurAngleRoulette);
+				if(arg0.getWheelRotation()==-1 && (valeurAngleRoulette<=180.0999999)&&(valeurAngleRoulette>=0)) {
+					valeurAngleRoulette-=0.1;
+					setAngle(arrondirChiffre(valeurAngleRoulette, 2));
 					System.out.println(valeurAngleRoulette);
-				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<=180)&&(valeurAngleRoulette>=3)) {
+				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180.099999)&&(valeurAngleRoulette>0)) {
+					valeurAngleRoulette+=0.1;
+					setAngle(arrondirChiffre(valeurAngleRoulette, 2));
+				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)&&(valeurAngleRoulette>3)) {
 					valeurAngleRoulette+=0.5;
 					setAngle(valeurAngleRoulette);
 					System.out.println();
@@ -883,7 +887,17 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-
+	private double arrondirChiffre(double nb, int chiffreALaisser) {
+		DecimalFormat df = new DecimalFormat ( ) ;
+		df.setMaximumFractionDigits (chiffreALaisser) ; //arrondi à 2 chiffres apres la virgules
+		df.setMinimumFractionDigits ( chiffreALaisser ) ;
+		df.setDecimalSeparatorAlwaysShown ( false ) ; 
+		//System.out.println(String.format("%.3f",  987.765455677));
+		double nb2 = ((int)(nb*1000))/1000;
+		System.out.println(nb2);
+		return  nb2;
+	
+	}
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -976,6 +990,8 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
 	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
 	 */
+	
+	
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage

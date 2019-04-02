@@ -44,7 +44,7 @@ public class FenetreGameOver extends JFrame {
 		JButton btnRessayer = new JButton("R\u00E9essayer");
 		btnRessayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FenetreDemarrage demarrage = new FenetreDemarrage();
+				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 						demarrage.setVisible(true);
 						setVisible(false);
 			}
