@@ -169,7 +169,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 
 	public void simulerMouvementLaser(Laser laser) {
 		laser.move();
-		System.out.println("position du laser "+laser.getPosition());
+		System.out.println("position du laser "+laser.getPositionHaut());
 	}
 
 	public boolean verifierCollisionBalleEtLaserSimulation(Balle balle, Laser laser) {

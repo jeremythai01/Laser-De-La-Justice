@@ -309,7 +309,7 @@ public class Scene extends JPanel implements Runnable {
 		try {
 
 			for (Laser laser : listeLasers) {
-				if (laser.getLigneFinY() <= 0)
+				if (laser.getPositionHaut().getY() <= 0)
 					listeLasers.remove(laser);
 				g2d.setStroke(new BasicStroke(3));
 				laser.dessiner(g2d, mat, 0, 0);

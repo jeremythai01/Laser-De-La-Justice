@@ -18,7 +18,7 @@ import interfaces.Dessinable;
 
 /**
  * Classe Laser: représentation sommaire d'un laser à l'aide d'un simple trace.
- * Un laser mémorise sa position, sa longueur et son angle
+ * Un laser mémorise sa positionHaut, sa longueur et son angle
  * 
  * @author Arnaud Lefebvre
  * @author Jeremy Thai
@@ -27,61 +27,51 @@ import interfaces.Dessinable;
  */
 public class Laser implements Dessinable {
 	private final double LONGUEUR = 1.5;
-	private Vecteur position, vitesse;
+	private Vecteur positionHaut, vitesse;
 	private double angleTir;
-	private Vecteur accel;
 	private Path2D.Double trace;
 	private Color couleurLaser = null;
 	private boolean isCouleurPerso = false;
-	private double ligneFinY;
 
-	public void setLigneFinY(double ligneFinY) {
-		this.ligneFinY = ligneFinY;
-	}
+	private Vecteur positionBas ;
+	
 
-	private double ligneDebutX;
-
-	Random rand = new Random();
+	private Random rand = new Random();
 
 	/**
-	 * Constructeur du laser dont la position, la vitesse ainsi que l'angle de tir
+	 * Constructeur du laser dont la positionHaut, la vitesse ainsi que l'angle de tir
 	 * sont specifies
 	 * 
-	 * @param position, la position de depart du laser
+	 * @param positionHaut, la positionHaut de depart du laser
 	 * @param angleTir, l'angle selon lequel le laser est tire
 	 * @param vitesse, la vitesse du laser
 	 */
 	// auteur Arnaud Lefebvre
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse) {
 
-		this.position = position;
+		this.positionHaut = position;
 		this.angleTir = angleTir;
 		this.vitesse = vitesse;
-		accel = new Vecteur(0, 0);
-		ligneFinY = position.getY();
-		ligneDebutX = position.getX();
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = false;
-
+		
+		
 	}
 
 	// Par Miora
 	/**
-	 * Constructeur du laser dont la position, la couleur personnalisé du laser, la
+	 * Constructeur du laser dont la positionHaut, la couleur personnalisé du laser, la
 	 * vitesse ainsi que l'angle de tir sont specifies
 	 * 
-	 * @param position: la position de depart du laser
+	 * @param positionHaut: la positionHaut de depart du laser
 	 * @param angleTir: l'angle selon lequel le laser est tire
 	 * @param vitesse: la vitesse du laser
 	 */
 	public Laser(Vecteur position, double angleTir, Vecteur vitesse, Color couleurLaser) {
-		this.position = position;
+		this.positionHaut = position;
 		this.angleTir = angleTir;
 		this.vitesse = vitesse;
 		this.couleurLaser = couleurLaser;
-		accel = new Vecteur(0, 0);
-		ligneFinY = position.getY();
-		ligneDebutX = position.getX();
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = true;
 		System.out.println("2e constructeur");
@@ -100,9 +90,15 @@ public class Laser implements Dessinable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		trace = new Path2D.Double();
 		AffineTransform matLocal = new AffineTransform(mat);
-		trace.moveTo(ligneDebutX + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
-				ligneFinY - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
-		trace.lineTo(ligneDebutX, ligneFinY);
+		
+		
+		trace.moveTo(positionHaut.getX(), positionHaut.getY());
+		
+		trace.lineTo(positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
+	
+		positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		changerCouleurPerso(g2d);
 
@@ -146,45 +142,16 @@ public class Laser implements Dessinable {
 	}
 
 	/**
-	 * retourne le point final y du trace
-	 * 
-	 * @return ligneFinY le point final y du trace
-	 */
-	// auteur Jeremy Thai
-	public double getLigneFinY() {
-		return ligneFinY;
-	}
-
-	/**
 	 * 
 	 */
 	// auteur Jeremy Thai
 	public void move() {
-		ligneFinY -= vitesse.getY();
-		ligneDebutX += vitesse.getX();
-		position = new Vecteur(ligneDebutX, ligneFinY);
-		// System.out.println("position de laser quand il bouge" + ligneDebutX +" "+
-		// ligneFinY) ;
-	}
-
-	/**
-	 * retourne le point initial en x du trace
-	 * 
-	 * @return ligneDebutX retourne le point initial en x du trace
-	 */
-	// auteur Jeremy Thai
-	public double getLigneDebutX() {
-		return ligneDebutX;
-	}
-
-	/**
-	 * Modifie le point initial en x du trace par celle en parametre
-	 * 
-	 * @param ligneDebutX le point initial en x du trace par celle en parametre
-	 */
-	// auteur Jeremy Thai
-	public void setLigneDebutX(double ligneDebutX) {
-		this.ligneDebutX = ligneDebutX;
+		
+		positionHaut.setY(positionHaut.getY()-vitesse.getY());
+		positionHaut.setX(positionHaut.getX() + vitesse.getX());
+		
+		positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 	}
 
 	/**
@@ -195,8 +162,8 @@ public class Laser implements Dessinable {
 	// auteur Jeremy Thai
 	public Area getLaserAire() { // pour detecter lintersection
 		AffineTransform matLocal = new AffineTransform(); // pourquoi mat ne fonctionne pas ?
-		Rectangle2D.Double rect = new Rectangle2D.Double(ligneDebutX, ligneFinY, LONGUEUR, 0.01);
-		matLocal.rotate(-Math.toRadians(angleTir), ligneDebutX, ligneFinY);
+		Rectangle2D.Double rect = new Rectangle2D.Double(positionHaut.getX(), positionHaut.getY(), LONGUEUR, 0.01);
+		matLocal.rotate(-Math.toRadians(angleTir), positionHaut.getX(), positionHaut.getY());
 		return new Area(matLocal.createTransformedShape(((rect))));
 		//
 	}
@@ -211,23 +178,39 @@ public class Laser implements Dessinable {
 	}
 
 	/**
-	 * Retourne la position du laser @return, le vecteur de la position du laser
+	 * Retourne la positionHaut du laser @return, le vecteur de la positionHaut du laser
 	 */
 	// auteur Arnaud Lefebvre
-	public Vecteur getPosition() {
-		// return new Vecteur (position.getX(),position.getY());
-		return new Vecteur(ligneDebutX + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
-				ligneFinY - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
+	public Vecteur getPositionBas() {
+		// return new Vecteur (positionHaut.getX(),positionHaut.getY());
+		return new Vecteur(positionHaut.getX() - (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+				positionHaut.getY() + (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
+	}
+	
+	/**
+	 * Retourne la positionHaut du laser @return, le vecteur de la positionHaut du laser
+	 */
+	// auteur Arnaud Lefebvre
+	public Vecteur getPositionHaut() {
+		return positionHaut;
 	}
 
+	public void setPositionBas(Vecteur pos) {
+		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
+		this.positionBas = newVec;
+	}
+	
+	
+
 	/**
-	 * Permet de modifier la position du laser
+	 * Permet de modifier la positionHaut du laser
 	 * 
-	 * @param position, la nouvelle position desiree en vecteur
+	 * @param positionHaut, la nouvelle positionHaut desiree en vecteur
 	 */
 	// auteur Arnaud Lefebvre
-	public void setPosition(Vecteur position) {
-		this.position = position;
+	public void setPositionHaut(Vecteur pos) {
+		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
+		this.positionHaut = newVec;
 	}
 
 	/**
@@ -245,7 +228,8 @@ public class Laser implements Dessinable {
 	 */
 	// auteur Arnaud Lefebvre
 	public void setVitesse(Vecteur vitesse) {
-		this.vitesse = vitesse;
+		Vecteur newVec = new Vecteur(vitesse.getX(), vitesse.getY());
+		this.vitesse = newVec;
 	}
 
 	/**
@@ -265,26 +249,6 @@ public class Laser implements Dessinable {
 	public void setAngleTir(double angleTir) {
 		this.angleTir = angleTir;
 		updaterAngleVitesse(angleTir);
-	}
-
-	/**
-	 * retourne lacceleration du laser
-	 * 
-	 * @return accel acceleration du laser
-	 */
-	// auteur Jeremy Thai
-	public Vecteur getAccel() {
-		return accel;
-	}
-
-	/**
-	 * modifie l'acceleration du laser par celle en parametre
-	 * 
-	 * @param accel acceleration du laser
-	 */
-	// auteur Jeremy Thai
-	public void setAccel(Vecteur accel) {
-		this.accel = accel;
 	}
 
 	/**

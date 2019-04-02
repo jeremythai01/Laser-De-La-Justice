@@ -189,7 +189,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 			for(Laser laser : listeLasers) { 
 
-				if(laser.getLigneFinY() <= 0 ) {
+				if(laser.getPositionHaut().getY() <= 0 ) {
 					listeLasers.remove(laser);
 				}
 				g2d.setStroke( new BasicStroke(3));

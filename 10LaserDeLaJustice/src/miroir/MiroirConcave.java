@@ -74,7 +74,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	 */
 	public Laser calculRayonReflechi(Laser laser, Area miroireAire, MiroirConcave miroire) throws Exception {
 
-		Vecteur rayonIncident = laser.getPosition();
+		Vecteur rayonIncident = laser.getPositionHaut();
 		Vecteur normal = collisionAvecMiroireLaser(laser, miroireAire, miroire);
 		//Vecteur rayonIncidentInverse = calculRayonIncidentInverse(laser);
 		Vecteur rayonReflechi;
@@ -132,7 +132,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	 * @return un vecteur qui a la direction opposé du laser 
 	 */
 	public Vecteur calculRayonIncidentInverse(Laser laser) {
-		return new Vecteur(-laser.getPosition().getX(), -laser.getPosition().getY());
+		return new Vecteur(-laser.getPositionHaut().getX(), -laser.getPositionHaut().getY());
 
 	}
 /**
@@ -143,8 +143,8 @@ public class MiroirConcave extends JPanel implements Dessinable {
  */
 	public Vecteur calculNormal(Laser laser, MiroirConcave miroire) {
 
-		return new Vecteur(laser.getPosition().getX() - miroire.getPosition().getX(),
-				laser.getPosition().getY() - miroire.getPosition().getY());
+		return new Vecteur(laser.getPositionHaut().getX() - miroire.getPosition().getX(),
+				laser.getPositionHaut().getY() - miroire.getPosition().getY());
 
 	}
 	

@@ -136,7 +136,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 		for(Laser laser : listeLasers) { 
-			if(laser.getLigneFinY() <= 0 ) {
+			if(laser.getPositionHaut().getY() <= 0 ) {
 				listeLasers.remove(laser);
 			}
 			g2d.setStroke( new BasicStroke(3));
@@ -309,8 +309,6 @@ public class SceneMiroir extends JPanel implements Runnable {
 			boolean collision = false;
 			while(n< listeMiroirConvexe.size() && !collision) {
 				if(intersection(listeMiroirConvexe.get(n).getAireMiroirConvexe(), laser.getLaserAire())) {
-					laser.setLigneDebutX(laser.getPosition().getX());
-					laser.setLigneFinY(laser.getPosition().getY());
 					
 				//	laser.setAngleTir(-45);
 					collision = true;
@@ -319,12 +317,11 @@ public class SceneMiroir extends JPanel implements Runnable {
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
 					
 					//n vecteur normal au miroir
-					Vecteur normal = listeMiroirConvexe.get(n).getNormalPosition(laser.getLigneDebutX(), laser.getLigneFinY()).normalise();
+					Vecteur normal = listeMiroirConvexe.get(n).getNormalPosition(laser.getPositionHaut().getX(), laser.getPositionHaut().getY()).normalise();
 					System.out.println("la normal"  + normal);
 					Vecteur e = v.multiplie(-1);
 					double angle2 =  Math.toDegrees(Math.atan( (v.additionne(normal.multiplie(2*(e.prodScalaire(normal)))).getY() / ((v.additionne(normal.multiplie(2*(e.prodScalaire(normal))))).getX()))));
 					laser.setAngleTir(angle2);
-					
 				}
 				n++;
 			}
@@ -349,7 +346,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
 					//n vecteur normal au miroir
-					Vecteur n = miroirC.getNormalPosition(laser.getPosition()).normalise();	
+					Vecteur n = miroirC.getNormalPosition(laser.getPositionHaut()).normalise();	
 					repaint();
 
 					//e = -v

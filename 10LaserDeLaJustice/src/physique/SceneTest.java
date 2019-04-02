@@ -186,7 +186,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 		for(Laser laser : listeLasers) { 
 
-			if(laser.getLigneFinY() <= 0 ) 
+			if(laser.getPositionHaut().getY() <= 0 ) 
 				listeLasers.remove(laser);
 		}
 
