@@ -74,11 +74,11 @@ public class Balle implements Dessinable, Serializable {
 
 	public Balle ( Balle balle ) {
 		this.diametre = balle.getDiametre();
-		this.accel = balle.getAccel();
+		setAccel( balle.getAccel());
 		this.masse = balle.getMasse();
 		this.vInitY = balle.getvInitY();
-		this.position = balle.getPosition();
-		this.vitesse = balle.getVitesse();
+		setPosition( balle.getPosition() );
+		setVitesse(balle.getVitesse());
 		this.forceGravi = balle.getForceGravi();
 		this.type = balle.getType();
 		this.premiereCollision = balle.isPremiereCollision();
