@@ -859,7 +859,7 @@ public class Scene extends JPanel implements Runnable {
 					valeurAngleRoulette-=0.5;
 					setAngle(valeurAngleRoulette);
 					System.out.println(valeurAngleRoulette);
-				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<=180)&&(valeurAngleRoulette>=3)) {
+				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)&&(valeurAngleRoulette>3)) {
 					valeurAngleRoulette+=0.5;
 					setAngle(valeurAngleRoulette);
 					System.out.println();
