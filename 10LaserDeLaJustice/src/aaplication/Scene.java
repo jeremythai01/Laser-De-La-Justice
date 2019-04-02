@@ -14,6 +14,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -129,6 +131,8 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	private int toucheTir = 32;
+	
+	private boolean enMouvement=false;
 
 	// Par Jeremy
 	/**
@@ -358,6 +362,9 @@ public class Scene extends JPanel implements Runnable {
 
 		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 7.5, HAUTEUR_DU_MONDE - 1);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		
+		tracerVecteurGraphique(g2d);
+		
 	}
 
 	/**
@@ -849,26 +856,48 @@ public class Scene extends JPanel implements Runnable {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				//System.out.println("wheel rotation:"+ arg0.getWheelRotation());
-				if(arg0.getWheelRotation()==-1 && (valeurAngleRoulette<=180)&&(valeurAngleRoulette>0)) {
-					valeurAngleRoulette--;
-					setAngle(valeurAngleRoulette);
+				if(arg0.getWheelRotation()==-1 && (valeurAngleRoulette<=180.0999999)&&(valeurAngleRoulette>=0)) {
+					valeurAngleRoulette-=0.1;
+					setAngle(arrondirChiffre(valeurAngleRoulette, 2));
 					System.out.println(valeurAngleRoulette);
-				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)&&(valeurAngleRoulette>=0)) {
-					valeurAngleRoulette++;
+				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180.099999)&&(valeurAngleRoulette>0)) {
+					valeurAngleRoulette+=0.1;
+					setAngle(arrondirChiffre(valeurAngleRoulette, 2));
+				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)&&(valeurAngleRoulette>3)) {
+					valeurAngleRoulette+=0.5;
 					setAngle(valeurAngleRoulette);
 					System.out.println();
 					System.out.println(valeurAngleRoulette);
 				}
 
-
+				enMouvement=true;
 			}
 		});
 
 		repaint();
 	}
+	
+	private void tracerVecteurGraphique(Graphics2D g) {
+		if(enMouvement) {
+			g.setColor(Color.red);
+			Path2D.Double trace= new Path2D.Double();
+			trace.moveTo(principal.getPositionX()+principal.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-principal.getLONGUEUR_PERSO());
+			trace.lineTo(principal.getPositionX()+principal.getLARGEUR_PERSO()/2+2*Math.cos(Math.toRadians(angle)), HAUTEUR_DU_MONDE-principal.getLONGUEUR_PERSO()-2*Math.sin(Math.toRadians(angle)));
+			g.draw(mat.createTransformedShape(trace));
+		}
+	}
 
-
-
+	private double arrondirChiffre(double nb, int chiffreALaisser) {
+		DecimalFormat df = new DecimalFormat ( ) ;
+		df.setMaximumFractionDigits (chiffreALaisser) ; //arrondi à 2 chiffres apres la virgules
+		df.setMinimumFractionDigits ( chiffreALaisser ) ;
+		df.setDecimalSeparatorAlwaysShown ( false ) ; 
+		//System.out.println(String.format("%.3f",  987.765455677));
+		double nb2 = ((int)(nb*1000))/1000;
+		System.out.println(nb2);
+		return  nb2;
+	
+	}
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -961,6 +990,8 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
 	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
 	 */
+	
+	
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
