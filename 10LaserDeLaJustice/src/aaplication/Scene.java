@@ -77,7 +77,7 @@ public class Scene extends JPanel implements Runnable {
 
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
-	private double valeurAngleRoulette =90;
+	private float valeurAngleRoulette =90;
 
 	private final int TOUCHE_GAUCHE_INI = 37;
 	private final int TOUCHE_DROITE_INI = 39;
@@ -119,7 +119,7 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
 	private Coeurs coeurs = new Coeurs(nombreVies);
-	private Prisme prisme = new Prisme (new Vecteur (10,10));
+	private Prisme prisme = new Prisme (new Vecteur (1,1));
 	
 	private Echelle echelle;
 
@@ -153,6 +153,7 @@ public class Scene extends JPanel implements Runnable {
 		
 		lireFond();
 
+		System.out.println("Salut je mappelle Arezki et je suis un fdp");
 		angle = valeurAngleRoulette;
 
 		//pistoletPrincipal = new Pistolet();
@@ -857,15 +858,13 @@ public class Scene extends JPanel implements Runnable {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				//System.out.println("wheel rotation:"+ arg0.getWheelRotation());
-				if(arg0.getWheelRotation()==-1 && (valeurAngleRoulette<=180.0999999)&&(valeurAngleRoulette>=0)) {
-					valeurAngleRoulette-=0.1;
-					setAngle(arrondirChiffre(valeurAngleRoulette, 2));
+				if(arg0.getWheelRotation()==-1 &&(valeurAngleRoulette>=0)) {
+					valeurAngleRoulette-=0.05;
+					setAngle(valeurAngleRoulette);
 					System.out.println(valeurAngleRoulette);
-				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180.099999)&&(valeurAngleRoulette>0)) {
-					valeurAngleRoulette+=0.1;
-					setAngle(arrondirChiffre(valeurAngleRoulette, 2));
-				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)&&(valeurAngleRoulette>3)) {
-					valeurAngleRoulette+=0.5;
+				
+				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)) {
+					valeurAngleRoulette+=0.05;
 					setAngle(valeurAngleRoulette);
 					System.out.println();
 					System.out.println(valeurAngleRoulette);
@@ -888,17 +887,26 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	private double arrondirChiffre(double nb, int chiffreALaisser) {
-		DecimalFormat df = new DecimalFormat ( ) ;
-		df.setMaximumFractionDigits (chiffreALaisser) ; //arrondi à 2 chiffres apres la virgules
-		df.setMinimumFractionDigits ( chiffreALaisser ) ;
-		df.setDecimalSeparatorAlwaysShown ( false ) ; 
-		//System.out.println(String.format("%.3f",  987.765455677));
-		double nb2 = ((int)(nb*1000))/1000;
-		System.out.println(nb2);
-		return  nb2;
 	
+	private Vecteur CollisionLaserPrisme() {
+		boolean collisionLaserPrisme = false;
+		Vecteur collision = new Vecteur();
+		while(!collisionLaserPrisme) {
+		for(Prisme pris : listePrisme) {
+			for(Laser laser : listeLasers) {
+				if(pris.getAirPrisme().contains(laser.getPositionHaut().getX(),laser.getPositionHaut().getY())) {
+					collisionLaserPrisme = true;
+					collision = laser.getPositionHaut();
+					
+				}
+			}
+		}
 	}
+		return collision;
+	}
+	
+	
+	
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,

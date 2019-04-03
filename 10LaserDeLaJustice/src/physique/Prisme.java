@@ -1,10 +1,13 @@
 package physique;
 
 import java.awt.Color;
+import java . awt.Polygon ; 
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
+import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -27,49 +30,58 @@ public class Prisme extends JPanel implements Dessinable{
 	
 	
 	
-	private Vecteur position;
+	
 	private int angle; 
+	private int DEFAULT_ANGLE = 0;
+	
 	private Laser laser;
 	private Path2D triangle;
+
+
+	private Vecteur p1;
+	private Vecteur p2;
+	private Vecteur p3;
 	
 	
+	private Line2D ligneBase;
+	private Line2D ligneCote1;
+	private Line2D ligneCote2;
+	private Polygon triangles;
 	
 	
 	public Prisme(Vecteur position) {
-		this.position = position;
-		this.angle = 90;
+		p1 = position;
+		p2 = new Vecteur(position.getX()+2, position.getY());
+		p3 = new Vecteur ((p2.getX()+p1.getX())/2,position.getY()+1);
+
 	}
 	
 
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		/*
-		triangle.moveTo(position.getX(), position.getY());
-		triangle.lineTo(position.getX()+2, position.getY());
-		triangle.moveTo((position.getX()+2)/2, position.getY()+2);
-		triangle.closePath();
+		//triangles = new Polygon(p, ypoints, npoints);
+		g.setColor(Color.RED); 
+		
+		 int [] pointsX =  {(int)p1.getX(),(int)p2.getX(),(int)p3.getX()};
+		 int [] pointsY =  {(int)p1.getY(),(int)p2.getY(),(int)p3.getY()};
 		// Demi cercle plein
-		g.draw(matLocal.createTransformedShape(triangle));
-*/
+		 triangles = new Polygon(pointsX, pointsY, 3);
+		 matLocal.rotate(Math.toRadians(DEFAULT_ANGLE), p1.getX(), p1.getY());
+		g.draw(matLocal.createTransformedShape(triangles));
 
 	}
-
 	
 	
-
-	public Vecteur getPosition() {
-		return position;
+	public Area getAirPrisme() {
+		return new Area(triangles);
 	}
-
-
-
-
-
-	public void setPosition(Vecteur position) {
-		this.position = position;
+	
+	
+	
+	public Color getCouleurLaser(Laser laser) {
+		return Color.black; //methode pour avoir la couleur du laser nest pas encore implementer
 	}
-
 
 
 
@@ -89,7 +101,14 @@ public class Prisme extends JPanel implements Dessinable{
 	
 	
 	
-	
+	public Vecteur getP1() {
+		return p1;
+	}
+
+
+	public void setP1(Vecteur p1) {
+		this.p1 = p1;
+	}
 	
 	
 	
