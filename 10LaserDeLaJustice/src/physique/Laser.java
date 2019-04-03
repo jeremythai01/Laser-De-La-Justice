@@ -126,6 +126,14 @@ public class Laser implements Dessinable {
 		}
 	}
 
+	public Color getCouleurLaser() {
+		return couleurLaser;
+	}
+
+	public void setCouleurLaser(Color couleurLaser) {
+		this.couleurLaser = couleurLaser;
+	}
+
 	/**
 	 * Methode qui permet de donner une couleur aleatoire au laser
 	 * 

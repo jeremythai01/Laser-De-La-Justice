@@ -147,9 +147,16 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 
 
 	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
-		double deltaT=0.01;
+		double deltaT;
 		balleSimuler= new Balle(viser);
-		balleSimuler.unPasEuler(2);
+		//balleSimuler.unPasEuler(0.5);
+		
+		
+		/// tu dois trouver un meilleur delta t( calculer la distance en y et trouver le temps que ca prendrait
+		deltaT=distance.getY()/0.5;
+		balleSimuler.unPasEuler(deltaT);
+		
+		
 		//System.out.println("position de la balle simulee "+balleSimuler.getPosition());
 		//double angleAViser=calculerAngleTir(distance);
 		double angleAViser=20;
@@ -162,17 +169,18 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 			if(!verifierCollisionBalleEtLaserSimulation(balleSimuler, test)) {
 				//if(enCollision==false) {
 				angleAViser+=1;
-				test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
+				
 
 
 			}
 			else {
 				System.out.println("les simules se sont touches");
-				System.exit(0);
+				//System.exit(0);
 				break;
 			}
 			//System.out.println("angle a viser dans el for="+ angleAViser);
 			//System.out.println("position du laser simule" + test.getPositionHaut());
+			test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
 			simulerMouvementLaser(test);
 		}
 		//System.out.println("angle a viser ="+ angleAViser);
@@ -184,16 +192,15 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	}
 
 	public void simulerMouvementLaser(Laser laser) {
-		//for(int i=0;i<50;i++) {
-		System.out.println("je suis ici");
+		
 		while(laser.getPositionHaut().getY()>balleSimuler.getPosition().getY()+balleSimuler.getDiametre()/2)	{
 
 			//laser.unPasEuler(0.01);
 			laser.move();
-			System.out.println("position de la balle live"+ balleSimuler.getPosition());
-			System.out.println("position du laser "+laser.getPositionHaut());
-			}}
-	//}
+			//System.out.println("position de la balle live"+ balleSimuler.getPosition());
+			//System.out.println("position du laser "+laser.getPositionHaut());
+		}
+	}	
 
 	public void essaiMouvementBalle(Balle balle) {
 		double	positionBalleX=balle.getVitesse().getX()*0.8;//dans 0.8secondes
