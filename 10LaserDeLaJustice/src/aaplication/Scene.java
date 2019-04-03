@@ -118,7 +118,7 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
 	private Coeurs coeurs = new Coeurs(nombreVies);
-	private Prisme prisme = new Prisme (new Vecteur (10,10));
+	private Prisme prisme = new Prisme (new Vecteur (1,1));
 	
 	private Echelle echelle;
 
@@ -152,6 +152,7 @@ public class Scene extends JPanel implements Runnable {
 		
 		lireFond();
 
+		System.out.println("Salut je mappelle Arezki et je suis un fdp");
 		angle = valeurAngleRoulette;
 
 		//pistoletPrincipal = new Pistolet();
@@ -885,6 +886,25 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
+	
+	private Vecteur CollisionLaserPrisme() {
+		boolean collisionLaserPrisme = false;
+		Vecteur collision = new Vecteur();
+		while(!collisionLaserPrisme) {
+		for(Prisme pris : listePrisme) {
+			for(Laser laser : listeLasers) {
+				if(pris.getAirPrisme().contains(laser.getPositionHaut().getX(),laser.getPositionHaut().getY())) {
+					collisionLaserPrisme = true;
+					collision = laser.getPositionHaut();
+					
+				}
+			}
+		}
+	}
+		return collision;
+	}
+	
+	
 	
 	// Miora
 	/**
