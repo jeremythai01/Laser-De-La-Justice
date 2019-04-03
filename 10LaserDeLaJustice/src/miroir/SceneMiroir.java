@@ -280,7 +280,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
 
 					// v orientation rayon incident
-					System.out.println("vitesse laser" + (180+Math.toDegrees(Math.atan(laser.getVitesse().getX()/laser.getVitesse().getY()))));
+					System.out.println("vitesse laser " + (180+Math.toDegrees(Math.atan(laser.getVitesse().getX()/laser.getVitesse().getY()))));
 					
 					
 					//n vecteur normal au miroir
