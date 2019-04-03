@@ -9,6 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 /**
  * Cette classe permet de tester les miroirs concaves et convexes
@@ -43,7 +46,7 @@ public class AppMiroirTest extends JFrame {
 	 */
 	public AppMiroirTest() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 736, 556);
+		setBounds(100, 100, 771, 655);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -104,5 +107,18 @@ public class AppMiroirTest extends JFrame {
 		});
 		btnMiroirConcave.setBounds(585, 427, 125, 23);
 		contentPane.add(btnMiroirConcave);
+		
+		JSlider slider = new JSlider();
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				sceneMiroir.setAngleMiroir(slider.getValue());
+			}
+		});
+		slider.setValue(0);
+		slider.setPaintLabels(true);
+		slider.setPaintTicks(true);
+		slider.setMaximum(360);
+		slider.setBounds(249, 530, 256, 37);
+		contentPane.add(slider);
 	}
 }

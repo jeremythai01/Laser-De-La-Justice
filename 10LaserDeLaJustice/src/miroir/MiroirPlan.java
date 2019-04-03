@@ -1,5 +1,6 @@
 package miroir;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -21,7 +22,7 @@ public class MiroirPlan implements Dessinable {
 	
 	private double x=0, y=0, angle=0;
 	private Rectangle2D.Double miroir;
-	private AffineTransform matLocale;
+
 	private double longueur = 2; 
 	private Shape miroirTransfo;
 	private Vecteur normal;
@@ -47,13 +48,14 @@ public class MiroirPlan implements Dessinable {
 	 //Miora
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
-		matLocale = new AffineTransform(mat);
-		matLocale.rotate(angle,position.getX(),position.getY());
-		System.out.println("dessiner");
+		AffineTransform matLocale = new AffineTransform(mat);
+		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.05);
-		//miroirTransfo = matLocale.createTransformedShape(miroir);
+		miroirTransfo = matLocale.createTransformedShape(miroir);
 		//g2d.fill(miroirTransfo);
-		g2d.draw(matLocale.createTransformedShape(miroir));
+		//g2d.fill(miroirTransfo);
+		g2d.setColor(Color.yellow);
+		g2d.draw(new Area (miroirTransfo));
 	}
 	/**
 	 * Methode qui retourne aire du miroir
@@ -61,7 +63,7 @@ public class MiroirPlan implements Dessinable {
 	 //Miora
 	 */
 	public Area getAireMiroir() {
-		return new Area (miroir);
+		return new Area (miroirTransfo);
 	}
 	
 	/**

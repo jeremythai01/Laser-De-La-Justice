@@ -105,7 +105,7 @@ public class Laser implements Dessinable {
 
 		g2d.setStroke(new BasicStroke(3));
 
-		g2d.setColor(Color.black);
+		//g2d.setColor(Color.black);
 		g2d.draw(matLocal.createTransformedShape(((trace))));
 	}
 

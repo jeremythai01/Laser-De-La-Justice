@@ -55,7 +55,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private int nbCollison = 0;
 
 
-	private final double ANGLE_DE_MIROIR = 90;
+	private double ANGLE_DE_MIROIR = 45;
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private MiroirPlan plan;
@@ -405,6 +405,11 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 */
 	public void setMiroiConcave(boolean reponse) {
 		miroirConcave = reponse;
+	}
+
+	public void setAngleMiroir(int value) {
+		ANGLE_DE_MIROIR = value;
+		
 	}
 
 }
