@@ -86,7 +86,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 		personnage3 = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite,toucheTir,  "JOUEUR1");
 		personnage3.setModeSouris(true);
-		angle = 90;
+		angle = 120;
 		vitesse = new Vecteur(0.5 ,0);
 
 		
