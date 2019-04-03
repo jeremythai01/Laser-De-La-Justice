@@ -149,20 +149,22 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
 		double deltaT;
 		balleSimuler= new Balle(viser);
-		//balleSimuler.unPasEuler(0.5);
+		balleSimuler.unPasEuler(0.5);
 		
 		
 		/// tu dois trouver un meilleur delta t( calculer la distance en y et trouver le temps que ca prendrait
-		deltaT=distance.getY()/0.5;
-		balleSimuler.unPasEuler(deltaT);
+		
+		//deltaT=-distance.getY()/8.33;
+		//System.out.println(deltaT+"hwhwhwh");
+		//balleSimuler.unPasEuler(deltaT);
 		
 		
 		//System.out.println("position de la balle simulee "+balleSimuler.getPosition());
 		//double angleAViser=calculerAngleTir(distance);
-		double angleAViser=20;
+		double angleAViser=10;
 		test= new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
 		simulerMouvementLaser(test);
-		for(int i=0;i<160; i++) {
+		for(int i=0;i<170; i++) {
 			//System.out.println("je suis cici");
 		//	balleSimuler.unPasEuler(deltaT);
 			
