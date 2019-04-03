@@ -132,7 +132,7 @@ public class Personnage implements Dessinable, Serializable {
 		largeurCompo = largeurScene;
 		HAUTEUR_COMPO = hauteurScene;
 		if(premiereFois) {
-			System.out.println("je suis dans dessiner " + positionIni);
+			//System.out.println("je suis dans dessiner " + positionIni);
 			positionX = positionIni-LARGEUR_PERSO/2;
 			premiereFois = false;
 		}

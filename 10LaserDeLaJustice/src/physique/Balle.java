@@ -26,7 +26,6 @@ public class Balle implements Dessinable, Serializable {
 	private Vecteur forceGravi;
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
-	private boolean premiereCollision = false;
 
 
 
@@ -81,7 +80,6 @@ public class Balle implements Dessinable, Serializable {
 		setVitesse(balle.getVitesse());
 		this.forceGravi = balle.getForceGravi();
 		this.type = balle.getType();
-		this.premiereCollision = balle.isPremiereCollision();
 		this.toucheSolPremiereFois = balle.isToucheSolPremiereFois();
 	}
 
@@ -321,7 +319,6 @@ public class Balle implements Dessinable, Serializable {
 			listeNouvBalles.add(nouvBalle1);
 			listeNouvBalles.add(nouvBalle2);
 			liste.remove(this);
-			intervalTempsSansCollision(liste, listeNouvBalles);
 			liste.add(nouvBalle1);
 			liste.add(nouvBalle2);
 			
@@ -361,7 +358,6 @@ public class Balle implements Dessinable, Serializable {
 			listeNouvBalles.add(nouvBalle1);
 			listeNouvBalles.add(nouvBalle2);
 			liste.remove(this);
-			intervalTempsSansCollision(liste, listeNouvBalles);
 			liste.add(nouvBalle1);
 			liste.add(nouvBalle2);
 			
@@ -388,61 +384,7 @@ public class Balle implements Dessinable, Serializable {
 
 	}
 
-/**
- * merhode qui retourne la valeur booleenne de la premiere collision
- * @return premiereCollision variable d'une balle qui verifie si celle-ci est entré en collision avec une autre balle.
- */
-
-	public boolean isPremiereCollision() {
-		return premiereCollision;
-	}
-
-
-	/**
-	 * merhode qui modifie  la valeur booleenne de la premiere collision
-	 * @param premiereCollision nouvelle valeur boolenne  passée en parametres.
-	 */
-	public void setPremiereCollision(boolean premiereCollision) {
-		this.premiereCollision = premiereCollision;
-	}
-
-		/**
-		 * Retourne vrai si deux aires de formes sont en intersection, sinon faux.
-		 * 
-		 * @param aire1 aire de la premiere forme
-		 * @param aire2 aire de la deuxieme forme
-		 * @return boolean true or false
-		 */
-	private boolean intersection(Area aire1, Area aire2) {
-		Area aireInter = new Area(aire1);
-		aireInter.intersect(aire2);
-		if(!aireInter.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
-
-/**
- * Méthode qui vérifie si une balle qui vient juste d'etre créée est en contact avec une autre balle et si c'est le cas
- * @param listeBalles liste de balles en jeu
- * @param listeNouvBalles liste de balles qui viennent juste d'etre créées 
- */
-	private void intervalTempsSansCollision(ArrayList<Balle>listeBalles, ArrayList<Balle>listeNouvBalles)  {
-
-		for(Balle balleNouv : listeNouvBalles) {
-
-			boucleInterieure :
-			for( Balle balle : listeBalles) {
-
-				if(intersection(balle.getAireBalle(), balleNouv.getAireBalle() ) )  {
-						balleNouv.setPremiereCollision(true);
-						break boucleInterieure;
-				}
-			}
-		}
-
-	}
-
+	
 	/**
 	 * Methode qui retourne le type de la balle 
 	 * @return type type de la balle

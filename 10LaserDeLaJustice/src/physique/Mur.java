@@ -26,18 +26,8 @@ public class Mur implements Dessinable {
 	private double angle; 
 	private Vecteur normal;
 	private double coefE;
-	private Type type;
 
 
-
-	/**
-	 * Classe enumeration des types de balle
-	 * @author Jeremy Thai
-	 *
-	 */
-	public enum Type {
-		HORIZONTAL, VERTICAL;
-	}
 
 
 	public Mur( Vecteur position, double largeur, double hauteur, double angle, String choix ) {
@@ -45,35 +35,9 @@ public class Mur implements Dessinable {
 		this.hauteur = hauteur ; 
 		this.largeur = largeur;
 		this.coefE = 19/20;
-
-		switch(choix) {
-		case "HORIZONTAL":
-			type = Type.HORIZONTAL;
-			break;
-		case "VERTICAL":
-			type = Type.VERTICAL;
-			break;
-		}
-
 	}
+		
 	
-	
-	
-	
-
-	public Type getType() {
-		return type;
-	}
-
-
-
-
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
-
 
 
 
@@ -104,10 +68,6 @@ public class Mur implements Dessinable {
 	public Vecteur getPosition() { return (position); }
 
 
-
-
-
-
 	public Area getAireMur() {
 		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(), largeur, hauteur );
 		aireMur = new Area(rect);
@@ -127,8 +87,6 @@ public class Mur implements Dessinable {
 		return largeur;
 	}
 
-
-
 	public void setLargeur(double largeur) {
 		this.largeur = largeur;
 	}
@@ -144,13 +102,13 @@ public class Mur implements Dessinable {
 	public void setHauteur(double hauteur) {
 		this.hauteur = hauteur;
 	}
-
-
+	
 
 	public Vecteur getNormal() {
-		angle = Math.toRadians(angle);
-		Vecteur vecMur = new Vecteur (Math.cos(angle), Math.sin(angle));
-		normal = new Vecteur(-vecMur.getY(), vecMur.getX());
+		double angleNormalMur;
+		angleNormalMur = Math.toRadians(angle);
+		Vecteur vecMiroir = new Vecteur (Math.cos(angleNormalMur), Math.sin(angleNormalMur));
+		normal = new Vecteur(-vecMiroir.getY(), vecMiroir.getX());
 		return normal;
 	}
 
