@@ -98,7 +98,7 @@ public class Laser implements Dessinable {
 		trace.lineTo(positionHaut.getX() - (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
 				positionHaut.getY() + (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 
-		positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+		positionBas = new Vecteur ( positionHaut.getX() - (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
 				positionHaut.getY() + (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		changerCouleurPerso(g2d);
