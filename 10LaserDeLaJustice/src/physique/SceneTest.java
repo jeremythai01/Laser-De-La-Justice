@@ -41,7 +41,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 30;
 	//private double deltaT = 0.006;
-	private double deltaT = 0.01;
+	private double deltaT = 0.06;
 	private  double LARGEUR_DU_MONDE = 30; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
@@ -219,42 +219,25 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 	private void calculerUneIterationPhysique() {
-
-		for (int i = 0; i < listeBalles.size(); i++) {
-			Balle balle1 = listeBalles.get(i);
-			double n = 0;
-			if (balle1.getType().toString().equals("SMALL"))
-				System.out.println("balle rouge   = "+ balle1.isPremiereCollision() );
-
-			for (int j = i+1; j < listeBalles.size(); j++) {
-				
-				Balle balle2 = listeBalles.get(j);
-
-				if(intersection(balle1.getAireBalle(), balle2.getAireBalle())) 
-					n++;
-			}
-			if(n ==0) 
-				balle1.setPremiereCollision(false);
-		}
-
 		for (int i = 0; i < listeBalles.size(); i++) {
 
 			Balle balle1 = listeBalles.get(i);
-
-			if(balle1.isPremiereCollision() == false) {
 
 				for (int j = i+1; j < listeBalles.size(); j++) {
 
 					Balle balle2 = listeBalles.get(j);
-					if (balle2.isPremiereCollision() == false) 
+					
 						MoteurPhysique.detectionCollisionBalles(balle1, balle2);
 				}
 			}
+		
+		for(Mur mur : listeMurs) {
+			for(Balle balle : listeBalles ) {
+					MoteurPhysique.detectionCollisionMurBalle(balle,mur);
+				}
 		}
 
-
-
-		collisionBalleMur(listeBalles, listeMurs);
+	
 
 		for(Balle balle: listeBalles) {
 			balle.unPasVerlet(deltaT);
@@ -316,31 +299,8 @@ public class SceneTest extends JPanel implements Runnable {
 				}
 			}
 		}
-		/*for(Laser laser : listeLasers) {
-			for(Balle balle : listeBalles ) {
-				if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
-					listeLasers.remove(laser);   
-					balle.shrink(listeBalles);
-				}	
-
-
-			}
-		}*/
 	}
 
-
-	private void collisionBalleMur(ArrayList<Balle> listeBalles, ArrayList<Mur> listeMurs) {
-		for(Mur mur : listeMurs) {
-			for(Balle balle : listeBalles ) {
-				if(intersection(balle.getAireBalle(), mur.getAireMur())) {
-					MoteurPhysique.collisionMurBalle(balle,mur);
-				}
-
-			}	
-		}
-
-
-	}
 	
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);

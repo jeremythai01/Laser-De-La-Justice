@@ -37,6 +37,12 @@ public class Vecteur implements Serializable {
 	}
 	
 	
+	public Vecteur(Vecteur v) {
+		this.x = v.getX();
+		this.y = v.getY();
+	}
+	
+	
 	
 	/**
 	 * Methode qui donne acces a la composante x du vecteur.
