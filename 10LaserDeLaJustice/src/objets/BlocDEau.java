@@ -82,8 +82,8 @@ public class BlocDEau extends Objet implements Dessinable {
 	 */
 	public Vecteur calculNormal(Laser laser, BlocDEau bloc) {
 
-		return new Vecteur(laser.getPosition().getX() - bloc.getPosition().getX(),
-				laser.getPosition().getY() - bloc.getPosition().getY());
+		return new Vecteur(laser.getPositionHaut().getX() - bloc.getPosition().getX(),
+				laser.getPositionHaut().getY() - bloc.getPosition().getY());
 
 		
 	}

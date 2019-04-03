@@ -272,7 +272,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 		for(Balle balle: listeBalles) {
-			balle.unPasRK4(deltaT, tempsTotalEcoule);
+			balle.unPasEuler(deltaT);
 		}
 
 		for(Laser laser : listeLasers) {
@@ -309,6 +309,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		while (enCoursAnimation) {	
 			compteur++;
 			calculerUneIterationPhysique();
+		//	ordi3.verifierCollisionBalleEtLaserSimulation();
 			if(compteur==60) {
 				tirer();
 				compteur=0;

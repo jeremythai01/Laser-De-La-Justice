@@ -153,6 +153,11 @@ public class Laser implements Dessinable {
 		positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
 				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 	}
+	
+	public void unPasEuler(double deltaT) {
+		MoteurPhysique.unPasEuler(deltaT, positionHaut, vitesse, new Vecteur(0,0));
+		//System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
+	}
 
 	/**
 	 * Retourne l'aire en forme de rectangle du laser
