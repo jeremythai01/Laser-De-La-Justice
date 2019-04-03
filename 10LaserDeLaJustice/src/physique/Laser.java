@@ -104,12 +104,7 @@ public class Laser implements Dessinable {
 		changerCouleurPerso(g2d);
 
 		g2d.setStroke(new BasicStroke(3));
-<<<<<<< HEAD
 
-		//g2d.setColor(Color.black);
-=======
-		
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 		g2d.draw(matLocal.createTransformedShape(((trace))));
 	}
 

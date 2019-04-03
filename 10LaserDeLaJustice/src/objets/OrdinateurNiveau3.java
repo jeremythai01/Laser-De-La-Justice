@@ -15,7 +15,7 @@ import physique.Laser;
  * classe qui permet la création d'un ordinateur de plusieurs niveaux de talent
  *@author Arnaud Lefebvre
  */
-public class OrdinateurNiveau3 implements Dessinable {
+public class OrdinateurNiveau3 implements Dessinable, Runnable {
 
 	private double largeurOrdi=1;
 	private double longueurOrdi=1;
@@ -71,7 +71,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	public Laser tirer() {
 		angle=calculerAngleTir(savoirViser(listeBalle));
 		calculerBalleAViser();
-		System.out.println(savoirViser(listeBalle)+" anglecxczc");
+		//System.out.println(savoirViser(listeBalle)+" anglecxczc");
 		return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angle, new Vecteur(0,0.5)));
 		//return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAleatoire(), new Vecteur(0,0.5)));
 
@@ -129,63 +129,77 @@ public class OrdinateurNiveau3 implements Dessinable {
 
 			}
 			avant++;
-			
+
 		}listeDistance.clear();
-		System.out.println("position de la vrai balle "+balleAViser.getPosition());
+		//System.out.println("position de la vrai balle "+balleAViser.getPosition());
 		simulerMouvementBalle(balleAViser, reponse);
 
-		
+
 
 
 
 		//return new Vecteur(0,0);
 	}
 
-	
-	
+
+
 	//doit on dessiner un objet pour quil ait une aire 
-	
-	
+
+
 	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
 		double deltaT=0.01;
 		balleSimuler= new Balle(viser);
-		balleSimuler.unPasEuler(deltaT);
-		System.out.println("position de la balle simulee "+balleSimuler.getPosition());
+		balleSimuler.unPasEuler(2);
+		//System.out.println("position de la balle simulee "+balleSimuler.getPosition());
 		//double angleAViser=calculerAngleTir(distance);
-		double angleAViser=0;
+		double angleAViser=20;
 		test= new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
-		
-		for(int i=0;i<180; i++) {
+		simulerMouvementLaser(test);
+		for(int i=0;i<160; i++) {
 			//System.out.println("je suis cici");
+		//	balleSimuler.unPasEuler(deltaT);
+			
 			if(!verifierCollisionBalleEtLaserSimulation(balleSimuler, test)) {
-			//if(enCollision==false) {
-				angleAViser=i;
+				//if(enCollision==false) {
+				angleAViser+=1;
 				test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
-				balleSimuler.unPasEuler(deltaT);
-				simulerMouvementLaser(test);
+
+
 			}
 			else {
 				System.out.println("les simules se sont touches");
+				System.exit(0);
 				break;
 			}
-			System.out.println("angle a viser dans el for="+ angleAViser);
-			System.out.println("position du laser simule" + test.getPositionHaut());
+			//System.out.println("angle a viser dans el for="+ angleAViser);
+			//System.out.println("position du laser simule" + test.getPositionHaut());
+			simulerMouvementLaser(test);
 		}
-		System.out.println("angle a viser ="+ angleAViser);
+		//System.out.println("angle a viser ="+ angleAViser);
 		//int pls = (int) (angleAViser/180);
 		//System.out.println("pls = "+ pls);
 		angle=angleAViser;
+		System.out.println("angle a viser" + angleAViser);
 		//angle=angleAViser+210;
 	}
 
 	public void simulerMouvementLaser(Laser laser) {
 		//for(int i=0;i<50;i++) {
-		while(laser.getPositionHaut().getY()<balleSimuler.getPosition().getY()+balleSimuler.getDiametre()/2)	{
-	
-		laser.unPasEuler(0.01);
-		System.out.println("position du laser "+laser.getPositionHaut());	}}
+		System.out.println("je suis ici");
+		while(laser.getPositionHaut().getY()>balleSimuler.getPosition().getY()+balleSimuler.getDiametre()/2)	{
+
+			//laser.unPasEuler(0.01);
+			laser.move();
+			System.out.println("position de la balle live"+ balleSimuler.getPosition());
+			System.out.println("position du laser "+laser.getPositionHaut());
+			}}
 	//}
 
+	public void essaiMouvementBalle(Balle balle) {
+		double	positionBalleX=balle.getVitesse().getX()*0.8;//dans 0.8secondes
+		double	positionBalleY=balle.getVitesse().getY()*0.8+0.5*-9.8*0.8*0.8;
+	}
+	
 	public boolean verifierCollisionBalleEtLaserSimulation(Balle balle, Laser laser) {
 		if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
 			return true;
@@ -202,11 +216,11 @@ public class OrdinateurNiveau3 implements Dessinable {
 		}else {
 
 			enCollision=false;
+		}
+
+
 	}
-		
-		
-	}
-	
+
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -269,5 +283,11 @@ public class OrdinateurNiveau3 implements Dessinable {
 
 	public double getLongueurOrdi() {
 		return longueurOrdi;
+	}
+
+	@Override
+	public void run() {
+		
+		
 	}
 }
