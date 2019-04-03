@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -34,7 +35,7 @@ public class Laser implements Dessinable {
 	private boolean isCouleurPerso = false;
 
 	private Vecteur positionBas ;
-	
+
 
 	private Random rand = new Random();
 
@@ -54,8 +55,8 @@ public class Laser implements Dessinable {
 		this.vitesse = vitesse;
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = false;
-		
-		
+
+
 	}
 
 	// Par Miora
@@ -74,7 +75,6 @@ public class Laser implements Dessinable {
 		this.couleurLaser = couleurLaser;
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = true;
-		System.out.println("2e constructeur");
 	}
 
 	/**
@@ -88,23 +88,29 @@ public class Laser implements Dessinable {
 	 */
 	// auteur Arnaud Lefebvre
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
+
 		trace = new Path2D.Double();
 		AffineTransform matLocal = new AffineTransform(mat);
-		
-		
+
+
 		trace.moveTo(positionHaut.getX(), positionHaut.getY());
-		
-		trace.lineTo(positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
-				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
-	
-		positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
-				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
+
+		trace.lineTo(positionHaut.getX() - (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+				positionHaut.getY() + (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
+
+		positionBas = new Vecteur ( positionHaut.getX() - (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+				positionHaut.getY() + (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 		trace.closePath();
 		changerCouleurPerso(g2d);
 
 		g2d.setStroke(new BasicStroke(3));
-		g2d.draw(matLocal.createTransformedShape(((trace))));
+<<<<<<< HEAD
 
+		//g2d.setColor(Color.black);
+=======
+		
+>>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
+		g2d.draw(matLocal.createTransformedShape(((trace))));
 	}
 
 	// Par Miora
@@ -146,12 +152,12 @@ public class Laser implements Dessinable {
 	 */
 	// auteur Jeremy Thai
 	public void move() {
-		
+
 		positionHaut.setY(positionHaut.getY()-vitesse.getY());
 		positionHaut.setX(positionHaut.getX() + vitesse.getX());
-		
-		positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
-				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
+
+		/*positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
+				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));*/
 	}
 	
 	public void unPasEuler(double deltaT) {
@@ -166,9 +172,9 @@ public class Laser implements Dessinable {
 	 */
 	// auteur Jeremy Thai
 	public Area getLaserAire() { // pour detecter lintersection
-		AffineTransform matLocal = new AffineTransform(); // pourquoi mat ne fonctionne pas ?
+		AffineTransform matLocal = new AffineTransform();
+		matLocal.rotate(Math.toRadians(180-angleTir), positionHaut.getX(), positionHaut.getY());
 		Rectangle2D.Double rect = new Rectangle2D.Double(positionHaut.getX(), positionHaut.getY(), LONGUEUR, 0.01);
-		matLocal.rotate(-Math.toRadians(angleTir), positionHaut.getX(), positionHaut.getY());
 		return new Area(matLocal.createTransformedShape(((rect))));
 		//
 	}
@@ -191,7 +197,7 @@ public class Laser implements Dessinable {
 		return new Vecteur(positionHaut.getX() - (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
 				positionHaut.getY() + (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 	}
-	
+
 	/**
 	 * Retourne la positionHaut du laser @return, le vecteur de la positionHaut du laser
 	 */
@@ -204,8 +210,8 @@ public class Laser implements Dessinable {
 		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
 		this.positionBas = newVec;
 	}
-	
-	
+
+
 
 	/**
 	 * Permet de modifier la positionHaut du laser
