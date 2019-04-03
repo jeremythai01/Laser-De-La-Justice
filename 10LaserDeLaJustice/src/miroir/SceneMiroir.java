@@ -70,7 +70,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Constructeur de la classe
 	 */
 	public SceneMiroir() {
-		angle = 90;
+		angle = 135;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);
@@ -280,17 +280,33 @@ public class SceneMiroir extends JPanel implements Runnable {
 				if(intersection(miroir.getAireMiroir(), laser.getLaserAire())) {
 
 					// v orientation rayon incident
-					double angleLaser = Math.toRadians(laser.getAngleTir());
-					Vecteur v = new Vecteur (Math.cos(angleLaser), Math.sin(angleLaser)).normalise();
-
+					System.out.println("vitesse laser" + (180+Math.toDegrees(Math.atan(laser.getVitesse().getX()/laser.getVitesse().getY()))));
+					
+					
 					//n vecteur normal au miroir
 					Vecteur n = miroir.getNormal().normalise();	
+					
+					//Vecteur reflexion = laser.getVitesse().additionne(n.multiplie(2.0*laser.getVitesse().multiplie(-1.0).prodScalaire(n)));
 
 					//e = -v
-					Vecteur e = v.multiplie(-1);
-					double angle2 =  Math.toDegrees(Math.atan( (v.additionne(n.multiplie(2*(e.prodScalaire(n)))).getY() / ((v.additionne(n.multiplie(2*(e.prodScalaire(n))))).getX()))));
+					//Vecteur e = v.multiplie(-1);
+					Vecteur intersection = laser.getPositionHaut();
+					Vecteur reflexion = laser.getVitesse().additionne(n.multiplie(2.0*laser.getVitesse().multiplie(-1.0).prodScalaire(n)));
+					Vecteur nouvelle_pointe = intersection.additionne(reflexion.normalise().multiplie(laser.getLONGUEUR()));
+					laser.setVitesse(reflexion);
+					
+					// position début
+					laser.setPositionHaut(intersection);
+					
+					// position pointe
+					laser.setPositionBas(nouvelle_pointe);
+					
+					/*
 					laser.setAngleTir(angle2);
-					System.out.println("le nouvel angle apres intersection miroir plan est : " + angle2);
+					//laser.setPositionHaut(laser.getPositionBas());
+					laser.setPositionBas(new Vecteur (0,10));
+					*/
+					//System.out.println("le nouvel angle apres intersection miroir plan est : " + angle2);
 				}	
 			}
 		}

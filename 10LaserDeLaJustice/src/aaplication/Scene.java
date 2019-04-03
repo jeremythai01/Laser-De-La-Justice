@@ -72,6 +72,7 @@ public class Scene extends JPanel implements Runnable {
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
 	private int toucheGauche = 37;
+	private Vecteur accBalle ;
 
 
 	private int toucheDroite = 39;
@@ -175,6 +176,7 @@ public class Scene extends JPanel implements Runnable {
 					if ((listeBalles.get(i).getAireBalle().contains(eXR, eYR))) {
 
 						balle = listeBalles.get(i);
+						System.out.println(balle.getAccel());
 						bonneBalle = true;
 
 						i = listeBalles.size();
@@ -477,14 +479,14 @@ public class Scene extends JPanel implements Runnable {
 		System.out.println("je suis lecture option");
 		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
 		ObjectInputStream fluxEntree = null;
-		double acceleration = 9.8;
 		int niveau = 0;
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
-			acceleration = fluxEntree.readDouble();
+			accBalle = new Vecteur (0,fluxEntree.readDouble());
+			System.out.println("accballe option" + accBalle);
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			try {
@@ -493,11 +495,9 @@ public class Scene extends JPanel implements Runnable {
 				if (couleurOption == null) {
 					couleurPersoLaser = false;
 					couleurLaser = null;
-					System.out.println("On ne m'a pas donne de couleur");
 				} else {
 					couleurPersoLaser = true;
 					couleurLaser = couleurOption;
-					System.out.println("On m'a donné une couleur");
 				}
 				principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
 			} catch (ClassNotFoundException e) {
@@ -636,6 +636,7 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBalleGrosse() {
 
 		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
+		grosseBalle.setAccel(accBalle);
 		listeBalles.add(grosseBalle);
 		repaint();
 

@@ -27,6 +27,7 @@ public class MiroirPlan implements Dessinable {
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
+	private boolean dessin = false;
 	
 	/**
 	 * Constructeur d'un miroir plan
@@ -37,7 +38,7 @@ public class MiroirPlan implements Dessinable {
 	public MiroirPlan(Vecteur position, double angle) {
 		super();
 		this.position = position;
-		this.angle = angle;
+		this.angle = 90;
 	}
 	/**
 	 * Dessiner le miroir
@@ -51,11 +52,10 @@ public class MiroirPlan implements Dessinable {
 		AffineTransform matLocale = new AffineTransform(mat);
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.05);
-		miroirTransfo = matLocale.createTransformedShape(miroir);
 		//g2d.fill(miroirTransfo);
 		//g2d.fill(miroirTransfo);
 		g2d.setColor(Color.yellow);
-		g2d.draw(new Area (miroirTransfo));
+		g2d.draw(matLocale.createTransformedShape(miroir));
 	}
 	/**
 	 * Methode qui retourne aire du miroir
@@ -63,7 +63,8 @@ public class MiroirPlan implements Dessinable {
 	 //Miora
 	 */
 	public Area getAireMiroir() {
-		return new Area (miroirTransfo);
+		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.05);
+		return new Area (miroir);
 	}
 	
 	/**
@@ -73,9 +74,12 @@ public class MiroirPlan implements Dessinable {
 	 */
 	public Vecteur getNormal() {
 		double angleMiroirNormal;
+		System.out.println("angle miroir defree" + angle);
 		angleMiroirNormal = Math.toRadians(angle);
 		Vecteur vecMiroir = new Vecteur (Math.cos(angleMiroirNormal), Math.sin(angleMiroirNormal));
-		normal = new Vecteur(-vecMiroir.getY(), vecMiroir.getX());
+		System.out.println("miroir" + vecMiroir);
+		normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
+		System.out.println("angle normal degree" + Math.toDegrees(Math.atan(normal.getY()/normal.getX())));
 		return normal;
 	}
 	
