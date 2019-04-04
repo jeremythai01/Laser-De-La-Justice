@@ -181,6 +181,8 @@ public class Laser implements Dessinable {
 		return new Area(matLocal.createTransformedShape(((rect))));
 		//
 	}
+	
+	
 
 	/**
 	 * Retourne la longueur du laser @return, LONGUEUR, constante de longueur du

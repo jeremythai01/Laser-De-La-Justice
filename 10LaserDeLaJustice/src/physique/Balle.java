@@ -52,6 +52,7 @@ public class Balle implements Dessinable, Serializable {
 		setVitesse( vitesse );
 		setAccel( new Vecteur(0,9.8) );
 		forceGravi = mt.forceGravi(masse, accel);
+		System.out.println(accel);
 
 		switch(size) {
 		case "SMALL":

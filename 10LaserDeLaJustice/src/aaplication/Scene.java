@@ -108,7 +108,7 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<MiroirPlan> listeMiroirePlan = new ArrayList<MiroirPlan>();
 	private ArrayList<BlocDEau> listeBlocEau = new ArrayList<BlocDEau>();
 	private ArrayList<Prisme> listePrisme = new ArrayList<Prisme>();
-	
+
 
 	private Balle balle;
 	private TrouNoir trou;
@@ -120,11 +120,11 @@ public class Scene extends JPanel implements Runnable {
 	private BlocDEau bloc;
 	private Coeurs coeurs = new Coeurs(nombreVies);
 	private Prisme prisme = new Prisme (new Vecteur (1,1));
-	
+
 	private Echelle echelle;
 
 	private Color couleurLaser = null;
-	
+
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
 	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
@@ -132,7 +132,7 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	private int toucheTir = 32;
-	
+
 	private boolean enMouvement=false;
 
 	// Par Jeremy
@@ -150,7 +150,7 @@ public class Scene extends JPanel implements Runnable {
 		});
 
 		listePrisme.add(prisme);
-		
+
 		lireFond();
 
 		System.out.println("Salut je mappelle Arezki et je suis un fdp");
@@ -159,8 +159,7 @@ public class Scene extends JPanel implements Runnable {
 		//pistoletPrincipal = new Pistolet();
 		nouvellePartie(isPartieNouveau);
 		lectureFichierOption();
-		//JOptionPane.showMessageDialog(null, "Vos touches ont été initialisé a " + KeyEvent.getKeyText(toucheGauche) + " et " + KeyEvent.getKeyText(toucheDroite));
-		    
+
 		vitesse = new Vecteur(3, 0);
 
 		addMouseListener(new MouseAdapter() {
@@ -205,7 +204,7 @@ public class Scene extends JPanel implements Runnable {
 				}
 
 				for (int i = 0; i < listeMiroirePlan.size(); i++) {
-					if (listeMiroirePlan.get(i).getAireMiroir().contains(eXR, eYR)) {
+					if (listeMiroirePlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirePlan.get(i);
@@ -359,15 +358,15 @@ public class Scene extends JPanel implements Runnable {
 		for(Prisme pri : listePrisme) {
 			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
+
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 7.5, HAUTEUR_DU_MONDE - 1);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		
+
 		tracerVecteurGraphique(g2d);
-		
+
 	}
 
 	/**
@@ -487,7 +486,6 @@ public class Scene extends JPanel implements Runnable {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
 			accBalle = new Vecteur (0,fluxEntree.readDouble());
-			System.out.println("accballe option" + accBalle);
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			try {
@@ -650,6 +648,7 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBalleMedium() {
 
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
+		grosseBalle.setAccel(accBalle);
 		listeBalles.add(moyenneBalle);
 
 		repaint();
@@ -664,6 +663,7 @@ public class Scene extends JPanel implements Runnable {
 
 		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
+		grosseBalle.setAccel(accBalle);
 		listeBalles.add(petiteBalle);
 
 		repaint();
@@ -684,7 +684,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton miroire convexe
 	 */
 	public void ajoutMiroireConvexe() {
-		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 1));
+		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0),2, 0));
 		repaint();
 	}
 
@@ -862,7 +862,7 @@ public class Scene extends JPanel implements Runnable {
 					valeurAngleRoulette-=0.05;
 					setAngle(valeurAngleRoulette);
 					System.out.println(valeurAngleRoulette);
-				
+
 				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)) {
 					valeurAngleRoulette+=0.05;
 					setAngle(valeurAngleRoulette);
@@ -876,7 +876,7 @@ public class Scene extends JPanel implements Runnable {
 
 		repaint();
 	}
-	
+
 	private void tracerVecteurGraphique(Graphics2D g) {
 		if(enMouvement) {
 			g.setColor(Color.red);
@@ -887,26 +887,26 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	
+
 	private Vecteur CollisionLaserPrisme() {
 		boolean collisionLaserPrisme = false;
 		Vecteur collision = new Vecteur();
 		while(!collisionLaserPrisme) {
-		for(Prisme pris : listePrisme) {
-			for(Laser laser : listeLasers) {
-				if(pris.getAirPrisme().contains(laser.getPositionHaut().getX(),laser.getPositionHaut().getY())) {
-					collisionLaserPrisme = true;
-					collision = laser.getPositionHaut();
-					
+			for(Prisme pris : listePrisme) {
+				for(Laser laser : listeLasers) {
+					if(pris.getAirPrisme().contains(laser.getPositionHaut().getX(),laser.getPositionHaut().getY())) {
+						collisionLaserPrisme = true;
+						collision = laser.getPositionHaut();
+
+					}
 				}
 			}
 		}
-	}
 		return collision;
 	}
-	
-	
-	
+
+
+
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -949,7 +949,6 @@ public class Scene extends JPanel implements Runnable {
 	 * nombre des balles, la position du joueur, la couleur du rayon et les touches
 	 * utilisées
 	 * @param nomFichier : le nom du fichier de sauvegarde
-	 * @param isOptiPerso : retourve vrai si les options sont personnalises
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
 		final String NOM_FICHIER_OPTION = nomFichier;
@@ -975,8 +974,8 @@ public class Scene extends JPanel implements Runnable {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-				toucheGauche = fluxEntree.readInt();
-				toucheDroite = fluxEntree.readInt();
+			toucheGauche = fluxEntree.readInt();
+			toucheDroite = fluxEntree.readInt();
 			System.out.println("touche gauche lecture fichier" + toucheGauche );
 		} // fin try
 
@@ -999,8 +998,8 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
 	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
 	 */
-	
-	
+
+
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
@@ -1026,8 +1025,8 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	
-	
+
+
 	public int getToucheGauche() {
 		return toucheGauche;
 	}
@@ -1043,7 +1042,7 @@ public class Scene extends JPanel implements Runnable {
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
-	
-	
-	
+
+
+
 }

@@ -30,20 +30,18 @@ public class MiroirConvexe implements Dessinable {
 	private Ellipse2D.Double centre;
 	private Vecteur vecLaser;
 	private boolean laser=false;
+	private double angle;
 
 	/**
 	 * Constructeur du miroir convexe
-	 * @param position : la position du miroir sous forme vectorielle
+	 * @param position : le centre du miroir sous forme vectorielle
 	 * @param rayon
-	 * note : la position du miroir est calcule a partir de son centre
 	 */
-	public MiroirConvexe(Vecteur position, double rayon) {
-		System.out.println(position);
-		this.position = new Vecteur (position.getX()-rayon/2 , position.getY()-rayon/2);
-		centreMiroir = new Vecteur (position.getX(),position.getY());
+	public MiroirConvexe(Vecteur position, double rayon, double angle) {
+		this.position = position;
 		this.rayon = rayon;
+		this.angle = angle;
 	}
-
 	/**
 	 * Dessiner le miroir convexe
 	 * @param g2d : le composant graphique
@@ -52,13 +50,17 @@ public class MiroirConvexe implements Dessinable {
 	 * @param largeur : largeur de la scene 
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
-		matLocale = new AffineTransform(mat);
 		this.hauteur = hauteur;
 		this.largeur = largeur;
-		centre = new Ellipse2D.Double(centreMiroir.getX(),centreMiroir.getY() , 0.05, 0.05);
+		AffineTransform matLocale = new AffineTransform(mat);
+		//On tourne
+		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
+		
+		//On place l'arc au centre
+		matLocale.translate(-rayon/2, -rayon/2);
+		
 		miroir = new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN);
 		g2d.draw(matLocale.createTransformedShape(miroir));
-		g2d.draw(matLocale.createTransformedShape(centre));
 	}
 
 	/**
@@ -66,8 +68,14 @@ public class MiroirConvexe implements Dessinable {
 	 * @return l'aire du miroir convexe
 	 */
 	public Area getAireMiroirConvexe() {
-		System.out.println("je cherche l'aire miroir convexe");
-		return new Area (miroir);
+		AffineTransform matLocale = new AffineTransform();
+		//On tourne
+		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
+		//On place l'arc au centre
+		matLocale.translate(-rayon/2, -rayon/2);
+		
+		miroir = new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN);
+		return new Area (matLocale.createTransformedShape(((miroir))));
 		
 	}
 

@@ -28,6 +28,7 @@ public class MiroirPlan implements Dessinable {
 	private Vecteur normal;
 	private Vecteur position;
 	private boolean dessin = false;
+	private Area aireMiroir;
 	
 	/**
 	 * Constructeur d'un miroir plan
@@ -38,7 +39,7 @@ public class MiroirPlan implements Dessinable {
 	public MiroirPlan(Vecteur position, double angle) {
 		super();
 		this.position = position;
-		this.angle = 90;
+		this.angle = angle;
 	}
 	/**
 	 * Dessiner le miroir
@@ -52,19 +53,19 @@ public class MiroirPlan implements Dessinable {
 		AffineTransform matLocale = new AffineTransform(mat);
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.05);
-		//g2d.fill(miroirTransfo);
-		//g2d.fill(miroirTransfo);
-		g2d.setColor(Color.yellow);
-		g2d.draw(matLocale.createTransformedShape(miroir));
+		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
+		g2d.draw(miroirTransfo); //dessine en pixel
 	}
 	/**
 	 * Methode qui retourne aire du miroir
 	 * @return aire du miroir
 	 //Miora
 	 */
-	public Area getAireMiroir() {
+	public Area getAireMiroirPixel() {
+		AffineTransform matLocale = new AffineTransform();
+		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.05);
-		return new Area (miroir);
+		return new Area(matLocale.createTransformedShape(((miroir))));
 	}
 	
 	/**
