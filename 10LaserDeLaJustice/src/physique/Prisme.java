@@ -43,9 +43,6 @@ public class Prisme extends JPanel implements Dessinable{
 	private Vecteur p3;
 	
 	
-	private Line2D ligneBase;
-	private Line2D ligneCote1;
-	private Line2D ligneCote2;
 	private Polygon triangles;
 	
 	
@@ -67,14 +64,20 @@ public class Prisme extends JPanel implements Dessinable{
 		 int [] pointsY =  {(int)p1.getY(),(int)p2.getY(),(int)p3.getY()};
 		// Demi cercle plein
 		 triangles = new Polygon(pointsX, pointsY, 3);
+		
 		 matLocal.rotate(Math.toRadians(DEFAULT_ANGLE), p1.getX(), p1.getY());
 		g.draw(matLocal.createTransformedShape(triangles));
+		
 
 	}
 	
 	
 	public Area getAirPrisme() {
-		return new Area(triangles);
+		 Rectangle2D recFantome = new Rectangle2D.Double(p1.getX(), p3.getY()-p2.getY(), p3.getX(), p2.getY());
+		Area prismeLocal = new Area(recFantome);
+		
+		//System.out.println("lair du prisme:" + prismeLocal.isEmpty());
+		return prismeLocal;
 	}
 	
 	
