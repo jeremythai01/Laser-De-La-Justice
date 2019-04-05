@@ -99,4 +99,9 @@ public class Coeurs implements Dessinable,  Serializable {
 		this.combien=combien;
 	}
 
+	
+	public int getCombien() {
+		return combien;
+	}
+
 }

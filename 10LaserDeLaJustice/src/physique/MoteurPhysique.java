@@ -359,8 +359,7 @@ public class MoteurPhysique implements Serializable {
 				double masseA = balle.getMasse();
 				double masseB = Double.POSITIVE_INFINITY;
 				
-				Vecteur vB = new Vecteur(0,0);
-				
+				Vecteur vB = new Vecteur(0,0);		
 				double e = 1;
 				double impulsion = nAB.prodScalaire(vA.soustrait(vB))*(-1-e)/(1/masseA + 1/masseB);
 				balle.setVitesse(vA.additionne(nAB.multiplie(impulsion/masseA)));
