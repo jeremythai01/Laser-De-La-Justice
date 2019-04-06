@@ -127,14 +127,9 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	private int toucheTir = 32;
-<<<<<<< HEAD
 
 	private boolean enMouvement=false;
-=======
 
-	private boolean enMouvement = false;
-
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 	// Par Jeremy
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
@@ -494,16 +489,9 @@ public class Scene extends JPanel implements Runnable {
 
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
-<<<<<<< HEAD
 			niveau = fluxEntree.readInt();
-			accBalle = new Vecteur (0,fluxEntree.readDouble());
-=======
-			niveau = fluxEntree.readInt();
-			accBalle = new Vecteur(0, fluxEntree.readDouble());
 			accBalle = new Vecteur(0, fluxEntree.readDouble());
 			System.out.println("accballe option" + accBalle);
-
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			try {
@@ -876,12 +864,6 @@ public class Scene extends JPanel implements Runnable {
 					valeurAngleRoulette -= 0.05;
 					setAngle(valeurAngleRoulette);
 					System.out.println(valeurAngleRoulette);
-<<<<<<< HEAD
-
-
-=======
-
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 				} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
 					valeurAngleRoulette += 0.05;
 					setAngle(valeurAngleRoulette);
@@ -909,13 +891,9 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-<<<<<<< HEAD
 
-	/*
+
 	private void CollisionLaserPrisme(ArrayList<Laser> listeLasers, ArrayList<Prisme> listePrismes) {
-=======
-	private void CollisionLaserPrisme(ArrayList<Laser> listeLasers, ArrayList<Prisme> listePrismes) {
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 		boolean collisionLaserPrisme = false;
 		Vecteur collision = new Vecteur();
 		while (!collisionLaserPrisme) {
@@ -946,22 +924,12 @@ public class Scene extends JPanel implements Runnable {
 					}
 				}
 			}
-<<<<<<< HEAD
-		}
 
-=======
 		}
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 
 		// return collision;
-<<<<<<< HEAD
-				//return collision;
+//return collision;
 			}
-	 */
-=======
-		// return collision;
-	}
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 
 	// Miora
 	/**
@@ -1034,12 +1002,9 @@ public class Scene extends JPanel implements Runnable {
 			}
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
-<<<<<<< HEAD
 			tempsTotalEcoule = fluxEntree.readInt();
 			System.out.println("le temps lecture " + tempsTotalEcoule);
 			leverEvenChangementTemps();
-=======
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1059,14 +1024,7 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle  : retourne vrai s'il s'agit d'une nouvelle scene
-<<<<<<< HEAD
-	 */
-=======
-	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis
-	 *                    le dernier jeu
-	 */
-
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
+ */
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
@@ -1091,7 +1049,6 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
-<<<<<<< HEAD
 	/**
 	 * Cette methode permet de communiquer le temps de jeu 
 	 * a l'application
@@ -1101,10 +1058,6 @@ public class Scene extends JPanel implements Runnable {
 			ecout.changementTempsListener(tempsTotalEcoule);
 		}
 	}
-
-=======
-
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 	public int getToucheGauche() {
 		return toucheGauche;
 	}
@@ -1120,7 +1073,6 @@ public class Scene extends JPanel implements Runnable {
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
-<<<<<<< HEAD
 
 	//Par Miora
 	/**
@@ -1130,6 +1082,4 @@ public class Scene extends JPanel implements Runnable {
 	public void setTempsTotalEcoule(int tempsTotalEcoule) {
 		this.tempsTotalEcoule = tempsTotalEcoule;
 	}
-=======
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 }
