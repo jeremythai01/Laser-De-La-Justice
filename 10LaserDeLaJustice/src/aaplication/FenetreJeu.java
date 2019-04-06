@@ -431,7 +431,7 @@ public class FenetreJeu extends JFrame {
 				System.out.println("temps dans fenetre" + temps);
 				barreTempsDuJeu.setValue(temps);
 
-			}
+			}//
 */
 
 		});
