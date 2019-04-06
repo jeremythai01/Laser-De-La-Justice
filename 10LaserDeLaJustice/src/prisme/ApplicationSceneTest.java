@@ -18,11 +18,11 @@ import java.awt.event.ActionEvent;
  * @author Arnaud Lefebvre
  *
  */
-public class ApplicationObjetsTest extends JFrame {
+public class ApplicationSceneTest extends JFrame {
 
 	private JPanel contentPane;
 	private SceneTestPrisme scene;
-	private static  ApplicationObjetsTest frame;
+	private static  ApplicationSceneTest frame;
 
 	/**
 	 * Demarrer  l'application.
@@ -32,7 +32,7 @@ public class ApplicationObjetsTest extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new ApplicationObjetsTest();
+					frame = new ApplicationSceneTest();
 					frame.setVisible(true);
 					frame.scene.requestFocusInWindow();
 				} catch (Exception e) {
@@ -58,7 +58,7 @@ public class ApplicationObjetsTest extends JFrame {
 	/**
 	 * Creer la fenetre.
 	 */
-	public ApplicationObjetsTest() {
+	public ApplicationSceneTest() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 623, 594);
 		contentPane = new JPanel();

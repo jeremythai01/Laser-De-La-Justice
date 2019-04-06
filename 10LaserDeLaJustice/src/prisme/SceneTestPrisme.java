@@ -463,7 +463,34 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 	private boolean CollisionLaserPrisme() {
 		boolean collisionLaserPrisme = false;
-		//Vecteur collision = new Vecteur();
+		// Vecteur collision = new Vecteur();
+
+		// System.out.println("bonjours");
+		// while (!collisionLaserPrisme) {
+		for (int i = 0; i < listeLasers.size(); i++) {
+			
+			for (int j = 0; j < listePrisme.size(); j++) {
+				
+				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire())) {
+					
+					collisionLaserPrisme = true;
+					// collisionLaserPrisme = true;
+					// collision = lasers.getPositionHaut();
+					//System.out.println("jai collision avec le prisme: "+ j);
+					// System.out.println("le vecteur de la collision: " + collision);
+					
+				} else {
+					collisionLaserPrisme = false;
+					
+				}
+			}
+		}
+		
+		return collisionLaserPrisme;
+	}
+
+	private Vecteur calculVecteurCollisionPrisme() {
+		Vecteur collision = new Vecteur();
 
 		// System.out.println("bonjours");
 		// while (!collisionLaserPrisme) {
@@ -472,57 +499,49 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 				if (enIntersection(pris1.getAirPrisme(), lasers.getAire())) {
 
-                    collisionLaserPrisme = true;					
-					//collisionLaserPrisme = true;
-					//collision = lasers.getPositionHaut();
-					 System.out.println("jai collision avec le prisme");
-					//System.out.println("le vecteur de la collision: " + collision);
+					// collisionLaserPrisme = true;
+					collision = lasers.getPositionHaut();
+					// System.out.println("jai collision avec le prisme");
+					// System.out.println("le vecteur de la collision: " + collision);
 
-				} else {
-					collisionLaserPrisme = false;
 				}
 
 			}
-		return collisionLaserPrisme;
-	}
-
-	private Vecteur calculVecteurCollisionPrisme() {
-		Vecteur collision = new Vecteur();
-
-				// System.out.println("bonjours");
-				// while (!collisionLaserPrisme) {
-				for (Laser lasers : listeLasers)
-					for (Prisme pris1 : listePrisme) {
-
-						if (enIntersection(pris1.getAirPrisme(), lasers.getAire())) {
-
-		                    				
-							//collisionLaserPrisme = true;
-							collision = lasers.getPositionHaut();
-							// System.out.println("jai collision avec le prisme");
-							//System.out.println("le vecteur de la collision: " + collision);
-
-						} 
-
-					}
-				return collision;
+		return collision;
 	}
 
 	private void calculRefractionPrisme() {
 		double n1 = 1.00;
-		double n2 = 1.50;
-		for (Laser laser : listeLasers) {
-			for (Prisme pris : listePrisme) {
-				if(CollisionLaserPrisme()) {
-					
-					double angle1 = 90-(Math.tan((laser.getPositionHaut().getY()/laser.getPositionHaut().getX())));//en degres par rapport a la normale
-					double angle2 = (n1*Math.sin(Math.toRadians(angle1)))/n2;
-					laser.setAngleTir(Math.toDegrees(angle2));
+		double n2 = 5.0;
+		double angle2=0;
+
+			if (CollisionLaserPrisme()) {
+
+				double angle1 = 90 - (Math.tan((listeLasers.get(0).getPositionHaut().getY() / listeLasers.get(0).getPositionHaut().getX())));// en
+																													// degres
+																													// par
+																													// rapport
+																													// a
+																													// la
+																													// normale
+				 angle2 = (n1 * Math.sin(Math.toRadians(angle1))) / n2;
+				listeLasers.get(0).setAngleTir(Math.toDegrees(angle2));
+				
+
+				for(int i = 0; i <1; i++) {
+					angle2= Math.toDegrees(angle2+=0.01);
+					listeLasers.add(new Laser(listeLasers.get(0).getPositionHaut().additionne(new Vecteur(0.7,0.7)), angle2, listeLasers.get(0).getVitesse(), Color.blue) );
+					System.out.println("la vitesse des lasers "+"#"+i+": "+listeLasers.get(i).getVitesse());
+					repaint();
 				}
-			}
+				
+			
 		}
 	}
 
+	
+	
+	
 	private boolean enIntersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
