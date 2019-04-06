@@ -175,7 +175,7 @@ public class Scene extends JPanel implements Runnable {
 				// pour drag toutes les balles
 
 				for (int i = 0; i < listeBalles.size(); i++) {
-					if ((listeBalles.get(i).getAireBalle().contains(eXR, eYR))) {
+					if ((listeBalles.get(i).getAire().contains(eXR, eYR))) {
 
 						balle = listeBalles.get(i);
 						System.out.println(balle.getAccel());
@@ -510,7 +510,7 @@ public class Scene extends JPanel implements Runnable {
 					couleurPersoLaser = true;
 					couleurLaser = couleurOption;
 				}
-				principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
+				principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -549,7 +549,7 @@ public class Scene extends JPanel implements Runnable {
 
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
-				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
+				if (enIntersection(balle.getAire(), laser.getAire())) {
 
 					listeLasers.remove(laser);
 					System.out.println("balle touche par laser");
@@ -569,11 +569,11 @@ public class Scene extends JPanel implements Runnable {
 	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
 		for (Balle balle : listeBalles) {
-			if (enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
-				if (personnage.getTempsMort() <= tempsTotalEcoule) {
+			if (enIntersection(balle.getAire(), principal.getAire())) {
+				if (personnage.getTempsInvincible() <= tempsTotalEcoule) {
 					coeurs.setCombien(nombreVies - 1);
 					nombreVies--;
-					personnage.setTempsMort(tempsTotalEcoule + 1);
+					personnage.setTempsInvincible(tempsTotalEcoule + 1);
 
 				}
 			}
@@ -586,7 +586,7 @@ public class Scene extends JPanel implements Runnable {
 
 		for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
-				if (enIntersection(trou.getAireTrou(), laser.getLaserAire())) {
+				if (enIntersection(trou.getAireTrou(), laser.getAire())) {
 					listeLasers.remove(laser);
 				}
 			}
@@ -1039,12 +1039,12 @@ public class Scene extends JPanel implements Runnable {
 			System.out.println("scene partie charge " + isNouvelle);
 			lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
-			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
+			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
 		} else {
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
-			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
+			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 		}
 	}
 

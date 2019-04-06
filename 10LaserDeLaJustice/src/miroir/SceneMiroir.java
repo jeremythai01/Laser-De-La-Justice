@@ -279,7 +279,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			int n=0;
 			boolean collision = false;
 			while(n< listeMiroirPlan.size() && collision == false) {
-				if(intersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getLaserAire())) {
+				if(intersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
 					Vecteur intersection = laser.getPositionHaut();
 					Vecteur normal =listeMiroirPlan.get(n).getNormal();
@@ -320,7 +320,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			int n=0;
 			boolean collision = false;
 			while(n< listeMiroirConvexe.size() && !collision) {
-				if(intersection(listeMiroirConvexe.get(n).getAireMiroirConvexe(), laser.getLaserAire())) {
+				if(intersection(listeMiroirConvexe.get(n).getAireMiroirConvexe(), laser.getAire())) {
 
 					Vecteur intersection = laser.getPositionHaut();
 					
@@ -358,7 +358,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private void colisionLaserMiroirConcave() throws Exception{
 		for(MiroirConcave miroirC : listeMiroirConcave ) {
 			for(Laser laser : listeLasers) {
-				if(intersection(miroirC.aire(), laser.getLaserAire())) {
+				if(intersection(miroirC.aire(), laser.getAire())) {
 					System.out.println("j'ai une intersection");
 					//laser.setPosition(new Vecteur (0,0));
 					double angleLaser = Math.toRadians(laser.getAngleTir());

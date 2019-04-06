@@ -344,7 +344,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			
 				for(Balle balle : listeBalles ) {
 
-					if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
+					if(intersection(balle.getAire(), laser.getAire())) {
 
 						//if(balle.getAireBalle().intersects(laser.getLine())) {
 
@@ -386,7 +386,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			for(TrouNoir trou : listeTrou ) {
 				//if(trou.getAireTrou().intersects(laser.getLine())) {
 
-				if(intersection(trou.getAireTrou(), laser.getLaserAire())) {
+				if(intersection(trou.getAireTrou(), laser.getAire())) {
 
 
 					listeLasers.remove(laser);   
@@ -409,7 +409,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 		for(Laser laser : listeLasers) {
 			for(BlocDEau bloc : listeBloc) {
-				if(intersection(bloc.getAireBloc(), laser.getLaserAire())) {
+				if(intersection(bloc.getAireBloc(), laser.getAire())) {
 					//if(bloc.isPremiereCollision()) {
 
 					//laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
