@@ -210,7 +210,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	}
 	
 	public boolean verifierCollisionBalleEtLaserSimulation(Balle balle, Laser laser) {
-		if(intersection(balle.getAireBalle(), laser.getLaserAire())) {
+		if(intersection(balle.getAire(), laser.getAire())) {
 			return true;
 
 		}else
@@ -219,7 +219,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	}
 
 	public void verifierCollisionBalleEtLaserSimulation() {
-		if(intersection(balleSimuler.getAireBalle(), test.getLaserAire())) {//[pour ce soir, il reste a trouver un moyen de toujours verifier si le laser simule rentre en contact avec la balle
+		if(intersection(balleSimuler.getAire(), test.getAire())) {//[pour ce soir, il reste a trouver un moyen de toujours verifier si le laser simule rentre en contact avec la balle
 			enCollision=true;
 
 		}else {

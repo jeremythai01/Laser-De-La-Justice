@@ -6,17 +6,22 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import aaplication.Scene;
 import geometrie.Vecteur;
+import personnage.Personnage;
+import physique.Balle;
+import physique.Coeurs;
 
 public class Aide extends Pouvoir {
 
 
-	public Aide ( Vecteur position , Vecteur vitesse, Vecteur accel) {
-		super(position, vitesse,accel);
+	public Aide ( Vecteur position , Vecteur accel) {
+		super(position,accel);
 		lireImage();
 	}
 
@@ -41,15 +46,24 @@ public class Aide extends Pouvoir {
 	}
 
 	@Override
-	Area getAire() {
+	public Area getAire() {
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getImg().getWidth(null), getImg().getHeight(null)));
 		return new Area(getRectFantome());
 	}
 
-
-	public void activeEffet() {
+	@Override
+	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles ,Personnage perso, double tempsEcoule) {
+		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void retireEffet() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 	//Dessiner Vaisseau spatiale qui sortent de la gauche et qui tirent 
 }

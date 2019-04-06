@@ -103,8 +103,6 @@ public class Laser implements Dessinable {
 		trace.closePath();
 		changerCouleurPerso(g2d);
 
-		g2d.setStroke(new BasicStroke(3));
-
 		g2d.draw(matLocal.createTransformedShape(((trace))));
 	}
 
@@ -174,7 +172,7 @@ public class Laser implements Dessinable {
 	 * @return l'aire en forme de rectangle du laser
 	 */
 	// auteur Jeremy Thai
-	public Area getLaserAire() { // pour detecter lintersection
+	public Area getAire() { // pour detecter lintersection
 		AffineTransform matLocal = new AffineTransform();
 		matLocal.rotate(Math.toRadians(180-angleTir), positionHaut.getX(), positionHaut.getY());
 		Rectangle2D.Double rect = new Rectangle2D.Double(positionHaut.getX(), positionHaut.getY(), LONGUEUR, 0.01);

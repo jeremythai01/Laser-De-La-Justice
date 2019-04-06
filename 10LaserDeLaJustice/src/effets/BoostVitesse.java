@@ -14,13 +14,16 @@ import javax.swing.JOptionPane;
 
 import aaplication.Scene;
 import geometrie.Vecteur;
+import personnage.Personnage;
+import physique.Balle;
+import physique.Coeurs;
 import physique.Laser;
 
 public class BoostVitesse extends Pouvoir {
 
 
-	public BoostVitesse ( Vecteur position , Vecteur vitesse, Vecteur accel) {
-		super(position, vitesse,accel);
+	public BoostVitesse ( Vecteur position , Vecteur accel) {
+		super(position,accel);
 		lireImage();
 	}
 
@@ -46,7 +49,7 @@ public class BoostVitesse extends Pouvoir {
 	}
 
 	@Override
-	Area getAire() {
+	public Area getAire() {
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getImg().getWidth(null), getImg().getHeight(null)));
 		return new Area(getRectFantome());
 	}
@@ -56,5 +59,21 @@ public class BoostVitesse extends Pouvoir {
 		// scene.setVitesseLaser(... );
 		//scene.setLasersConsecutifs(true);
 	}
+
+
+	@Override
+	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void retireEffet() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	
 }
