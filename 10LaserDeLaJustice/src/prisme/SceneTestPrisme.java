@@ -99,7 +99,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		ordi3 = new OrdinateurNiveau3(new Vecteur(40, 44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 60;
+		angle = 20;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -520,7 +520,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 		if (CollisionLaserPrisme()) {
 
-			double angle1 = 90 - (Math.tan((listeLasers.get(0).getPositionHaut().getY() / listeLasers.get(0).getPositionHaut().getX())));
+			double angle1 = 90 - (Math.tan((listeLasers.get(0).getPositionHaut().getX() / listeLasers.get(0).getPositionHaut().getY())));
 			angle2 = (n1 * Math.sin(Math.toRadians(angle1))) / n2;
 			listeLasers.get(0).setAngleTir(Math.toDegrees(angle2));
 			// System.out.println("R: "+ listeLasers.get(0).getCouleurLaser().getRed());

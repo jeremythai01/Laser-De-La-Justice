@@ -7,6 +7,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -43,14 +44,15 @@ public class Prisme extends JPanel implements Dessinable{
 	private Vecteur p2;
 	private Vecteur p3;
 	
+	private Vecteur centre;
 	
 	private Polygon triangles;
 	
 	
 	public Prisme(Vecteur position) {
 		p1 = position;
-		p2 = new Vecteur(position.getX()+2, position.getY());
-		p3 = new Vecteur ((p2.getX()+p1.getX())/2,position.getY()+1);
+		p2 = new Vecteur(position.getX()+5, position.getY());
+		p3 = new Vecteur ((p2.getX()+p1.getX())/2,position.getY()+3);
 
 	}
 	
@@ -65,9 +67,15 @@ public class Prisme extends JPanel implements Dessinable{
 		 int [] pointsY =  {(int)p1.getY(),(int)p2.getY(),(int)p3.getY()};
 		// Demi cercle plein
 		 triangles = new Polygon(pointsX, pointsY, 3);
+		double xCentre = ((p2.getX()+p1.getY())/2);
+		double yCentre = (p3.getY()/2);
+
 		
-		 matLocal.rotate(Math.toRadians(DEFAULT_ANGLE), p1.getX(), p1.getY());
+		
+		matLocal.rotate(Math.toRadians(DEFAULT_ANGLE), p1.getX(), p1.getY());
 		g.draw(matLocal.createTransformedShape(triangles));
+		g.fill(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5));
+		g.draw(matLocal.createTransformedShape(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5)));
 		
 
 	}
@@ -115,7 +123,13 @@ public class Prisme extends JPanel implements Dessinable{
 	}
 	
 	
-	
+	public Vecteur getNormal() {
+		double angleRad = Math.toRadians(getAngle());
+		Vecteur positionCentre = new Vecteur(Math.cos(angleRad),Math.sin(angleRad));
+		Vecteur normal = new Vecteur(positionCentre.getY(),-positionCentre.getX()).normalise();
+		
+		return normal;
+	}
 	
 	
 	
