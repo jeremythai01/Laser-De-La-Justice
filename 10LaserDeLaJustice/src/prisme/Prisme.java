@@ -1,4 +1,4 @@
-package physique;
+package prisme;
 
 import java.awt.Color;
 import java . awt.Polygon ; 
@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
+import physique.Laser;
 
 public class Prisme extends JPanel implements Dessinable{
 
@@ -77,7 +78,7 @@ public class Prisme extends JPanel implements Dessinable{
 		Area prismeLocal = new Area(recFantome);
 		
 		//System.out.println("lair du prisme:" + prismeLocal.isEmpty());
-		return prismeLocal;
+		return new Area(triangles);
 	}
 	
 	
