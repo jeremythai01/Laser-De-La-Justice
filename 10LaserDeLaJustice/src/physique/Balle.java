@@ -26,6 +26,7 @@ public class Balle implements Dessinable, Serializable {
 	private Vecteur forceGravi;
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
+	private final Vecteur ACC_TERE = new Vecteur (0,9.8); 
 
 
 
@@ -50,7 +51,9 @@ public class Balle implements Dessinable, Serializable {
 	public Balle(Vecteur position, Vecteur vitesse, String size) {	
 		setPosition( position );
 		setVitesse( vitesse );
-		setAccel( new Vecteur(0,9.8) );
+		accel = ACC_TERE;
+		//setAccel( new Vecteur(0,9.8) );
+		
 		forceGravi = mt.forceGravi(masse, accel);
 		switch(size) {
 		case "SMALL":

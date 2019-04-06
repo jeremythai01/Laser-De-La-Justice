@@ -8,4 +8,6 @@ import java.util.EventListener;
 public interface SceneListener extends EventListener{
 	
 	public void couleurLaserListener();
+	public void changementTempsListener(int temps);
+
 }

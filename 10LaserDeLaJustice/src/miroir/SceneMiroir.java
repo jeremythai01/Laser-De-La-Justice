@@ -176,7 +176,6 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Cette methode permet de calculer une iteration physique
 	 */
 	private void calculerUneIterationPhysique() {
-		System.out.println("dans calcul it phys...");
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
@@ -284,23 +283,25 @@ public class SceneMiroir extends JPanel implements Runnable {
 					Vecteur intersection = laser.getPositionHaut();
 					Vecteur normal =listeMiroirPlan.get(n).getNormal();
 					Vecteur reflexion = laser.getVitesse().additionne(normal.multiplie(2.0*laser.getVitesse().multiplie(-1.0).prodScalaire(normal)));
-					System.out.println("reflexion " + reflexion);
 					
-					Vecteur nouvelle_pointe = intersection.additionne(reflexion.normalise().multiplie(laser.getLONGUEUR()));
+					Vecteur nouvelle_pointe  = intersection.additionne(reflexion.normalise().multiplie(laser.getLONGUEUR()));
 					
+					laser.setVitesse(reflexion);
 					//intervertir haut en bas
 					laser.setPositionHaut(intersection);
 					laser.setPositionBas(nouvelle_pointe);
 					
 					//change vitesse 
-					laser.setVitesse(reflexion);
+
+					
 					
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-					System.out.println("angle miroir" + angleReflexion);
+					System.out.println("angle de reflexion" + angleReflexion);
 
 					// position début
 					
 					//laser.setAngleTir(angleReflexion);	
+					
 				}
 				n++;
 			}
@@ -409,6 +410,11 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 	public void setAngleMiroir(int value) {
 		ANGLE_DE_MIROIR = value;
+		
+	}
+
+	public void setAngleLaser(int value) {
+		angle = value;
 		
 	}
 

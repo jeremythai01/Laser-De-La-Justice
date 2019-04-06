@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import interfaces.SceneListener;
 import options.Options;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
@@ -62,6 +63,7 @@ public class FenetreJeu extends JFrame {
 	private Timer tempsJeu;
 	double secondes = 60;
 	private static boolean  isNouvelle = true, isOptiPerso = true;
+	private JProgressBar barreTempsDuJeu;
 
 	// Par Arezki 
 	/**
@@ -101,7 +103,7 @@ public class FenetreJeu extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		
+
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
 
@@ -393,12 +395,46 @@ public class FenetreJeu extends JFrame {
 		if(isNouvelle) {
 			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
+			/*sceneFinale.addSceneListener(new SceneListener() {
+
+				@Override
+				public void couleurLaserListener() {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void changementTempsListener(int temps) {
+					System.out.println("temps dans fenetre" + temps);
+					barreTempsDuJeu.setValue(temps);
+
+				}
+
+
+			});
+			 */
 			contentPane.add(sceneFinale);
 		}else {
 			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}
+		sceneFinale.addSceneListener(new SceneListener() {
+			
+			public void couleurLaserListener() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void changementTempsListener(int temps) {
+				System.out.println("temps dans fenetre" + temps);
+				barreTempsDuJeu.setValue(temps);
+
+			}
+
+
+		});
 
 		toucheScene();
 		JButton btnVidersceneFinale = new JButton("Vider sceneFinale");
@@ -413,16 +449,16 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnVidersceneFinale);
 		associerBoutonAvecImage(btnVidersceneFinale, "corbeille.png");
 
-		JProgressBar tempsDuJeu = new JProgressBar();
-		tempsDuJeu.setMaximum(60);
-		tempsDuJeu.setString("60.0 secondes restantes");
-		tempsDuJeu.setValue(60);
-		tempsDuJeu.setForeground(new Color(0, 0, 255));
-		tempsDuJeu.setOpaque(true);
+		barreTempsDuJeu = new JProgressBar();
+		barreTempsDuJeu.setMaximum(60);
+		barreTempsDuJeu.setString("60.0 secondes restantes");
+		barreTempsDuJeu.setValue(60);
+		barreTempsDuJeu.setForeground(new Color(0, 0, 255));
+		barreTempsDuJeu.setOpaque(true);
 
-		tempsDuJeu.setStringPainted(true);
-		tempsDuJeu.setBounds(194, 61, 939, 38);
-		contentPane.add(tempsDuJeu);
+		barreTempsDuJeu.setStringPainted(true);
+		barreTempsDuJeu.setBounds(194, 61, 939, 38);
+		contentPane.add(barreTempsDuJeu);
 
 		JToggleButton btnEditeur = new JToggleButton("New toggle button");
 		btnEditeur.addActionListener(new ActionListener() {
@@ -461,12 +497,12 @@ public class FenetreJeu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				if (tempsDuJeu.getValue() > 00 && secondes >= 0) {
+				if (barreTempsDuJeu.getValue() > 00 && secondes >= 0) {
 
-					tempsDuJeu.setValue(tempsDuJeu.getValue() - 1);
+					barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 
-					tempsDuJeu.setString(secondes-- + " secondes restantes");
-
+					barreTempsDuJeu.setString(secondes-- + " secondes restantes");
+					sceneFinale.setTempsTotalEcoule(barreTempsDuJeu.getValue());
 
 				} else {
 					tempsJeu.stop();
@@ -604,7 +640,7 @@ public class FenetreJeu extends JFrame {
 	public void isNouvelle(boolean reponse) {
 		isNouvelle = reponse;
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode ouvre le menu option lorsque la touche option est cliquee

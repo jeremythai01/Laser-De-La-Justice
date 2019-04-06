@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -40,7 +39,6 @@ import miroir.MiroirPlan;
 import objets.BlocDEau;
 import objets.Echelle;
 import objets.TrouNoir;
-import options.Options;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
@@ -67,7 +65,9 @@ public class Scene extends JPanel implements Runnable {
 	private double deltaT = 0.06;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
-	private double tempsTotalEcoule = 0;
+	private int tempsTotalEcoule = 0;
+
+
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
@@ -77,9 +77,6 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
 	private float valeurAngleRoulette = 90;
-
-	private final int TOUCHE_GAUCHE_INI = 37;
-	private final int TOUCHE_DROITE_INI = 39;
 
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
@@ -133,8 +130,6 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheTir = 32;
 
 	private boolean enMouvement=false;
-
-
 	// Par Jeremy
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
@@ -152,13 +147,8 @@ public class Scene extends JPanel implements Runnable {
 		});
 
 		listePrisme.add(prisme);
-
 		lireFond();
-
-		System.out.println("Salut je mappelle Arezki et je suis un fdp");
-		angle = valeurAngleRoulette;
-
-		// pistoletPrincipal = new Pistolet();
+		angle = valeurAngleRoulette;;
 		nouvellePartie(isPartieNouveau);
 		lectureFichierOption();
 
@@ -426,8 +416,14 @@ public class Scene extends JPanel implements Runnable {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
 			calculerUneIterationPhysique();
+			grosseBalle.setAccel(accBalle);
+			//moyenneBalle.setAccel(accBalle);
+			//petiteBalle.setAccel(accBalle);
 			repaint();
-
+			/*System.out.println("dans le run grosse " + grosseBalle.getAccel() );
+			System.out.println("dans le run moyenne " + moyenneBalle.getAccel() );
+			System.out.println("dans le run petite " + petiteBalle.getAccel() );
+			*/
 			try {
 				//CollisionLaserPrisme(listeLasers, listePrisme);
 			} catch (ConcurrentModificationException e) {
@@ -495,9 +491,6 @@ public class Scene extends JPanel implements Runnable {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
 			accBalle = new Vecteur (0,fluxEntree.readDouble());
-			accBalle = new Vecteur(0, fluxEntree.readDouble());
-			System.out.println("accballe option" + accBalle);
-
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			try {
@@ -647,8 +640,8 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBalleGrosse() {
 
 		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
-		grosseBalle.setAccel(accBalle);
 		listeBalles.add(grosseBalle);
+		System.out.println("accel grosse balle " + grosseBalle.getAccel());
 		repaint();
 
 	}
@@ -660,7 +653,6 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBalleMedium() {
 
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
-		grosseBalle.setAccel(accBalle);
 		listeBalles.add(moyenneBalle);
 
 		repaint();
@@ -675,7 +667,6 @@ public class Scene extends JPanel implements Runnable {
 
 		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
-		grosseBalle.setAccel(accBalle);
 		listeBalles.add(petiteBalle);
 
 		repaint();
@@ -873,7 +864,7 @@ public class Scene extends JPanel implements Runnable {
 					setAngle(valeurAngleRoulette);
 					System.out.println(valeurAngleRoulette);
 
-	
+
 				} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
 					valeurAngleRoulette += 0.05;
 					setAngle(valeurAngleRoulette);
@@ -902,7 +893,7 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 
-/*
+	/*
 	private void CollisionLaserPrisme(ArrayList<Laser> listeLasers, ArrayList<Prisme> listePrismes) {
 		boolean collisionLaserPrisme = false;
 		Vecteur collision = new Vecteur();
@@ -933,12 +924,12 @@ public class Scene extends JPanel implements Runnable {
 
 			}
 		}
-	
+
 
 		// return collision;
 				//return collision;
 			}
-*/
+	 */
 
 	// Miora
 	/**
@@ -958,11 +949,12 @@ public class Scene extends JPanel implements Runnable {
 			if (couleurLaser == null) {
 				fluxSortie.writeObject(null);
 			} else {
-				fluxSortie.writeObject(couleurLaser);
-			} // la couleur du rayon
+				fluxSortie.writeObject(couleurLaser); // la couleur du rayon
+			} 
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			// JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
+			fluxSortie.writeInt(tempsTotalEcoule); // le temps total écoulé
+			System.out.println("le temps enregistre " + tempsTotalEcoule);
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
@@ -1009,6 +1001,9 @@ public class Scene extends JPanel implements Runnable {
 			}
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
+			tempsTotalEcoule = fluxEntree.readInt();
+			System.out.println("le temps lecture " + tempsTotalEcoule);
+			leverEvenChangementTemps();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1028,11 +1023,7 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle  : retourne vrai s'il s'agit d'une nouvelle scene
-	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis
-	 *                    le dernier jeu
 	 */
-
-
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
@@ -1057,6 +1048,15 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
+	/**
+	 * Cette methode permet de communiquer le temps de jeu 
+	 * a l'application
+	 */
+	public void leverEvenChangementTemps() {
+		for (SceneListener ecout : listeEcouteur) {
+			ecout.changementTempsListener(tempsTotalEcoule);
+		}
+	}
 
 	public int getToucheGauche() {
 		return toucheGauche;
@@ -1072,5 +1072,14 @@ public class Scene extends JPanel implements Runnable {
 
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de changer le temps total ecoule
+	 * @param tempsTotalEcoule : le temps total ecoule en seconde
+	 */
+	public void setTempsTotalEcoule(int tempsTotalEcoule) {
+		this.tempsTotalEcoule = tempsTotalEcoule;
 	}
 }

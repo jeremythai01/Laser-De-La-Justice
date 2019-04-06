@@ -41,6 +41,9 @@ public class MiroirPlan implements Dessinable {
 		this.position = position;
 		this.angle = angle;
 	}
+	public double getAngle() {
+		return angle;
+	}
 	/**
 	 * Dessiner le miroir
 	 * @param g2d : le composant graphique
@@ -75,12 +78,11 @@ public class MiroirPlan implements Dessinable {
 	 */
 	public Vecteur getNormal() {
 		double angleMiroirNormal;
-		System.out.println("angle miroir defree" + angle);
 		angleMiroirNormal = Math.toRadians(angle);
 		Vecteur vecMiroir = new Vecteur (Math.cos(angleMiroirNormal), Math.sin(angleMiroirNormal));
-		System.out.println("miroir" + vecMiroir);
+		System.out.println("orientation du miroir " + vecMiroir);
 		normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
-		System.out.println("angle normal degree" + Math.toDegrees(Math.atan(normal.getY()/normal.getX())));
+		System.out.println("angle normal du miroir degree" + normal);
 		return normal;
 	}
 	
