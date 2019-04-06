@@ -914,7 +914,7 @@ public class Scene extends JPanel implements Runnable {
 						for (Laser lasers : listeLasers)
 							for (Prisme pris1 : listePrismes) {
 
-								if (enIntersection(pris1.getAirPrisme(), lasers.getLaserAire())) {
+								if (enIntersection(pris1.getAirPrisme(), lasers.getAire())) {
 
 									collisionLaserPrisme = true;
 									collision = laser.getPositionHaut();

@@ -345,7 +345,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 				for (Balle balle : listeBalles) {
 
-					if (intersection(balle.getAireBalle(), laser.getLaserAire())) {
+					if (intersection(balle.getAire(), laser.getAire())) {
 
 						// if(balle.getAireBalle().intersects(laser.getLine())) {
 
@@ -384,7 +384,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			for (TrouNoir trou : listeTrou) {
 				// if(trou.getAireTrou().intersects(laser.getLine())) {
 
-				if (intersection(trou.getAireTrou(), laser.getLaserAire())) {
+				if (intersection(trou.getAireTrou(), laser.getAire())) {
 
 					listeLasers.remove(laser);
 
@@ -404,7 +404,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 		for (Laser laser : listeLasers) {
 			for (BlocDEau bloc : listeBloc) {
-				if (intersection(bloc.getAireBloc(), laser.getLaserAire())) {
+				if (intersection(bloc.getAireBloc(), laser.getAire())) {
 					// if(bloc.isPremiereCollision()) {
 
 					// laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(),
@@ -470,7 +470,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		for (Laser lasers : listeLasers)
 			for (Prisme pris1 : listePrisme) {
 
-				if (enIntersection(pris1.getAirPrisme(), lasers.getLaserAire())) {
+				if (enIntersection(pris1.getAirPrisme(), lasers.getAire())) {
 
                     collisionLaserPrisme = true;					
 					//collisionLaserPrisme = true;
@@ -494,7 +494,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 				for (Laser lasers : listeLasers)
 					for (Prisme pris1 : listePrisme) {
 
-						if (enIntersection(pris1.getAirPrisme(), lasers.getLaserAire())) {
+						if (enIntersection(pris1.getAirPrisme(), lasers.getAire())) {
 
 		                    				
 							//collisionLaserPrisme = true;
