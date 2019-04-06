@@ -60,6 +60,8 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 
+	private double n2 = 5.0;
+
 	private Vecteur position;
 
 	private Vecteur vitesse;
@@ -468,24 +470,25 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		// System.out.println("bonjours");
 		// while (!collisionLaserPrisme) {
 		for (int i = 0; i < listeLasers.size(); i++) {
-			
+
 			for (int j = 0; j < listePrisme.size(); j++) {
-				
+
 				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire())) {
 					
+					System.out.println(j);
 					collisionLaserPrisme = true;
 					// collisionLaserPrisme = true;
 					// collision = lasers.getPositionHaut();
-					//System.out.println("jai collision avec le prisme: "+ j);
+					// System.out.println("jai collision avec le prisme: "+ j);
 					// System.out.println("le vecteur de la collision: " + collision);
-					
+					j= listePrisme.size();
 				} else {
 					collisionLaserPrisme = false;
-					
+
 				}
 			}
 		}
-		
+
 		return collisionLaserPrisme;
 	}
 
@@ -512,36 +515,27 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 	private void calculRefractionPrisme() {
 		double n1 = 1.00;
-		double n2 = 5.0;
-		double angle2=0;
 
-			if (CollisionLaserPrisme()) {
+		double angle2 = 0;
 
-				double angle1 = 90 - (Math.tan((listeLasers.get(0).getPositionHaut().getY() / listeLasers.get(0).getPositionHaut().getX())));// en
-																													// degres
-																													// par
-																													// rapport
-																													// a
-																													// la
-																													// normale
-				 angle2 = (n1 * Math.sin(Math.toRadians(angle1))) / n2;
-				listeLasers.get(0).setAngleTir(Math.toDegrees(angle2));
-				
+		if (CollisionLaserPrisme()) {
 
-				for(int i = 0; i <1; i++) {
-					angle2= Math.toDegrees(angle2+=0.01);
-					listeLasers.add(new Laser(listeLasers.get(0).getPositionHaut().additionne(new Vecteur(0.7,0.7)), angle2, listeLasers.get(0).getVitesse(), Color.blue) );
-					System.out.println("la vitesse des lasers "+"#"+i+": "+listeLasers.get(i).getVitesse());
-					repaint();
-				}
-				
-			
+			double angle1 = 90 - (Math.tan((listeLasers.get(0).getPositionHaut().getY() / listeLasers.get(0).getPositionHaut().getX())));
+			angle2 = (n1 * Math.sin(Math.toRadians(angle1))) / n2;
+			listeLasers.get(0).setAngleTir(Math.toDegrees(angle2));
+			// System.out.println("R: "+ listeLasers.get(0).getCouleurLaser().getRed());
+
+			for (int i = 0; i < 1; i++) {
+
+				angle2 = Math.toDegrees(angle2 += 0.01);
+				listeLasers.add(new Laser(listeLasers.get(0).getPositionHaut().additionne(new Vecteur(0.7, 0.7)), angle2, listeLasers.get(0).getVitesse(), Color.blue));
+				//System.out.println("la vitesse des lasers " + "#" + i + ": " + listeLasers.get(i).getVitesse());
+				repaint();
+			}
+
 		}
 	}
 
-	
-	
-	
 	private boolean enIntersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
