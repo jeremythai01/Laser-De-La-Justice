@@ -35,7 +35,7 @@ public class Laser implements Dessinable {
 	private boolean isCouleurPerso = false;
 
 	private Vecteur positionBas ;
-	private final double vitesseConstante;
+	private double vitesseConstante;
 
 
 	private Random rand = new Random();
@@ -56,7 +56,7 @@ public class Laser implements Dessinable {
 		this.vitesse = vitesse;
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = false;
-		vitesseConstante=vitesse.getY();
+		this.vitesseConstante=vitesse.getY();
 
 
 	}
@@ -77,8 +77,9 @@ public class Laser implements Dessinable {
 		this.couleurLaser = couleurLaser;
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = true;
-		vitesseConstante=vitesse.getY();
 	}
+	
+	
 
 	/**
 	 * Permet de dessiner le laser selon le contexte graphique en parametre.
@@ -268,6 +269,12 @@ public class Laser implements Dessinable {
 		updaterAngleVitesse(angleTir);
 	}
 
+	public double getVitesseConstante() {
+		return vitesseConstante;
+	}
+	public void setVitesseConstante(double vitesse) {
+		vitesseConstante=vitesse;
+	}
 	/**
 	 * Methode qui permet d'orienter le laser selon son angle Cette methode permet
 	 * de s'assurer que le laser avance bien dans le sens de son angle
@@ -276,11 +283,18 @@ public class Laser implements Dessinable {
 	 */
 	// auteur Arnaud Lefebvre
 	public void updaterAngleVitesse(double angle) {
-		double vitesseEnX = 0.5 * Math.cos(Math.toRadians(angle));
-		double vitesseEnY = 0.5 * Math.sin(Math.toRadians(angle));
+		vitesseConstante=Math.sqrt(this.vitesse.getX()*this.vitesse.getX()+this.vitesse.getY()*this.vitesse.getY());
+		double vitesseEnX = vitesseConstante * Math.cos(Math.toRadians(angle));
+		double vitesseEnY = vitesseConstante * Math.sin(Math.toRadians(angle));
 		Vecteur vec = new Vecteur(vitesseEnX, vitesseEnY);
 		setVitesse(vec);
 		// System.out.println("modification vitesse"+ vec );
+		System.out.println("constante "+vitesseConstante);
+	}
+	
+	public void updaterVitesse(Vecteur vitesse) {
+		setVitesseConstante(vitesse.getY());
+		
 	}
 
 }

@@ -44,7 +44,7 @@ public class BlocDEau extends Objet implements Dessinable {
 	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
+		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, 0.5);
 		g.setColor(Color.blue);
 		g.fill(matLocal.createTransformedShape(bloc));
 		

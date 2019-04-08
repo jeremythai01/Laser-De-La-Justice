@@ -31,6 +31,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	double angle;
 	Laser test;
 	Balle balleSimuler/*= new Balle()*/;
+	private double vitesseLaser=1.5;
 	private boolean enCollision=false;
 	public OrdinateurNiveau3(Vecteur position) {
 		this.position=position;
@@ -72,7 +73,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		angle=calculerAngleTir(savoirViser(listeBalle));
 		calculerBalleAViser();
 		//System.out.println(savoirViser(listeBalle)+" anglecxczc");
-		return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angle, new Vecteur(0,0.5)));
+		return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angle, new Vecteur(0,vitesseLaser)));
 		//return (new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAleatoire(), new Vecteur(0,0.5)));
 
 	}
@@ -149,20 +150,20 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
 		double deltaT;
 		balleSimuler= new Balle(viser);
-		balleSimuler.unPasEuler(0.5);
+		balleSimuler.unPasEuler(0.7);
 		
 		
 		/// tu dois trouver un meilleur delta t( calculer la distance en y et trouver le temps que ca prendrait
 		
-		//deltaT=-distance.getY()/8.33;
+		//deltaT=-distance.getY()/25;
 		//System.out.println(deltaT+"hwhwhwh");
-		//balleSimuler.unPasEuler(deltaT);
+	//	balleSimuler.unPasEuler(deltaT);
 		
 		
 		//System.out.println("position de la balle simulee "+balleSimuler.getPosition());
 		//double angleAViser=calculerAngleTir(distance);
 		double angleAViser=10;
-		test= new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
+		test= new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,vitesseLaser));
 		simulerMouvementLaser(test);
 		for(int i=0;i<170; i++) {
 			//System.out.println("je suis cici");
@@ -182,7 +183,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 			}
 			//System.out.println("angle a viser dans el for="+ angleAViser);
 			//System.out.println("position du laser simule" + test.getPositionHaut());
-			test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,0.5));
+			test=new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,vitesseLaser));
 			simulerMouvementLaser(test);
 		}
 		//System.out.println("angle a viser ="+ angleAViser);
