@@ -39,6 +39,7 @@ import miroir.MiroirConvexe;
 import miroir.MiroirPlan;
 import objets.BlocDEau;
 import objets.Echelle;
+import objets.OrdinateurNiveau3;
 import objets.TrouNoir;
 import options.Options;
 import personnage.Personnage;
@@ -116,6 +117,8 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirConvexe miroireConvexe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
+	private OrdinateurNiveau3 ordi;
+	private int compteur=0;
 	private Coeurs coeurs = new Coeurs(nombreVies);
 	private Prisme prisme = new Prisme(new Vecteur(1, 1));
 
@@ -364,6 +367,10 @@ public class Scene extends JPanel implements Runnable {
 
 		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 7.5, HAUTEUR_DU_MONDE - 1);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		
+		ordi= new OrdinateurNiveau3(new Vecteur(10,10));
+		ordi.ajouterListesObstacles(listeBalles);
+		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 		tracerVecteurGraphique(g2d);
 
@@ -411,6 +418,7 @@ public class Scene extends JPanel implements Runnable {
 
 		tempsTotalEcoule += deltaT;
 		principal.bouge();
+		ordi.bouge();
 
 	}
 
@@ -423,7 +431,12 @@ public class Scene extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
+			compteur++;
 			calculerUneIterationPhysique();
+			if(compteur==60) {
+				tirer();
+				compteur=0;
+			}
 			repaint();
 
 			try {
@@ -885,6 +898,16 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
+	private void tirer() {
+
+		ordi.ajouterListesObstacles(listeBalles);
+		//	listeLasers.add(ordi.tirer());
+		//	listeLasers.add(ordi2.tirer());
+		listeLasers.add(ordi.tirer());
+		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()), angle, new Vecteur(0,0.5)));
+
+	}
+	
 	private void tracerVecteurGraphique(Graphics2D g) {
 		if (enMouvement) {
 			g.setColor(Color.red);
