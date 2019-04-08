@@ -107,7 +107,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				double eYR = e.getY()/modele.getPixelsParUniteY();
 				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
 				//listeBalles.add(balle);
-				bloc= new BlocDEau(new Vecteur(eXR,eYR));
+				bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				listeBloc.add(bloc);
 
 					//trou= new TrouNoir(new Vecteur(eXR,eYR));
@@ -405,20 +405,24 @@ public class SceneTestPls extends JPanel implements Runnable {
 		//bloc.refraction(v, N, n1, n2);
 
 	}
-
+	boolean premiereCollision=true;
 	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 		for(Laser laser : listeLasers) {
 			for(BlocDEau bloc : listeBloc) {
 				if(intersection(bloc.getAireBloc(), laser.getAire())) {
+					if(premiereCollision) {
+						premiereCollision=false;
+					System.out.println("je suis ici");
 					//if(bloc.isPremiereCollision()) {
 
 					//laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
 
 					try {
-						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
-						laser.setAngleTir(180+Math.toDegrees(Math.atan(ref.getY()/ref.getX())));
+						System.out.println("le veiel angle est de "+laser.getAngleTir());
+						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
+						laser.setAngleTir(Math.toDegrees(Math.atan(ref.getY()/ref.getX())));
 						//laser.setAngleTir(30);
-						System.out.println(laser.getAngleTir());
+						System.out.println("le nouvel angle est de "+laser.getAngleTir());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -442,6 +446,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 					//repaint();
 					//	bloc.setPremiereCollision(false);
 					//}
+					}
 				}
 			}
 		}

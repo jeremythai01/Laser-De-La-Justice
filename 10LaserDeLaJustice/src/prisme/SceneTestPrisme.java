@@ -415,8 +415,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 					// 1.33, 1).getX()));
 
 					try {
-						Vecteur ref = bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1,
-								1.33);
+						Vecteur ref = bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
 						laser.setAngleTir(180 + Math.toDegrees(Math.atan(ref.getY() / ref.getX())));
 						// laser.setAngleTir(30);
 						System.out.println(laser.getAngleTir());

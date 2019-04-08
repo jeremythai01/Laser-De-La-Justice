@@ -24,13 +24,16 @@ public class BlocDEau extends Objet implements Dessinable {
 	private final int LARGEUR=2;
 	private Rectangle2D.Double bloc;
 	private boolean premiereCollision=true;
+	private double indiceRefraction;
+	private final double indiceAir=1.0;
 	
 	/**
 	 * Constructeur du bloc deau qui prend en parametre la position du bloc
 	 * @param position, la position du bloc
 	 */
-	public BlocDEau(Vecteur position) {
+	public BlocDEau(Vecteur position, double indiceRefraction) {
 		this.position=position;
+		this.indiceRefraction=indiceRefraction;
 	}
 	
 
@@ -58,19 +61,21 @@ public class BlocDEau extends Objet implements Dessinable {
 	 * @param n2  Indice de réfraction du milieu refracte.
 	 * @return, le nouveau vecteur T,  l`orientation du rayon réfracté
 	 */
-	public Vecteur refraction(Vecteur v, Vecteur N, double n1, double n2) {
+	public Vecteur refraction(Vecteur v, Vecteur N) {
 		Vecteur vecteur= new Vecteur();
-		double n= n1/n2;
+		double n= indiceAir/indiceRefraction;
 		Vecteur E = new Vecteur();
 		E=v.multiplie(-1);
+		System.out.println("la normale est"+ N);
 		
 		// QUE FAIRE ICI !!!!! %???? /"%?"%?/"%?$ %
 		if(((1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N))))))) < 0)
 		throw new RuntimeException("OUPS !!!");
 		double resultat=1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)));
-		System.out.println("dsfsa"+resultat);
+		//System.out.println("dsfsa"+resultat);
 		vecteur = v.multiplie(n).additionne(N.multiplie(((E.prodScalaire(N)*n)-Math.sqrt(1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)))))));
-		return new Vecteur(-vecteur.getX(),vecteur.getY());
+		return new Vecteur(-vecteur.getX(),-vecteur.getY());
+		//return vecteur.multiplie(-1);
 	}
 
 

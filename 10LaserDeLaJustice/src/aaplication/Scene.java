@@ -736,7 +736,7 @@ public class Scene extends JPanel implements Runnable {
 	 * le boutton Bloc d'eau
 	 */
 	public void ajoutBlocEau() {
-		listeBlocEau.add(new BlocDEau(new Vecteur(9, 0)));
+		//listeBlocEau.add(new BlocDEau(new Vecteur(9, 0)));
 		repaint();
 
 	}
