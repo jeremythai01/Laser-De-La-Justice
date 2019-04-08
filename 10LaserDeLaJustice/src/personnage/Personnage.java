@@ -1,11 +1,14 @@
 package personnage;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Serializable;
@@ -39,19 +42,10 @@ public class Personnage implements Dessinable, Serializable {
 	private boolean droite;
 	private boolean bougePas;
 	private static final double VITESSE = 0.1;
-	private double tempsMort = 0;
-	private Type type;
+	private double tempsInvincible = 0;
 	private boolean modeSouris = false;
 	private double posSouris;
-	private VecteurGraphique flecheAngle ;
 
-	/**
-	 * Classe enumeration des types de joueurs
-	 * @author Jeremy Thai
-	 */
-	private enum Type {
-		JOUEUR1, JOUEUR2;
-	}
 
 
 
@@ -61,7 +55,7 @@ public class Personnage implements Dessinable, Serializable {
 	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage va aller a droite
 	 */
 	//Miora
-	public Personnage(double position, int gauche, int droite, int tir, String type) {
+	public Personnage(double position, int gauche, int droite, int tir) {
 
 
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
@@ -74,18 +68,6 @@ public class Personnage implements Dessinable, Serializable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
-
-		switch(type) {
-
-		case "JOUEUR1" : 
-			this.type = Type.JOUEUR1;
-			break;
-
-		case "JOUEUR2" : 
-			this.type = Type.JOUEUR2;
-			break;
-		}
-
 
 		this.positionIni = position;
 		this.toucheGauche = gauche;
@@ -109,6 +91,30 @@ public class Personnage implements Dessinable, Serializable {
 		}
 	}
 
+	/**
+	 Constructeur 3 de la classe.
+	 @param personnage : personnage passee en parametre qui deviendra le personnage courant
+	 */
+	// Jeremy Thai
+	public Personnage(Personnage perso) {
+		
+		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		if (fich == null) {
+			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
+		} else {
+			try {
+				imgPerso = ImageIO.read(fich);
+			} catch (IOException e) {
+				System.out.println("Erreur de lecture du fichier d'image");
+			}
+		}
+		this.positionX= perso.getPositionX();
+		this.toucheGauche = perso.getToucheGauche();
+		this.toucheDroite = perso.getToucheDroite();
+		this.toucheTir = perso.getToucheTir();
+	}
+	
+	
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
 	 * gauche.
@@ -146,7 +152,7 @@ public class Personnage implements Dessinable, Serializable {
 		//Deplacement du personnage a sa position initiale
 		matLocale.translate( (positionX) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
 		g2d.drawImage(imgPerso, matLocale, null); 
-
+		
 	}
 	/**
 	 * Cette methode permet de deplacer le personnage  selon les touches du clavier dans option de jeu.
@@ -327,7 +333,7 @@ public class Personnage implements Dessinable, Serializable {
 	 * @return aire du personnage 
 	 */
 	//Jeremy Thai
-	public Area airePersonnage() {
+	public Area getAire() {
 		return new Area( new Rectangle2D.Double(positionX,
 				HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
 	}
@@ -385,20 +391,20 @@ public class Personnage implements Dessinable, Serializable {
 	}
 
 /**
- * Methode qui retourne le temps d'invicibilite du personnage pendant qu'il  est mort 
- * @return tempsMort temps d'invicibilite du personnage pendant qu'il est mort 
+ * Methode qui retourne le temps d'invicibilite du personnage  
+ * @return tempsMort temps d'invicibilite du personnage 
  */
 	//Jeremy Thai
-	public double getTempsMort() {
-		return tempsMort;
+	public double getTempsInvincible() {
+		return tempsInvincible;
 	}
 	/**
-	 * Methode qui modifie le temps d'invicibilite du personnage pendant qu'il  est mort 
-	 * @param tempsMort temps d'invicibilite du personnage pendant qu'il est mort 
+	 * Methode qui modifie le temps d'invicibilite du personnage pendant
+	 * @param tempsMort temps d'invicibilite du personnage
 	 */
 		//Jeremy Thai
-	public void setTempsMort(double tempsMort) {
-		this.tempsMort = tempsMort;
+	public void setTempsInvincible(double tempsInvincible) {
+		this.tempsInvincible = tempsInvincible;
 	}
 
 

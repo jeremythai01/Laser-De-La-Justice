@@ -276,7 +276,7 @@ public class MoteurPhysique implements Serializable {
 		
 		double distance = rayonA;
 		
-		Vecteur nP = mur.getNormal().normalise();
+	/*	Vecteur nP = mur.getNormal().normalise();
 		
 		double v = vA.prodScalaire(nP);
 		double R = nP.prodScalaire(rA0.soustrait(rP0));
@@ -348,7 +348,7 @@ public class MoteurPhysique implements Serializable {
 		Vecteur rP0 =  new Vecteur(mur.getPosition().getX()  ,mur.getPosition().getY() );
 		
 	
-		Vecteur nP = mur.getNormal().normalise();
+		//Vecteur nP = mur.getNormal().normalise();
 		
 	
 	//	for (int i = 0; i < temps.length; i++) {
@@ -359,8 +359,7 @@ public class MoteurPhysique implements Serializable {
 				double masseA = balle.getMasse();
 				double masseB = Double.POSITIVE_INFINITY;
 				
-				Vecteur vB = new Vecteur(0,0);
-				
+				Vecteur vB = new Vecteur(0,0);		
 				double e = 1;
 				double impulsion = nAB.prodScalaire(vA.soustrait(vB))*(-1-e)/(1/masseA + 1/masseB);
 				balle.setVitesse(vA.additionne(nAB.multiplie(impulsion/masseA)));

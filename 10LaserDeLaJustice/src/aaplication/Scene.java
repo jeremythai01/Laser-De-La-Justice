@@ -45,8 +45,8 @@ import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
-import physique.Prisme;
 import pistolet.Pistolet;
+import prisme.Prisme;
 import utilite.ModeleAffichage;
 
 /**
@@ -72,12 +72,11 @@ public class Scene extends JPanel implements Runnable {
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
 	private int toucheGauche = 37;
-	private Vecteur accBalle ;
-
+	private Vecteur accBalle;
 
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
-	private float valeurAngleRoulette =90;
+	private float valeurAngleRoulette = 90;
 
 	private final int TOUCHE_GAUCHE_INI = 37;
 	private final int TOUCHE_DROITE_INI = 39;
@@ -108,7 +107,6 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<MiroirPlan> listeMiroirePlan = new ArrayList<MiroirPlan>();
 	private ArrayList<BlocDEau> listeBlocEau = new ArrayList<BlocDEau>();
 	private ArrayList<Prisme> listePrisme = new ArrayList<Prisme>();
-	
 
 	private Balle balle;
 	private TrouNoir trou;
@@ -119,12 +117,12 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
 	private Coeurs coeurs = new Coeurs(nombreVies);
-	private Prisme prisme = new Prisme (new Vecteur (1,1));
-	
+	private Prisme prisme = new Prisme(new Vecteur(1, 1));
+
 	private Echelle echelle;
 
 	private Color couleurLaser = null;
-	
+
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
 	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
@@ -132,14 +130,16 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	private int toucheTir = 32;
-	
-	private boolean enMouvement=false;
+
+	private boolean enMouvement = false;
 
 	// Par Jeremy
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
 	 * souris
-	 * @param isPartieNouveau : retourne vrai s'il s'agit d'une nouvelle partie ou d'une partie sauvegardée
+	 * 
+	 * @param isPartieNouveau : retourne vrai s'il s'agit d'une nouvelle partie ou
+	 *                        d'une partie sauvegardée
 	 */
 
 	public Scene(boolean isPartieNouveau) {
@@ -150,17 +150,16 @@ public class Scene extends JPanel implements Runnable {
 		});
 
 		listePrisme.add(prisme);
-		
+
 		lireFond();
 
 		System.out.println("Salut je mappelle Arezki et je suis un fdp");
 		angle = valeurAngleRoulette;
 
-		//pistoletPrincipal = new Pistolet();
+		// pistoletPrincipal = new Pistolet();
 		nouvellePartie(isPartieNouveau);
 		lectureFichierOption();
-		//JOptionPane.showMessageDialog(null, "Vos touches ont été initialisé a " + KeyEvent.getKeyText(toucheGauche) + " et " + KeyEvent.getKeyText(toucheDroite));
-		    
+
 		vitesse = new Vecteur(3, 0);
 
 		addMouseListener(new MouseAdapter() {
@@ -174,7 +173,7 @@ public class Scene extends JPanel implements Runnable {
 				// pour drag toutes les balles
 
 				for (int i = 0; i < listeBalles.size(); i++) {
-					if ((listeBalles.get(i).getAireBalle().contains(eXR, eYR))) {
+					if ((listeBalles.get(i).getAire().contains(eXR, eYR))) {
 
 						balle = listeBalles.get(i);
 						System.out.println(balle.getAccel());
@@ -205,7 +204,7 @@ public class Scene extends JPanel implements Runnable {
 				}
 
 				for (int i = 0; i < listeMiroirePlan.size(); i++) {
-					if (listeMiroirePlan.get(i).getAireMiroir().contains(eXR, eYR)) {
+					if (listeMiroirePlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirePlan.get(i);
@@ -264,7 +263,7 @@ public class Scene extends JPanel implements Runnable {
 					dragMiroirPlan();
 				} else if (bonTrouNoir) {
 					dragTrouNoir();
-				}else if(bonBlocEau) {
+				} else if (bonBlocEau) {
 					dragBlocEau();
 				}
 
@@ -319,7 +318,7 @@ public class Scene extends JPanel implements Runnable {
 				laser.dessiner(g2d, mat, 0, 0);
 			}
 
-		}catch(ConcurrentModificationException e) {
+		} catch (ConcurrentModificationException e) {
 
 		}
 
@@ -356,18 +355,18 @@ public class Scene extends JPanel implements Runnable {
 			blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
-		for(Prisme pri : listePrisme) {
+		for (Prisme pri : listePrisme) {
 			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
+
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 7.5, HAUTEUR_DU_MONDE - 1);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		
+
 		tracerVecteurGraphique(g2d);
-		
+
 	}
 
 	/**
@@ -407,7 +406,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 		for (Laser laser : listeLasers) {
 			laser.move();
-			//System.out.println("YEET" + laser.getPosition());
+			// System.out.println("YEET" + laser.getPosition());
 		}
 
 		tempsTotalEcoule += deltaT;
@@ -426,7 +425,15 @@ public class Scene extends JPanel implements Runnable {
 		while (enCoursAnimation) {
 			calculerUneIterationPhysique();
 			repaint();
+
 			try {
+				// CollisionLaserPrisme(listeLasers, listePrisme);
+			} catch (ConcurrentModificationException e) {
+				e.printStackTrace();
+			}
+
+			try {
+
 				Thread.sleep(tempsDuSleep);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -459,13 +466,12 @@ public class Scene extends JPanel implements Runnable {
 	 * @author Arnaud
 	 */
 	public void setAngle(double angle) {
-		//	System.out.println("Angle: " + angle);
-		/*try {
-			laser.setAngleTir(angle);
-			System.out.println("Angle: " + angle);
-		} catch (NullPointerException e) {
-			System.out.println("Laser existe pas, enlevez vos Sysout");
-		}*/
+		// System.out.println("Angle: " + angle);
+		/*
+		 * try { laser.setAngleTir(angle); System.out.println("Angle: " + angle); }
+		 * catch (NullPointerException e) {
+		 * System.out.println("Laser existe pas, enlevez vos Sysout"); }
+		 */
 		this.angle = angle;
 		principal.getPositionX();
 
@@ -486,8 +492,10 @@ public class Scene extends JPanel implements Runnable {
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
-			accBalle = new Vecteur (0,fluxEntree.readDouble());
+			accBalle = new Vecteur(0, fluxEntree.readDouble());
+			accBalle = new Vecteur(0, fluxEntree.readDouble());
 			System.out.println("accballe option" + accBalle);
+
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			try {
@@ -500,7 +508,7 @@ public class Scene extends JPanel implements Runnable {
 					couleurPersoLaser = true;
 					couleurLaser = couleurOption;
 				}
-				principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
+				principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -539,7 +547,7 @@ public class Scene extends JPanel implements Runnable {
 
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
-				if (enIntersection(balle.getAireBalle(), laser.getLaserAire())) {
+				if (enIntersection(balle.getAire(), laser.getAire())) {
 
 					listeLasers.remove(laser);
 					System.out.println("balle touche par laser");
@@ -559,11 +567,11 @@ public class Scene extends JPanel implements Runnable {
 	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
 		for (Balle balle : listeBalles) {
-			if (enIntersection(balle.getAireBalle(), principal.airePersonnage())) {
-				if (personnage.getTempsMort() <= tempsTotalEcoule) {
+			if (enIntersection(balle.getAire(), principal.getAire())) {
+				if (personnage.getTempsInvincible() <= tempsTotalEcoule) {
 					coeurs.setCombien(nombreVies - 1);
 					nombreVies--;
-					personnage.setTempsMort(tempsTotalEcoule + 1);
+					personnage.setTempsInvincible(tempsTotalEcoule + 1);
 
 				}
 			}
@@ -576,7 +584,7 @@ public class Scene extends JPanel implements Runnable {
 
 		for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
-				if (enIntersection(trou.getAireTrou(), laser.getLaserAire())) {
+				if (enIntersection(trou.getAireTrou(), laser.getAire())) {
 					listeLasers.remove(laser);
 				}
 			}
@@ -650,6 +658,7 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBalleMedium() {
 
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
+		grosseBalle.setAccel(accBalle);
 		listeBalles.add(moyenneBalle);
 
 		repaint();
@@ -664,6 +673,7 @@ public class Scene extends JPanel implements Runnable {
 
 		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
+		grosseBalle.setAccel(accBalle);
 		listeBalles.add(petiteBalle);
 
 		repaint();
@@ -684,7 +694,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton miroire convexe
 	 */
 	public void ajoutMiroireConvexe() {
-		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 1));
+		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 2, 0));
 		repaint();
 	}
 
@@ -693,7 +703,7 @@ public class Scene extends JPanel implements Runnable {
 	 * le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
-		listeMiroirePlan.add(new MiroirPlan(new Vecteur (0,0), 0));
+		listeMiroirePlan.add(new MiroirPlan(new Vecteur(0, 0), 0));
 		repaint();
 
 	}
@@ -835,7 +845,6 @@ public class Scene extends JPanel implements Runnable {
 		});
 	}
 
-
 	private void dragBlocEau() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -853,60 +862,79 @@ public class Scene extends JPanel implements Runnable {
 		});
 	}
 
-
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				//System.out.println("wheel rotation:"+ arg0.getWheelRotation());
-				if(arg0.getWheelRotation()==-1 &&(valeurAngleRoulette>=0)) {
-					valeurAngleRoulette-=0.05;
+				// System.out.println("wheel rotation:"+ arg0.getWheelRotation());
+				if (arg0.getWheelRotation() == -1 && (valeurAngleRoulette >= 0)) {
+					valeurAngleRoulette -= 0.05;
 					setAngle(valeurAngleRoulette);
 					System.out.println(valeurAngleRoulette);
-				
-				}else if(arg0.getWheelRotation()==1&& (valeurAngleRoulette<180)) {
-					valeurAngleRoulette+=0.05;
+
+				} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
+					valeurAngleRoulette += 0.05;
 					setAngle(valeurAngleRoulette);
 					System.out.println();
 					System.out.println(valeurAngleRoulette);
 				}
 
-				enMouvement=true;
+				enMouvement = true;
 			}
 		});
 
 		repaint();
 	}
-	
+
 	private void tracerVecteurGraphique(Graphics2D g) {
-		if(enMouvement) {
+		if (enMouvement) {
 			g.setColor(Color.red);
-			Path2D.Double trace= new Path2D.Double();
-			trace.moveTo(principal.getPositionX()+principal.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-principal.getLONGUEUR_PERSO());
-			trace.lineTo(principal.getPositionX()+principal.getLARGEUR_PERSO()/2+2*Math.cos(Math.toRadians(angle)), HAUTEUR_DU_MONDE-principal.getLONGUEUR_PERSO()-2*Math.sin(Math.toRadians(angle)));
+			Path2D.Double trace = new Path2D.Double();
+			trace.moveTo(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
+					HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO());
+			trace.lineTo(
+					principal.getPositionX() + principal.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle)),
+					HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle)));
 			g.draw(mat.createTransformedShape(trace));
 		}
 	}
 
-	
-	private Vecteur CollisionLaserPrisme() {
+	private void CollisionLaserPrisme(ArrayList<Laser> listeLasers, ArrayList<Prisme> listePrismes) {
 		boolean collisionLaserPrisme = false;
 		Vecteur collision = new Vecteur();
-		while(!collisionLaserPrisme) {
-		for(Prisme pris : listePrisme) {
-			for(Laser laser : listeLasers) {
-				if(pris.getAirPrisme().contains(laser.getPositionHaut().getX(),laser.getPositionHaut().getY())) {
-					collisionLaserPrisme = true;
-					collision = laser.getPositionHaut();
-					
+		while (!collisionLaserPrisme) {
+			for (Prisme pris : listePrisme) {
+				for (Laser laser : listeLasers) {
+					if (pris.getAirPrisme().contains(laser.getPositionHaut().getX(), laser.getPositionHaut().getY())) {
+						collisionLaserPrisme = true;
+						collision = laser.getPositionHaut();
+
+					}
+
+					while (!collisionLaserPrisme) {
+						for (Laser lasers : listeLasers)
+							for (Prisme pris1 : listePrismes) {
+
+								if (enIntersection(pris1.getAirPrisme(), lasers.getAire())) {
+
+									collisionLaserPrisme = true;
+									collision = laser.getPositionHaut();
+									System.out.println("jai collision avec le prisme");
+									System.err.println("le vecteur de la collision: " + collision);
+
+								} else {
+									System.out.println("exit");
+								}
+
+							}
+					}
 				}
 			}
 		}
+
+		// return collision;
+		// return collision;
 	}
-		return collision;
-	}
-	
-	
-	
+
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -929,7 +957,7 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			//	JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
+			// JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
@@ -948,8 +976,8 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de lire le fichier qui sauvegarde le nombre de vie, le
 	 * nombre des balles, la position du joueur, la couleur du rayon et les touches
 	 * utilisées
+	 * 
 	 * @param nomFichier : le nom du fichier de sauvegarde
-	 * @param isOptiPerso : retourve vrai si les options sont personnalises
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
 		final String NOM_FICHIER_OPTION = nomFichier;
@@ -975,9 +1003,8 @@ public class Scene extends JPanel implements Runnable {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-				toucheGauche = fluxEntree.readInt();
-				toucheDroite = fluxEntree.readInt();
-			System.out.println("touche gauche lecture fichier" + toucheGauche );
+			toucheGauche = fluxEntree.readInt();
+			toucheDroite = fluxEntree.readInt();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -996,23 +1023,23 @@ public class Scene extends JPanel implements Runnable {
 	/**
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
-	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
-	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis le dernier jeu
+	 * @param isNouvelle  : retourne vrai s'il s'agit d'une nouvelle scene
+	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis
+	 *                    le dernier jeu
 	 */
-	
-	
+
 	private void nouvellePartie(boolean isNouvelle) {
 		if (!isNouvelle) {
 			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
 			lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
-			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir , "JOUEUR1");
+			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
 		} else {
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
-			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir, "JOUEUR1");
+			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 		}
 	}
 
@@ -1026,8 +1053,6 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	
-	
 	public int getToucheGauche() {
 		return toucheGauche;
 	}
@@ -1043,7 +1068,4 @@ public class Scene extends JPanel implements Runnable {
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
-	
-	
-	
 }

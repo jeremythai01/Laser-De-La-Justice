@@ -52,7 +52,6 @@ public class Balle implements Dessinable, Serializable {
 		setVitesse( vitesse );
 		setAccel( new Vecteur(0,9.8) );
 		forceGravi = mt.forceGravi(masse, accel);
-
 		switch(size) {
 		case "SMALL":
 			type = Type.SMALL;
@@ -265,7 +264,6 @@ public class Balle implements Dessinable, Serializable {
 				vitesse.setY(-vInitY);
 			}
 		}
-
 		if(position.getX()+diametre >= width) // touche le mur droite 
 			if(vitesse.getX() >0 )
 				vitesse.setX(-vitesse.getX());
@@ -378,7 +376,7 @@ public class Balle implements Dessinable, Serializable {
 	 * retourne l'aire d'une balle en forme de cercle
 	 * @return aire de la balle 
 	 */
-	public Area getAireBalle() {
+	public Area getAire() {
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		return new Area(cercle);
 
