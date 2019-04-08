@@ -56,7 +56,6 @@ public class Laser implements Dessinable {
 		this.vitesse = vitesse;
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = false;
-		this.vitesseConstante=vitesse.getY();
 
 
 	}
@@ -269,12 +268,7 @@ public class Laser implements Dessinable {
 		updaterAngleVitesse(angleTir);
 	}
 
-	public double getVitesseConstante() {
-		return vitesseConstante;
-	}
-	public void setVitesseConstante(double vitesse) {
-		vitesseConstante=vitesse;
-	}
+	
 	/**
 	 * Methode qui permet d'orienter le laser selon son angle Cette methode permet
 	 * de s'assurer que le laser avance bien dans le sens de son angle
@@ -289,12 +283,7 @@ public class Laser implements Dessinable {
 		Vecteur vec = new Vecteur(vitesseEnX, vitesseEnY);
 		setVitesse(vec);
 		// System.out.println("modification vitesse"+ vec );
-		System.out.println("constante "+vitesseConstante);
 	}
 	
-	public void updaterVitesse(Vecteur vitesse) {
-		setVitesseConstante(vitesse.getY());
-		
-	}
 
 }

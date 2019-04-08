@@ -90,7 +90,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3= new OrdinateurNiveau3(new Vecteur(40,44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 90;
+		angle = 30;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -105,12 +105,12 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
-				listeBalles.add(balle);
-				//bloc= new BlocDEau(new Vecteur(eXR,eYR));
-				//listeBloc.add(bloc);
+				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
+				//listeBalles.add(balle);
+				bloc= new BlocDEau(new Vecteur(eXR,eYR));
+				listeBloc.add(bloc);
 
-				//	trou= new TrouNoir(new Vecteur(eXR,eYR));
+					//trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
 
 
@@ -311,7 +311,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			calculerUneIterationPhysique();
 		//	ordi3.verifierCollisionBalleEtLaserSimulation();
 			if(compteur==60) {
-				tirer();
+				//tirer();
 				compteur=0;
 			}
 			repaint();
@@ -331,7 +331,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			//if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 			listeLasers.add(
 					new Laser(new Vecteur(
-							character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()), angle, new Vecteur(0,-10)));
+							character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.5)));
 			//}
 		}
 	}
@@ -416,8 +416,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 					try {
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal(), 1, 1.33);
-						//laser.setAngleTir(180+Math.toDegrees(Math.atan(ref.getY()/ref.getX())));
-						laser.setAngleTir(30);
+						laser.setAngleTir(180+Math.toDegrees(Math.atan(ref.getY()/ref.getX())));
+						//laser.setAngleTir(30);
 						System.out.println(laser.getAngleTir());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
