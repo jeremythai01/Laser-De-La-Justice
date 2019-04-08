@@ -12,7 +12,7 @@ import physique.Balle;
 import physique.Laser;
 
 /**
- * classe qui permet la création d'un ordinateur de plusieurs niveaux de talent
+ * classe qui permet la cration d'un ordinateur de plusieurs niveaux de talent
  *@author Arnaud Lefebvre
  */
 public class OrdinateurNiveau3 implements Dessinable, Runnable {
@@ -154,11 +154,8 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		
 		/// tu dois trouver un meilleur delta t( calculer la distance en y et trouver le temps que ca prendrait
 		
-		//double direction=calculerAngleTir(distance);
-		
-		//deltaT=-distance.getY()/(50*(Math.sin(Math.toRadians(direction))));
+		//deltaT=-distance.getY()/8.33;
 		//System.out.println(deltaT+"hwhwhwh");
-		//System.out.println(Math.sin(Math.toRadians(direction))+"sdadasdad");
 		//balleSimuler.unPasEuler(deltaT);
 		
 		
@@ -199,7 +196,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	public void simulerMouvementLaser(Laser laser) {
 		
 		while(laser.getPositionHaut().getY()>balleSimuler.getPosition().getY()+balleSimuler.getDiametre()/2)	{
-		//	System.out.println("je suis dfans le while");
+
 			//laser.unPasEuler(0.01);
 			laser.move();
 			//System.out.println("position de la balle live"+ balleSimuler.getPosition());

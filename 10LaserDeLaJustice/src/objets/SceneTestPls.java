@@ -40,8 +40,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
-	private double deltaT = 0.06;
-	//private double deltaT = 0.01;
+	//private double deltaT = 0.06;
+	private double deltaT = 0.01;
 	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
