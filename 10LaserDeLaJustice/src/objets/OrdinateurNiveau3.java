@@ -154,8 +154,11 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		
 		/// tu dois trouver un meilleur delta t( calculer la distance en y et trouver le temps que ca prendrait
 		
-		//deltaT=-distance.getY()/8.33;
+		//double direction=calculerAngleTir(distance);
+		
+		//deltaT=-distance.getY()/(50*(Math.sin(Math.toRadians(direction))));
 		//System.out.println(deltaT+"hwhwhwh");
+		//System.out.println(Math.sin(Math.toRadians(direction))+"sdadasdad");
 		//balleSimuler.unPasEuler(deltaT);
 		
 		
@@ -196,7 +199,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	public void simulerMouvementLaser(Laser laser) {
 		
 		while(laser.getPositionHaut().getY()>balleSimuler.getPosition().getY()+balleSimuler.getDiametre()/2)	{
-
+		//	System.out.println("je suis dfans le while");
 			//laser.unPasEuler(0.01);
 			laser.move();
 			//System.out.println("position de la balle live"+ balleSimuler.getPosition());
