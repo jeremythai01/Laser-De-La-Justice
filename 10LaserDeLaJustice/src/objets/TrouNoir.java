@@ -72,8 +72,16 @@ public class TrouNoir extends Objet implements Dessinable {
 		 Ellipse2D aire= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		 return new Area(aire);
 	}
+	
+	public Area getAireGrandTrou() {
+		Ellipse2D aire = new Ellipse2D.Double(position.getX()-distance, position.getY()-distance, LARGEUR+distance*2, LARGEUR+distance*2);
+		return new Area(aire);
+	}
 
 
+	//public Vecteur attirerLaser() {
+		
+	//}
 
 	/**
 	 * Cette méthode permet d'avoir accès à la valeur de la position

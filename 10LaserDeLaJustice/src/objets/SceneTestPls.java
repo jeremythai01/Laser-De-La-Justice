@@ -105,10 +105,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
-				//listeBalles.add(balle);
-				bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
-				listeBloc.add(bloc);
+				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
+				listeBalles.add(balle);
+				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
+				//listeBloc.add(bloc);
 
 					//trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
@@ -221,11 +221,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 
-		/*
+		
 	for(TrouNoir trou: listeTrou) {
 		trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 	}
-		 */
+		 
 		coeur= new Coeurs(nombreVies);
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
@@ -311,7 +311,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			calculerUneIterationPhysique();
 		//	ordi3.verifierCollisionBalleEtLaserSimulation();
 			if(compteur==60) {
-				//tirer();
+				tirer();
 				compteur=0;
 			}
 			repaint();
@@ -392,6 +392,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 					listeLasers.remove(laser);   
 
 				}	
+				if(intersection(trou.getAireGrandTrou(), laser.getAire()))
+					System.out.println("je devrais etre bouge");
 			}
 		}
 		/*

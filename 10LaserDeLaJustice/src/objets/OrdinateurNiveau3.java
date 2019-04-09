@@ -150,14 +150,14 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
 		double deltaT;
 		balleSimuler= new Balle(viser);
-		balleSimuler.unPasEuler(0.7);
+		//balleSimuler.unPasEuler(0.5);
 		
 		
 		/// tu dois trouver un meilleur delta t( calculer la distance en y et trouver le temps que ca prendrait
 		
-		//deltaT=-distance.getY()/25;
+		deltaT=-distance.getY()/25;
 		//System.out.println(deltaT+"hwhwhwh");
-	//	balleSimuler.unPasEuler(deltaT);
+		balleSimuler.unPasEuler(deltaT);
 		
 		
 		//System.out.println("position de la balle simulee "+balleSimuler.getPosition());
