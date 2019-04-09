@@ -310,8 +310,6 @@ public class SceneMiroir extends JPanel implements Runnable {
 					laser.setPositionBas(nouvelle_pointe);
 					
 					//change vitesse 
-					//laser.setVitesse(reflexion);
-					
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 					System.out.println("angle miroir" + angleReflexion);
 

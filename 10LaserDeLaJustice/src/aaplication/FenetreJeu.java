@@ -395,46 +395,12 @@ public class FenetreJeu extends JFrame {
 		if(isNouvelle) {
 			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
-			/*sceneFinale.addSceneListener(new SceneListener() {
-
-				@Override
-				public void couleurLaserListener() {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void changementTempsListener(int temps) {
-					System.out.println("temps dans fenetre" + temps);
-					barreTempsDuJeu.setValue(temps);
-
-				}
-
-
-			});
-			 */
 			contentPane.add(sceneFinale);
 		}else {
 			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}
-		sceneFinale.addSceneListener(new SceneListener() {
-			
-			public void couleurLaserListener() {
-				// TODO Auto-generated method stub
-
-			}
-/*
-			@Override
-			public void changementTempsListener(int temps) {
-				System.out.println("temps dans fenetre" + temps);
-				barreTempsDuJeu.setValue(temps);
-
-			}///
-*/
-
-		});
 
 		toucheScene();
 		JButton btnVidersceneFinale = new JButton("Vider sceneFinale");

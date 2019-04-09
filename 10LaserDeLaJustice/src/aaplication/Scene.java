@@ -1029,6 +1029,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
+			tempsTotalEcoule = fluxEntree.readInt();
+			leverEvenChangementTemps();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1076,6 +1078,13 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
+	
+	public void leverEvenChangementTemps() {
+		for (SceneListener ecout : listeEcouteur) {
+			ecout.couleurLaserListener();
+		}
+	}
+	
 
 	public int getToucheGauche() {
 		return toucheGauche;
