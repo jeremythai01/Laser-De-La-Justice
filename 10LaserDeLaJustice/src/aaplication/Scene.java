@@ -68,7 +68,7 @@ public class Scene extends JPanel implements Runnable {
 	private double deltaT = 0.06;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
-	private double tempsTotalEcoule = 0;
+	private int tempsTotalEcoule = 0;
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
@@ -161,7 +161,7 @@ public class Scene extends JPanel implements Runnable {
 
 		lireFond();
 
-		System.out.println("Salut je mappelle Arezki et je suis un fdp");
+
 		angle = valeurAngleRoulette;
 
 		// pistoletPrincipal = new Pistolet();
@@ -981,6 +981,8 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
+			fluxSortie.writeInt(tempsTotalEcoule);
+
 			// JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
@@ -1030,6 +1032,7 @@ public class Scene extends JPanel implements Runnable {
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			tempsTotalEcoule = fluxEntree.readInt();
+			System.out.println("le temps lu dans scene " + tempsTotalEcoule);
 			leverEvenChangementTemps();
 		} // fin try
 
@@ -1080,11 +1083,11 @@ public class Scene extends JPanel implements Runnable {
 	}
 	
 	public void leverEvenChangementTemps() {
+		System.out.println("je suis dans la levee evenement " + tempsTotalEcoule );
 		for (SceneListener ecout : listeEcouteur) {
-			ecout.couleurLaserListener();
+			ecout.changementTempsListener(tempsTotalEcoule);
 		}
 	}
-	
 
 	public int getToucheGauche() {
 		return toucheGauche;
@@ -1100,5 +1103,10 @@ public class Scene extends JPanel implements Runnable {
 
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
+	}
+
+	public void setTempsTotalEcoule(int value) {
+		this.tempsTotalEcoule = value;
+		
 	}
 }

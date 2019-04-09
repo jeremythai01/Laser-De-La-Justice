@@ -300,22 +300,26 @@ public class SceneMiroir extends JPanel implements Runnable {
 					collision = true;
 					Vecteur intersection = laser.getPositionHaut();
 					Vecteur normal =listeMiroirPlan.get(n).getNormal();
-					Vecteur reflexion = laser.getVitesse().additionne(normal.multiplie(2.0*laser.getVitesse().multiplie(-1.0).prodScalaire(normal)));
+					double angleR = Math.toRadians(laser.getAngleTir() ) ;
+					Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR));
+					Vecteur reflexion = incident.normalise().additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
 					System.out.println("reflexion " + reflexion);
 					
 					Vecteur nouvelle_pointe = intersection.additionne(reflexion.normalise().multiplie(laser.getLONGUEUR()));
-					
 					//intervertir haut en bas
-					laser.setPositionHaut(intersection);
-					laser.setPositionBas(nouvelle_pointe);
+					System.out.println(intersection);
+					laser.setPositionHaut(new Vecteur (intersection.getX(), intersection.getY()+1.1));
+					//laser.setPositionBas(nouvelle_pointe);
 					
 					//change vitesse 
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-					System.out.println("angle miroir" + angleReflexion);
+					System.out.println("angle reflexion " + angleReflexion);
 
 					// position début
-					
-					laser.setAngleTir(angleReflexion);	
+					//arreter();
+					laser.setAngleTir(angleReflexion);
+					collision = true;
+					System.out.println("collision statue : " + collision);
 				}
 				n++;
 			}

@@ -30,8 +30,6 @@ import javax.swing.event.ChangeListener;
 
 import interfaces.SceneListener;
 import options.Options;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
 
 /**
  * 
@@ -96,6 +94,7 @@ public class FenetreJeu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1389, 1058);
 		contentPane = new JPanel();
+		
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(new Color(255, 175, 175));
 		contentPane.setBounds(new Rectangle(2, 0, 0, 0));
@@ -391,16 +390,29 @@ public class FenetreJeu extends JFrame {
 		lblLesSorties.setBounds(40, 856, 69, 14);
 		contentPane.add(lblLesSorties);
 
-
+		sceneFinale = new Scene(isNouvelle);
 		if(isNouvelle) {
-			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}else {
-			sceneFinale = new Scene(isNouvelle);
 			sceneFinale.setBounds(30, 107, 1303, 727);
 			contentPane.add(sceneFinale);
 		}
+		sceneFinale.addSceneListener(new SceneListener() {
+
+
+			@Override
+			public void couleurLaserListener() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void changementTempsListener(int temps) {
+				System.out.println("dans le listener dans l'application ");
+				barreTempsDuJeu.setValue(temps);
+			}
+		});
 
 		toucheScene();
 		JButton btnVidersceneFinale = new JButton("Vider sceneFinale");
@@ -468,8 +480,7 @@ public class FenetreJeu extends JFrame {
 					barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 
 					barreTempsDuJeu.setString(secondes-- + " secondes restantes");
-					//sceneFinale.setTempsTotalEcoule(barreTempsDuJeu.getValue());
-
+					sceneFinale.setTempsTotalEcoule(barreTempsDuJeu.getValue());
 				} else {
 					tempsJeu.stop();
 					sceneFinale.arreter();
