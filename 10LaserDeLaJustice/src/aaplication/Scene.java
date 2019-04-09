@@ -123,13 +123,18 @@ public class Scene extends JPanel implements Runnable {
 	private Prisme prisme = new Prisme(new Vecteur(1, 1));
 
 	private Echelle echelle;
-
 	private Color couleurLaser = null;
 
-	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
-	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
-	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
+	Vecteur gravite; // pour miora 
+	
+	
+	
+	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
+	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
+	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 
+	
+	
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	private int toucheTir = 32;
@@ -564,7 +569,7 @@ public class Scene extends JPanel implements Runnable {
 
 					listeLasers.remove(laser);
 					System.out.println("balle touche par laser");
-					balle.shrink(listeBalles);
+					balle.shrink(listeBalles, gravite);
 				}
 			}
 		}
@@ -657,7 +662,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleGrosse() {
 
-		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
+		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
 		grosseBalle.setAccel(accBalle);
 		listeBalles.add(grosseBalle);
 		repaint();
@@ -670,7 +675,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleMedium() {
 
-		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
+		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
 		grosseBalle.setAccel(accBalle);
 		listeBalles.add(moyenneBalle);
 
@@ -685,7 +690,7 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBallePetite() {
 
 		// System.out.println("avant :"+petiteBalle.toString());
-		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
+		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 		grosseBalle.setAccel(accBalle);
 		listeBalles.add(petiteBalle);
 

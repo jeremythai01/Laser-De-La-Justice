@@ -61,6 +61,9 @@ public class SceneTest extends JPanel implements Runnable {
 	private Personnage personnage2;
 	private Personnage personnage3;
 
+	
+	private Vecteur gravite = new Vecteur(0, 9.8);
+	
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
@@ -134,7 +137,7 @@ public class SceneTest extends JPanel implements Runnable {
 				double eYR = e.getY()/modele.getPixelsParUniteY();
 
 				if(!enCoursAnimation) {
-					Balle balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
+					Balle balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" , gravite);
 					listeBalles.add(balle);
 				}
 
