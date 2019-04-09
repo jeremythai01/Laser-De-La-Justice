@@ -125,7 +125,7 @@ public class Scene extends JPanel implements Runnable {
 	private Echelle echelle;
 	private Color couleurLaser = null;
 
-	Vecteur gravite; // pour miora 
+	Vecteur gravite = new Vecteur (0,9.8); // pour miora 
 	
 	
 	
@@ -510,7 +510,7 @@ public class Scene extends JPanel implements Runnable {
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
-			accBalle = new Vecteur(0, fluxEntree.readDouble());
+			gravite = new Vecteur(0, fluxEntree.readDouble());
 			System.out.println("accballe option" + accBalle);
 
 			toucheGauche = fluxEntree.readInt();
@@ -662,7 +662,6 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBalleGrosse() {
 
 		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
-		grosseBalle.setAccel(accBalle);
 		listeBalles.add(grosseBalle);
 		repaint();
 
@@ -675,7 +674,6 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBalleMedium() {
 
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
-		grosseBalle.setAccel(accBalle);
 		listeBalles.add(moyenneBalle);
 
 		repaint();
@@ -690,7 +688,6 @@ public class Scene extends JPanel implements Runnable {
 
 		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
-		grosseBalle.setAccel(accBalle);
 		listeBalles.add(petiteBalle);
 
 		repaint();
