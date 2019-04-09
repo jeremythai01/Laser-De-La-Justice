@@ -71,25 +71,25 @@ public class Echelle extends Objet implements Dessinable{
 		trace.moveTo(posX+pixelsParMetre*3, posY);
 		
 		
-		trace.lineTo(posX+pixelsParMetre*4, posY);
+		/*trace.lineTo(posX+pixelsParMetre*4, posY);
 		trace.lineTo(posX+pixelsParMetre*4, posY-0.5);
 		trace.lineTo(posX+pixelsParMetre*4, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*4, posY);
+		trace.moveTo(posX+pixelsParMetre*4, posY);*/
 		
-		trace.lineTo(posX+pixelsParMetre*5, posY);
+		/*trace.lineTo(posX+pixelsParMetre*5, posY);
 		trace.lineTo(posX+pixelsParMetre*5, posY-0.5);
 		trace.lineTo(posX+pixelsParMetre*5, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*5, posY);
+		trace.moveTo(posX+pixelsParMetre*5, posY);*/
 		
-		trace.lineTo(posX+pixelsParMetre*6, posY);
+		/*trace.lineTo(posX+pixelsParMetre*6, posY);
 		trace.lineTo(posX+pixelsParMetre*6, posY-0.5);
 		trace.lineTo(posX+pixelsParMetre*6, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*6, posY);
+		trace.moveTo(posX+pixelsParMetre*6, posY);*/
 		
-		trace.lineTo(posX+pixelsParMetre*7, posY);
+		/*trace.lineTo(posX+pixelsParMetre*7, posY);
 		trace.lineTo(posX+pixelsParMetre*7, posY-0.5);
 		trace.lineTo(posX+pixelsParMetre*7, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*7, posY);
+		trace.moveTo(posX+pixelsParMetre*7, posY);*/
 		
 		
 		

@@ -39,6 +39,20 @@ public class TrouNoir extends Objet implements Dessinable {
 
 	
 
+	public int getLARGEUR() {
+		return LARGEUR;
+	}
+
+
+
+
+	public int getDistance() {
+		return distance;
+	}
+
+
+
+
 	@Override
 	/**
 	 * Permet de dessiner le trou selon le contexte graphique en parametre.

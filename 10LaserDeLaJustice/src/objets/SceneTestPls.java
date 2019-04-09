@@ -40,8 +40,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
-	private double deltaT = 0.06;
-	//private double deltaT = 0.01;
+	//private double deltaT = 0.06;
+	private double deltaT = 0.01;
 	private  double LARGEUR_DU_MONDE = 50; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
@@ -75,7 +75,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private int nombreVies=3;
 
 	private Echelle echelle;
-
+	private Spirale spirale;
+	
 	private Ordinateur ordi;
 	private OrdinateurNiveau2 ordi2;
 	private OrdinateurNiveau3 ordi3;
@@ -89,8 +90,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 		//ordi2= new OrdinateurNiveau2(new Vecteur(30,44));
 		ordi3= new OrdinateurNiveau3(new Vecteur(40,44));
 		ordi3.ajouterListesObstacles(listeBalles);
+		ordi3.savoirTempsSleep(tempsDuSleep);
 
-		angle = 30;
+		angle = 90;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -105,13 +107,13 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE" );
-				listeBalles.add(balle);
+				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
+				//listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
 
-					//trou= new TrouNoir(new Vecteur(eXR,eYR));
-				//listeTrou.add(trou);
+					trou= new TrouNoir(new Vecteur(eXR,eYR));
+				listeTrou.add(trou);
 
 
 				if(character.airePersonnage().contains(eXR, eYR)) {
@@ -161,7 +163,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 
-		balle1 = new Balle(position, vitesse, "LARGE" );
+		balle1 = new Balle(position, vitesse, "LARGE", new Vecteur(0,0));
 		/*
 		laser = new Laser(
 				new Vecteur(
@@ -182,7 +184,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 			premiereFois = false;
 		}
-
+		
+		for(TrouNoir trou: listeTrou) {
+			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
+		}
 
 		try {
 
@@ -222,9 +227,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 
 		
-	for(TrouNoir trou: listeTrou) {
+	/*for(TrouNoir trou: listeTrou) {
 		trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-	}
+	}*/
 		 
 		coeur= new Coeurs(nombreVies);
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
@@ -234,7 +239,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		echelle = new Echelle(50, 3,4);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-
+		spirale = new Spirale(new Vecteur(60,60), 5, 5);
+		spirale.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		g2d.setColor(Color.yellow);
 		//ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		//ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -331,7 +337,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			//if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 			listeLasers.add(
 					new Laser(new Vecteur(
-							character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.5)));
+							character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.3)));
 			//}
 		}
 	}
@@ -350,7 +356,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 						listeLasers.remove(laser);   
 						listeBalleTouche.add(balle);
-						balle.shrink(listeBalles);
+						balle.shrink(listeBalles, new Vecteur(0,0));
 						coeur.setCombien(nombreVies-1);
 						nombreVies-=1;
 					}	
@@ -392,8 +398,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 					listeLasers.remove(laser);   
 
 				}	
-				if(intersection(trou.getAireGrandTrou(), laser.getAire()))
-					System.out.println("je devrais etre bouge");
+				if(intersection(trou.getAireGrandTrou(), laser.getAire())) {
+					Vecteur distance=laser.getPositionHaut().soustrait(trou.getPosition());
+					System.out.println("distance entre trou et laser" + distance);
+					laser.setAngleTir(laser.getAngleTir()+distance.getX());
+					}
 			}
 		}
 		/*

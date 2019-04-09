@@ -68,7 +68,7 @@ public class Scene extends JPanel implements Runnable {
 	private double deltaT = 0.06;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
-	private double tempsTotalEcoule = 0;
+	private int tempsTotalEcoule = 0;
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
@@ -123,13 +123,18 @@ public class Scene extends JPanel implements Runnable {
 	private Prisme prisme = new Prisme(new Vecteur(1, 1));
 
 	private Echelle echelle;
-
 	private Color couleurLaser = null;
 
-	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
-	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
-	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
+	Vecteur gravite = new Vecteur (0,9.8); // pour miora 
+	
+	
+	
+	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
+	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
+	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 
+	
+	
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	private int toucheTir = 32;
@@ -156,7 +161,7 @@ public class Scene extends JPanel implements Runnable {
 
 		lireFond();
 
-		System.out.println("Salut je mappelle Arezki et je suis un fdp");
+
 		angle = valeurAngleRoulette;
 
 		// pistoletPrincipal = new Pistolet();
@@ -365,12 +370,13 @@ public class Scene extends JPanel implements Runnable {
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
-		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 7.5, HAUTEUR_DU_MONDE - 1);
+		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 3.5, HAUTEUR_DU_MONDE - 0.75);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		
 		ordi= new OrdinateurNiveau3(new Vecteur(10,10));
 		ordi.ajouterListesObstacles(listeBalles);
 		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		ordi.savoirTempsSleep(tempsDuSleep);
 
 		tracerVecteurGraphique(g2d);
 
@@ -505,8 +511,7 @@ public class Scene extends JPanel implements Runnable {
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
-			accBalle = new Vecteur(0, fluxEntree.readDouble());
-			accBalle = new Vecteur(0, fluxEntree.readDouble());
+			gravite = new Vecteur(0, fluxEntree.readDouble());
 			System.out.println("accballe option" + accBalle);
 
 			toucheGauche = fluxEntree.readInt();
@@ -564,7 +569,7 @@ public class Scene extends JPanel implements Runnable {
 
 					listeLasers.remove(laser);
 					System.out.println("balle touche par laser");
-					balle.shrink(listeBalles);
+					balle.shrink(listeBalles, gravite);
 				}
 			}
 		}
@@ -657,8 +662,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleGrosse() {
 
-		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE");
-		grosseBalle.setAccel(accBalle);
+		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
 		listeBalles.add(grosseBalle);
 		repaint();
 
@@ -670,8 +674,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ajoutBalleMedium() {
 
-		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM");
-		grosseBalle.setAccel(accBalle);
+		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
 		listeBalles.add(moyenneBalle);
 
 		repaint();
@@ -685,8 +688,7 @@ public class Scene extends JPanel implements Runnable {
 	public void ajoutBallePetite() {
 
 		// System.out.println("avant :"+petiteBalle.toString());
-		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL");
-		grosseBalle.setAccel(accBalle);
+		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 		listeBalles.add(petiteBalle);
 
 		repaint();
@@ -980,6 +982,8 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
+			fluxSortie.writeInt(tempsTotalEcoule);
+
 			// JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
@@ -1028,6 +1032,9 @@ public class Scene extends JPanel implements Runnable {
 			}
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
+			tempsTotalEcoule = fluxEntree.readInt();
+			System.out.println("le temps lu dans scene " + tempsTotalEcoule);
+			leverEvenChangementTemps();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1075,6 +1082,13 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
+	
+	public void leverEvenChangementTemps() {
+		System.out.println("je suis dans la levee evenement " + tempsTotalEcoule );
+		for (SceneListener ecout : listeEcouteur) {
+			ecout.changementTempsListener(tempsTotalEcoule);
+		}
+	}
 
 	public int getToucheGauche() {
 		return toucheGauche;
@@ -1090,5 +1104,10 @@ public class Scene extends JPanel implements Runnable {
 
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
+	}
+
+	public void setTempsTotalEcoule(int value) {
+		this.tempsTotalEcoule = value;
+		
 	}
 }
