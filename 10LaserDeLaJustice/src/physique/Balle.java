@@ -20,7 +20,7 @@ public class Balle implements Dessinable, Serializable {
 	private double diametre = 3;
 	private double masse = 15;
 	private Ellipse2D.Double cercle;
-	private Vecteur position, vitesse, accel;
+	private Vecteur position, vitesse, accel = new Vecteur(0,9.8);
 	private double vInitY;
 	private boolean toucheSolPremiereFois = true;
 	private Vecteur forceGravi;
@@ -47,10 +47,10 @@ public class Balle implements Dessinable, Serializable {
 	 * @param diametre diametre (unites du monde reel)
 	 * @param masse masse (kg)
 	 */
-	public Balle(Vecteur position, Vecteur vitesse, String size) {	
+	public Balle(Vecteur position, Vecteur vitesse, String size, Vecteur accel) {	
 		setPosition( position );
 		setVitesse( vitesse );
-		setAccel( new Vecteur(0,9.8) );
+		setAccel( accel);
 		forceGravi = mt.forceGravi(masse, accel);
 		switch(size) {
 		case "SMALL":
@@ -280,19 +280,18 @@ public class Balle implements Dessinable, Serializable {
 	 * @param liste liste des balles 
 	 */
 
-	public void shrink(ArrayList<Balle> liste) {
+	public void shrink(ArrayList<Balle> liste, Vecteur accel) {
 
 		Balle nouvBalle1;
 		Balle nouvBalle2;
-		ArrayList<Balle> listeNouvBalles = new ArrayList<Balle> ();
 
 		switch(type)	{
 
 		case LARGE:
 
 
-			nouvBalle1 = new Balle(position, vitesse, "MEDIUM");
-			nouvBalle2 = new Balle(position, vitesse, "MEDIUM");
+			nouvBalle1 = new Balle(position, vitesse, "MEDIUM", accel);
+			nouvBalle2 = new Balle(position, vitesse, "MEDIUM", accel);
 			if(vitesse.getX() < 0) {
 
 				//gauche
@@ -314,8 +313,6 @@ public class Balle implements Dessinable, Serializable {
 				nouvBalle2.getPosition().setX(position.getX()+1.000005);
 			}
 
-			listeNouvBalles.add(nouvBalle1);
-			listeNouvBalles.add(nouvBalle2);
 			liste.remove(this);
 			liste.add(nouvBalle1);
 			liste.add(nouvBalle2);
@@ -325,8 +322,8 @@ public class Balle implements Dessinable, Serializable {
 
 		case MEDIUM:
 
-			nouvBalle1 = new Balle(position, vitesse, "SMALL");
-			nouvBalle2 = new Balle(position, vitesse, "SMALL");
+			nouvBalle1 = new Balle(position, vitesse, "SMALL", accel);
+			nouvBalle2 = new Balle(position, vitesse, "SMALL", accel);
 
 			if(vitesse.getX() < 0) {
 				//gauche
@@ -352,9 +349,7 @@ public class Balle implements Dessinable, Serializable {
 				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
 				nouvBalle2.getPosition().setX(position.getX()+0.7);
 			}
-
-			listeNouvBalles.add(nouvBalle1);
-			listeNouvBalles.add(nouvBalle2);
+			
 			liste.remove(this);
 			liste.add(nouvBalle1);
 			liste.add(nouvBalle2);
