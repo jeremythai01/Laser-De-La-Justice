@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JLabel;
 
 /**
  * Cette classe permet de tester les miroirs concaves et convexes
@@ -46,7 +47,7 @@ public class AppMiroirTest extends JFrame {
 	 */
 	public AppMiroirTest() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 771, 655);
+		setBounds(100, 100, 772, 909);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -94,7 +95,7 @@ public class AppMiroirTest extends JFrame {
 		contentPane.add(btnMiroirConvexe);
 		
 		sceneMiroir = new SceneMiroir();
-		sceneMiroir.setBounds(10, 11, 558, 496);
+		sceneMiroir.setBounds(10, 11, 558, 673);
 		contentPane.add(sceneMiroir);
 		
 		JButton btnMiroirConcave = new JButton("Miroir concave");
@@ -108,17 +109,40 @@ public class AppMiroirTest extends JFrame {
 		btnMiroirConcave.setBounds(585, 427, 125, 23);
 		contentPane.add(btnMiroirConcave);
 		
-		JSlider slider = new JSlider();
-		slider.addChangeListener(new ChangeListener() {
+		JSlider sldMiroir = new JSlider();
+		sldMiroir.setMajorTickSpacing(10);
+		sldMiroir.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				sceneMiroir.setAngleMiroir(slider.getValue());
+				sceneMiroir.setAngleMiroir(sldMiroir.getValue());
 			}
 		});
-		slider.setValue(0);
-		slider.setPaintLabels(true);
-		slider.setPaintTicks(true);
-		slider.setMaximum(360);
-		slider.setBounds(249, 530, 256, 37);
-		contentPane.add(slider);
+		sldMiroir.setValue(0);
+		sldMiroir.setPaintLabels(true);
+		sldMiroir.setPaintTicks(true);
+		sldMiroir.setMaximum(180);
+		sldMiroir.setBounds(169, 712, 358, 37);
+		contentPane.add(sldMiroir);
+		
+		JLabel lblAngleMiroir = new JLabel("Angle miroir :");
+		lblAngleMiroir.setBounds(51, 712, 77, 37);
+		contentPane.add(lblAngleMiroir);
+		
+		JSlider sldLaser = new JSlider();
+		sldLaser.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				sceneMiroir.setAngleLaser(sldLaser.getValue());
+			}
+		});
+		sldLaser.setMajorTickSpacing(10);
+		sldLaser.setPaintTicks(true);
+		sldLaser.setPaintLabels(true);
+		sldLaser.setValue(90);
+		sldLaser.setMaximum(180);
+		sldLaser.setBounds(169, 797, 358, 45);
+		contentPane.add(sldLaser);
+		
+		JLabel lblAngleLaser = new JLabel("Angle laser :");
+		lblAngleLaser.setBounds(51, 778, 77, 37);
+		contentPane.add(lblAngleLaser);
 	}
 }

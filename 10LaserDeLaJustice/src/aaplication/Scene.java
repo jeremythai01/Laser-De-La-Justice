@@ -506,7 +506,6 @@ public class Scene extends JPanel implements Runnable {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			niveau = fluxEntree.readInt();
 			accBalle = new Vecteur(0, fluxEntree.readDouble());
-			accBalle = new Vecteur(0, fluxEntree.readDouble());
 			System.out.println("accballe option" + accBalle);
 
 			toucheGauche = fluxEntree.readInt();

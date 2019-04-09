@@ -56,7 +56,16 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 
 	private double ANGLE_DE_MIROIR = 45;
-	private double angle;
+	private double angleLaser;
+	
+	public double getAngleLaser() {
+		return angleLaser;
+	}
+
+	public void setAngleLaser(double angle) {
+		this.angleLaser = angle;
+	}
+
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private MiroirPlan plan;
 	private MiroirConvexe convexe;
@@ -70,7 +79,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Constructeur de la classe
 	 */
 	public SceneMiroir() {
-		angle = 90;
+		//angleLaser = 90;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);
@@ -117,6 +126,14 @@ public class SceneMiroir extends JPanel implements Runnable {
 				repaint();
 			}
 		});
+	}
+
+	public double getANGLE_DE_MIROIR() {
+		return ANGLE_DE_MIROIR;
+	}
+
+	public void setANGLE_DE_MIROIR(double aNGLE_DE_MIROIR) {
+		ANGLE_DE_MIROIR = aNGLE_DE_MIROIR;
 	}
 
 	//Miora
@@ -245,7 +262,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			//	if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 			listeLasers.add(
 					new Laser(new Vecteur(
-							character.getPositionX() + character.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.5)));
+							character.getPositionX() + character.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - character.getLONGUEUR_PERSO()), angleLaser, new Vecteur(0,0.5)));
 			//}
 		}
 	}
@@ -293,14 +310,14 @@ public class SceneMiroir extends JPanel implements Runnable {
 					laser.setPositionBas(nouvelle_pointe);
 					
 					//change vitesse 
-					laser.setVitesse(reflexion);
+					//laser.setVitesse(reflexion);
 					
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 					System.out.println("angle miroir" + angleReflexion);
 
 					// position début
 					
-					//laser.setAngleTir(angleReflexion);	
+					laser.setAngleTir(angleReflexion);	
 				}
 				n++;
 			}
