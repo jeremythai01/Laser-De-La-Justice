@@ -13,13 +13,17 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import aaplication.Scene;
 import geometrie.Vecteur;
 import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
+import physique.Balle;
+import physique.Coeurs;
 
 /**
  * La classe personnage sert a creer le heros du jeu.
@@ -45,8 +49,9 @@ public class Personnage implements Dessinable, Serializable {
 	private double tempsInvincible = 0;
 	private boolean modeSouris = false;
 	private double posSouris;
-
-
+	private boolean bouclierActive = false;
+	private Ellipse2D.Double ellipse;
+	private double tempsMort = 0;
 
 
 	/**
@@ -97,7 +102,7 @@ public class Personnage implements Dessinable, Serializable {
 	 */
 	// Jeremy Thai
 	public Personnage(Personnage perso) {
-		
+
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
@@ -113,8 +118,8 @@ public class Personnage implements Dessinable, Serializable {
 		this.toucheDroite = perso.getToucheDroite();
 		this.toucheTir = perso.getToucheTir();
 	}
-	
-	
+
+
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
 	 * gauche.
@@ -152,7 +157,18 @@ public class Personnage implements Dessinable, Serializable {
 		//Deplacement du personnage a sa position initiale
 		matLocale.translate( (positionX) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
 		g2d.drawImage(imgPerso, matLocale, null); 
-		
+
+		if(bouclierActive) {
+
+			matLocale.setTransform(mat);
+			ellipse = new Ellipse2D.Double(positionX,HAUTEUR_COMPO-LONGUEUR_PERSO , LARGEUR_PERSO, LONGUEUR_PERSO);
+			g2d.setColor(new Color(1.0f, 1.0f, 0.5f, 0.6f ));	
+			g2d.fill(matLocale.createTransformedShape(ellipse));
+			g2d.setColor(new Color(0.0f, 1.0f, 0.2f, 0.9f ));	
+			g2d.draw(matLocale.createTransformedShape(ellipse)); // Contour vert 
+		}
+
+
 	}
 	/**
 	 * Cette methode permet de deplacer le personnage  selon les touches du clavier dans option de jeu.
@@ -218,7 +234,7 @@ public class Personnage implements Dessinable, Serializable {
 				vitesseX = 0;
 				return;
 			}
-			
+
 			if(Math.abs(posSouris-positionX) < 0.1 ) {
 				vitesseX = 0;
 				return;
@@ -231,7 +247,7 @@ public class Personnage implements Dessinable, Serializable {
 				vitesseX = VITESSE;
 				return;
 			}
-			
+
 		} else {
 
 			vitesseX = 0;
@@ -339,8 +355,6 @@ public class Personnage implements Dessinable, Serializable {
 	}
 
 
-
-
 	/**
 	 * Methode permettant de savoir la touche utilise pour tirer un laser 
 	 * @return toucheTir touche pour tirer un laser
@@ -373,7 +387,7 @@ public class Personnage implements Dessinable, Serializable {
 	public void setModeSouris(boolean modeSouris) {
 		this.modeSouris = modeSouris;
 	}
-	
+
 	/**
 	 * Methode qui retourne la position x  courante de la souris 
 	 * @return posSouris position courante de la souris en x
@@ -390,10 +404,10 @@ public class Personnage implements Dessinable, Serializable {
 		this.posSouris = posSouris;
 	}
 
-/**
- * Methode qui retourne le temps d'invicibilite du personnage  
- * @return tempsMort temps d'invicibilite du personnage 
- */
+	/**
+	 * Methode qui retourne le temps d'invicibilite du personnage  
+	 * @return tempsMort temps d'invicibilite du personnage 
+	 */
 	//Jeremy Thai
 	public double getTempsInvincible() {
 		return tempsInvincible;
@@ -402,11 +416,44 @@ public class Personnage implements Dessinable, Serializable {
 	 * Methode qui modifie le temps d'invicibilite du personnage pendant
 	 * @param tempsMort temps d'invicibilite du personnage
 	 */
-		//Jeremy Thai
+	//Jeremy Thai
 	public void setTempsInvincible(double tempsInvincible) {
 		this.tempsInvincible = tempsInvincible;
 	}
 
+
+	
+	public boolean isBouclierActive() {
+		return bouclierActive;
+	}
+	public void setBouclierActive(boolean bouclierActive) {
+		this.bouclierActive = bouclierActive;
+	}
+	
+	
+	/**
+	 * Methode qui retourne le temps mort du personnage  
+	 * @return tempsMort temps mort du personnage 
+	 */
+	//Jeremy Thai
+	public double getTempsMort() {
+		return tempsMort;
+	}
+	
+	/**
+	 * Methode qui modifie le temps mort du personnage  
+	 * @param tempsMort temps mort du personnage 
+	 */
+	//Jeremy Thai
+	public void setTempsMort(double tempsMort) {
+		this.tempsMort = tempsMort;
+	}
+
+	
+	public void retireEffet() {
+		setBouclierActive(false);
+		setTempsInvincible(0);
+	}
 
 
 

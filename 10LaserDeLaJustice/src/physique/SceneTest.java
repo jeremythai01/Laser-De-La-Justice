@@ -79,8 +79,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private Scene scene;
 	private double xSouris ;
 
-	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>(); 
-
+	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
 	/**
 	 * Create the panel.
 	 */
@@ -142,7 +141,7 @@ public class SceneTest extends JPanel implements Runnable {
 				for(Personnage perso : listePerso) {
 					shootEtAddLaser(e, perso);
 				}
-			
+
 
 				repaint();
 			}
@@ -206,7 +205,6 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 
 		collisionBalleLaser();
-		collisionPouvoirsPersonnages();
 
 		for(Balle balle: listeBalles) {
 
@@ -221,25 +219,27 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Pouvoir pouvoir : listePouvoirs) {
 			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-
+		
 	}//fin paintComponent
 
 
 
 	private void calculerUneIterationPhysique() {
+				
+		collisionMurBalle(  listeBalles, listeMurs );
+		collisionPouvoirsPersonnages();
+		
+		
 		for (int i = 0; i < listeBalles.size(); i++) {
-
 			Balle balle1 = listeBalles.get(i);
-
 			for (int j = i+1; j < listeBalles.size(); j++) {
-
 				Balle balle2 = listeBalles.get(j);
-
 				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
 			}
 		}
 
 
+	
 		for(Pouvoir pouvoir : listePouvoirs) {
 			pouvoir.unPasVerlet(deltaT);
 		}
@@ -248,7 +248,6 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Balle balle: listeBalles) {
 			balle.unPasVerlet(deltaT);
 		}
-
 
 		for(Laser laser : listeLasers) {
 			laser.move();
@@ -261,6 +260,8 @@ public class SceneTest extends JPanel implements Runnable {
 		tempsEcoule += deltaT;
 	}
 
+	
+	
 	public void arreter( ) {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
@@ -277,7 +278,6 @@ public class SceneTest extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while (enCoursAnimation) {	
 			calculerUneIterationPhysique();
 			repaint();
@@ -321,15 +321,17 @@ public class SceneTest extends JPanel implements Runnable {
 	}
 
 	private void collisionPouvoirsPersonnages() {
-
+		
 		for(Pouvoir pouvoir : listePouvoirs) {
 			for(Personnage perso : listePerso ) {
 				if(intersection(pouvoir.getAire(), perso.getAire() )) {
-					System.out.println("touche");
-					pouvoir.activeEffet( scene, coeurs, listeBalles ,perso, tempsEcoule);
+					if(perso.getTempsInvincible() <= tempsEcoule) {
+						pouvoir.activeEffet( scene, coeurs, listeBalles ,perso, tempsEcoule);
+						listePouvoirs.remove(pouvoir);
+					}
 				}
-			}
-		}	
+				}
+			}	
 	}
 
 	private void shootEtAddLaser(KeyEvent e, Personnage perso) {
@@ -361,7 +363,7 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Mur mur : listeMurs) {
 			for(Balle balle : listeBalles ) {
 				if(intersection(balle.getAire(), mur.getAire() )) {
-
+					
 				}
 			}
 		}

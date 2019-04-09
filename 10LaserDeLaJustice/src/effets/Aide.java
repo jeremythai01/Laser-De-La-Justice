@@ -57,11 +57,7 @@ public class Aide extends Pouvoir {
 		
 	}
 
-	@Override
-	public void retireEffet() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 
 	
