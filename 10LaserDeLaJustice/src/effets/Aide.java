@@ -16,6 +16,7 @@ import geometrie.Vecteur;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
+import physique.SceneTest;
 
 public class Aide extends Pouvoir {
 
@@ -52,7 +53,7 @@ public class Aide extends Pouvoir {
 	}
 
 	@Override
-	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles ,Personnage perso, double tempsEcoule) {
+	public void activeEffet(SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles ,Personnage perso, double tempsEcoule) {
 		// TODO Auto-generated method stub
 		
 	}

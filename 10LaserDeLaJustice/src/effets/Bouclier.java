@@ -19,6 +19,8 @@ import geometrie.Vecteur;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
+import physique.Laser;
+import physique.SceneTest;
 
 public class Bouclier extends Pouvoir  {
 
@@ -43,9 +45,11 @@ public class Bouclier extends Pouvoir  {
 			}
 		}
 
-	}
+	}boolean active=false;
 	@Override
+	
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
+		
 		AffineTransform matLocale = new AffineTransform(mat);
 		
 		double factX = getLargeurImg()/ getImg().getWidth(null) ;
@@ -55,10 +59,7 @@ public class Bouclier extends Pouvoir  {
 		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
 		
 		g2d.drawImage(getImg(), matLocale, null);
-		
-		//g2d.drawImage(getImg(),(int)posX,(int) posY, null);
-		Rectangle2D.Double y = new Rectangle2D.Double(getPosition().getX(), getPosition().getY(),  getLargeurImg(), getLongueurImg());
-		g2d.draw(matLocale.createTransformedShape(y));
+	
 	}
 
 	@Override
@@ -66,14 +67,25 @@ public class Bouclier extends Pouvoir  {
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
+	
+	
+	
+	public void desactiveEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
+		perso.setBouclierActive(false);
+		perso.setTempsInvincible(tempsEcoule);
+	}
 
-	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
+	public boolean savoirBouclier(Personnage perso) {
+		return perso.isBouclierActive();
+	}
+
+	@Override
+	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
+		// TODO Auto-generated method stub
 		perso.setBouclierActive(true);
 		perso.setTempsInvincible(tempsEcoule + 1);
 		
-		
 	}
-
 
 
 

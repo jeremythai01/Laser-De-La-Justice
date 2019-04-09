@@ -15,6 +15,7 @@ import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
 import physique.MoteurPhysique;
+import physique.SceneTest;
 
 public abstract class Pouvoir implements Dessinable {
 
@@ -32,7 +33,10 @@ public abstract class Pouvoir implements Dessinable {
 	}
 	public abstract Area getAire();
 	abstract void lireImage();
-	public abstract void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule);
+	public abstract void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule);
+	public abstract void desactiveEffet(SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule);
+
+	
 	/**
 	 * modifie ou affecte une vitesse a celle courante de la balle
 	 * @param vitesse vecteur des vitesse x et y

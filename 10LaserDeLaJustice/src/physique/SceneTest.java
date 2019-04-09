@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import aaplication.Scene;
+import effets.BoostVitesse;
 import effets.Bouclier;
 import effets.Pouvoir;
 import geometrie.Vecteur;
@@ -79,15 +80,20 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private Coeurs coeurs;
 
-	private Scene scene;
 	private double xSouris ;
 
 	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
+	private Vecteur vitesseLaserInit = new Vecteur(0,1);
+	private Vecteur vitesseLaser = vitesseLaserInit;
+	
+	
+	private int compteur = 0 ;
 	/**
 	 * Create the panel.
 	 */
 	public SceneTest() {
 
+		vitesseLaser= new Vecteur(0, 1 );
 		personnage1 = new Personnage(LARGEUR_DU_MONDE/2 -5, toucheGauche, toucheDroite,toucheTir);
 		listePerso.add(personnage1);
 		//	personnage2 = new Personnage(LARGEUR_DU_MONDE/2 + 5, toucheGauche, toucheDroite,toucheTir);
@@ -190,6 +196,9 @@ public class SceneTest extends JPanel implements Runnable {
 			premiereFois = false;
 		}
 
+		
+		collisionPouvoirsPersonnages();
+		
 		g2d.setStroke(new BasicStroke(3));
 
 		for(Laser laser : listeLasers) { 
@@ -230,7 +239,6 @@ public class SceneTest extends JPanel implements Runnable {
 	private void calculerUneIterationPhysique() {
 				
 		collisionMurBalle(  listeBalles, listeMurs );
-		collisionPouvoirsPersonnages();
 		
 		
 		for (int i = 0; i < listeBalles.size(); i++) {
@@ -241,6 +249,7 @@ public class SceneTest extends JPanel implements Runnable {
 			}
 		}
 
+		detectionCollisionBallePersonnage( listeBalles, listePerso );
 
 	
 		for(Pouvoir pouvoir : listePouvoirs) {
@@ -282,7 +291,15 @@ public class SceneTest extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		while (enCoursAnimation) {	
+			
 			calculerUneIterationPhysique();
+			
+			if(vitesseLaser.getY()>vitesseLaserInit.getY()) 
+				compteur++;
+			if( compteur == 168 ) {
+				vitesseLaser = vitesseLaserInit;
+				compteur = 0;
+			}
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -305,8 +322,8 @@ public class SceneTest extends JPanel implements Runnable {
 						listeLasers.remove(laser);  
 						Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
 						Vecteur accel =   new Vecteur ( 0, 9.8);
-						listePouvoirs.add(new Bouclier( position, accel));
-						balle.shrink(listeBalles);
+						listePouvoirs.add(new BoostVitesse( position, accel));
+						balle.shrink(listeBalles, accel);
 					}
 				}
 			}
@@ -328,11 +345,11 @@ public class SceneTest extends JPanel implements Runnable {
 		for(Pouvoir pouvoir : listePouvoirs) {
 			for(Personnage perso : listePerso ) {
 				if(intersection(pouvoir.getAire(), perso.getAire() )) {
-					if(perso.getTempsInvincible() <= tempsEcoule) {
-						pouvoir.activeEffet( scene, coeurs, listeBalles ,perso, tempsEcoule);
+						
+						pouvoir.activeEffet(  listeLasers, this, coeurs, listeBalles ,perso, tempsEcoule);
 						listePouvoirs.remove(pouvoir);
 					}
-				}
+				
 				}
 			}	
 	}
@@ -344,8 +361,22 @@ public class SceneTest extends JPanel implements Runnable {
 				perso.neBougePas();
 				listeLasers.add(
 						new Laser(new Vecteur(
-								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
+								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, vitesseLaser));
 			}
+		}
+
+	}
+	
+	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, ArrayList<Personnage> listePerso ) {
+
+		for (Balle balle : listeBalles){
+			for(Personnage perso: listePerso)
+			if (intersection(balle.getAire(), perso.getAire())) {
+				if (perso.isBouclierActive()) {
+				perso.setBouclierActive(false);
+				}
+			}
+
 		}
 
 	}
@@ -356,7 +387,7 @@ public class SceneTest extends JPanel implements Runnable {
 				perso.neBougePas();
 				listeLasers.add(
 						new Laser(new Vecteur(
-								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, new Vecteur(0, 1 )));
+								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, vitesseLaser));
 			}
 		}
 	}
@@ -370,10 +401,12 @@ public class SceneTest extends JPanel implements Runnable {
 				}
 			}
 		}
-
-
-
 	}
+	
+	public void setVitesseLaser(Vecteur vitesseLaser) {
+		this.vitesseLaser = vitesseLaser;
+	}
+	
 
 }
 
