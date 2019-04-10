@@ -6,14 +6,18 @@ import java.awt.Color;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import javax.swing.JPanel;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import geometrie.Vecteur;
 import miroir.MiroirConcave;
@@ -90,7 +94,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private OrdinateurNiveau2 ordi2;
 	private OrdinateurNiveau3 ordi3;
 	private boolean enMouvement = false;
-
+	
 	/**
 	 * Create the panel.
 	 */
@@ -101,7 +105,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		ordi3 = new OrdinateurNiveau3(new Vecteur(40, 44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 20;
+		angle = 100;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -466,10 +470,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 	private boolean collisionLaserPrisme() {
 		boolean collisionLaserPrisme = false;
-		// Vecteur collision = new Vecteur();
-
-		// System.out.println("bonjours");
-		// while (!collisionLaserPrisme) {
+		
 		for (int i = 0; i < listeLasers.size(); i++) {
 
 			for (int j = 0; j < listePrisme.size(); j++) {
@@ -481,10 +482,6 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 					prisme = listePrisme.get(j);
 					laser = listeLasers.get(i);
 					calculRefractionPrisme(listeLasers.get(i), listePrisme.get(j));
-					// collisionLaserPrisme = true;
-					// collision = lasers.getPositionHaut();
-					// System.out.println("jai collision avec le prisme: "+ j);
-					// System.out.println("le vecteur de la collision: " + collision);
 					j = listePrisme.size();
 				} else {
 					collisionLaserPrisme = false;
@@ -504,7 +501,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		Vecteur N = new Vecteur();
 		Vecteur E = V.multiplie(-1);
 		double n = 1/n2;
-		
+		System.out.println("la position laser avant refraction : "+ laser.getPositionHaut() );
 		
 			N = normalPrisme(laser, prismes);
 			System.out.println("normal"+ N );
@@ -514,6 +511,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		
 	
 		laser.setPositionHaut(T);
+		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );
 		repaint();
 	}
 
@@ -527,6 +525,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	}
 
 	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
+		
 		System.out.println("position p1"+ prisme.getP1());
 		System.out.println("position p2"+ prisme.getP2());
 		System.out.println("position p3"+ prisme.getP3());
@@ -535,11 +534,25 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		Vecteur d12 = prisme.getP2().soustrait(prisme.getP1());
 		Vecteur d23 = prisme.getP2().soustrait(prisme.getP3()); 
 		
+		Point p1 = new Point((int)prisme.getP1().getX(), (int)prisme.getP1().getY());
+		Point p2 = new Point((int)prisme.getP2().getX(), (int)prisme.getP2().getY());
+		Point p3 = new Point((int)prisme.getP3().getX(), (int)prisme.getP3().getY());
 		
-		return new Vecteur(laser.getPositionHaut().getX() - (prisme.getP2().getX()-prisme.getP1().getX()),
-				prisme.getP3().getY());
+		Line2D ligne13 = new Line2D.Double(p1, p3);
+		
+		double resultat = ligne13.ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+	
+		if(resultat < 0.00001) {
+			boolean cote = true;
+			System.out.println(cote);
+		}else {
+			boolean cote = false;
+			System.out.println(cote);
+		}
+		
+		return new Vecteur();
+	
 	}
-
 }
 
 // return collision;

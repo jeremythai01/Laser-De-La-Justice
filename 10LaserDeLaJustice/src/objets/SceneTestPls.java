@@ -112,7 +112,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
 
-					trou= new TrouNoir(new Vecteur(eXR,eYR));
+				trou= new TrouNoir(new Vecteur(eXR,eYR));
 				listeTrou.add(trou);
 
 
@@ -308,13 +308,19 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 	private int compteur=0;
-
+	private double qtRotation=0;
 	@Override
 	public void run() {
 
 		while (enCoursAnimation) {	
 			compteur++;
 			calculerUneIterationPhysique();
+			qtRotation=qtRotation+0.2;
+			for(TrouNoir trou : listeTrou) {
+				trou.savoirQuantiteRotation(qtRotation);
+			}
+			trou.savoirQuantiteRotation(qtRotation);
+			System.out.println("roa"+ qtRotation);
 		//	ordi3.verifierCollisionBalleEtLaserSimulation();
 			if(compteur==60) {
 				tirer();
@@ -418,11 +424,14 @@ public class SceneTestPls extends JPanel implements Runnable {
 	}
 	boolean premiereCollision=true;
 	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
-		for(Laser laser : listeLasers) {
-			for(BlocDEau bloc : listeBloc) {
-				if(intersection(bloc.getAireBloc(), laser.getAire())) {
-					if(premiereCollision) {
-						premiereCollision=false;
+		//for(Laser laser : listeLasers) {
+		for (int i = 0; i < listeLasers.size(); i++) {
+			//for(BlocDEau bloc : listeBloc) {
+			for (int j = 0; j < listeBloc.size(); j++) {
+				
+				if(intersection(listeBloc.get(j).getAireBloc(), listeLasers.get(i).getAire())) {
+					BlocDEau bloc = listeBloc.get(j);
+					Laser laser = listeLasers.get(i);
 					System.out.println("je suis ici");
 					//if(bloc.isPremiereCollision()) {
 
@@ -432,6 +441,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 						System.out.println("le veiel angle est de "+laser.getAngleTir());
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
 						laser.setAngleTir(Math.toDegrees(Math.atan(ref.getY()/ref.getX())));
+						j=listeBloc.size();
 						//laser.setAngleTir(30);
 						System.out.println("le nouvel angle est de "+laser.getAngleTir());
 					} catch (Exception e) {
@@ -457,7 +467,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 					//repaint();
 					//	bloc.setPremiereCollision(false);
 					//}
-					}
+					
 				}
 			}
 		}

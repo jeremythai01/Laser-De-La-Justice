@@ -72,7 +72,7 @@ public class Prisme extends JPanel implements Dessinable{
 
 		
 		
-		matLocal.rotate(Math.toRadians(DEFAULT_ANGLE), p1.getX(), p1.getY());
+		matLocal.rotate(Math.toRadians(0), p1.getX(), p1.getY());
 		g.draw(matLocal.createTransformedShape(triangles));
 		g.fill(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5));
 		g.draw(matLocal.createTransformedShape(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5)));

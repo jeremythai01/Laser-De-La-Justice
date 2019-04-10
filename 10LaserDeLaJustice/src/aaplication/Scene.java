@@ -165,6 +165,7 @@ public class Scene extends JPanel implements Runnable {
 
 		nouvellePartie(isPartieNouveau);
 		lectureFichierOption();
+		personnage.setModeSouris(true);
 
 
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -544,7 +545,7 @@ public class Scene extends JPanel implements Runnable {
 					couleurLaser = couleurOption;
 				}
 				personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
-				personnage.setModeSouris(true);
+			
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -902,10 +903,13 @@ public class Scene extends JPanel implements Runnable {
 				if (arg0.getWheelRotation() == -1 && (valeurAngleRoulette >= 0)) {
 					valeurAngleRoulette -= 0.05;
 					setAngle(valeurAngleRoulette);
+					System.out.println(valeurAngleRoulette);
 
 				} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
 					valeurAngleRoulette += 0.05;
 					setAngle(valeurAngleRoulette);
+					System.out.println();
+					System.out.println(valeurAngleRoulette);
 				}
 
 				enMouvement = true;

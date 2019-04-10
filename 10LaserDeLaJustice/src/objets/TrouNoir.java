@@ -29,9 +29,10 @@ import physique.Laser;
 public class TrouNoir extends Objet implements Dessinable {
 	
 	private Vecteur position;
-	private final int LARGEUR=2;
-	private final int distance=2;
+	private final double LARGEUR=2;
+	private final double distance=2;
 	private Image img=null;
+	private double qtRot=0;
 	
 	private Ellipse2D.Double trou;
 	
@@ -42,7 +43,7 @@ public class TrouNoir extends Objet implements Dessinable {
 	public TrouNoir(Vecteur position) {
 		this.position=position;
 		
-		URL urlCoeur = getClass().getClassLoader().getResource("trounoir.png");
+		URL urlCoeur = getClass().getClassLoader().getResource("trounoir2.png");
 		if (urlCoeur == null) {
 			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
 			System.exit(0);}
@@ -59,14 +60,14 @@ public class TrouNoir extends Objet implements Dessinable {
 
 	
 
-	public int getLARGEUR() {
+	public double getLARGEUR() {
 		return LARGEUR;
 	}
 
 
 
 
-	public int getDistance() {
+	public double getDistance() {
 		return distance;
 	}
 
@@ -94,29 +95,35 @@ public class TrouNoir extends Objet implements Dessinable {
 		//Deplacement du personnage a sa position initiale
 		//matLocale.translate( (0.5) / factPersoX , (2-0.5) / factPersoY);
 		
-		double factX = LARGEUR/ img.getWidth(null) ;
-		double factY = LARGEUR/ img.getHeight(null) ;
+		double factX = (LARGEUR+distance*2)/ img.getWidth(null) ;
+		double factY = (LARGEUR+distance*2)/ img.getHeight(null) ;matLocale.rotate(qtRot, position.getX()+LARGEUR/2, position.getY()+LARGEUR/2);
 		matLocale.scale( factX, factY);
 	
-		matLocale.translate( position.getX() /2  / factX , position.getY() /2 / factY);
-	/*	
+		matLocale.translate( (position.getX()-distance)   / factX , (position.getY() -distance) / factY);
+		
 		g.setColor(Color.LIGHT_GRAY);
 		trou=new Ellipse2D.Double(position.getX()-distance, position.getY()-distance, LARGEUR+distance*2, LARGEUR+distance*2);
-	//	g.fill(matLocal.createTransformedShape(trou));
+		g.fill(matLocal.createTransformedShape(trou));
 		
 		trou= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g.setColor(Color.black);
-		*/
+		
 		//g.drawImage(img, (int)position.getX(),(int) position.getY(), 60, 60, null, null);
 		//System.out.println("chris"+ (int)position.getX());
+		
 		g.drawImage(img, matLocale, null);
 		System.out.println("draw");
 		
 		
 		
 		
-		//g.fill(matLocal.createTransformedShape(trou));
+		g.fill(matLocal.createTransformedShape(trou));
 		
+		
+	}
+	
+	public void savoirQuantiteRotation(double rotation) {
+		this.qtRot=rotation;
 	}
 	
 	/**
