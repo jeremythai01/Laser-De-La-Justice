@@ -2,11 +2,17 @@ package objets;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -25,6 +31,7 @@ public class TrouNoir extends Objet implements Dessinable {
 	private Vecteur position;
 	private final int LARGEUR=2;
 	private final int distance=2;
+	private Image img=null;
 	
 	private Ellipse2D.Double trou;
 	
@@ -34,6 +41,19 @@ public class TrouNoir extends Objet implements Dessinable {
 	 */
 	public TrouNoir(Vecteur position) {
 		this.position=position;
+		
+		URL urlCoeur = getClass().getClassLoader().getResource("trounoir.png");
+		if (urlCoeur == null) {
+			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
+			System.exit(0);}
+		try {
+			img = ImageIO.read(urlCoeur);
+		}
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
+		
+		
 	}
 	
 
@@ -64,17 +84,38 @@ public class TrouNoir extends Objet implements Dessinable {
 	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
+		AffineTransform matLocale = new AffineTransform(mat);
+		//double factPersoY = 0.5 / img.getHeight(null);
+		//double factPersoX = 0.5 / img.getWidth(null);
+
+		// redimenssionne le personnage
+	//	matLocale.scale(factPersoX, factPersoY);
+
+		//Deplacement du personnage a sa position initiale
+		//matLocale.translate( (0.5) / factPersoX , (2-0.5) / factPersoY);
+		
+		double factX = LARGEUR/ img.getWidth(null) ;
+		double factY = LARGEUR/ img.getHeight(null) ;
+		matLocale.scale( factX, factY);
+	
+		matLocale.translate( position.getX() / factX , position.getY() / factY);
+		
 		g.setColor(Color.LIGHT_GRAY);
 		trou=new Ellipse2D.Double(position.getX()-distance, position.getY()-distance, LARGEUR+distance*2, LARGEUR+distance*2);
-		g.fill(matLocal.createTransformedShape(trou));
+	//	g.fill(matLocal.createTransformedShape(trou));
 		
 		trou= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g.setColor(Color.black);
 		
+		//g.drawImage(img, (int)position.getX(),(int) position.getY(), 60, 60, null, null);
+		//System.out.println("chris"+ (int)position.getX());
+		g.drawImage(img, matLocale, null);
+		System.out.println("draw");
 		
 		
 		
-		g.fill(matLocal.createTransformedShape(trou));
+		
+		//g.fill(matLocal.createTransformedShape(trou));
 		
 	}
 	

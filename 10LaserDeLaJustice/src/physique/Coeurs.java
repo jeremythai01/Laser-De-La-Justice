@@ -69,7 +69,27 @@ public class Coeurs implements Dessinable,  Serializable {
 	 * @param largeur: C'est la largeure en pixel de la scene
 	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur ,double largeur) {
-	
+		AffineTransform matLocale = new AffineTransform(mat);
+		double factPersoY = 0.5 / img.getHeight(null);
+		double factPersoX = 0.5 / imgGris.getWidth(null);
+
+		// redimenssionne le personnage
+		matLocale.scale(factPersoX, factPersoY);
+
+		//Deplacement du personnage a sa position initiale
+		matLocale.translate( (0.5) / factPersoX , (2-0.5) / factPersoY);
+		
+		
+		for(int i=0; i<combienGris; i++) {
+			g.drawImage(imgGris, 0+20*i, 0, 20, 20, null, null);
+			
+		}
+
+		for(int i=0; i<combien; i++) {
+			g.drawImage(img, 0+20*i, 0, 20, 20, null, null);
+		}
+
+
 	}
 /**
  * 
