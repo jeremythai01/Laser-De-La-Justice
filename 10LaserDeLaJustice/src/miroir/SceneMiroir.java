@@ -56,7 +56,9 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 
 	private double ANGLE_DE_MIROIR = 45;
-	private double angle;
+	
+
+	private double angleLaser;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private MiroirPlan plan;
 	private MiroirConvexe convexe;
@@ -70,7 +72,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	 * Constructeur de la classe
 	 */
 	public SceneMiroir() {
-		angle = 90;
+		angleLaser = 90;
 		character = new Personnage();
 
 		position = new Vecteur(0.5, 10);
@@ -245,7 +247,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			//	if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 			listeLasers.add(
 					new Laser(new Vecteur(
-							character.getPositionX() + character.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.5)));
+							character.getPositionX() + character.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - character.getLONGUEUR_PERSO()), angleLaser, new Vecteur(0,0.5)));
 			//}
 		}
 	}
@@ -282,31 +284,36 @@ public class SceneMiroir extends JPanel implements Runnable {
 				if(intersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
 					Vecteur intersection = laser.getPositionHaut();
-					Vecteur normal =listeMiroirPlan.get(n).getNormal();
-					Vecteur reflexion = laser.getVitesse().additionne(normal.multiplie(2.0*laser.getVitesse().multiplie(-1.0).prodScalaire(normal)));
-					System.out.println("reflexion " + reflexion);
+					
+					Vecteur normal =listeMiroirPlan.get(n).getNormal().normalise();
+					System.out.println("La normal est du miroir est :" +normal);
+					
+					double angleR = Math.toRadians(laser.getAngleTir() ) ;
+					Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
+					
+					System.out.println("Orientation du laser :" + incident);
+					
+					Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
+					System.out.println("Orientation apres reflexion" + reflexion);
 					
 					Vecteur nouvelle_pointe = intersection.additionne(reflexion.normalise().multiplie(laser.getLONGUEUR()));
-					
 					//intervertir haut en bas
-					laser.setPositionHaut(intersection);
+					/*laser.setPositionHaut(new Vecteur (intersection.getX(), intersection.getY()+1.1));
 					laser.setPositionBas(nouvelle_pointe);
-					
-					//change vitesse 
-					laser.setVitesse(reflexion);
-					
+					*/
+					//change orientation 
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-					System.out.println("angle miroir" + angleReflexion);
-
-					// position début
+					System.out.println("Angle reflexion en degree " + angleReflexion);
 					
-					//laser.setAngleTir(angleReflexion);	
+					laser.setAngleTir(angleReflexion);
+					System.out.println("-----------------------------------------------------------------------------");
 				}
 				n++;
 			}
 
 		}
 	} // fin methode
+
 		
 	//Miora
 	/**
@@ -411,5 +418,14 @@ public class SceneMiroir extends JPanel implements Runnable {
 		ANGLE_DE_MIROIR = value;
 		
 	}
+	
+	public double getAngleLaser() {
+		return angleLaser;
+	}
+
+	public void setAngleLaser(double angleLaser) {
+		this.angleLaser = angleLaser;
+	}
+	
 
 }
