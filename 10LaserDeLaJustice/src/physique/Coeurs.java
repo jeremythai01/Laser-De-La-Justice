@@ -84,11 +84,10 @@ public class Coeurs implements Dessinable,  Serializable {
 			g.drawImage(imgGris, 0+20*i, 0, 20, 20, null, null);
 			
 		}
-
+		
 		for(int i=0; i<combien; i++) {
 			g.drawImage(img, 0+20*i, 0, 20, 20, null, null);
 		}
-
 
 	}
 /**

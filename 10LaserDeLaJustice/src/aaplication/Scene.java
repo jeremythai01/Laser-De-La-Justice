@@ -61,7 +61,7 @@ public class Scene extends JPanel implements Runnable {
 
 	private Image fond = null;
 
-	private Personnage principal;
+	private Personnage personnage;
 
 	private static final long serialVersionUID = 1L;
 
@@ -69,7 +69,7 @@ public class Scene extends JPanel implements Runnable {
 	private double deltaT = 0.08;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
-	private int tempsTotalEcoule = 0;
+	private int tempsEcoule = 0;
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
@@ -112,8 +112,6 @@ public class Scene extends JPanel implements Runnable {
 
 	private Balle balle;
 	private TrouNoir trou;
-	private Pistolet pistoletPrincipal;
-	private Laser laser;
 	private MiroirConcave miroirConcave;
 	private MiroirConvexe miroireConvexe;
 	private MiroirPlan miroirePlan;
@@ -126,16 +124,16 @@ public class Scene extends JPanel implements Runnable {
 	private Echelle echelle;
 	private Color couleurLaser = null;
 
-	Vecteur gravite = new Vecteur (0,9.8); // pour miora 
-	
-	
+	private Vecteur gravite = new Vecteur (0,9.8); // pour miora 
+	private Vecteur vitesseLaser = new Vecteur(0, 0.5);
+
 	
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
 	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 
-	
-	
+
+
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
 
 	private int toucheTir = 32;
@@ -152,6 +150,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	public Scene(boolean isPartieNouveau) {
+
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				setAngleRoulette();
@@ -162,22 +161,27 @@ public class Scene extends JPanel implements Runnable {
 
 		lireFond();
 
-
 		angle = valeurAngleRoulette;
 
-		// pistoletPrincipal = new Pistolet();
 		nouvellePartie(isPartieNouveau);
 		lectureFichierOption();
 
-		vitesse = new Vecteur(3, 0);
+
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				double xSouris= e.getX()/modele.getPixelsParUniteX();
+				personnage.setPosSouris(xSouris);
+			}
+		});
 
 		addMouseListener(new MouseAdapter() {
 			@Override
+
 			public void mousePressed(MouseEvent e) {
 
 				double eXR = e.getX() / modele.getPixelsParUniteX();
 				double eYR = e.getY() / modele.getPixelsParUniteY();
-				// System.out.println("taille de la liste des balles: "+compteurBalle);
 
 				// pour drag toutes les balles
 
@@ -241,13 +245,15 @@ public class Scene extends JPanel implements Runnable {
 						i = listeBlocEau.size();
 					}
 				}
-
-				repaint();
+				
+				
+				tirLaser(e, personnage);
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 
+				personnage.relacheTouche();
 				bonneBalle = false;
 				bonMiroirConvexe = false;
 				bonMiroirConcave = false;
@@ -283,16 +289,14 @@ public class Scene extends JPanel implements Runnable {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				principal.deplacerLePersoSelonTouche(e);
+				personnage.deplacerLePersoSelonTouche(e);
 				tirLaser(e);
-				repaint();
 			}
 
 			@Override
 			// Jeremy Thai
 			public void keyReleased(KeyEvent e) {
-				principal.relacheTouche(e);
-				repaint();
+				personnage.relacheTouche(e);
 			}
 		});
 
@@ -318,21 +322,27 @@ public class Scene extends JPanel implements Runnable {
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
 
-		try {
 
+		try {
 			for (Laser laser : listeLasers) {
 				if (laser.getPositionHaut().getY() <= 0)
 					listeLasers.remove(laser);
-				laser.dessiner(g2d, mat, 0, 0);
 			}
 
-		} catch (ConcurrentModificationException e) {
-
+		}catch (ConcurrentModificationException e) {
 		}
+		try {
+			for (Laser laser : listeLasers) {
+				laser.dessiner(g2d, mat, 0, 0);
+			}
+		}catch (ConcurrentModificationException e) {
+		}
+
+
 
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
-		detectionCollisionBallePersonnage(listeBalles, principal);
+		detectionCollisionBallePersonnage(listeBalles, personnage);
 
 		for (Balle balle : listeBalles) {
 
@@ -366,12 +376,12 @@ public class Scene extends JPanel implements Runnable {
 			//pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
-		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		personnage.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 3.5, HAUTEUR_DU_MONDE - 0.75);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		
+
 		ordi= new OrdinateurNiveau3(new Vecteur(10,10));
 		ordi.ajouterListesObstacles(listeBalles);
 		//ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -413,7 +423,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void calculerUneIterationPhysique() {
 
-		
+
 		for (int i = 0; i < listeBalles.size(); i++) {
 			Balle balle1 = listeBalles.get(i);
 			for (int j = i+1; j < listeBalles.size(); j++) {
@@ -422,7 +432,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 
-	
+
 		for (Balle balle : listeBalles) {
 			balle.unPasVerlet(deltaT);
 		}
@@ -431,8 +441,8 @@ public class Scene extends JPanel implements Runnable {
 			// System.out.println("YEET" + laser.getPosition());
 		}
 
-		tempsTotalEcoule += deltaT;
-		principal.bouge();
+		tempsEcoule += deltaT;
+		personnage.bouge();
 		ordi.bouge();
 
 	}
@@ -501,8 +511,6 @@ public class Scene extends JPanel implements Runnable {
 		 * System.out.println("Laser existe pas, enlevez vos Sysout"); }
 		 */
 		this.angle = angle;
-		principal.getPositionX();
-
 	}
 
 	// Par Miora
@@ -535,7 +543,8 @@ public class Scene extends JPanel implements Runnable {
 					couleurPersoLaser = true;
 					couleurLaser = couleurOption;
 				}
-				principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
+				personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
+				personnage.setModeSouris(true);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -575,9 +584,7 @@ public class Scene extends JPanel implements Runnable {
 		for (Laser laser : listeLasers) {
 			for (Balle balle : listeBalles) {
 				if (enIntersection(balle.getAire(), laser.getAire())) {
-
 					listeLasers.remove(laser);
-					System.out.println("balle touche par laser");
 					balle.shrink(listeBalles, gravite);
 				}
 			}
@@ -594,11 +601,14 @@ public class Scene extends JPanel implements Runnable {
 	private void detectionCollisionBallePersonnage(ArrayList<Balle> listeBalles, Personnage personnage) {
 
 		for (Balle balle : listeBalles) {
-			if (enIntersection(balle.getAire(), principal.getAire())) {
-				if (personnage.getTempsInvincible() <= tempsTotalEcoule) {
+			if (enIntersection(balle.getAire(), personnage.getAire())) {
+				
+				if (personnage.getTempsInvincible() <= tempsEcoule) {
+
 					coeurs.setCombien(nombreVies - 1);
 					nombreVies--;
-					personnage.setTempsInvincible(tempsTotalEcoule + 1);
+					System.out.print(nombreVies);
+					personnage.setTempsInvincible(tempsEcoule + 0.5);
 				}
 			}
 
@@ -629,18 +639,18 @@ public class Scene extends JPanel implements Runnable {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
-				principal.neBougePas(); // Pour que 1 laser soit tirer a la fois
+				personnage.neBougePas(); // Pour que 1 laser soit tirer a la fois
 
 				if (couleurPersoLaser == false) {
 					System.out.println("tir laser false");
-					listeLasers.add(new Laser(new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
-							HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()), angle, new Vecteur(0, 0.5)));
+					listeLasers.add(new Laser(new Vecteur(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
+							HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO()), angle, vitesseLaser));
 				} else {
 					System.out.println("tir laser false");
 					listeLasers.add(new Laser(
-							new Vecteur(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
-									HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO()),
-							angle, new Vecteur(0, 0.5), couleurLaser));
+							new Vecteur(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
+									HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO()),
+							angle, vitesseLaser, couleurLaser));
 				}
 
 			}
@@ -698,7 +708,7 @@ public class Scene extends JPanel implements Runnable {
 		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 		listeBalles.add(petiteBalle);
-
+		
 		repaint();
 
 	}
@@ -892,13 +902,10 @@ public class Scene extends JPanel implements Runnable {
 				if (arg0.getWheelRotation() == -1 && (valeurAngleRoulette >= 0)) {
 					valeurAngleRoulette -= 0.05;
 					setAngle(valeurAngleRoulette);
-					System.out.println(valeurAngleRoulette);
 
 				} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
 					valeurAngleRoulette += 0.05;
 					setAngle(valeurAngleRoulette);
-					System.out.println();
-					System.out.println(valeurAngleRoulette);
 				}
 
 				enMouvement = true;
@@ -917,16 +924,21 @@ public class Scene extends JPanel implements Runnable {
 		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()), angle, new Vecteur(0,0.5)));
 
 	}
-	
+
+	/**
+	 * 
+	 * @param g
+	 */
+	// Arnaud Lefebvre
 	private void tracerVecteurGraphique(Graphics2D g) {
 		if (enMouvement) {
 			g.setColor(Color.red);
 			Path2D.Double trace = new Path2D.Double();
-			trace.moveTo(principal.getPositionX() + principal.getLARGEUR_PERSO() / 2,
-					HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO());
+			trace.moveTo(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
+					HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO());
 			trace.lineTo(
-					principal.getPositionX() + principal.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle)),
-					HAUTEUR_DU_MONDE - principal.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle)));
+					personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle)),
+					HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle)));
 			g.draw(mat.createTransformedShape(trace));
 		}
 	}
@@ -982,7 +994,7 @@ public class Scene extends JPanel implements Runnable {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
 			fluxSortie.writeInt(nombreVies); // nombre de vie
 			fluxSortie.writeObject(listeBalles); // la liste des balles
-			fluxSortie.writeDouble(principal.getPositionX()); // les caracteristiques du personnage
+			fluxSortie.writeDouble(personnage.getPositionX()); // les caracteristiques du personnage
 			if (couleurLaser == null) {
 				fluxSortie.writeObject(null);
 			} else {
@@ -990,7 +1002,7 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			fluxSortie.writeInt(tempsTotalEcoule);
+			fluxSortie.writeInt(tempsEcoule);
 
 			// JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
@@ -1040,8 +1052,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
-			tempsTotalEcoule = fluxEntree.readInt();
-			System.out.println("le temps lu dans scene " + tempsTotalEcoule);
+			tempsEcoule = fluxEntree.readInt();
+			System.out.println("le temps lu dans scene " + tempsEcoule);
 			leverEvenChangementTemps();
 		} // fin try
 
@@ -1070,12 +1082,12 @@ public class Scene extends JPanel implements Runnable {
 			System.out.println("scene partie charge " + isNouvelle);
 			lectureFichierSauvegarde("sauvegarde.d3t");
 			coeurs.setCombien(nombreVies);
-			principal = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
+			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
 		} else {
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
-			principal = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
+			personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 		}
 	}
 
@@ -1088,11 +1100,11 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
-	
+
 	public void leverEvenChangementTemps() {
-		System.out.println("je suis dans la levee evenement " + tempsTotalEcoule );
+		System.out.println("je suis dans la levee evenement " + tempsEcoule );
 		for (SceneListener ecout : listeEcouteur) {
-			ecout.changementTempsListener(tempsTotalEcoule);
+			ecout.changementTempsListener(tempsEcoule);
 		}
 	}
 
@@ -1113,7 +1125,18 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	public void setTempsTotalEcoule(int value) {
-		this.tempsTotalEcoule = value;
-		
+		this.tempsEcoule = value;
 	}
+
+	private void tirLaser(MouseEvent e, Personnage perso) {
+		if(perso.isModeSouris()) {
+			if(enCoursAnimation == true) {
+				perso.neBougePas();
+				listeLasers.add(
+						new Laser(new Vecteur(
+								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO() ) , angle, vitesseLaser));
+			}
+		}
+	}
+
 }
