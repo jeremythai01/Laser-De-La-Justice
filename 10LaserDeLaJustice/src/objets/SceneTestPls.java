@@ -92,7 +92,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3.ajouterListesObstacles(listeBalles);
 		ordi3.savoirTempsSleep(tempsDuSleep);
 
-		angle = 30;
+		angle = 90;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);

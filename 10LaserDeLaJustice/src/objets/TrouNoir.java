@@ -96,7 +96,7 @@ public class TrouNoir extends Objet implements Dessinable {
 		//matLocale.translate( (0.5) / factPersoX , (2-0.5) / factPersoY);
 		
 		double factX = (LARGEUR+distance*2)/ img.getWidth(null) ;
-		double factY = (LARGEUR+distance*2)/ img.getHeight(null) ;
+		double factY = (LARGEUR+distance*2)/ img.getHeight(null) ;matLocale.rotate(qtRot, position.getX()+LARGEUR/2, position.getY()+LARGEUR/2);
 		matLocale.scale( factX, factY);
 	
 		matLocale.translate( (position.getX()-distance)   / factX , (position.getY() -distance) / factY);
@@ -110,7 +110,7 @@ public class TrouNoir extends Objet implements Dessinable {
 		
 		//g.drawImage(img, (int)position.getX(),(int) position.getY(), 60, 60, null, null);
 		//System.out.println("chris"+ (int)position.getX());
-		matLocale.rotate(qtRot, position.getX(), position.getY());
+		
 		g.drawImage(img, matLocale, null);
 		System.out.println("draw");
 		
