@@ -1054,8 +1054,6 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle  : retourne vrai s'il s'agit d'une nouvelle scene
-	 * @param isOptiPerso : retourne vrai si le fichier option a ete change depuis
-	 *                    le dernier jeu
 	 */
 
 	private void nouvellePartie(boolean isNouvelle) {
