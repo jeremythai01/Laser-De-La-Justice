@@ -31,7 +31,7 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	double angle;
 	Laser test;
 	Balle balleSimuler/*= new Balle()*/;
-	private double vitesseLaser=1.5;
+	private double vitesseLaser=0.5;
 	private boolean enCollision=false;
 	private double temps;
 	
