@@ -531,6 +531,11 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		System.out.println("position p2"+ prisme.getP2());
 		System.out.println("position p3"+ prisme.getP3());
 		
+		Vecteur d13 = prisme.getP1().soustrait(prisme.getP3());
+		Vecteur d12 = prisme.getP2().soustrait(prisme.getP1());
+		Vecteur d23 = prisme.getP2().soustrait(prisme.getP3()); 
+		
+		
 		return new Vecteur(laser.getPositionHaut().getX() - (prisme.getP2().getX()-prisme.getP1().getX()),
 				prisme.getP3().getY());
 	}
