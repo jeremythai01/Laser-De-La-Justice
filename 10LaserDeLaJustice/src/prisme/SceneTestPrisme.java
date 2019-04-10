@@ -319,7 +319,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 				// tirer();
 				compteur = 0;
 			}
-			calculRefractionPrisme(laser);
+			collisionLaserPrisme();
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -478,8 +478,9 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 					System.out.println(j);
 					collisionLaserPrisme = true;
-					prisme = listePrisme.get(i);
+					prisme = listePrisme.get(j);
 					laser = listeLasers.get(i);
+					calculRefractionPrisme(listeLasers.get(i), listePrisme.get(j));
 					// collisionLaserPrisme = true;
 					// collision = lasers.getPositionHaut();
 					// System.out.println("jai collision avec le prisme: "+ j);
@@ -497,19 +498,20 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 	
 
-	private void calculRefractionPrisme(Laser laser) {
+	private void calculRefractionPrisme(Laser laser, Prisme prismes) {
 		Vecteur T = new Vecteur();
 		Vecteur V = laser.getPositionHaut();
 		Vecteur N = new Vecteur();
 		Vecteur E = V.multiplie(-1);
 		double n = 1/n2;
 		
-		if(collisionLaserPrisme()) {
-			N = normalPrisme(laser, prisme);
 		
+			N = normalPrisme(laser, prismes);
+			System.out.println("normal"+ N );
+			System.out.println("position: "+ prismes.getP1());
 			T = V.multiplie(n).additionne(N.multiplie((n*E.prodScalaire(N)-Math.sqrt(1-Math.pow(n, 2)*(1-(Math.pow(E.prodScalaire(N), 2)))))));
 		
-		}
+		
 	
 		laser.setPositionHaut(T);
 		repaint();
@@ -525,8 +527,12 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	}
 
 	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
-		return new Vecteur(laser.getPositionHaut().getX() - prisme.getP1().getX(),
-				laser.getPositionHaut().getY() - prisme.getP1().getY());
+		System.out.println("position p1"+ prisme.getP1());
+		System.out.println("position p2"+ prisme.getP2());
+		System.out.println("position p3"+ prisme.getP3());
+		
+		return new Vecteur(laser.getPositionHaut().getX() - (prisme.getP2().getX()-prisme.getP1().getX()),
+				prisme.getP3().getY());
 	}
 
 }

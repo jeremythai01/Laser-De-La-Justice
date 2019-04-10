@@ -67,8 +67,8 @@ public class Prisme extends JPanel implements Dessinable{
 		 int [] pointsY =  {(int)p1.getY(),(int)p2.getY(),(int)p3.getY()};
 		// Demi cercle plein
 		 triangles = new Polygon(pointsX, pointsY, 3);
-		double xCentre = ((p2.getX()+p1.getY())/2);
-		double yCentre = (p3.getY()/2);
+		double xCentre = ((p2.getX()+p1.getY())/2.0);
+		double yCentre = (p3.getY()/2.0);
 
 		
 		
@@ -81,6 +81,26 @@ public class Prisme extends JPanel implements Dessinable{
 	}
 	
 	
+	public Vecteur getP2() {
+		return p2;
+	}
+
+
+	public void setP2(Vecteur p2) {
+		this.p2 = p2;
+	}
+
+
+	public Vecteur getP3() {
+		return p3;
+	}
+
+
+	public void setP3(Vecteur p3) {
+		this.p3 = p3;
+	}
+
+
 	public Area getAirPrisme() {
 		 Rectangle2D recFantome = new Rectangle2D.Double(p1.getX(), p3.getY()-p2.getY(), p3.getX(), p2.getY());
 		Area prismeLocal = new Area(recFantome);
