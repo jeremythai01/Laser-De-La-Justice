@@ -15,6 +15,7 @@ import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
 import physique.MoteurPhysique;
+import physique.SceneTest;
 
 public abstract class Pouvoir implements Dessinable {
 
@@ -23,7 +24,7 @@ public abstract class Pouvoir implements Dessinable {
 	private Vecteur accel;
 	private Image img = null;
 	private Rectangle2D.Double rectFantome;
-
+	private double largeurImg, longueurImg;
 
 	Pouvoir(Vecteur position , Vecteur accel) {
 		this.position = new Vecteur(position);
@@ -32,9 +33,8 @@ public abstract class Pouvoir implements Dessinable {
 	}
 	public abstract Area getAire();
 	abstract void lireImage();
-	public abstract void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule);
-	public abstract void retireEffet();
-
+	public abstract void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule);
+	
 	/**
 	 * modifie ou affecte une vitesse a celle courante de la balle
 	 * @param vitesse vecteur des vitesse x et y
@@ -99,4 +99,18 @@ public abstract class Pouvoir implements Dessinable {
 		this.rectFantome = rectFantome;
 	}
 
+	
+	public double getLargeurImg() {
+		return largeurImg;
+	}
+	public void setLargeurImg(double largeurImg) {
+		this.largeurImg = largeurImg;
+	}
+	public double getLongueurImg() {
+		return longueurImg;
+	}
+	public void setLongueurImg(double longueurImg) {
+		this.longueurImg = longueurImg;
+	}
+	 
 }

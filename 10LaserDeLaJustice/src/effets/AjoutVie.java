@@ -16,51 +16,59 @@ import geometrie.Vecteur;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
+import physique.Laser;
+import physique.SceneTest;
 
 public class AjoutVie extends Pouvoir {
 
 	public AjoutVie ( Vecteur position , Vecteur accel) {
 		super(position,accel);
 		lireImage();
+		setLargeurImg(0.5);
+		setLongueurImg(0.5);
 	}
 
 	@Override
 	public void lireImage() {
 
-		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		URL fich = getClass().getClassLoader().getResource("coeur.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier coeur.png introuvable!");
 		} else {
 			try {
 				setImg(ImageIO.read(fich));
 			} catch (IOException e) {
-				System.out.println("Erreur de lecture du fichier d'image du BoostVitesse");
+				System.out.println("Erreur de lecture du fichier d'image du AjoutVie");
 			}
 		}
 
 	}
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
-		g.drawImage(getImg(),(int)getPosition().getX(),(int) getPosition().getY(), null);
+
+		AffineTransform matLocale = new AffineTransform(mat);
+
+		double factX = getLargeurImg()/ getImg().getWidth(null) ;
+		double factY = getLongueurImg()/ getImg().getHeight(null) ;
+		matLocale.scale( factX, factY);
+
+		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
+
+		g.drawImage(getImg(), matLocale, null);
+
 	}
 
 	@Override
 	public Area getAire() {
-		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getImg().getWidth(null), getImg().getHeight(null)));
+		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
 
 
 
 	@Override
-	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule) {
+	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,
+			Personnage perso, double tempsEcoule) {
 		coeurs.setCombien(coeurs.getCombien()+1);
-		
-	}
-
-	@Override
-	public void retireEffet() {
-		// TODO Auto-generated method stub
-		
 	}
 }

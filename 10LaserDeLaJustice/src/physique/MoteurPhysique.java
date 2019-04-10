@@ -111,7 +111,7 @@ public class MoteurPhysique implements Serializable {
 
 		double tempsMilieu = temps+ deltaT/2;
 
-		Vecteur axMid = vMilieu.soustrait(vF1).multiplie(1/tempsMilieu); //on evalue pas a car a est constant
+		Vecteur axMid = vMilieu.soustrait(vF1).multiplie(1/tempsMilieu); 
 
 		//Calcul a la 2e position finale
 
@@ -121,7 +121,7 @@ public class MoteurPhysique implements Serializable {
 
 		double tempsFinal2 = temps+ deltaT; // Évaluer le temps final #2 :
 
-		Vecteur axF2 = vF2.soustrait(vMilieu).multiplie(1/tempsFinal2);//on evalue pas a car a est constant
+		Vecteur axF2 = vF2.soustrait(vMilieu).multiplie(1/tempsFinal2);
 
 		//Calcul de la position finale avec pondération de l’accélération
 

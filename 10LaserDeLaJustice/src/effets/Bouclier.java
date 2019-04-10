@@ -19,16 +19,16 @@ import geometrie.Vecteur;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
+import physique.Laser;
+import physique.SceneTest;
 
 public class Bouclier extends Pouvoir  {
 
-	private Personnage perso;
-	private Boolean effetActive = false;
-	private double posX;
-	private double posY;
 	public Bouclier ( Vecteur position , Vecteur accel) {
 		super(position, accel);
 		lireImage();
+		setLargeurImg(1.0);
+		setLongueurImg(1.6);
 	}
 
 	@Override
@@ -45,44 +45,41 @@ public class Bouclier extends Pouvoir  {
 			}
 		}
 
-	}
+	}boolean active=false;
 	@Override
+	
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
+		
 		AffineTransform matLocale = new AffineTransform(mat);
 		
-		 posX = getPosition().getX() * matLocale.getScaleX();
-		 posY = getPosition().getY() * matLocale.getScaleY();
-
-		g2d.drawImage(getImg(),(int)posX,(int) posY, null);
-		Rectangle2D.Double y = new Rectangle2D.Double(posX, posY, getImg().getWidth(null), getImg().getHeight(null));
-		g2d.draw(y);
-		
-		if(effetActive) {
+		double factX = getLargeurImg()/ getImg().getWidth(null) ;
+		double factY = getLongueurImg()/ getImg().getHeight(null) ;
+		matLocale.scale( factX, factY);
 	
-			Ellipse2D.Double ellipse = new Ellipse2D.Double(perso.getPositionX(),hauteur-perso.getLONGUEUR_PERSO() , perso.getLARGEUR_PERSO(), perso.getLONGUEUR_PERSO());
-			g2d.setColor(new Color(1.0f, 1.0f, 0.5f, 0.6f ));	
-			g2d.fill(matLocale.createTransformedShape(ellipse));
-			g2d.setColor(new Color(0.0f, 1.0f, 0.2f, 0.9f ));	
-			g2d.draw(matLocale.createTransformedShape(ellipse)); // Contour vert 
-		}
+		
+		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
+		
+		g2d.drawImage(getImg(), matLocale, null);
+	
 	}
 
 	@Override
 	public Area getAire() {
-		setRectFantome(new Rectangle2D.Double(posX, posY, getImg().getWidth(null), getImg().getHeight(null))); // probleme de detection
+		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
+	
 
-	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
-		this.perso = perso;
-		this.effetActive = true;
-		perso.setTempsInvincible(tempsEcoule + 6);
+	public boolean savoirBouclier(Personnage perso) {
+		return perso.isBouclierActive();
 	}
 
 	@Override
-	public void retireEffet() {
+	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
 		// TODO Auto-generated method stub
-		this.effetActive = false;
+		perso.setBouclierActive(true);
+		perso.setTempsInvincible(tempsEcoule + 1);
+		
 	}
 
 

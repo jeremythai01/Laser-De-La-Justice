@@ -16,6 +16,8 @@ import geometrie.Vecteur;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
+import physique.Laser;
+import physique.SceneTest;
 
 public class Ralenti extends Pouvoir{
 
@@ -43,25 +45,21 @@ public class Ralenti extends Pouvoir{
 	}
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
-		g.drawImage(getImg(),(int)getPosition().getX(),(int) getPosition().getY(), null);
+		
+		
+		
+		
+		
 	}
 
 	@Override
 	public Area getAire() {
-		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getImg().getWidth(null), getImg().getHeight(null)));
+		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
-
-	
 	@Override
-	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
-		for(Balle balle : listeBalles) {
-			//balle.setVitesse();
-		}
-	}
-
-	@Override
-	public void retireEffet() {
+	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,
+			Personnage perso, double tempsEcoule) {
 		// TODO Auto-generated method stub
 		
 	}

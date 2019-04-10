@@ -18,13 +18,16 @@ import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
+import physique.SceneTest;
+
 
 public class BoostVitesse extends Pouvoir {
-
 
 	public BoostVitesse ( Vecteur position , Vecteur accel) {
 		super(position,accel);
 		lireImage();
+		setLargeurImg(1.0);
+		setLongueurImg(1.6);
 	}
 
 	
@@ -44,36 +47,33 @@ public class BoostVitesse extends Pouvoir {
 
 	}
 	@Override
-	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
-		g.drawImage(getImg(),(int)getPosition().getX(),(int) getPosition().getY(), null);
+	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
+	
+		
+	AffineTransform matLocale = new AffineTransform(mat);
+		
+		double factX = getLargeurImg()/ getImg().getWidth(null) ;
+		double factY = getLongueurImg()/ getImg().getHeight(null) ;
+		matLocale.scale( factX, factY);
+	
+		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
+		
+		g2d.drawImage(getImg(), matLocale, null);
+	
 	}
 
 	@Override
 	public Area getAire() {
-		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getImg().getWidth(null), getImg().getHeight(null)));
+		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
-
-
-	public void activeEffet(Scene scene) {
-		// scene.setVitesseLaser(... );
-		//scene.setLasersConsecutifs(true);
-	}
-
-
+	
 	@Override
-	public void activeEffet(Scene scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule) {
-		// TODO Auto-generated method stub
-		
+	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
+		scene.setVitesseLaser(scene.getVitesseLaser().additionne(new Vecteur(0,5)));
+		scene.setVitessePerso(true);
 	}
 
 
-	@Override
-	public void retireEffet() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
+
 }
