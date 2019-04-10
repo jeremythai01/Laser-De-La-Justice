@@ -60,7 +60,9 @@ public class Ralenti extends Pouvoir{
 	@Override
 	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,
 			Personnage perso, double tempsEcoule) {
-		// TODO Auto-generated method stub
+		for(Balle balle : listeBalles) {
+			
+		}
 		
 	}
 

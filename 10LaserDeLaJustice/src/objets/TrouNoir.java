@@ -98,15 +98,15 @@ public class TrouNoir extends Objet implements Dessinable {
 		double factY = LARGEUR/ img.getHeight(null) ;
 		matLocale.scale( factX, factY);
 	
-		matLocale.translate( position.getX() / factX , position.getY() / factY);
-		
+		matLocale.translate( position.getX() /2  / factX , position.getY() /2 / factY);
+	/*	
 		g.setColor(Color.LIGHT_GRAY);
 		trou=new Ellipse2D.Double(position.getX()-distance, position.getY()-distance, LARGEUR+distance*2, LARGEUR+distance*2);
 	//	g.fill(matLocal.createTransformedShape(trou));
 		
 		trou= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g.setColor(Color.black);
-		
+		*/
 		//g.drawImage(img, (int)position.getX(),(int) position.getY(), 60, 60, null, null);
 		//System.out.println("chris"+ (int)position.getX());
 		g.drawImage(img, matLocale, null);

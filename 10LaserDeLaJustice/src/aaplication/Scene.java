@@ -46,6 +46,7 @@ import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
+import physique.MoteurPhysique;
 import pistolet.Pistolet;
 import prisme.Prisme;
 import utilite.ModeleAffichage;
@@ -65,7 +66,7 @@ public class Scene extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private double angle;
-	private double deltaT = 0.06;
+	private double deltaT = 0.08;
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
 	private int tempsTotalEcoule = 0;
@@ -322,7 +323,6 @@ public class Scene extends JPanel implements Runnable {
 			for (Laser laser : listeLasers) {
 				if (laser.getPositionHaut().getY() <= 0)
 					listeLasers.remove(laser);
-				g2d.setStroke(new BasicStroke(3));
 				laser.dessiner(g2d, mat, 0, 0);
 			}
 
@@ -332,7 +332,6 @@ public class Scene extends JPanel implements Runnable {
 
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
-		detectionCollisionBallePersonnage(listeBalles, principal);
 		detectionCollisionBallePersonnage(listeBalles, principal);
 
 		for (Balle balle : listeBalles) {
@@ -364,7 +363,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 		for (Prisme pri : listePrisme) {
-			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			//pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
 		principal.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -375,7 +374,7 @@ public class Scene extends JPanel implements Runnable {
 		
 		ordi= new OrdinateurNiveau3(new Vecteur(10,10));
 		ordi.ajouterListesObstacles(listeBalles);
-		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		//ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		ordi.savoirTempsSleep(tempsDuSleep);
 
 		tracerVecteurGraphique(g2d);
@@ -414,6 +413,16 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void calculerUneIterationPhysique() {
 
+		
+		for (int i = 0; i < listeBalles.size(); i++) {
+			Balle balle1 = listeBalles.get(i);
+			for (int j = i+1; j < listeBalles.size(); j++) {
+				Balle balle2 = listeBalles.get(j);
+				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
+			}
+		}
+
+	
 		for (Balle balle : listeBalles) {
 			balle.unPasVerlet(deltaT);
 		}
@@ -590,7 +599,6 @@ public class Scene extends JPanel implements Runnable {
 					coeurs.setCombien(nombreVies - 1);
 					nombreVies--;
 					personnage.setTempsInvincible(tempsTotalEcoule + 1);
-
 				}
 			}
 
