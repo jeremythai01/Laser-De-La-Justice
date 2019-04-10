@@ -249,6 +249,17 @@ public class Vecteur implements Serializable {
 	public static double prodScalaire(Vecteur v1, Vecteur v2){
 		return (v1.prodScalaire(v2));
 	}
-
+	 public double cross(double vx, double vy) {
+	        return (this.x * vy - this.y * vx);
+	}
  
+	 public Vecteur cross(Vecteur v) {
+	        return new Vecteur(this.x * v.y , this.y * v.x);
+	}
+	 
+	 public static Vecteur cross(Vecteur v1, Vecteur v2) {
+	        return new  Vecteur (v1.x * v2.y , v1.y * v2.x);
+	}
+	 
+	 
 }//fin classe Vecteur
