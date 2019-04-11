@@ -52,8 +52,8 @@ public class Personnage implements Dessinable, Serializable {
 	private boolean bouclierActive = false;
 	private Ellipse2D.Double ellipse;
 	private double tempsMort = 0;
-		
-	
+	private String imageNom;
+
 	/**
 	 Constructeur 1 de la classe.
 	 @param gauche : le code (KeyCode) de la touche gauche lorsque clique, le personnage va aller a gauche
@@ -63,12 +63,13 @@ public class Personnage implements Dessinable, Serializable {
 	public Personnage(double position, int gauche, int droite, int tir) {
 
 
-		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		URL fich = getClass().getClassLoader().getResource("AstronautMilieu.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier astronaut introuvable!");
 		} else {
 			try {
 				imgPerso = ImageIO.read(fich);
+				imageNom = "Milieu";
 			} catch (IOException e) {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
@@ -79,46 +80,21 @@ public class Personnage implements Dessinable, Serializable {
 		this.toucheDroite = droite;
 		this.toucheTir = tir;
 	}
-	/**
-	 Constructeur 2 de la classe.
-	 */
-	//Miora
-	public Personnage() {
-		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
-		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
-		} else {
-			try {
-				imgPerso = ImageIO.read(fich);
-			} catch (IOException e) {
-				System.out.println("Erreur de lecture du fichier d'image");
-			}
-		}
-	}
 
-	/**
-	 Constructeur 3 de la classe.
-	 @param personnage : personnage passee en parametre qui deviendra le personnage courant
-	 */
 	// Jeremy Thai
-	public Personnage(Personnage perso) {
-
-		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+	private void lireImage(String str) {
+		URL fich = getClass().getClassLoader().getResource("Astronaut"+str+".png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier astronaut introuvable!");
 		} else {
 			try {
 				imgPerso = ImageIO.read(fich);
+				imageNom = str;
 			} catch (IOException e) {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
-		this.positionX= perso.getPositionX();
-		this.toucheGauche = perso.getToucheGauche();
-		this.toucheDroite = perso.getToucheDroite();
-		this.toucheTir = perso.getToucheTir();
 	}
-
 
 	/**
 	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
@@ -228,6 +204,9 @@ public class Personnage implements Dessinable, Serializable {
 	 * Méthode qui permet de modifier la vitesse du personnage selon la touche enfoncee
 	 */
 	public void update() {
+
+
+		animation();
 
 		if(modeSouris) {
 			if(bougePas) {
@@ -422,15 +401,15 @@ public class Personnage implements Dessinable, Serializable {
 	}
 
 
-	
+
 	public boolean isBouclierActive() {
 		return bouclierActive;
 	}
 	public void setBouclierActive(boolean bouclierActive) {
 		this.bouclierActive = bouclierActive;
 	}
-	
-	
+
+
 	/**
 	 * Methode qui retourne le temps mort du personnage  
 	 * @return tempsMort temps mort du personnage 
@@ -439,7 +418,7 @@ public class Personnage implements Dessinable, Serializable {
 	public double getTempsMort() {
 		return tempsMort;
 	}
-	
+
 	/**
 	 * Methode qui modifie le temps mort du personnage  
 	 * @param tempsMort temps mort du personnage 
@@ -449,14 +428,27 @@ public class Personnage implements Dessinable, Serializable {
 		this.tempsMort = tempsMort;
 	}
 
-	
+
 	public void retireEffet() {
 		setBouclierActive(false);
 		setTempsInvincible(0);
 	}
-	
-	
-	
-	
-	
+
+
+	private void animation() {
+
+		if( vitesseX == 0)
+			lireImage("Milieu");
+		if( vitesseX > 0) 
+			lireImage("DroitCours");
+
+		if( vitesseX < 0)
+			lireImage("GaucheCours");
+
+
+	}
 }
+
+
+
+

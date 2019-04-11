@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -50,6 +52,7 @@ import physique.MoteurPhysique;
 import pistolet.Pistolet;
 import prisme.Prisme;
 import utilite.ModeleAffichage;
+import javax.swing.JLabel;
 
 /**
  * Cette classe contient la scene d'animation du jeu.
@@ -486,9 +489,10 @@ public class Scene extends JPanel implements Runnable {
 	 * Methode permettant de mettre un fond a la scene
 	 **/
 	private void lireFond() {
-		URL fich = getClass().getClassLoader().getResource("space.jpg");
+		
+		URL fich = getClass().getClassLoader().getResource("mars.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier space.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier introuvable!");
 		} else {
 			try {
 				fond = ImageIO.read(fich);
@@ -496,6 +500,8 @@ public class Scene extends JPanel implements Runnable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
+		
+		
 	}
 
 	/**
