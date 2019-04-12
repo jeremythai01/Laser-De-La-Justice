@@ -105,7 +105,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		ordi3 = new OrdinateurNiveau3(new Vecteur(40, 44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 100;
+		angle = 40;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -481,7 +481,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 					collisionLaserPrisme = true;
 					prisme = listePrisme.get(j);
 					laser = listeLasers.get(i);
-					calculRefractionPrisme(listeLasers.get(i), listePrisme.get(j));
+					calculRefractionPrisme(laser,prisme);
 					j = listePrisme.size();
 				} else {
 					collisionLaserPrisme = false;
@@ -526,23 +526,15 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
 		
-		System.out.println("position p1"+ prisme.getP1());
-		System.out.println("position p2"+ prisme.getP2());
-		System.out.println("position p3"+ prisme.getP3());
+		//System.out.println("position p1"+ prisme.getP1());
+		//System.out.println("position p2"+ prisme.getP2());
+		//System.out.println("position p3"+ prisme.getP3());
 		
-		Vecteur d13 = prisme.getP1().soustrait(prisme.getP3());
-		Vecteur d12 = prisme.getP2().soustrait(prisme.getP1());
-		Vecteur d23 = prisme.getP2().soustrait(prisme.getP3()); 
 		
-		Point p1 = new Point((int)prisme.getP1().getX(), (int)prisme.getP1().getY());
-		Point p2 = new Point((int)prisme.getP2().getX(), (int)prisme.getP2().getY());
-		Point p3 = new Point((int)prisme.getP3().getX(), (int)prisme.getP3().getY());
 		
-		Line2D ligne13 = new Line2D.Double(p1, p3);
-		
-		double resultat = ligne13.ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+		double resultat = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
 	
-		if(resultat < 0.00001) {
+		if(resultat == 0.0) {
 			boolean cote = true;
 			System.out.println(cote);
 		}else {
@@ -550,7 +542,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			System.out.println(cote);
 		}
 		
-		return new Vecteur();
+		return( prisme.getP3().soustrait(prisme.getP1())).cross(prisme.getP2()).normalise();
 	
 	}
 }

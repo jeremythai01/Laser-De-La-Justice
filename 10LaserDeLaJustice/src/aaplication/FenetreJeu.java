@@ -1,4 +1,4 @@
-package aaplication;
+ package aaplication;
 
 import java.awt.Color;
 import java.awt.EventQueue;
