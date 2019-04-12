@@ -47,6 +47,8 @@ import java.awt.event.MouseMotionAdapter;
  */
 public class SceneTestPrisme extends JPanel implements Runnable {
 
+	private static double EPSILON = 8.85418*Math.pow(10, -12) ;
+	
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 25;
 	// private double deltaT = 0.07;
@@ -105,7 +107,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		ordi3 = new OrdinateurNiveau3(new Vecteur(40, 44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 40;
+		angle = 100;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -532,17 +534,27 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		
 		
 		
-		double resultat = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
-	
-		if(resultat == 0.0) {
-			boolean cote = true;
-			System.out.println(cote);
-		}else {
-			boolean cote = false;
-			System.out.println(cote);
+		double resultat13 = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+		double resultat12 = prisme.getLigne12().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+		double resultat23 = prisme.getLigne23().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+		//System.out.println("resultat pour la ligne 13:"+resultat13); 
+		//System.out.println("resultat pour la ligne 12:"+resultat12); 
+		//System.out.println("resultat pour la ligne 23:"+resultat13); 
+		
+		
+			
+		if(resultat13 > 0 && resultat13 < 0.80) {
+			
+			System.out.println("jai touché ligne13");
+		}else if(resultat12 > 0 && resultat12 < 0.80){
+			
+			System.out.println("jai toucher la ligne12");
+		}else if(resultat23 > 0 && resultat23 < 0.80){
+			
+			System.out.println("jai toucher la ligne23");
 		}
 		
-		return( prisme.getP3().soustrait(prisme.getP1())).cross(prisme.getP2()).normalise();
+		return prisme.getP1().normalise();
 	
 	}
 }

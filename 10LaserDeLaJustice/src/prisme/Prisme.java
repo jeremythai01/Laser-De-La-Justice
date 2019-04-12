@@ -48,44 +48,13 @@ public class Prisme extends JPanel implements Dessinable {
 	Line2D ligne13;
 	Line2D ligne12;
 	Line2D ligne23;
-	
-	public Line2D getLigne13() {
-		return ligne13;
-	}
-
-
-	public void setLigne13(Line2D ligne13) {
-		this.ligne13 = ligne13;
-	}
-
-
-	public Line2D getLigne12() {
-		return ligne12;
-	}
-
-
-	public void setLigne12(Line2D ligne12) {
-		this.ligne12 = ligne12;
-	}
-
-
-	public Line2D getLigne23() {
-		return ligne23;
-	}
-
-
-	public void setLigne23(Line2D ligne23) {
-		this.ligne23 = ligne23;
-	}
-
 
 	public Prisme(Vecteur position) {
 		p1 = position;
-		p2 = new Vecteur(position.getX() + 5, position.getY());
-		p3 = new Vecteur((p2.getX() + p1.getX()) / 2, position.getY() + 3);
+		p2 = new Vecteur(position.getX() + 6, position.getY());
+		p3 = new Vecteur((p2.getX() + p1.getX()) / 2, position.getY() + 5);
 
 	}
-	
 
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
@@ -104,18 +73,19 @@ public class Prisme extends JPanel implements Dessinable {
 		Point p2 = new Point((int) getP2().getX(), (int) getP2().getY());
 		Point p3 = new Point((int) getP3().getX(), (int) getP3().getY());
 
-		ligne13 = new Line2D.Double(p1, p3);
+		ligne13 = new Line2D.Double(p3, p1);
 		ligne23 = new Line2D.Double(p2, p3);
 		ligne12 = new Line2D.Double(p1, p2);
-		
+
 		matLocal.rotate(Math.toRadians(0), p1.getX(), p1.getY());
-	//	g.draw(matLocal.createTransformedShape(triangles));
+		// g.draw(matLocal.createTransformedShape(triangles));
 		g.setColor(Color.BLACK);
 		g.draw(matLocal.createTransformedShape(ligne13));
 		g.draw(matLocal.createTransformedShape(ligne23));
 		g.draw(matLocal.createTransformedShape(ligne12));
-		//g.fill(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5));
-		//g.draw(matLocal.createTransformedShape(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5)));
+		// g.fill(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5));
+		// g.draw(matLocal.createTransformedShape(new Ellipse2D.Double(xCentre, yCentre,
+		// 0.5, 0.5)));
 
 	}
 
@@ -163,12 +133,29 @@ public class Prisme extends JPanel implements Dessinable {
 		this.p1 = p1;
 	}
 
-	public Vecteur getNormal() {
-		double angleRad = Math.toRadians(getAngle());
-		Vecteur positionCentre = new Vecteur(Math.cos(angleRad), Math.sin(angleRad));
-		Vecteur normal = new Vecteur(positionCentre.getY(), -positionCentre.getX()).normalise();
-
-		return normal;
+	public Line2D getLigne13() {
+		return ligne13;
 	}
 
+	public void setLigne13(Line2D ligne13) {
+		this.ligne13 = ligne13;
+	}
+
+	public Line2D getLigne12() {
+		return ligne12;
+	}
+
+	public void setLigne12(Line2D ligne12) {
+		this.ligne12 = ligne12;
+	}
+
+	public Line2D getLigne23() {
+		return ligne23;
+	}
+
+	public void setLigne23(Line2D ligne23) {
+		this.ligne23 = ligne23;
+	}
+
+	
 }
