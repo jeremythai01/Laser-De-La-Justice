@@ -61,7 +61,7 @@ public class Ralenti extends Pouvoir{
 	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,
 			Personnage perso, double tempsEcoule) {
 		for(Balle balle : listeBalles) {
-			
+			balle.getVitesse().setY(0.1);
 		}
 		
 	}

@@ -254,10 +254,7 @@ public class SceneTest extends JPanel implements Runnable {
 		detectionCollisionBallePersonnage( listeBalles, listePerso );
 
 
-		for(Pouvoir pouvoir : listePouvoirs) {
-			pouvoir.unPasVerlet(deltaT);
-		}
-
+		updateMouvementPouvoirs();
 
 		for(Balle balle: listeBalles) {
 			balle.unPasVerlet(deltaT);
@@ -269,6 +266,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 		for(Personnage perso : listePerso) {
 			if(vitessePerso == true){
+				perso.bouge();
 				perso.bouge();
 				perso.bouge();
 			}else {
@@ -331,12 +329,16 @@ public class SceneTest extends JPanel implements Runnable {
 						listeLasers.remove(laser);  
 						Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
 						Vecteur accel =   new Vecteur ( 0, 9.8);
-						listePouvoirs.add(new AjoutVie( position, accel));
+						listePouvoirs.add(new BoostVitesse( position, accel));
 						balle.shrink(listeBalles, accel);
 					}
 				}
 			}
 		}
+	}
+	 
+	private void pouvoirAuHasard(Balle balle) {
+		
 	}
 
 
@@ -360,6 +362,18 @@ public class SceneTest extends JPanel implements Runnable {
 			}
 		}	
 	}
+	
+	private void updateMouvementPouvoirs() {
+		for(Pouvoir pouvoir: listePouvoirs) {
+			if(pouvoir.getPosition().getY()+pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
+				pouvoir.getPosition().setY(HAUTEUR_DU_MONDE-pouvoir.getLongueurImg());
+			}else {
+				pouvoir.unPasVerlet(deltaT);
+			}
+				
+		}
+	}
+
 
 	private void shootEtAddLaser(KeyEvent e, Personnage perso) {
 		if(!perso.isModeSouris()) {
@@ -419,6 +433,8 @@ public class SceneTest extends JPanel implements Runnable {
 		return vitesseLaser;
 	}
 
+	
+	
 
 	public void setVitessePerso(boolean vitessePerso) {
 		this.vitessePerso = vitessePerso;
