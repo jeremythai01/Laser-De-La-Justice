@@ -27,6 +27,24 @@ public class MiroirPlan implements Dessinable {
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
+	private Vecteur positionBas;
+	
+	
+	public Vecteur getPositionBas() {
+		return positionBas;
+	}
+	public void setPositionBas(Vecteur positionBas) {
+		this.positionBas = positionBas;
+	}
+	public Vecteur getPosition() {
+		return position;
+	}
+	public void setPosition(Vecteur position) {
+		this.position = position;
+	}
+	
+	
+
 	private boolean dessin = false;
 	private Area aireMiroir;
 	
@@ -39,6 +57,15 @@ public class MiroirPlan implements Dessinable {
 	public MiroirPlan(Vecteur position, double angle) {
 		super();
 		this.position = position;
+		this.angle = angle;
+		Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(angle) ) , Math.sin(Math.toRadians(angle )))).normalise();
+		
+		positionBas = position.additionne(vecDirMiroir.multiplie(longueur));
+	}
+	public double getAngle() {
+		return angle;
+	}
+	public void setAngle(double angle) {
 		this.angle = angle;
 	}
 	/**

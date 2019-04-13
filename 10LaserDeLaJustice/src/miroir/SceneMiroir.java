@@ -283,8 +283,38 @@ public class SceneMiroir extends JPanel implements Runnable {
 			while(n< listeMiroirPlan.size() && collision == false) {
 				if(intersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
-					Vecteur intersection = laser.getPositionHaut();
+					//arreter();
+					Vecteur delta = new Vecteur (0.6,0);
+					Vecteur vecLaser = laser.getPositionHaut().additionne(delta);
+					System.out.println("laser" + vecLaser );
+					Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(laser.getAngleTir()) ) , Math.sin(Math.toRadians(laser.getAngleTir()) ))).normalise();;
+					System.out.println("vecteur dir laser " +vecDirLaser );
 					
+					Vecteur vecMiroir = listeMiroirPlan.get(n).getPosition();
+					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ))).normalise();
+					System.out.println("miroir" + vecMiroir );
+					System.out.println("vecteur dir Miroir " +vecDirMiroir );
+					Vecteur sous = (vecLaser.soustrait(vecMiroir)).multiplie(-1);
+					double a,b,c,d,e,f;
+					a = vecDirLaser.getX();
+					b = vecDirMiroir.getX()*-1;
+					c = sous.getX();
+					d = vecDirLaser.getY();
+					e = vecDirMiroir.getY()*-1;
+					f = sous.getY();
+					
+					double k,t;
+					k = c*e-b*f/a*e-b*d;
+					t = a*f-c*d/a*e-b*d;
+					
+					double x = vecLaser.getX()+k*(vecDirLaser.getX());
+					double y = vecLaser.getY()+k*(vecDirLaser.getY());
+					System.out.println(x + " " + y);
+					laser.setPositionHaut(new Vecteur(x,y).additionne(delta));
+					
+					
+
+	
 					Vecteur normal =listeMiroirPlan.get(n).getNormal().normalise();
 					System.out.println("La normal est du miroir est :" +normal);
 					
@@ -294,25 +324,37 @@ public class SceneMiroir extends JPanel implements Runnable {
 					System.out.println("Orientation du laser :" + incident);
 					
 					Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
+					//Vecteur reflexion = incident.additionne(normal.multiplie(2.0*incident.multiplie(-1.0).prodScalaire(normal)));
 					System.out.println("Orientation apres reflexion" + reflexion);
 					
-					Vecteur nouvelle_pointe = intersection.additionne(reflexion.normalise().multiplie(laser.getLONGUEUR()));
-					//intervertir haut en bas
-					/*laser.setPositionHaut(new Vecteur (intersection.getX(), intersection.getY()+1.1));
-					laser.setPositionBas(nouvelle_pointe);
-					*/
+					
 					//change orientation 
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 					System.out.println("Angle reflexion en degree " + angleReflexion);
+					System.out.println("angle rad reflexion" + Math.atan(reflexion.getY()/reflexion.getX()));
+					if(reflexion.getX()<0) {
+						System.out.println("ici");
+						laser.setAngleTir(angleReflexion+180);
+					}else{
+						laser.setAngleTir(angleReflexion);
+					}
 					
-					laser.setAngleTir(angleReflexion);
 					System.out.println("-----------------------------------------------------------------------------");
+					
 				}
 				n++;
 			}
 
 		}
 	} // fin methode
+	
+	public static Vecteur solveSimultaneousEquations(double a, double b, double c, double d, double e, double f) {
+	    double det = ((a) * (d) - (b) * (c));  //instead of 1/
+	    double x = ((d) * (e) - (b) * (f)) / det;
+	    double y = ((a) * (f) - (c) * (e)) / det;
+	    return (new Vecteur (x,y));
+	}
+
 
 		
 	//Miora
