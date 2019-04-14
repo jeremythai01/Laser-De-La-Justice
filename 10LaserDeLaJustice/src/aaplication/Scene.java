@@ -697,11 +697,14 @@ public class Scene extends JPanel implements Runnable {
 					System.out.println("miroir" + vecMiroir );
 					System.out.println("vecteur dir Miroir " +vecDirMiroir );
 					
-					Vecteur sous = (vecLaser.soustrait(vecMiroir));
+					Vecteur sous = (vecLaser.soustrait(vecMiroir)).multiplie(-1); // de l'autre cote equation
+					Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
+					System.out.println("sous " + sous);
 					System.out.println("haut av intersection : " + laser.getPositionHaut() + "bas laser av inter : " + laser.getPositionBas());
-					double [] inter = OutilsMath.intersectionCramer(vecDirMiroir.getX()*-1,vecDirLaser.getX(),vecDirMiroir.getY()*-1,vecDirLaser.getY(),sous.getX()*-1, sous.getY()*-1);
-					double x = vecMiroir.getX()+inter[0]*(vecDirMiroir.getX());
-					double y= vecMiroir.getY()+inter[0]*(vecDirMiroir.getY());
+					double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+					
+					double x = vecLaser.getX() + inter[0]*vecDirLaser.getX();
+					double y= vecLaser.getY() + inter[0]*vecDirLaser.getY();
 					Vecteur posInter = new Vecteur (x,y);
 					System.out.println("interection laser et miroir " + posInter);
 					

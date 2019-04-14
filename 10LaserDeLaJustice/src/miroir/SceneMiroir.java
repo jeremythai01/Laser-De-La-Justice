@@ -304,17 +304,29 @@ public class SceneMiroir extends JPanel implements Runnable {
 					System.out.println("laser" + vecLaser );
 					Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(laser.getAngleTir()) ) , Math.sin(Math.toRadians(laser.getAngleTir()) ))).normalise();;
 					System.out.println("vecteur dir laser " +vecDirLaser );
-
+					
 					Vecteur vecMiroir = listeMiroirPlan.get(n).getPosition();
 					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ))).normalise();
 					System.out.println("miroir" + vecMiroir );
 					System.out.println("vecteur dir Miroir " +vecDirMiroir );
-					Vecteur sous = (vecLaser.soustrait(vecMiroir));
+		
+					
+					Vecteur sous = (vecLaser.soustrait(vecMiroir)).multiplie(-1); // de l'autre cote equation
+					Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
+					System.out.println("sous " + sous);
 					System.out.println("haut av intersection : " + laser.getPositionHaut() + "bas laser av inter : " + laser.getPositionBas());
-					double [] inter = intersectionCramer(vecDirMiroir.getX()*-1,vecDirLaser.getX(),vecDirMiroir.getY()*-1,vecDirLaser.getY(),sous.getX()*-1, sous.getY()*-1);
-
-					double x = vecMiroir.getX()+inter[0]*(vecDirMiroir.getX());
-					double y= vecMiroir.getY()+inter[0]*(vecDirMiroir.getY());
+					double [] inter = intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+					/*
+					double [] test = intersectionCramer(3,1,5,-2,9,3);
+					System.out.println("test : " + test[0] + " " + test[1]);
+					*/
+					double x = vecLaser.getX() + inter[0]*vecDirLaser.getX();
+					double y= vecLaser.getY() + inter[0]*vecDirLaser.getY();
+					
+					double x1 = vecMiroir.getX()+inter[1]*vecDirMiroir.getX();
+					double y1 = vecMiroir.getY()+inter[1]*vecDirMiroir.getY();
+					
+					System.out.println("miroir : " + x+ ", " + y + "\n" + "laser : " + x1 + " " + y1);
 
 
 					//afficherVec = true;
@@ -371,7 +383,6 @@ public class SceneMiroir extends JPanel implements Runnable {
 					laser.setPositionHaut(new Vecteur (c[0], c[1]));
 					System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
 					System.out.println("-----------------------------------------------------------------------------");
-
 				}
 				n++;
 			}
