@@ -45,7 +45,8 @@ public class Bouclier extends Pouvoir  {
 			}
 		}
 
-	}boolean active=false;
+	}
+	
 	@Override
 	
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
@@ -68,19 +69,15 @@ public class Bouclier extends Pouvoir  {
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
-	
-
-	public boolean savoirBouclier(Personnage perso) {
-		return perso.isBouclierActive();
-	}
 
 	@Override
-	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
-		// TODO Auto-generated method stub
-		perso.setBouclierActive(true);
-		perso.setTempsInvincible(tempsEcoule + 1);
+	public void activeEffet(Scene scene) {
+		scene.getPersonnage().setBouclierActive(true);
 		
 	}
+	
+
+	
 
 
 

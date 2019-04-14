@@ -405,9 +405,9 @@ public class FenetreJeu extends JFrame {
 			}
 
 			@Override
-			public void changementTempsListener(int temps) {
+			public void changementTempsListener(double temps) {
 				System.out.println("dans le listener dans l'application ");
-				barreTempsDuJeu.setValue(temps);
+				barreTempsDuJeu.setValue((int)temps);
 			}
 		});
 	

@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
+import physique.Balle.Type;
 
 /**
  * Classe qui s'occupe de créer  un mur en mémorisant sa position et ses dimensions. 
@@ -15,7 +16,7 @@ import interfaces.Dessinable;
  */
 
 
-public class Mur implements Dessinable {
+public class Mur  {
 
 
 	private Area aireMur ;
@@ -23,17 +24,40 @@ public class Mur implements Dessinable {
 	private Vecteur position;
 	private double largeur, hauteur;
 	private double largeurMonde, hauteurMonde;
-	private Vecteur normal;
 
 
 
-	public Mur( Vecteur position, double largeur, double hauteur ) {
-		setPosition( position );
-		this.hauteur = hauteur ; 
-		this.largeur = largeur;
+	private Type type;
+
+
+
+	/**
+	 * Classe enumeration des types de balle
+	 * @author Jeremy Thai
+	 *
+	 */
+	enum Type {
+		VERTICAL, HORIZONTAL;
 	}
-		
-	
+
+
+
+	public Mur( Vecteur position, String type ) {
+		setPosition( position );
+
+		switch(type) {
+		case "VERTICAL" : 
+			this.type = Type.VERTICAL;
+			break;
+			
+		case "HORIZONTAL" : 
+			this.type = Type.HORIZONTAL;
+			break;
+		}
+
+	}
+
+
 
 	/**
 	 * Modifie la position de la balle
@@ -57,14 +81,6 @@ public class Mur implements Dessinable {
 		return aireMur;
 	}
 
-	@Override
-	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteurMonde, double largeurMonde) {
-		AffineTransform matLocal = new AffineTransform(mat);
-		g2d.setColor(Color.blue);
-		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(), largeur, hauteur );
-		g2d.fill(matLocal.createTransformedShape(rect));
-	}
-
 	public double getLargeur() {
 		return largeur;
 	}
@@ -79,13 +95,14 @@ public class Mur implements Dessinable {
 		return hauteur;
 	}
 
-
-
 	public void setHauteur(double hauteur) {
 		this.hauteur = hauteur;
 	}
-	
 
+
+	public Type getType() { 
+		return type;
+	}
 }
 
 

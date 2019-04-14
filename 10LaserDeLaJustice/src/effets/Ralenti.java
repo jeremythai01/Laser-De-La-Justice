@@ -23,9 +23,11 @@ public class Ralenti extends Pouvoir{
 
 
 
-	public Ralenti ( Vecteur position , Vecteur vitesse, Vecteur accel) {
+	public Ralenti ( Vecteur position, Vecteur accel) {
 		super(position, accel);
 		lireImage();
+		setLargeurImg(1.0);
+		setLongueurImg(1.6);
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class Ralenti extends Pouvoir{
 
 		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.png introuvable!");
 		} else {
 			try {
 				setImg(ImageIO.read(fich));
@@ -45,11 +47,16 @@ public class Ralenti extends Pouvoir{
 	}
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
-		
-		
-		
-		
-		
+
+		AffineTransform matLocale = new AffineTransform(mat);
+
+		double factX = getLargeurImg()/ getImg().getWidth(null) ;
+		double factY = getLongueurImg()/ getImg().getHeight(null) ;
+		matLocale.scale( factX, factY);
+
+		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
+
+		g.drawImage(getImg(), matLocale, null);
 	}
 
 	@Override
@@ -57,17 +64,15 @@ public class Ralenti extends Pouvoir{
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
+
 	@Override
-	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,
-			Personnage perso, double tempsEcoule) {
-		for(Balle balle : listeBalles) {
-			balle.getVitesse().setY(0.1);
-		}
-		
+	public void activeEffet( Scene scene) {
+		scene.setDeltaT(0.0006);
 	}
 
-	
-	
-	
-	
+
+
+
+
+
 }

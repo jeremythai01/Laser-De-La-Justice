@@ -20,6 +20,7 @@ import effets.AjoutVie;
 import effets.BoostVitesse;
 import effets.Bouclier;
 import effets.Pouvoir;
+import effets.Ralenti;
 import geometrie.Vecteur;
 import interfaces.SceneListener;
 
@@ -46,8 +47,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private int tempsDuSleep = 30;
-	//private double deltaT = 0.006;
-	private double deltaT = 0.06;
+
 	private  double LARGEUR_DU_MONDE = 30; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation= false;
@@ -59,9 +59,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 	private Vecteur vitesse;
-	private Personnage personnage1;
-	private Personnage personnage2;
-	private Personnage personnage3;
+	private Personnage personnage;
 
 
 	private Vecteur gravite = new Vecteur(0, 9.8);
@@ -83,13 +81,20 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private double xSouris ;
 
+
+
+
+	private double deltaTInit = 0.05;
+	private double deltaT = deltaTInit;
 	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
 	private Vecteur vitesseLaserInit = new Vecteur(0,1);
 	private Vecteur vitesseLaser = vitesseLaserInit;
-
-
-	private int compteurVitesse = 0 ;
+	private double compteurVitesse = 0 ;
+	private double compteurRalenti= 0 ;
+	private double compteurBouclier= 0 ;
 	private boolean vitessePerso = false;
+	private double qtRotation;
+
 	/**
 	 * Create the panel.
 	 */
@@ -102,18 +107,18 @@ public class SceneTest extends JPanel implements Runnable {
 		//	listePerso.add(personnage2);
 
 
-		personnage3 = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite,toucheTir);
-		personnage3.setModeSouris(true);
-		listePerso.add(personnage3);
+		personnage = new Personnage(LARGEUR_DU_MONDE/2, toucheGauche, toucheDroite,toucheTir);
+		personnage.setModeSouris(true);
+		listePerso.add(personnage);
 		angle = 90;
 		vitesse = new Vecteur(0.5 ,0);
 
 
-		mur = new Mur ( new Vecteur(0,0), 0, HAUTEUR_DU_MONDE  );
+		mur = new Mur ( new Vecteur(0,0), "VERTICAL"  );
 		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,HAUTEUR_DU_MONDE ), LARGEUR_DU_MONDE, 0 );
+		mur = new Mur ( new Vecteur(0,HAUTEUR_DU_MONDE ), "HORIZONTAL"  );
 		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(LARGEUR_DU_MONDE,0 ), 0 , HAUTEUR_DU_MONDE);
+		mur = new Mur ( new Vecteur(LARGEUR_DU_MONDE,0 ), "VERTICAL" );
 		listeMurs.add(mur);
 
 
@@ -125,7 +130,7 @@ public class SceneTest extends JPanel implements Runnable {
 				//debut
 
 				xSouris= e.getX()/modele.getPixelsParUniteX();
-				personnage3.setPosSouris(xSouris);
+				personnage.setPosSouris(xSouris);
 				repaint();
 				//fin
 
@@ -214,12 +219,9 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 
 
-		for(Mur mur : listeMurs) {
-			mur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		}
-
 		collisionBalleLaser();
-
+	
+		
 		for(Balle balle: listeBalles) {
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
@@ -240,7 +242,8 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private void calculerUneIterationPhysique() {
 
-		collisionMurBalle(  listeBalles, listeMurs );
+		
+		//collisionMurBalle(  listeBalles, listeMurs );
 
 
 		for (int i = 0; i < listeBalles.size(); i++) {
@@ -260,12 +263,14 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.unPasVerlet(deltaT);
 		}
 
+		detectionCollisionMurBalle();
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
 
 		for(Personnage perso : listePerso) {
 			if(vitessePerso == true){
+				perso.bouge();
 				perso.bouge();
 				perso.bouge();
 				perso.bouge();
@@ -298,15 +303,8 @@ public class SceneTest extends JPanel implements Runnable {
 		while (enCoursAnimation) {	
 
 			calculerUneIterationPhysique();
+			updateDureeCompteurs();
 
-
-			if(vitesseLaser.getY()>vitesseLaserInit.getY()) 
-				compteurVitesse++;
-			if( compteurVitesse == 168 ) {
-				vitesseLaser = vitesseLaserInit;
-				compteurVitesse = 0;
-				setVitessePerso(false);
-			}
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -327,20 +325,113 @@ public class SceneTest extends JPanel implements Runnable {
 				for(Balle balle : listeBalles ) {
 					if(intersection(balle.getAire(), laser.getAire())) {
 						listeLasers.remove(laser);  
-						Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
-						Vecteur accel =   new Vecteur ( 0, 9.8);
-						listePouvoirs.add(new BoostVitesse( position, accel));
-						balle.shrink(listeBalles, accel);
+						pouvoirAuHasard(balle);
+						balle.shrink(listeBalles, gravite);
 					}
 				}
 			}
 		}
 	}
-	 
-	private void pouvoirAuHasard(Balle balle) {
-		
+
+	private void pouvoirAuHasard(Balle balle ) {
+
+		Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
+		Vecteur accel =  new Vecteur(gravite);
+
+		int nb = 0 + (int)(Math.random() * ((10 - 0) + 1));
+
+		Pouvoir pouvoir;
+		switch(nb) {
+
+		case 1: 
+			pouvoir = new BoostVitesse( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 7);
+			listePouvoirs.add(pouvoir);
+			break;
+
+		case 2: 
+			pouvoir = new Bouclier( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 7);
+			listePouvoirs.add(pouvoir);
+			break;
+
+		case 3: 
+			pouvoir = new Ralenti( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 7);
+			listePouvoirs.add(pouvoir);
+			break;
+
+		case 4: 
+			pouvoir = new AjoutVie( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 7);
+			listePouvoirs.add(pouvoir);
+			break;
+		}
 	}
 
+
+	private void ajoutCompteurs() {
+
+		if(vitesseLaser.getY()>vitesseLaserInit.getY()) 
+			compteurVitesse = tempsEcoule + 5;
+
+		if( deltaT < deltaTInit) 
+			compteurRalenti = tempsEcoule + 5;
+
+		if(personnage.isBouclierActive())
+			compteurBouclier = tempsEcoule + 9;
+	}
+
+
+	private void updateDureeCompteurs() {
+
+		for(Balle balle : listeBalles) {
+			balle.updateRotation();
+		}
+		for (Pouvoir pouvoir : listePouvoirs) {
+			if( pouvoir.getCompteurAvantDisparaitre() <= tempsEcoule)
+				listePouvoirs.remove(pouvoir);
+		}
+
+		if( compteurVitesse <= tempsEcoule ) {
+			vitesseLaser = vitesseLaserInit;
+			compteurVitesse = 0;
+			vitessePerso = false;
+		}
+
+		if( compteurRalenti <= tempsEcoule ) {
+			deltaT = deltaTInit;
+			compteurRalenti = 0;
+		}
+
+		if(compteurBouclier <= tempsEcoule)
+			personnage.setBouclierActive(false);
+	}
+
+
+	private void collisionPouvoirsPersonnages() {
+
+		for(Pouvoir pouvoir : listePouvoirs) {
+			for(Personnage perso : listePerso ) {
+				if(intersection(pouvoir.getAire(), perso.getAire() )) {
+					//	pouvoir.activeEffet(this);
+					ajoutCompteurs();
+					listePouvoirs.remove(pouvoir);
+				}
+			}
+		}	
+	}
+
+	private void updateMouvementPouvoirs() {
+		for(Pouvoir pouvoir: listePouvoirs) {
+			if(pouvoir.getPosition().getY()+pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
+				pouvoir.getPosition().setY(HAUTEUR_DU_MONDE-pouvoir.getLongueurImg());
+			}else {
+				pouvoir.unPasVerlet(deltaT);
+			}
+
+		}
+	}
 
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
@@ -351,28 +442,8 @@ public class SceneTest extends JPanel implements Runnable {
 		return false;
 	}
 
-	private void collisionPouvoirsPersonnages() {
 
-		for(Pouvoir pouvoir : listePouvoirs) {
-			for(Personnage perso : listePerso ) {
-				if(intersection(pouvoir.getAire(), perso.getAire() )) {
-					pouvoir.activeEffet(  listeLasers, this, coeurs, listeBalles ,perso, tempsEcoule);
-					listePouvoirs.remove(pouvoir);
-				}
-			}
-		}	
-	}
-	
-	private void updateMouvementPouvoirs() {
-		for(Pouvoir pouvoir: listePouvoirs) {
-			if(pouvoir.getPosition().getY()+pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
-				pouvoir.getPosition().setY(HAUTEUR_DU_MONDE-pouvoir.getLongueurImg());
-			}else {
-				pouvoir.unPasVerlet(deltaT);
-			}
-				
-		}
-	}
+
 
 
 	private void shootEtAddLaser(KeyEvent e, Personnage perso) {
@@ -413,16 +484,6 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 	}
 
-	private void collisionMurBalle( ArrayList<Balle> listeBalles, ArrayList<Mur> listeMurs ) {
-
-		for(Mur mur : listeMurs) {
-			for(Balle balle : listeBalles ) {
-				if(intersection(balle.getAire(), mur.getAire() )) {
-				}
-			}
-		}
-	}
-
 
 	public void setVitesseLaser(Vecteur vitesseLaser) {
 		this.vitesseLaser = vitesseLaser;
@@ -433,11 +494,46 @@ public class SceneTest extends JPanel implements Runnable {
 		return vitesseLaser;
 	}
 
-	
-	
-
 	public void setVitessePerso(boolean vitessePerso) {
 		this.vitessePerso = vitessePerso;
+	}
+
+	public Personnage getPersonnage() {
+		return personnage;
+	}
+
+	public Coeurs getCoeurs() {
+		return coeurs;
+	}
+
+	public void setDeltaT(double deltaT) {
+		this.deltaT = deltaT;
+	}
+
+	/**
+	 *Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
+	 * @param width largeur du monde 
+	 * @param height hauteur  du monde 
+	 */
+
+	private void detectionCollisionMurBalle() {
+
+		for(Balle balle : listeBalles) {
+
+			Vecteur position = new Vecteur(balle.getPosition());
+			double diametre = balle.getDiametre();
+
+			if(position.getY()+diametre >= HAUTEUR_DU_MONDE) { // touche le sol 
+				balle.getVitesse().setY(-balle.getVitesse().getY());
+				
+			}
+
+			if(position.getX()+diametre >= LARGEUR_DU_MONDE || position.getX() <= 0) {
+				balle.getVitesse().setX(-balle.getVitesse().getX());
+
+			}
+		}
+
 	}
 
 }

@@ -67,8 +67,7 @@ public class AjoutVie extends Pouvoir {
 
 
 	@Override
-	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,
-			Personnage perso, double tempsEcoule) {
-		coeurs.setCombien(coeurs.getCombien()+1);
+	public void activeEffet(Scene scene) {
+		scene.getCoeurs().setCombien(scene.getCoeurs().getCombien()+1);
 	}
 }
