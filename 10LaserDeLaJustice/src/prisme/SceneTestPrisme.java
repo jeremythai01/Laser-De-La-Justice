@@ -66,6 +66,8 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 
+	private boolean premiereFoisPrisme = true;
+	
 	private double n2 = 2.0;
 
 	private Laser laser = new Laser(new Vecteur(), 2, new Vecteur()) ;
@@ -107,7 +109,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		ordi3 = new OrdinateurNiveau3(new Vecteur(40, 44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 45;
+		angle = 100;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -474,10 +476,10 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		
 		
 		for (int i = 0; i < listeLasers.size(); i++) {
-
+			
 			for (int j = 0; j < listePrisme.size(); j++) {
-
-				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire())) {
+				
+				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire()) ) {
 
 					System.out.println(j);
 					prisme = listePrisme.get(j);
@@ -485,7 +487,9 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 					calculRefractionPrisme(laser,prisme);
 					j = listePrisme.size();
 					i = listeLasers.size();
+					//premiereFoisPrisme = false;
 				} 
+				
 			}
 		}
 
@@ -495,13 +499,15 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	
 
 	private void calculRefractionPrisme(Laser laser, Prisme prismes) {
+	
+		
 		Vecteur T = new Vecteur();
 		Vecteur V = laser.getPositionHaut();
 		Vecteur N = normalPrisme(laser, prismes);
 		Vecteur E = V.multiplie(-1);
-		double n = 1.0/2.50;
+		double n = 1.0/5.0;
 		System.out.println("la position laser avant refraction : "+ laser.getPositionHaut() );
-		Vecteur anciennePosLaser = laser.getPositionHaut();
+		
 			System.out.println("normal"+ N );
 			System.out.println("position: "+ prismes.getP1());
 			T = V.multiplie(n).additionne(N.multiplie((n*(E.prodScalaire(N)) - Math.sqrt(1-Math.pow(n, 2) * (1-(Math.pow(E.prodScalaire(N), 2)))))));
@@ -514,8 +520,13 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX()))+angle);
 		System.out.println("l'angle du laser apres refraction: "+ laser.getAngleTir());
 		
-		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );
-		repaint();
+		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );		
+		
+		double angleLaser = laser.getAngleTir();
+		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.5 ,0)), angleLaser+10, laser.getVitesse()));
+		
+			repaint();
+		
 	}
 
 	private boolean enIntersection(Area aire1, Area aire2) {
@@ -545,11 +556,13 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		
 			
 		if(resultat13 > 0 && resultat13 < 0.80) {
+			System.out.println("jai touché ligne13");
 			return ((prisme.getP3().soustrait(prisme.getP1()).cross(laser.getPositionHaut()))).normalise();
-			//System.out.println("jai touché ligne13");
+			
 		}else if(resultat12 > 0 && resultat12 < 0.80){
+			System.out.println("jai toucher la ligne12");
 			return ((prisme.getP2().soustrait(prisme.getP1())).cross(laser.getPositionHaut())).normalise();
-			//System.out.println("jai toucher la ligne12");
+			
 		}else if(resultat23 > 0 && resultat23 < 0.80){
 			System.out.println("jai toucher la ligne23");
 			return ((prisme.getP3().soustrait(prisme.getP2())).cross(laser.getPositionHaut())).normalise();
