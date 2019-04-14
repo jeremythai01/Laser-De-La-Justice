@@ -231,17 +231,17 @@ public class Scene extends JPanel implements Runnable {
 
 						bonMiroirConcave = true;
 						miroirConcave = listeMiroireConcave.get(i);
-
+						
 						i = listeMiroireConcave.size();
 					}
 				}
 
 				for (int i = 0; i < listeMiroirePlan.size(); i++) {
-					if (listeMiroirePlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) {
+					if (listeMiroirePlan.get(i).getAire().contains(eXR, eYR)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirePlan.get(i);
-
+						System.out.println("hello");
 						i = listeMiroirePlan.size();
 					}
 				}
@@ -870,7 +870,7 @@ public class Scene extends JPanel implements Runnable {
 	 * le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
-		listeMiroirePlan.add(new MiroirPlan(new Vecteur(0, 0), 0));
+		listeMiroirePlan.add(new MiroirPlan(new Vecteur(1, 2), 0));
 		repaint();
 
 	}
@@ -986,8 +986,8 @@ public class Scene extends JPanel implements Runnable {
 
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					miroirePlan.setPosition(xDrag, yDrag);
-
+					
+					miroirePlan.setPosition(new Vecteur (xDrag, yDrag));
 					repaint();
 				}
 

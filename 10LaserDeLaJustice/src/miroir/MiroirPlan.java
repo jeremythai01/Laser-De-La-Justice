@@ -81,7 +81,7 @@ public class MiroirPlan implements Dessinable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocale = new AffineTransform(mat);
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.01);
+		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.2);
 		Ellipse2D.Double haut = new Ellipse2D.Double(position.getX()-0.05, position.getY()-0.05, 0.1, 0.1);
 		g2d.draw(matLocale.createTransformedShape(haut));
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
@@ -102,6 +102,10 @@ public class MiroirPlan implements Dessinable {
 		matLocal.rotate(Math.toRadians(-angle), position.getX(), position.getY());
 		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(),longueur, 0.01);
 		return new Area(matLocal.createTransformedShape(((rect))));
+	}
+	
+	public Area getAire() {
+		return new Area(miroir);
 	}
 	
 	/**
