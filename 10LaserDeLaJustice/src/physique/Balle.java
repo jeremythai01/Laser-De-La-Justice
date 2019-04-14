@@ -2,11 +2,17 @@ package physique;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -21,12 +27,12 @@ public class Balle implements Dessinable, Serializable {
 	private double masse = 15;
 	private Ellipse2D.Double cercle;
 	private Vecteur position, vitesse, accel = new Vecteur(0,9.8);
-	private double vInitY;
-	private boolean toucheSolPremiereFois = true;
 	private Vecteur forceGravi;
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
-
+	private double qtRot;
+	private Image img;
+	private final double VITESSE_ROTATION = 0.04;
 
 
 	/**
@@ -57,16 +63,20 @@ public class Balle implements Dessinable, Serializable {
 			type = Type.SMALL;
 			setMasse(5);
 			setDiametre(1);
+			lireImage("Pokeball.png");
 			break;
 		case "MEDIUM":
 			type = Type.MEDIUM;
 			setMasse(10);
 			setDiametre(2);
+			lireImage("UltraBall.png");
 			break;
 		case "LARGE":
 			type = Type.LARGE;
+			lireImage("MasterBall.jpg");
 			break;
 		}
+		
 	}
 	
 
@@ -74,21 +84,29 @@ public class Balle implements Dessinable, Serializable {
 		this.diametre = balle.getDiametre();
 		setAccel( balle.getAccel());
 		this.masse = balle.getMasse();
-		this.vInitY = balle.getvInitY();
 		setPosition( balle.getPosition() );
 		setVitesse(balle.getVitesse());
 		this.forceGravi = balle.getForceGravi();
 		this.type = balle.getType();
-		this.toucheSolPremiereFois = balle.isToucheSolPremiereFois();
+		setImg(balle.getImg());
+		
 	}
 
-
-
-	public boolean isToucheSolPremiereFois() {
-		return toucheSolPremiereFois;
+	private void lireImage(String str) {
+		
+		URL urlBalle= getClass().getClassLoader().getResource(str);
+		if (urlBalle == null) {
+			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
+			System.exit(0);}
+		try {
+			img = ImageIO.read(urlBalle);
+		}
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
 	}
-
-
+	
+	
 	/**
 	 * Permet de dessiner la balle selon le contexte graphique en parametre.
 	 * @param g2d contexte graphique
@@ -100,23 +118,32 @@ public class Balle implements Dessinable, Serializable {
 	@Override
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		checkCollisions(largeur , hauteur); 
+		
+	
+		double factX = (diametre)/ img.getWidth(null) ;
+		double factY = (diametre)/ img.getHeight(null) ;
+		matLocal.rotate(qtRot, position.getX()+diametre/2, position.getY()+diametre/2);
+		matLocal.scale( factX, factY);
+	
+		matLocal.translate( (position.getX() )   / factX , (position.getY()) / factY);
+		
+		g2d.drawImage(img, matLocal, null);
+		
 
-		switch(type){
-		case LARGE:
-			g2d.setColor(Color.blue);
-			break;
-		case MEDIUM:
-			g2d.setColor(Color.green);
-			break;
-		case SMALL:
-			g2d.setColor(Color.red);
-			break;
-		}		
-		g2d.fill( matLocal.createTransformedShape(cercle) );		
+			
+		
 	}
 
+	
+	public void updateRotation() {
+		
+		if(vitesse.getX() > 0)
+		qtRot += VITESSE_ROTATION ;
+		if(vitesse.getX() < 0)
+			qtRot -= VITESSE_ROTATION ;
+		
+	}
+	
 	/**
 	 * Effectue une iteration de l'algorithme d'Euler implicite. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -228,15 +255,6 @@ public class Balle implements Dessinable, Serializable {
 	public void setMasse(double masse) { this.masse = masse; }
 
 
-
-	/**
-	 * Modifie la vitesse courante par la vitesse initiale
-	 * @param vInitY vitesse initiale 
-	 */
-
-	public void setvInitY(double vInitY) { this.vInitY = vInitY; }
-
-
 	/**
 	 * Retourne la force gravitationnelle
 	 * @return force gravitationnelle
@@ -245,35 +263,6 @@ public class Balle implements Dessinable, Serializable {
 		return forceGravi;
 	}
 
-
-	/**
-	 *Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
-	 * @param width largeur du monde 
-	 * @param height hauteur  du monde 
-	 */
-
-	public void checkCollisions(double width, double height) {
-
-		if(position.getY()+diametre >= height) { // touche le sol 
-			if(toucheSolPremiereFois) {
-				vInitY = vitesse.getY();
-				vitesse.setY(-vInitY);
-				toucheSolPremiereFois = false;
-			} else {
-
-				vitesse.setY(-vInitY);
-			}
-		}
-		if(position.getX()+diametre >= width) // touche le mur droite 
-			if(vitesse.getX() >0 )
-				vitesse.setX(-vitesse.getX());
-
-		if(position.getX() <= 0) // touche le mur gauche 
-			if(vitesse.getX() < 0 )
-				vitesse.setX(-vitesse.getX());
-
-
-	}
 
 	/**
 	 * Modifie le type de balle en creant 2 balles d'un plus petit type et en les ajoutant dans la liste de balles 
@@ -361,10 +350,6 @@ public class Balle implements Dessinable, Serializable {
 			liste.remove(this);
 			break;
 		}		
-
-
-
-
 	}
 
 	/**
@@ -387,10 +372,15 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
-
-	public double getvInitY() {
-		return vInitY;
+	public Image getImg() {
+		return img;
 	}
+
+	public void setImg(Image img) {
+		this.img = img;
+	}
+
+	
 	
 	
 }//fin classe

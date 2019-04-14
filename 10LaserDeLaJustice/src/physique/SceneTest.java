@@ -84,7 +84,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 
 
-	private double deltaTInit = 0.06;
+	private double deltaTInit = 0.05;
 	private double deltaT = deltaTInit;
 	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
 	private Vecteur vitesseLaserInit = new Vecteur(0,1);
@@ -93,6 +93,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private double compteurRalenti= 0 ;
 	private double compteurBouclier= 0 ;
 	private boolean vitessePerso = false;
+	private double qtRotation;
 
 	/**
 	 * Create the panel.
@@ -113,11 +114,11 @@ public class SceneTest extends JPanel implements Runnable {
 		vitesse = new Vecteur(0.5 ,0);
 
 
-		mur = new Mur ( new Vecteur(0,0), 0, HAUTEUR_DU_MONDE  );
+		mur = new Mur ( new Vecteur(0,0), "VERTICAL"  );
 		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,HAUTEUR_DU_MONDE ), LARGEUR_DU_MONDE, 0 );
+		mur = new Mur ( new Vecteur(0,HAUTEUR_DU_MONDE ), "HORIZONTAL"  );
 		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(LARGEUR_DU_MONDE,0 ), 0 , HAUTEUR_DU_MONDE);
+		mur = new Mur ( new Vecteur(LARGEUR_DU_MONDE,0 ), "VERTICAL" );
 		listeMurs.add(mur);
 
 
@@ -218,12 +219,9 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 
 
-		for(Mur mur : listeMurs) {
-			mur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		}
-
 		collisionBalleLaser();
-
+	
+		
 		for(Balle balle: listeBalles) {
 
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
@@ -244,7 +242,8 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private void calculerUneIterationPhysique() {
 
-		collisionMurBalle(  listeBalles, listeMurs );
+		
+		//collisionMurBalle(  listeBalles, listeMurs );
 
 
 		for (int i = 0; i < listeBalles.size(); i++) {
@@ -264,6 +263,7 @@ public class SceneTest extends JPanel implements Runnable {
 			balle.unPasVerlet(deltaT);
 		}
 
+		detectionCollisionMurBalle();
 		for(Laser laser : listeLasers) {
 			laser.move();
 		}
@@ -304,6 +304,7 @@ public class SceneTest extends JPanel implements Runnable {
 
 			calculerUneIterationPhysique();
 			updateDureeCompteurs();
+
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -384,11 +385,14 @@ public class SceneTest extends JPanel implements Runnable {
 
 	private void updateDureeCompteurs() {
 
+		for(Balle balle : listeBalles) {
+			balle.updateRotation();
+		}
 		for (Pouvoir pouvoir : listePouvoirs) {
 			if( pouvoir.getCompteurAvantDisparaitre() <= tempsEcoule)
 				listePouvoirs.remove(pouvoir);
 		}
-		
+
 		if( compteurVitesse <= tempsEcoule ) {
 			vitesseLaser = vitesseLaserInit;
 			compteurVitesse = 0;
@@ -404,13 +408,13 @@ public class SceneTest extends JPanel implements Runnable {
 			personnage.setBouclierActive(false);
 	}
 
-	
+
 	private void collisionPouvoirsPersonnages() {
 
 		for(Pouvoir pouvoir : listePouvoirs) {
 			for(Personnage perso : listePerso ) {
 				if(intersection(pouvoir.getAire(), perso.getAire() )) {
-					pouvoir.activeEffet(this);
+					//	pouvoir.activeEffet(this);
 					ajoutCompteurs();
 					listePouvoirs.remove(pouvoir);
 				}
@@ -439,7 +443,7 @@ public class SceneTest extends JPanel implements Runnable {
 	}
 
 
-	
+
 
 
 	private void shootEtAddLaser(KeyEvent e, Personnage perso) {
@@ -480,16 +484,6 @@ public class SceneTest extends JPanel implements Runnable {
 		}
 	}
 
-	private void collisionMurBalle( ArrayList<Balle> listeBalles, ArrayList<Mur> listeMurs ) {
-
-		for(Mur mur : listeMurs) {
-			for(Balle balle : listeBalles ) {
-				if(intersection(balle.getAire(), mur.getAire() )) {
-				}
-			}
-		}
-	}
-
 
 	public void setVitesseLaser(Vecteur vitesseLaser) {
 		this.vitesseLaser = vitesseLaser;
@@ -516,7 +510,31 @@ public class SceneTest extends JPanel implements Runnable {
 		this.deltaT = deltaT;
 	}
 
+	/**
+	 *Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
+	 * @param width largeur du monde 
+	 * @param height hauteur  du monde 
+	 */
 
+	private void detectionCollisionMurBalle() {
+
+		for(Balle balle : listeBalles) {
+
+			Vecteur position = new Vecteur(balle.getPosition());
+			double diametre = balle.getDiametre();
+
+			if(position.getY()+diametre >= HAUTEUR_DU_MONDE) { // touche le sol 
+				balle.getVitesse().setY(-balle.getVitesse().getY());
+				
+			}
+
+			if(position.getX()+diametre >= LARGEUR_DU_MONDE || position.getX() <= 0) {
+				balle.getVitesse().setX(-balle.getVitesse().getX());
+
+			}
+		}
+
+	}
 
 }
 

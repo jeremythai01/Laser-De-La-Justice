@@ -362,7 +362,7 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
 		detectionCollisionBallePersonnage(listeBalles, personnage);
-
+		detectionCollisionMurBalle();
 		for (Balle balle : listeBalles) {
 
 			balle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -455,7 +455,6 @@ public class Scene extends JPanel implements Runnable {
 				MoteurPhysique.detectionCollisionBalles(balle1, balle2);
 			}
 		}
-
 
 		for (Balle balle : listeBalles) {
 			balle.unPasVerlet(deltaT);
@@ -1233,6 +1232,9 @@ public class Scene extends JPanel implements Runnable {
 
 	private void updateDureeCompteurs() {
 
+		for(Balle balle : listeBalles) {
+			balle.updateRotation();
+		}
 		try {
 			for (Pouvoir pouvoir : listePouvoirs) {
 				if( pouvoir.getCompteurAvantDisparaitre() <= tempsEcoule)
@@ -1301,6 +1303,35 @@ public class Scene extends JPanel implements Runnable {
 
 	public void setDeltaT(double deltaT) {
 		this.deltaT = deltaT;
+	}
+
+	/**
+	 *Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
+	 * @param width largeur du monde 
+	 * @param height hauteur  du monde 
+	 */
+	private void detectionCollisionMurBalle() {
+
+		for(Balle balle : listeBalles) {
+
+			Vecteur position = new Vecteur(balle.getPosition());
+			double diametre = balle.getDiametre();
+
+			if(position.getY()+diametre >= HAUTEUR_DU_MONDE) { // touche le sol 
+				balle.getVitesse().setY(-balle.getVitesse().getY());
+			}
+
+			if(position.getX()+diametre >= LARGEUR_DU_MONDE ) {
+				if(balle.getVitesse().getX() >0)
+					balle.getVitesse().setX(-balle.getVitesse().getX());
+
+			}
+			if(position.getX() <= 0 ) {
+				if(balle.getVitesse().getX() < 0)
+					balle.getVitesse().setX(-balle.getVitesse().getX());
+			}
+		}
+
 	}
 
 }
