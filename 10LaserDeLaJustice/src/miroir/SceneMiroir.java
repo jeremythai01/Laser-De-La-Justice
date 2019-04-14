@@ -5,12 +5,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -39,6 +42,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private AffineTransform mat;
 	private Vecteur position;
 	private boolean miroirPlan = true, miroirConvexe = false, miroirConcave = false;
+	Vecteur posInter;
 
 	private Vecteur vitesse;
 
@@ -48,6 +52,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private VecteurGraphique q;
 	private Vecteur origin;
 	private boolean afficherVec =false;
+	Laser laser2;
 
 
 
@@ -55,7 +60,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private int nbCollison = 0;
 
 
-	private double ANGLE_DE_MIROIR = 45;
+	private double ANGLE_DE_MIROIR = 0;
 	
 
 	private double angleLaser;
@@ -141,7 +146,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			if(laser.getPositionHaut().getY() <= 0 ) {
 				listeLasers.remove(laser);
 			}
-			g2d.setStroke( new BasicStroke(3));
+			//g2d.setStroke( new BasicStroke(3));
 			//laser.setAngleTir(angle);
 			laser.dessiner(g2d, mat, 0, 0);
 		}
@@ -166,6 +171,15 @@ public class SceneMiroir extends JPanel implements Runnable {
 		//System.out.println("position de la souris  = " + xSouris);
 		g2d.setColor(Color.black);
 		//g2d.draw(ligne);
+		
+		if(afficherVec) {
+			double diam = 0.25;
+			Ellipse2D.Double pts = new Ellipse2D.Double(posInter.getX()-diam/2,posInter.getY()-diam/2,diam,diam);
+			//laser2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			g2d.setStroke(new BasicStroke(3));
+			g2d.setColor(Color.green);
+			g2d.fill(mat.createTransformedShape(pts));
+		}
 
 
 
@@ -245,9 +259,8 @@ public class SceneMiroir extends JPanel implements Runnable {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
 			//	if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
-			listeLasers.add(
-					new Laser(new Vecteur(
-							character.getPositionX() + character.getLARGEUR_PERSO() / 2, HAUTEUR_DU_MONDE - character.getLONGUEUR_PERSO()), angleLaser, new Vecteur(0,0.5)));
+							listeLasers.add(new Laser(new Vecteur(character.getPositionX() + character.getLARGEUR_PERSO() / 2,
+									HAUTEUR_DU_MONDE - character.getLONGUEUR_PERSO()), angleLaser, new Vecteur(0,.5)));
 			//}
 		}
 	}
@@ -283,9 +296,10 @@ public class SceneMiroir extends JPanel implements Runnable {
 			while(n< listeMiroirPlan.size() && collision == false) {
 				if(intersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
-					//arreter();
-					Vecteur delta = new Vecteur (0.6,0);
-					Vecteur vecLaser = laser.getPositionHaut().additionne(delta);
+			
+					
+					
+					Vecteur vecLaser = laser.getPositionHaut(); // un point du laser
 					System.out.println("laser" + vecLaser );
 					Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(laser.getAngleTir()) ) , Math.sin(Math.toRadians(laser.getAngleTir()) ))).normalise();;
 					System.out.println("vecteur dir laser " +vecDirLaser );
@@ -294,29 +308,23 @@ public class SceneMiroir extends JPanel implements Runnable {
 					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ))).normalise();
 					System.out.println("miroir" + vecMiroir );
 					System.out.println("vecteur dir Miroir " +vecDirMiroir );
-					Vecteur sous = (vecLaser.soustrait(vecMiroir)).multiplie(-1);
-					double a,b,c,d,e,f;
-					a = vecDirLaser.getX();
-					b = vecDirMiroir.getX()*-1;
-					c = sous.getX();
-					d = vecDirLaser.getY();
-					e = vecDirMiroir.getY()*-1;
-					f = sous.getY();
+					Vecteur sous = (vecLaser.soustrait(vecMiroir));
 					
-					double k,t;
-					k = c*e-b*f/a*e-b*d;
-					t = a*f-c*d/a*e-b*d;
+					double [] inter = intersectionCramer(vecDirMiroir.getX()*-1,vecDirLaser.getX(),vecDirMiroir.getY()*-1,vecDirLaser.getY(),sous.getX()*-1, sous.getY()*-1);
 					
-					double x = vecLaser.getX()+k*(vecDirLaser.getX());
-					double y = vecLaser.getY()+k*(vecDirLaser.getY());
-					System.out.println(x + " " + y);
-					laser.setPositionHaut(new Vecteur(x,y).additionne(delta));
+					double x = vecMiroir.getX()+inter[0]*(vecDirMiroir.getX());
+					double y= vecMiroir.getY()+inter[0]*(vecDirMiroir.getY());
+					double tr = y-vecMiroir.getY();
+					
+			
+					//afficherVec = true;
+					posInter = new Vecteur (x,vecMiroir.getY()-tr);
+					System.out.println("interestion laser et miroir " +x+ " "  + posInter);
+					afficherVec = true;
 					
 					
-
-	
 					Vecteur normal =listeMiroirPlan.get(n).getNormal().normalise();
-					System.out.println("La normal est du miroir est :" +normal);
+					System.out.println("\n"+"La normal est du miroir est :" +normal);
 					
 					double angleR = Math.toRadians(laser.getAngleTir() ) ;
 					Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
@@ -338,7 +346,21 @@ public class SceneMiroir extends JPanel implements Runnable {
 					}else{
 						laser.setAngleTir(angleReflexion);
 					}
+					double ka = laser.getLONGUEUR()/reflexion.module();
+					Vecteur newHaut = posInter.additionne(reflexion.multiplie(ka) );
+					System.out.println("nouveau haut : " + newHaut);
+					Vecteur delta = new Vecteur (0.1,0.1);
+					if(angleReflexion==-90&&listeMiroirPlan.get(n).getAngle()==0) {
+						delta = new Vecteur(0,.2);
+						laser.setPositionHaut(posInter.additionne(new Vecteur (0,1.1)));
+					}
 					
+				//	laser.setPositionHaut(new Vecteur (posInter.getX(),posInter.getY()+1.5));
+					
+					
+					// position pointe
+					//laser.setPositionBas(nouvelle_pointe.additionne(delta));
+				
 					System.out.println("-----------------------------------------------------------------------------");
 					
 				}
@@ -348,6 +370,15 @@ public class SceneMiroir extends JPanel implements Runnable {
 		}
 	} // fin methode
 	
+	private double [] intersectionCramer(double a, double b, double c, double d, double e, double f) {
+		double det, k,t;
+		double [] tab = new double [2];
+		det = a*d-b*c;
+		tab[0] = (e*d-b*f)/det; //t
+		tab[1] = (a*f-e*c)/det; //k
+		return tab;
+	}
+
 	public static Vecteur solveSimultaneousEquations(double a, double b, double c, double d, double e, double f) {
 	    double det = ((a) * (d) - (b) * (c));  //instead of 1/
 	    double x = ((d) * (e) - (b) * (f)) / det;

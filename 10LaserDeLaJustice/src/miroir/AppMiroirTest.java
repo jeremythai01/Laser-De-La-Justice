@@ -13,6 +13,8 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 /**
  * Cette classe permet de tester les miroirs concaves et convexes
@@ -109,40 +111,33 @@ public class AppMiroirTest extends JFrame {
 		btnMiroirConcave.setBounds(585, 427, 125, 23);
 		contentPane.add(btnMiroirConcave);
 
-		JSlider sldMiroir = new JSlider();
-		sldMiroir.setMajorTickSpacing(10);
-		sldMiroir.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				sceneMiroir.setAngleMiroir(sldMiroir.getValue());
-			}
-		});
-		sldMiroir.setValue(0);
-		sldMiroir.setPaintLabels(true);
-		sldMiroir.setPaintTicks(true);
-		sldMiroir.setMaximum(180);
-		sldMiroir.setBounds(145, 601, 423, 37);
-		contentPane.add(sldMiroir);
-
 		JLabel lblAngleMioir = new JLabel("Angle mioir :");
-		lblAngleMioir.setBounds(10, 601, 132, 37);
+		lblAngleMioir.setBounds(20, 601, 72, 37);
 		contentPane.add(lblAngleMioir);
 
 		JLabel lblAngleLaser = new JLabel("Angle laser :");
 		lblAngleLaser.setBounds(25, 649, 80, 28);
 		contentPane.add(lblAngleLaser);
-
-		JSlider sldLaser = new JSlider();
-		sldLaser.addChangeListener(new ChangeListener() {
+		
+		JSpinner spnLaser = new JSpinner();
+		spnLaser.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				sceneMiroir.setAngleLaser(sldLaser.getValue());
+				sceneMiroir.setAngleLaser(Integer.parseInt(spnLaser.getValue().toString()));
+				
 			}
 		});
-		sldLaser.setPaintLabels(true);
-		sldLaser.setPaintTicks(true);
-		sldLaser.setMajorTickSpacing(10);
-		sldLaser.setValue(90);
-		sldLaser.setMaximum(180);
-		sldLaser.setBounds(145, 649, 423, 45);
-		contentPane.add(sldLaser);
+		spnLaser.setModel(new SpinnerNumberModel(90, 0, 180, 1));
+		spnLaser.setBounds(104, 649, 47, 37);
+		contentPane.add(spnLaser);
+		
+		JSpinner spnMiroir = new JSpinner();
+		spnMiroir.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				sceneMiroir.setAngleMiroir(Integer.parseInt(spnMiroir.getValue().toString()));
+			}
+		});
+		spnMiroir.setModel(new SpinnerNumberModel(0, 0, 1800, 1));
+		spnMiroir.setBounds(104, 601, 48, 37);
+		contentPane.add(spnMiroir);
 	}
 }
