@@ -29,6 +29,7 @@ public class MiroirPlan implements Dessinable {
 	private Vecteur normal;
 	private Vecteur position;
 	private Vecteur positionBas;
+	AffineTransform matLocale;
 	
 	
 	public Vecteur getPositionBas() {
@@ -92,10 +93,15 @@ public class MiroirPlan implements Dessinable {
 	 //Miora
 	 */
 	public Area getAireMiroirPixel() {
-		AffineTransform matLocale = new AffineTransform();
+		/*AffineTransform matLocale = new AffineTransform();
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.01);
-		return new Area(matLocale.createTransformedShape(((miroir))));
+		return new Area(miroir);
+		*/
+		AffineTransform matLocal = new AffineTransform();
+		matLocal.rotate(Math.toRadians(-angle), position.getX(), position.getY());
+		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(),longueur, 0.01);
+		return new Area(matLocal.createTransformedShape(((rect))));
 	}
 	
 	/**

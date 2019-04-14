@@ -53,6 +53,7 @@ public class MiroirConvexe implements Dessinable {
 		this.hauteur = hauteur;
 		this.largeur = largeur;
 		AffineTransform matLocale = new AffineTransform(mat);
+		
 		//On tourne
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		
