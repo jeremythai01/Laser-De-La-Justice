@@ -34,6 +34,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import effets.AjoutVie;
+import effets.BoostVitesse;
+import effets.Bouclier;
+import effets.Pouvoir;
+import effets.Ralenti;
 import geometrie.Vecteur;
 import interfaces.SceneListener;
 import miroir.MiroirConcave;
@@ -69,10 +74,9 @@ public class Scene extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private double angle;
-	private double deltaT = 0.08;
+
 	private double LARGEUR_DU_MONDE = 30; // en metres
 	private double HAUTEUR_DU_MONDE;
-	private int tempsEcoule = 0;
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
@@ -128,13 +132,11 @@ public class Scene extends JPanel implements Runnable {
 	private Color couleurLaser = null;
 
 	private Vecteur gravite = new Vecteur (0,9.8); // pour miora 
-	private Vecteur vitesseLaser = new Vecteur(0, 0.5);
 
-	
+
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
 	private Balle petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
-
 
 
 	private ArrayList<SceneListener> listeEcouteur = new ArrayList<SceneListener>();
@@ -142,6 +144,18 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheTir = 32;
 
 	private boolean enMouvement = false;
+
+	private double tempsEcoule = 0;
+	private double deltaTInit = 0.06;
+	private double deltaT = deltaTInit;
+	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
+	private Vecteur vitesseLaserInit = new Vecteur(0,0.5);
+	private Vecteur vitesseLaser = vitesseLaserInit;
+	private double compteurVitesse = 0 ;
+	private double compteurRalenti= 0 ;
+	private double compteurBouclier= 0 ;
+
+
 
 	// Par Jeremy
 	/**
@@ -249,8 +263,8 @@ public class Scene extends JPanel implements Runnable {
 						i = listeBlocEau.size();
 					}
 				}
-				
-				
+
+
 				tirLaser(e, personnage);
 			}
 
@@ -301,6 +315,7 @@ public class Scene extends JPanel implements Runnable {
 			// Jeremy Thai
 			public void keyReleased(KeyEvent e) {
 				personnage.relacheTouche(e);
+
 			}
 		});
 
@@ -343,7 +358,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 
-
+		detectionCollisionPouvoirsPersonnages();
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
 		detectionCollisionBallePersonnage(listeBalles, personnage);
@@ -392,6 +407,11 @@ public class Scene extends JPanel implements Runnable {
 		ordi.savoirTempsSleep(tempsDuSleep);
 
 		tracerVecteurGraphique(g2d);
+
+
+		for(Pouvoir pouvoir : listePouvoirs) {
+			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
 	}
 
@@ -442,12 +462,22 @@ public class Scene extends JPanel implements Runnable {
 		}
 		for (Laser laser : listeLasers) {
 			laser.move();
-			// System.out.println("YEET" + laser.getPosition());
 		}
 
-		tempsEcoule += deltaT;
-		personnage.bouge();
+
+		updateMouvementPouvoirs();
+
+		if(personnage.isEnVitesse()){
+			personnage.bouge();
+			personnage.bouge();
+			personnage.bouge();
+			personnage.bouge();
+		}else {
+			personnage.bouge();
+		}
 		ordi.bouge();
+
+		tempsEcoule += deltaTInit;
 
 	}
 
@@ -462,6 +492,7 @@ public class Scene extends JPanel implements Runnable {
 		while (enCoursAnimation) {
 			compteur++;
 			calculerUneIterationPhysique();
+			updateDureeCompteurs();
 			if(compteur==60) {
 				tirer();
 				compteur=0;
@@ -489,7 +520,7 @@ public class Scene extends JPanel implements Runnable {
 	 * Methode permettant de mettre un fond a la scene
 	 **/
 	private void lireFond() {
-		
+
 		URL fich = getClass().getClassLoader().getResource("mars.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier introuvable!");
@@ -500,8 +531,8 @@ public class Scene extends JPanel implements Runnable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
-		
-		
+
+
 	}
 
 	/**
@@ -551,7 +582,7 @@ public class Scene extends JPanel implements Runnable {
 					couleurLaser = couleurOption;
 				}
 				personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
-			
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -592,6 +623,7 @@ public class Scene extends JPanel implements Runnable {
 			for (Balle balle : listeBalles) {
 				if (enIntersection(balle.getAire(), laser.getAire())) {
 					listeLasers.remove(laser);
+					pouvoirAuHasard(balle );
 					balle.shrink(listeBalles, gravite);
 				}
 			}
@@ -609,19 +641,19 @@ public class Scene extends JPanel implements Runnable {
 
 		for (Balle balle : listeBalles) {
 			if (enIntersection(balle.getAire(), personnage.getAire())) {
-				
-				if (personnage.getTempsInvincible() <= tempsEcoule) {
 
+				if (personnage.isBouclierActive()) {
+					personnage.setBouclierActive(false);
+				}else if (personnage.isMort() == false) {
 					coeurs.setCombien(nombreVies - 1);
 					nombreVies--;
-					System.out.print(nombreVies);
-					personnage.setTempsInvincible(tempsEcoule + 0.5);
+					personnage.setTempsMort(tempsEcoule+2);
+					personnage.setMort(true);
 				}
 			}
-
 		}
-
 	}
+
 
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
@@ -715,7 +747,7 @@ public class Scene extends JPanel implements Runnable {
 		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 		listeBalles.add(petiteBalle);
-		
+
 		repaint();
 
 	}
@@ -1012,7 +1044,7 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			fluxSortie.writeInt(tempsEcoule);
+			fluxSortie.writeDouble(tempsEcoule);
 
 			// JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
@@ -1147,6 +1179,128 @@ public class Scene extends JPanel implements Runnable {
 								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO() ) , angle, vitesseLaser));
 			}
 		}
+	}
+
+	private void pouvoirAuHasard(Balle balle ) {
+
+		Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
+		Vecteur accel =  new Vecteur(gravite);
+
+		int nb = 0 + (int)(Math.random() * ((10 - 0) + 1));
+
+		Pouvoir pouvoir;
+		switch(nb) {
+
+		case 1: 
+			pouvoir = new BoostVitesse( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			listePouvoirs.add(pouvoir);
+			break;
+
+		case 2: 
+			pouvoir = new Bouclier( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			listePouvoirs.add(pouvoir);
+			break;
+
+		case 3: 
+			pouvoir = new Ralenti( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			listePouvoirs.add(pouvoir);
+			break;
+
+		case 4: 
+			pouvoir = new AjoutVie( position, accel);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			listePouvoirs.add(pouvoir);
+			break;
+		}
+	}
+
+
+	private void ajoutCompteurs() {
+
+		if(vitesseLaser.getY()>vitesseLaserInit.getY()) 
+			compteurVitesse = tempsEcoule + 5;
+
+		if( deltaT < deltaTInit) 
+			compteurRalenti = tempsEcoule + 5;
+
+		if(personnage.isBouclierActive())
+			compteurBouclier = tempsEcoule + 9;
+	}
+
+
+	private void updateDureeCompteurs() {
+
+		try {
+			for (Pouvoir pouvoir : listePouvoirs) {
+				if( pouvoir.getCompteurAvantDisparaitre() <= tempsEcoule)
+					listePouvoirs.remove(pouvoir);
+			} 
+		}catch(ConcurrentModificationException e) {
+		} 
+
+		if( compteurVitesse <= tempsEcoule ) {
+			vitesseLaser = vitesseLaserInit;
+			compteurVitesse = 0;
+			personnage.setEnVitesse(false);
+		}
+
+		if( compteurRalenti <= tempsEcoule ) {
+			deltaT = deltaTInit;
+			compteurRalenti = 0;
+		}
+
+		if(compteurBouclier <= tempsEcoule)
+			personnage.setBouclierActive(false);
+
+		if(personnage.getTempsMort() <= tempsEcoule)
+			personnage.setMort(false);
+
+	}
+	private void detectionCollisionPouvoirsPersonnages() {
+
+		for(Pouvoir pouvoir : listePouvoirs) {
+			if(enIntersection(pouvoir.getAire(), personnage.getAire() )) {
+				pouvoir.activeEffet(this);
+				ajoutCompteurs();
+				listePouvoirs.remove(pouvoir);
+			}
+		}
+	}	
+
+	private void updateMouvementPouvoirs() {
+		for(Pouvoir pouvoir: listePouvoirs) {
+			if(pouvoir.getPosition().getY()+pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
+				pouvoir.getPosition().setY(HAUTEUR_DU_MONDE-pouvoir.getLongueurImg());
+			}else {
+				pouvoir.unPasVerlet(deltaT);
+			}
+
+		}
+	}
+
+
+	public void setVitesseLaser(Vecteur vitesseLaser) {
+		this.vitesseLaser = vitesseLaser;
+	}
+
+
+	public Vecteur getVitesseLaser() {
+		return vitesseLaser;
+	}
+
+	public Personnage getPersonnage() {
+		return personnage;
+	}
+
+	public Coeurs getCoeurs() {
+		return coeurs;
+	}
+
+	public void setDeltaT(double deltaT) {
+		this.deltaT = deltaT;
 	}
 
 }

@@ -25,6 +25,7 @@ public abstract class Pouvoir implements Dessinable {
 	private Image img = null;
 	private Rectangle2D.Double rectFantome;
 	private double largeurImg, longueurImg;
+	private double compteurAvantDisparaitre = 0;
 
 	Pouvoir(Vecteur position , Vecteur accel) {
 		this.position = new Vecteur(position);
@@ -33,7 +34,7 @@ public abstract class Pouvoir implements Dessinable {
 	}
 	public abstract Area getAire();
 	abstract void lireImage();
-	public abstract void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles, Personnage perso, double tempsEcoule);
+	public abstract void activeEffet( Scene scene);
 	
 	/**
 	 * modifie ou affecte une vitesse a celle courante de la balle
@@ -90,6 +91,10 @@ public abstract class Pouvoir implements Dessinable {
 		this.img = img;
 	}
 
+	public void setImg(Image img) {
+		this.img = img;
+	}
+
 
 	public Rectangle2D.Double getRectFantome() {
 		return rectFantome;
@@ -106,11 +111,20 @@ public abstract class Pouvoir implements Dessinable {
 	public void setLargeurImg(double largeurImg) {
 		this.largeurImg = largeurImg;
 	}
+	
 	public double getLongueurImg() {
 		return longueurImg;
 	}
 	public void setLongueurImg(double longueurImg) {
 		this.longueurImg = longueurImg;
 	}
+	
+	public double getCompteurAvantDisparaitre() {
+		return compteurAvantDisparaitre;
+	}
+	public void setCompteurAvantDisparaitre(double compteurAvantDisparaitre) {
+		this.compteurAvantDisparaitre = compteurAvantDisparaitre;
+	}
 	 
+	
 }

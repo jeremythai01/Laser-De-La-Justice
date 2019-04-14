@@ -6,18 +6,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import aaplication.Scene;
 import geometrie.Vecteur;
-import personnage.Personnage;
-import physique.Balle;
-import physique.Coeurs;
-import physique.Laser;
 import physique.SceneTest;
 
 
@@ -26,17 +23,17 @@ public class BoostVitesse extends Pouvoir {
 	public BoostVitesse ( Vecteur position , Vecteur accel) {
 		super(position,accel);
 		lireImage();
-		setLargeurImg(1.0);
-		setLongueurImg(1.6);
+		setLargeurImg(1.6);
+		setLongueurImg(1);
 	}
 
 	
 	@Override
 	public void lireImage() {
 
-		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		URL fich = getClass().getClassLoader().getResource("eclair.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier eclair.jpg introuvable!");
 		} else {
 			try {
 				setImg(ImageIO.read(fich));
@@ -59,6 +56,9 @@ public class BoostVitesse extends Pouvoir {
 		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
 		
 		g2d.drawImage(getImg(), matLocale, null);
+		
+		
+		
 	
 	}
 
@@ -68,12 +68,12 @@ public class BoostVitesse extends Pouvoir {
 		return new Area(getRectFantome());
 	}
 	
+	
 	@Override
-	public void activeEffet(ArrayList<Laser> listeLasers, SceneTest scene, Coeurs coeurs, ArrayList<Balle> listeBalles,Personnage perso, double tempsEcoule) {
+	public void activeEffet(Scene scene) {
 		scene.setVitesseLaser(scene.getVitesseLaser().additionne(new Vecteur(0,5)));
-		scene.setVitessePerso(true);
+		scene.getPersonnage().setEnVitesse(true);
 	}
-
 
 
 }

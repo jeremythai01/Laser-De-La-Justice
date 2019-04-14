@@ -46,13 +46,16 @@ public class Personnage implements Dessinable, Serializable {
 	private boolean droite;
 	private boolean bougePas;
 	private static final double VITESSE = 0.1;
-	private double tempsInvincible = 0;
 	private boolean modeSouris = false;
 	private double posSouris;
 	private boolean bouclierActive = false;
 	private Ellipse2D.Double ellipse;
 	private double tempsMort = 0;
+	private boolean mort= false;
 	private String imageNom;
+	
+
+	private boolean enVitesse = false;
 
 	/**
 	 Constructeur 1 de la classe.
@@ -383,32 +386,14 @@ public class Personnage implements Dessinable, Serializable {
 		this.posSouris = posSouris;
 	}
 
-	/**
-	 * Methode qui retourne le temps d'invicibilite du personnage  
-	 * @return tempsMort temps d'invicibilite du personnage 
-	 */
-	//Jeremy Thai
-	public double getTempsInvincible() {
-		return tempsInvincible;
-	}
-	/**
-	 * Methode qui modifie le temps d'invicibilite du personnage pendant
-	 * @param tempsMort temps d'invicibilite du personnage
-	 */
-	//Jeremy Thai
-	public void setTempsInvincible(double tempsInvincible) {
-		this.tempsInvincible = tempsInvincible;
-	}
-
-
-
+	
 	public boolean isBouclierActive() {
 		return bouclierActive;
 	}
+	
 	public void setBouclierActive(boolean bouclierActive) {
 		this.bouclierActive = bouclierActive;
 	}
-
 
 	/**
 	 * Methode qui retourne le temps mort du personnage  
@@ -428,12 +413,22 @@ public class Personnage implements Dessinable, Serializable {
 		this.tempsMort = tempsMort;
 	}
 
-
-	public void retireEffet() {
-		setBouclierActive(false);
-		setTempsInvincible(0);
+	
+	public boolean isMort() {
+		return mort;
 	}
 
+	public void setMort(boolean mort) {
+		this.mort = mort;
+	}
+	
+	public boolean isEnVitesse() {
+		return enVitesse;
+	}
+	
+	public void setEnVitesse(boolean enVitesse) {
+		this.enVitesse = enVitesse;
+	}
 
 	private void animation() {
 
@@ -444,8 +439,6 @@ public class Personnage implements Dessinable, Serializable {
 
 		if( vitesseX < 0)
 			lireImage("GaucheCours");
-
-
 	}
 }
 
