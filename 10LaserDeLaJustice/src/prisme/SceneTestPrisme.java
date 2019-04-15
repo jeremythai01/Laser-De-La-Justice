@@ -588,7 +588,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			ligne13 = false;
 			ligne12 = false;
 			ligne23 = true;
-			return ((prisme.getP3().soustrait(prisme.getP2())).cross(laser.getPositionHaut())).normalise();
+			return ((prisme.getP3().soustrait(prisme.getP2())).cross(laser.getPositionHaut())).normalise().multiplie(-1);
 			
 		}
 		
