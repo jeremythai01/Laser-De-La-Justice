@@ -306,7 +306,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 					System.out.println("vecteur dir laser " +vecDirLaser );
 					
 					Vecteur vecMiroir = listeMiroirPlan.get(n).getPosition();
-					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ))).normalise();
+					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ))).normalise().multiplie(1);
 					System.out.println("miroir" + vecMiroir );
 					System.out.println("vecteur dir Miroir " +vecDirMiroir );
 		
@@ -335,7 +335,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 					afficherVec = true;
 
 
-					normal =listeMiroirPlan.get(n).getNormal().normalise().multiplie(-1);
+					normal =listeMiroirPlan.get(n).getNormal().normalise();
 					System.out.println("\n"+"La normal est du miroir est :" +normal);
 
 					double angleR = Math.toRadians(laser.getAngleTir() ) ;
