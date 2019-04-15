@@ -66,7 +66,9 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 
-	private boolean premiereFoisPrisme = true;
+	private boolean ligne13 = false;
+	private boolean ligne23 = false;
+	private boolean ligne12 = false;
 	
 	private double n2 = 2.0;
 
@@ -517,13 +519,25 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		//laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(),  T.getY()));
 			double angleAncien= laser.getAngleTir(); 
 		System.out.println("l'angle du laser avant refraction: "+ angleAncien);
-		laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX()))+angle);
+	/*	
+		if(ligne23 &&(angle > 90)) {
+			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX()))+ angle);
+
+		}else if(ligne23 && (angle < 90)) {
+			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
+
+		}else if(ligne13 &&(angle < 90)) {
+			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX()))-angle);
+
+		}
+		*/
+		laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
 		System.out.println("l'angle du laser apres refraction: "+ laser.getAngleTir());
 		
 		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );		
 		
 		double angleLaser = laser.getAngleTir();
-		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.5 ,0)), angleLaser+10, laser.getVitesse()));
+		//listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.1 ,0)), angleLaser+1, laser.getVitesse()));
 		
 			repaint();
 		
@@ -557,14 +571,23 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			
 		if(resultat13 > 0 && resultat13 < 0.80) {
 			System.out.println("jai touché ligne13");
+			ligne13 = true;
+			ligne12 = false;
+			ligne23 = false;
 			return ((prisme.getP3().soustrait(prisme.getP1()).cross(laser.getPositionHaut()))).normalise();
 			
 		}else if(resultat12 > 0 && resultat12 < 0.80){
 			System.out.println("jai toucher la ligne12");
+			ligne13 = false;
+			ligne12 = true;
+			ligne23 = false;
 			return ((prisme.getP2().soustrait(prisme.getP1())).cross(laser.getPositionHaut())).normalise();
 			
 		}else if(resultat23 > 0 && resultat23 < 0.80){
 			System.out.println("jai toucher la ligne23");
+			ligne13 = false;
+			ligne12 = false;
+			ligne23 = true;
 			return ((prisme.getP3().soustrait(prisme.getP2())).cross(laser.getPositionHaut())).normalise();
 			
 		}
