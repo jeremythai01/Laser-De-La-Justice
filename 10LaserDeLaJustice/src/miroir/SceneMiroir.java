@@ -335,7 +335,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 					afficherVec = true;
 
 
-					normal =listeMiroirPlan.get(n).getNormal().normalise();
+					normal =listeMiroirPlan.get(n).getNormal().normalise().multiplie(-1);
 					System.out.println("\n"+"La normal est du miroir est :" +normal);
 
 					double angleR = Math.toRadians(laser.getAngleTir() ) ;
@@ -352,9 +352,9 @@ public class SceneMiroir extends JPanel implements Runnable {
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 					System.out.println("Angle reflexion en degree " + angleReflexion);
 					System.out.println("angle rad reflexion" + Math.atan(reflexion.getY()/reflexion.getX()));
-					if(reflexion.getX()<0) {
+					if(Math.abs(listeMiroirPlan.get(n).getAngle())>90  ) {
 						System.out.println("ici");
-						laser.setAngleTir(angleReflexion+180);
+						laser.setAngleTir(180+angleReflexion);
 					}else{
 						laser.setAngleTir(angleReflexion);
 					}
