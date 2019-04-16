@@ -23,6 +23,9 @@ import interfaces.Dessinable;
  */
 
 public class Balle implements Dessinable, Serializable { 
+	
+	private static final long serialVersionUID = 1L ;
+	
 	private double diametre = 3;
 	private double masse = 15;
 	private Ellipse2D.Double cercle;
@@ -63,17 +66,17 @@ public class Balle implements Dessinable, Serializable {
 			type = Type.SMALL;
 			setMasse(5);
 			setDiametre(1);
-			lireImage("Pokeball.png");
+			//lireImage("Pokeball.png");
 			break;
 		case "MEDIUM":
 			type = Type.MEDIUM;
 			setMasse(10);
 			setDiametre(2);
-			lireImage("UltraBall.png");
+		//	lireImage("UltraBall.png");
 			break;
 		case "LARGE":
 			type = Type.LARGE;
-			lireImage("MasterBall.jpg");
+		//	lireImage("MasterBall.jpg");
 			break;
 		}
 		
@@ -119,7 +122,7 @@ public class Balle implements Dessinable, Serializable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		
-	
+	/*
 		double factX = (diametre)/ img.getWidth(null) ;
 		double factY = (diametre)/ img.getHeight(null) ;
 		matLocal.rotate(qtRot, position.getX()+diametre/2, position.getY()+diametre/2);
@@ -128,7 +131,21 @@ public class Balle implements Dessinable, Serializable {
 		matLocal.translate( (position.getX() )   / factX , (position.getY()) / factY);
 		
 		g2d.drawImage(img, matLocal, null);
+		*/
 		
+		switch(type){
+		case LARGE:
+			g2d.setColor(Color.blue);
+			break;
+		case MEDIUM:
+			g2d.setColor(Color.green);
+			break;
+		case SMALL:
+			g2d.setColor(Color.red);
+			break;
+		}		
+		g2d.fill( matLocal.createTransformedShape(cercle) );	
+
 
 			
 		

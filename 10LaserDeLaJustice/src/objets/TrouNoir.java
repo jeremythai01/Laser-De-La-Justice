@@ -8,6 +8,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -26,7 +27,9 @@ import physique.Laser;
  * @author Arezki Issaadi
  *
  */
-public class TrouNoir extends Objet implements Dessinable {
+public class TrouNoir extends Objet implements Dessinable, Serializable {
+	
+    private static final long serialVersionUID = 1L;
 	
 	private Vecteur position;
 	private final double LARGEUR=2;

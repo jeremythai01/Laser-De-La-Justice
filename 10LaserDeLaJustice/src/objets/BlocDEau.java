@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -18,8 +19,9 @@ import physique.Laser;
  * @author Arnaud Lefebvre
  *
  */
-public class BlocDEau extends Objet implements Dessinable {
+public class BlocDEau extends Objet implements Dessinable, Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Vecteur position;
 	private final int LARGEUR=2;
 	private Rectangle2D.Double bloc;

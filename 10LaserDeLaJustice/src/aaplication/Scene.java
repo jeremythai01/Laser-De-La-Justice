@@ -1,11 +1,9 @@
 package aaplication;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -25,12 +23,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -48,18 +45,14 @@ import objets.BlocDEau;
 import objets.Echelle;
 import objets.OrdinateurNiveau3;
 import objets.TrouNoir;
-import options.Options;
 import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
 import physique.MoteurPhysique;
-import pistolet.Pistolet;
 import prisme.Prisme;
 import utilite.ModeleAffichage;
 import utilite.OutilsMath;
-
-import javax.swing.JLabel;
 
 /**
  * Cette classe contient la scene d'animation du jeu.
@@ -168,7 +161,7 @@ public class Scene extends JPanel implements Runnable {
 	 *                        d'une partie sauvegardée
 	 */
 
-	public Scene(boolean isPartieNouveau) {
+	public Scene(boolean isPartieNouveau, String nomFichier) {
 
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -182,7 +175,8 @@ public class Scene extends JPanel implements Runnable {
 
 		angle = valeurAngleRoulette;
 
-		nouvellePartie(isPartieNouveau);
+		nouvellePartie(isPartieNouveau, nomFichier);
+		//lectureNiveau(nomFichier);
 		lectureFichierOption();
 		personnage.setModeSouris(true);
 
@@ -614,6 +608,43 @@ public class Scene extends JPanel implements Runnable {
 				JOptionPane.showMessageDialog(null, "Erreur rencontrée lors de la fermeture!");
 			}
 		} // fin finally
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de mettre le niveau pesonnalise
+	 */
+	private void lectureNiveau(String nomFichier) {
+		final String NOM_FICHIER_OPTION = nomFichier;
+		ObjectInputStream fluxEntree = null;
+		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+
+		try {
+			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
+			try {
+				listeBalles = (ArrayList<Balle>) fluxEntree.readObject();
+				listeBlocEau = (ArrayList<BlocDEau>) fluxEntree.readObject();
+				listeMiroirePlan = (ArrayList<MiroirPlan>) fluxEntree.readObject();
+				listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
+				listeTrou= (ArrayList<TrouNoir>) fluxEntree.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} // fin try
+
+		catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Fichier  " + fichierDeTravail.getAbsolutePath() + "  introuvable!");
+			System.exit(0);
+		}
+
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture");
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+		
+		
 	}
 
 	// Jeremy Thai
@@ -1154,8 +1185,6 @@ public class Scene extends JPanel implements Runnable {
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
 			fluxSortie.writeDouble(tempsEcoule);
-
-			// JOptionPane.showMessageDialog(null, "Votre partie a ete sauvegarde");
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
@@ -1178,7 +1207,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
-		final String NOM_FICHIER_OPTION = nomFichier;
+		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
 		ObjectInputStream fluxEntree = null;
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
@@ -1227,14 +1256,15 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isNouvelle  : retourne vrai s'il s'agit d'une nouvelle scene
 	 */
 
-	private void nouvellePartie(boolean isNouvelle) {
+	private void nouvellePartie(boolean isNouvelle, String nomFichier) {
 		if (!isNouvelle) {
 			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
-			lectureFichierSauvegarde("sauvegarde.d3t");
+			lectureFichierSauvegarde(nomFichier);
 			coeurs.setCombien(nombreVies);
 			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
 		} else {
+			lectureNiveau(nomFichier);
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
@@ -1442,6 +1472,35 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 
+	}
+	
+	//Par Miora R. Rakoto
+	/**
+	 * Cette methode permet de sauvegarder un niveau
+	 * @param nomSauv : le nom du niveau
+	 */
+	public void ecritureNiveau(String nomSauv) {
+		final String NOM_FICHIER_OPTION = nomSauv;
+		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+		ObjectOutputStream fluxSortie = null;
+		try {
+			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
+			fluxSortie.writeObject(listeBalles); // la liste des balles
+			fluxSortie.writeObject(listeBlocEau);
+			fluxSortie.writeObject(listeMiroirePlan);
+			fluxSortie.writeObject(listePrisme);
+			fluxSortie.writeObject(listeTrou);
+		} catch (IOException e) {
+			System.out.println("Erreur lors de l'écriture!");
+			e.printStackTrace();
+		} finally {
+			// on exécutera toujours ceci, erreur ou pas
+			try {
+				fluxSortie.close();
+			} catch (IOException e) {
+				System.out.println("Erreur rencontrée dans la sauvagarde de niveau!");
+			}
+		} // fin finally
 	}
 
 }

@@ -8,6 +8,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -19,7 +20,9 @@ import physique.Laser;
  * @author Arezki
  *
  */
-public class MiroirPlan implements Dessinable {
+public class MiroirPlan implements Dessinable, Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private double x=0, y=0, angle=0;
 	private Rectangle2D.Double miroir;

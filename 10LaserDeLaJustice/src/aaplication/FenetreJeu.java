@@ -57,6 +57,7 @@ public class FenetreJeu extends JFrame {
 	private Options optionJeu;
 
 	private boolean isNouveauOption = true;
+	private static String nomFichier;
 
 
 	private ActionListener listener;
@@ -74,7 +75,7 @@ public class FenetreJeu extends JFrame {
 			public void run() {
 				try {
 					FenetreJeu frame;
-					frame = new FenetreJeu(isNouvelle);
+					frame = new FenetreJeu(isNouvelle, nomFichier);
 					frame.setVisible(true);
 					frame.sceneFinale.requestFocusInWindow();
 				} catch (Exception e) {
@@ -89,10 +90,11 @@ public class FenetreJeu extends JFrame {
 	 * @param isNouvelle : retourne vrai si il s'agit d'une nouvelle partie
 	 */
 	// Par Arezki
-	public FenetreJeu(boolean isNouvelle) {
+	public FenetreJeu(boolean isNouvelle, String nomFichier) {
 		setTitle("Laser de la Justice.exe");
 		setBackground(Color.GRAY);
 		this.isNouvelle = isNouvelle;
+		this.nomFichier = nomFichier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1389, 1058);
 		contentPane = new JPanel();
@@ -163,6 +165,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnEnregistrer = new JButton("enregistrer");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+	
 				sceneFinale.ecritureFichierSauvegarde();
 				donneFocusALasceneFinale();
 				sceneFinale.arreter();
@@ -391,7 +394,7 @@ public class FenetreJeu extends JFrame {
 		lblLesSorties.setBounds(40, 856, 69, 14);
 		contentPane.add(lblLesSorties);
 
-		sceneFinale = new Scene(isNouvelle);
+		sceneFinale = new Scene(isNouvelle, nomFichier);
 		sceneFinale.setBounds(30, 107, 1303, 727);
 		contentPane.add(sceneFinale);
 		
@@ -502,6 +505,16 @@ public class FenetreJeu extends JFrame {
 		associerBoutonAvecImage(btnPetiteBalle, "PetBalle.JPG");
 		associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
 		associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
+		
+		JButton btnSaveNiveau = new JButton("Sauver niveau");
+		btnSaveNiveau.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
+				sceneFinale.ecritureNiveau(nomSauv);
+			}
+		});
+		btnSaveNiveau.setBounds(929, 25, 153, 23);
+		contentPane.add(btnSaveNiveau);
 	}
 
 	//Par Miora

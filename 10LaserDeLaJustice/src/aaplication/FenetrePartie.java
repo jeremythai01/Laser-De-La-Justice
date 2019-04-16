@@ -1,16 +1,20 @@
 package aaplication;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.filechooser.FileSystemView;
+
 
 
 /**
@@ -22,7 +26,6 @@ public class FenetrePartie extends JFrame {
 
 	private JPanel contentPane;
 	private FenetreJeu jeu;
-	private static boolean isOptionModifie = true;
 
 	/**
 	 * Lancer l'application
@@ -44,7 +47,6 @@ public class FenetrePartie extends JFrame {
 	 * Creation de la fenetre
 	 */
 	public FenetrePartie() {
-		this.isOptionModifie = isOptionModifie;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -60,7 +62,8 @@ public class FenetrePartie extends JFrame {
 		JButton btnCharge = new JButton("Charger une partie");
 		btnCharge.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jeu = new FenetreJeu(false); // isNouvelle = false
+		
+				jeu = new FenetreJeu(false, null);
 				jeu.isNouvelle(false);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();
@@ -75,7 +78,21 @@ public class FenetrePartie extends JFrame {
 		JButton btnNouv = new JButton("Nouvelle partie");
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jeu = new FenetreJeu(true);  // isNouvelle = true
+				
+				String nomFichier = "";
+				JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory()); 
+	            int r = j.showSaveDialog(null); 
+	            if (r == JFileChooser.APPROVE_OPTION) { 
+	            	File selectedFile = j.getSelectedFile();
+	            	nomFichier = selectedFile.getName();
+	            } 
+	            // if the user cancelled the operation 
+	            else {
+	               JOptionPane.showMessageDialog(null, "probleme lecteure niveau");
+	            } 
+	    
+	            
+				jeu = new FenetreJeu(true, nomFichier);  // isNouvelle = true
 				jeu.isNouvelle(true);
 				jeu.setNouveauOption(true);
 				jeu.setVisible(true);

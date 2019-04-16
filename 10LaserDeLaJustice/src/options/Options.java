@@ -170,7 +170,7 @@ public class Options extends JFrame {
 				if(dansScene) {
 					System.out.println("dans scene option");
 					ecritureFichier();
-					jeu = new FenetreJeu (false);
+					jeu = new FenetreJeu (false, null);
 					jeu.setVisible(true);
 				}
 				ecritureFichier();

@@ -330,7 +330,14 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 
 					//afficherVec = true;
-					posInter = new Vecteur (x,y);
+					if(listeMiroirPlan.get(n).getAngle()==0 || listeMiroirPlan.get(n).getAngle()==90 ) {
+						posInter = new Vecteur (x,y);
+					}else {
+						double trY=listeMiroirPlan.get(n).getPosition().getY()-y;
+						System.out.println("cheat");
+						posInter = new Vecteur (x,y+2*0);
+					}
+			
 					System.out.println("interection laser et miroir " + posInter);
 					afficherVec = true;
 
@@ -352,7 +359,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 					System.out.println("Angle reflexion en degree " + angleReflexion);
 					System.out.println("angle rad reflexion" + Math.atan(reflexion.getY()/reflexion.getX()));
-					if(Math.abs(listeMiroirPlan.get(n).getAngle())>90  ) {
+					if(Math.abs(listeMiroirPlan.get(n).getAngle())>90 || angleReflexion<-0.1 ) {
 						System.out.println("ici");
 						laser.setAngleTir(180+angleReflexion);
 					}else{
