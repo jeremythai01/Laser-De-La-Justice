@@ -113,10 +113,17 @@ public class Prisme extends JPanel implements Dessinable {
 		return new Area(triangles);
 	}
 
-	public Color getCouleurLaser(Laser laser) {
-		return Color.black; // methode pour avoir la couleur du laser nest pas encore implementer
+	
+	public Vecteur getNormalPrisme() {
+		
+		return (p2.soustrait(p3)).cross((p2.soustrait(p1)));
+		
 	}
-
+	
+	
+	
+	
+	
 	public int getAngle() {
 		return angle;
 	}
