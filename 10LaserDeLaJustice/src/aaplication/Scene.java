@@ -719,8 +719,8 @@ public class Scene extends JPanel implements Runnable {
 			while(n< listeMiroirePlan.size() && collision == false) {
 				//System.out.println(laser.getPointHaut().toString());
 				//System.out.println("laser haut :" + laser.getPositionHaut());
-				System.out.println("calcul distance" + listeMiroirePlan.get(n).getLine().ptLineDist(laser.getPointHaut()));
-				if(listeMiroirePlan.get(n).getLine().ptLineDist(laser.getPointHaut()) < 0.1) {
+				System.out.println("calcul distance" + listeMiroirePlan.get(n).getLine().ptSegDist(laser.getPointHaut()));
+				if(listeMiroirePlan.get(n).getLine().ptSegDist(laser.getPointHaut()) < 2) {
 					Vecteur posInter = laser.getPositionHaut();
 
 					collision = true;

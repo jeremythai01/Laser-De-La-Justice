@@ -295,8 +295,8 @@ public class SceneMiroir extends JPanel implements Runnable {
 			while(n< listeMiroirPlan.size() && collision == false) {
 				//System.out.println(laser.getPointHaut().toString());
 				//System.out.println("laser haut :" + laser.getPositionHaut());
-				System.out.println("calcul distance" + listeMiroirPlan.get(n).getLine().ptLineDist(laser.getPointHaut()));
-				if(listeMiroirPlan.get(n).getLine().ptLineDist(laser.getPointHaut()) < 0.04) {
+				System.out.println("calcul distance" + listeMiroirPlan.get(n).getLine().ptSegDist(laser.getPointHaut()));
+				if(listeMiroirPlan.get(n).getLine().ptSegDist(laser.getPointHaut()) < 2) {
 					Vecteur posInt = laser.getPositionHaut();
 
 					collision = true;
