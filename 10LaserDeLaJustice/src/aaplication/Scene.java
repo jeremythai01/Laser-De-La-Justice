@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -522,7 +523,7 @@ public class Scene extends JPanel implements Runnable {
 	 **/
 	private void lireFond() {
 
-		URL fich = getClass().getClassLoader().getResource("mars.png");
+		/*URL fich = getClass().getClassLoader().getResource("mars.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier introuvable!");
 		} else {
@@ -531,9 +532,9 @@ public class Scene extends JPanel implements Runnable {
 			} catch (IOException e) {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
-		}
+		}*/
 
-
+		fond=Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}
 
 	/**
