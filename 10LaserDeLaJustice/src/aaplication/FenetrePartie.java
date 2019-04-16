@@ -62,8 +62,17 @@ public class FenetrePartie extends JFrame {
 		JButton btnCharge = new JButton("Charger une partie");
 		btnCharge.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		
-				jeu = new FenetreJeu(false, null);
+				String nomFichier = "";
+				JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory()); 
+	            int r = j.showSaveDialog(null); 
+	            if (r == JFileChooser.APPROVE_OPTION) { 
+	            	File selectedFile = j.getSelectedFile();
+	            	nomFichier = selectedFile.getName();
+	            } 
+	            else {
+	               JOptionPane.showMessageDialog(null, "probleme lecteure niveau");
+	            } 
+				jeu = new FenetreJeu(false, nomFichier);
 				jeu.isNouvelle(false);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();
@@ -79,20 +88,7 @@ public class FenetrePartie extends JFrame {
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String nomFichier = "";
-				JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory()); 
-	            int r = j.showSaveDialog(null); 
-	            if (r == JFileChooser.APPROVE_OPTION) { 
-	            	File selectedFile = j.getSelectedFile();
-	            	nomFichier = selectedFile.getName();
-	            } 
-	            // if the user cancelled the operation 
-	            else {
-	               JOptionPane.showMessageDialog(null, "probleme lecteure niveau");
-	            } 
-	    
-	            
-				jeu = new FenetreJeu(true, nomFichier);  // isNouvelle = true
+				jeu = new FenetreJeu(true, null);  // isNouvelle = true
 				jeu.isNouvelle(true);
 				jeu.setNouveauOption(true);
 				jeu.setVisible(true);

@@ -176,7 +176,7 @@ public class Scene extends JPanel implements Runnable {
 		angle = valeurAngleRoulette;
 
 		nouvellePartie(isPartieNouveau, nomFichier);
-		//lectureNiveau(nomFichier);
+	//	lectureNiveau(nomFichier);
 		lectureFichierOption();
 		personnage.setModeSouris(true);
 
@@ -1168,7 +1168,8 @@ public class Scene extends JPanel implements Runnable {
 	 * la position du joueur, la couleur du rayon et les touches utilisées
 	 */
 	public void ecritureFichierSauvegarde() {
-		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
+		String nomSauv = JOptionPane.showInputDialog("Entrez votre nom de sauvegarde");
+		String NOM_FICHIER_OPTION = nomSauv + ".save";
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
 		ObjectOutputStream fluxSortie = null;
@@ -1207,9 +1208,9 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
-		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
+		String nomFichierSauv = nomFichier;
 		ObjectInputStream fluxEntree = null;
-		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+		File fichierDeTravail = new File(nomFichierSauv);
 
 		try {
 			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
@@ -1254,18 +1255,20 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle  : retourne vrai s'il s'agit d'une nouvelle scene
+	 * @param nomfichier : le nom du fichier de sauvegarde ou de niveau
 	 */
 
 	private void nouvellePartie(boolean isNouvelle, String nomFichier) {
 		if (!isNouvelle) {
-			// partie chage
+			if(nomFichier.endsWith(".niveau")) {
+				lectureNiveau(nomFichier);
+			}else {
 			System.out.println("scene partie charge " + isNouvelle);
 			lectureFichierSauvegarde(nomFichier);
 			coeurs.setCombien(nombreVies);
 			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
+			}
 		} else {
-			lectureNiveau(nomFichier);
-			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
 			personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
@@ -1480,7 +1483,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomSauv : le nom du niveau
 	 */
 	public void ecritureNiveau(String nomSauv) {
-		final String NOM_FICHIER_OPTION = nomSauv;
+		String NOM_FICHIER_OPTION = nomSauv + ".niveau";
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 		ObjectOutputStream fluxSortie = null;
 		try {

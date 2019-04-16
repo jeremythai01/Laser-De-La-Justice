@@ -32,7 +32,7 @@ import utilite.ModeleAffichage;
 public class SceneMiroir extends JPanel implements Runnable {
 
 	private int tempsDuSleep = 50;
-	private double deltaT = 1000;
+	private double deltaT = 10;
 	private  double LARGEUR_DU_MONDE = 10; //en metres
 	private  double HAUTEUR_DU_MONDE;
 	private double tempsTotalEcoule = 0;
@@ -317,7 +317,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 					System.out.println("haut av intersection : " + laser.getPositionHaut() + "bas laser av inter : " + laser.getPositionBas());
 					double [] inter = intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
 					/*
-					double [] test = intersectionCramer(3,1,5,-2,9,3);
+					double [] test = intersectionCramer(5,1,3,-2,-13,0);
 					System.out.println("test : " + test[0] + " " + test[1]);
 					*/
 					double x = vecLaser.getX() + inter[0]*vecDirLaser.getX();
@@ -325,19 +325,12 @@ public class SceneMiroir extends JPanel implements Runnable {
 					
 					double x1 = vecMiroir.getX()+inter[1]*vecDirMiroir.getX();
 					double y1 = vecMiroir.getY()+inter[1]*vecDirMiroir.getY();
-					
-					System.out.println("miroir : " + x+ ", " + y + "\n" + "laser : " + x1 + " " + y1);
+					//System.out.println("miroir : " + x+ ", " + y + "\n" + "laser : " + x1 + " " + y1);
 
 
 					//afficherVec = true;
-					if(listeMiroirPlan.get(n).getAngle()==0 || listeMiroirPlan.get(n).getAngle()==90 ) {
-						posInter = new Vecteur (x,y);
-					}else {
-						double trY=listeMiroirPlan.get(n).getPosition().getY()-y;
-						System.out.println("cheat");
-						posInter = new Vecteur (x,y+2*0);
-					}
-			
+					posInter = new Vecteur (x,y);
+
 					System.out.println("interection laser et miroir " + posInter);
 					afficherVec = true;
 
@@ -359,7 +352,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 					System.out.println("Angle reflexion en degree " + angleReflexion);
 					System.out.println("angle rad reflexion" + Math.atan(reflexion.getY()/reflexion.getX()));
-					if(Math.abs(listeMiroirPlan.get(n).getAngle())>90 || angleReflexion<-0.1 ) {
+					if(Math.abs(listeMiroirPlan.get(n).getAngle())>90) {
 						System.out.println("ici");
 						laser.setAngleTir(180+angleReflexion);
 					}else{
