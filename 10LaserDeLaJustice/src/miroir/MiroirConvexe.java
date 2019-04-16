@@ -1,16 +1,17 @@
 package miroir;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
+import prisme.Prisme;
 
 /**
  * Classe des miroirs convexes
@@ -31,6 +32,9 @@ public class MiroirConvexe implements Dessinable {
 	private Vecteur vecLaser;
 	private boolean laser=false;
 	private double angle;
+	private int nbSegmentsPourApproximer = 80;
+	
+	
 
 	/**
 	 * Constructeur du miroir convexe
@@ -62,6 +66,7 @@ public class MiroirConvexe implements Dessinable {
 		
 		miroir = new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN);
 		g2d.draw(matLocale.createTransformedShape(miroir));
+		g2d.draw(matLocale.createTransformedShape(miroir.getFrame()));
 	}
 
 	/**
@@ -77,22 +82,32 @@ public class MiroirConvexe implements Dessinable {
 		
 		miroir = new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN);
 		return new Area (matLocale.createTransformedShape(((miroir))));
-		
 	}
 
 	/**
-	 * Cette methode retourne le vecteur normal du laser apres intersection avec
-	 * le miroir convexe
-	 * @param posLaser : la position du laser
-	 * @return le vecteur normal au miroir
+	 * Cette methode retourne la liste des 180 points qui entourent le miroir
+	 * @return : une liste de point
 	 */
-	public Vecteur getNormalPosition(Vecteur posLaser) {
-		return posLaser.soustrait(centreMiroir) ;
+	public ArrayList<Point2D.Double> getListePoint(){
+		Point2D.Double point;
+		ArrayList<Point2D.Double> listePoints = new ArrayList<Point2D.Double>();
+		for(int i = 0; i<= 180;i++) {
+			
+			double angleRad = Math.toRadians(i);
+			point = new Point2D.Double(position.getX()+rayon*Math.cos(angleRad), position.getY() + rayon*Math.sin(angleRad));
+			listePoints.add(point);
+		}
+		return listePoints;
 	}
 	
-	public Vecteur getNormalPosition(double x, double y) {
-		Vecteur laser = new Vecteur (x,y);
-		return laser.soustrait(centreMiroir) ;
+	/**
+	 * Cette methode retourne la normal du miroir
+	 * @param x : la position du point ou on cherche la normal
+	 * @return : le vecteur normal
+	 */
+	public Vecteur getNormalPosition(Vecteur x) {
+		
+		return x.soustrait(centreMiroir) ;
 	}
 	/**
 	 * Methode qui retourne la position du miroir
