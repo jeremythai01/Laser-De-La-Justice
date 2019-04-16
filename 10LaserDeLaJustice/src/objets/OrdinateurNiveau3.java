@@ -158,10 +158,10 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		double deltaT;
 		balleSimuler= new Balle(viser);
 
-		balleSimuler.unPasEuler(0.5);
-		//balleSimuler.unPasEuler(0.7);
+		balleSimuler.unPasVerlet(0.55);
+		//balleSimuler.unPasVerlet(0.7);
 		/// tu dois trouver un meilleur delta t( calculer la distance en y et trouver le temps que ca prendrait
-	//	deltaT=-distance.getY()/(vitesseLaser/(temps/1000));
+		//deltaT=-distance.getY()/(vitesseLaser/(0.06/1000));
 		//System.out.println("delta t= "+ deltaT);
 		//deltaT=-distance.getY()/25;
 		//System.out.println(deltaT+"hwhwhwh");

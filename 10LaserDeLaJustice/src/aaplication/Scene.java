@@ -71,7 +71,7 @@ public class Scene extends JPanel implements Runnable {
 
 	private double angle;
 
-	private double LARGEUR_DU_MONDE = 30; // en metres
+	private double LARGEUR_DU_MONDE = 65; // en metres
 	private double HAUTEUR_DU_MONDE;
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
@@ -398,9 +398,9 @@ public class Scene extends JPanel implements Runnable {
 		echelle = new Echelle(30.0, LARGEUR_DU_MONDE - 3.5, HAUTEUR_DU_MONDE - 0.75);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
-		ordi= new OrdinateurNiveau3(new Vecteur(10,10));
+		ordi= new OrdinateurNiveau3(new Vecteur(28,LARGEUR_DU_MONDE-10));
 		ordi.ajouterListesObstacles(listeBalles);
-		//ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		ordi.savoirTempsSleep(tempsDuSleep);
 
 		tracerVecteurGraphique(g2d);
