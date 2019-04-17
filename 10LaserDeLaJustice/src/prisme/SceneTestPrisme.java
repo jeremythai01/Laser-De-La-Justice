@@ -111,7 +111,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		ordi3 = new OrdinateurNiveau3(new Vecteur(40, 44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 145;
+		angle = 90;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -161,7 +161,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 						}
 					});
 				}
-
+//
 				repaint();
 			}
 		});
@@ -522,13 +522,18 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			double angleAncien= laser.getAngleTir(); 
 		System.out.println("l'angle du laser avant refraction: "+ angleAncien);
 		
-		laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
+		if(ligne23) {
+			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX()))+angle);
+		}else {
+			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
+		}
+		
 		System.out.println("l'angle du laser apres refraction: "+ laser.getAngleTir());
 		
 		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );		
 		
 		double angleLaser = laser.getAngleTir();
-		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.01 ,0)), angleLaser+0.01, laser.getVitesse()));
+		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.005 ,0)), angleLaser, laser.getVitesse()));
 		
 			repaint();
 		
@@ -591,10 +596,10 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			ligne12 = true;
 			ligne23 = false;
 			
-			double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
-			//double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+			double xNormal = prisme.getP2().getX() - prisme.getP1().getX();
+			double yNormal = prisme.getP2().getY() - prisme.getP1().getY();
 			
-			return new Vecteur (xNormal, 0.0);
+			return new Vecteur (xNormal, yNormal);
 			
 		}else if(resultat23 > 0 && resultat23 < 0.80){
 			System.out.println("jai toucher la ligne23 "+resultat23);
