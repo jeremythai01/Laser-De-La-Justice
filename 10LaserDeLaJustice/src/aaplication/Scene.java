@@ -232,7 +232,7 @@ public class Scene extends JPanel implements Runnable {
 				}
 
 				for (int i = 0; i < listeMiroirePlan.size(); i++) {
-					if (listeMiroirePlan.get(i).getAire().contains(eXR, eYR)) {
+					if (listeMiroirePlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirePlan.get(i);

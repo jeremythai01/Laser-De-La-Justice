@@ -24,7 +24,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private double x=0, y=0, angle=0;
+	private double angle=0,x=0,y=0;
 	private Rectangle2D.Double miroir;
 
 	private double longueur = 2; 
@@ -53,6 +53,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	private boolean dessin = false;
 	private Area aireMiroir;
 	
+	//Par Miora
 	/**
 	 * Constructeur d'un miroir plan
 	 * @param position : la position la plus a gauche du miroir plan
@@ -63,13 +64,29 @@ public class MiroirPlan implements Dessinable, Serializable {
 		super();
 		this.position = position;
 		this.angle = angle;
+		positionBas = new Vecteur ( position.getX() - (longueur * Math.cos(Math.toRadians(angle))),
+				position.getY() + (longueur * Math.sin(Math.toRadians(angle))));
 	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet d'obtenir l'angle du miroir
+	 * @return : l'angle du miroir
+	 */
 	public double getAngle() {
 		return angle;
 	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de modifier l'angle du miroir
+	 * @param angle : le nouvel angle
+	 */
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}
+	
+	//Par Miora
 	/**
 	 * Dessiner le miroir
 	 * @param g2d : le composant graphique
@@ -87,10 +104,11 @@ public class MiroirPlan implements Dessinable, Serializable {
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
 		g2d.draw(miroirTransfo); //dessine en pixel
 	}
+	
+	//Par Miora
 	/**
 	 * Methode qui retourne aire du miroir
 	 * @return aire du miroir
-	 //Miora
 	 */
 	public Area getAireMiroirPixel() {
 		/*AffineTransform matLocale = new AffineTransform();
@@ -103,15 +121,11 @@ public class MiroirPlan implements Dessinable, Serializable {
 		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(),longueur, this.largeur);
 		return new Area(matLocal.createTransformedShape(((rect))));
 	}
-	
-	public Area getAire() {
-		return new Area(miroir);
-	}
-	
+
+	//Par Miora
 	/**
 	 * Methode pour obtenir le vecteur normal au miroir
 	 * @return le vecteur perpendiculaire au miroir
-	 //Miora
 	 */
 	public Vecteur getNormal() {
 		double angleMiroirNormal;
@@ -121,11 +135,20 @@ public class MiroirPlan implements Dessinable, Serializable {
 		return normal;
 	}
 	
+	//Par Miora
+	/**
+	 * Methode qui retourne le miroir dans la geometrie Line2D
+	*/
+	public Line2D.Double getLine(){
+		Line2D.Double line = new Line2D.Double(position.getX(), position.getY(), positionBas.getX(), positionBas.getY());
+		return line;
+	}
+	
+	 //Arezki 
 	/**
 	 * Cette méthode permet de faire la mis à jour de la position du miroir plan 
 	 * @param x c'est la nouvelle position x du miroir dans les unités du réel
 	 * @param y c'est la nouvelle position y du miroir dans les unités du réel
-	 //Arezki 
 	 */
 	
 	public void setPosition(double x , double y) {

@@ -79,6 +79,7 @@ public class Laser implements Dessinable {
 	}
 	
 	
+	
 
 	/**
 	 * Permet de dessiner le laser selon le contexte graphique en parametre.
@@ -181,6 +182,14 @@ public class Laser implements Dessinable {
 		Rectangle2D.Double rect = new Rectangle2D.Double(positionHaut.getX(), positionHaut.getY(), LONGUEUR, 0.01);
 		return new Area(matLocal.createTransformedShape(((rect))));
 		//
+	}
+	//Par Miora
+	/**
+	 * Cette methode retourne la géometrie Point du haut du laser
+	 */
+	public Point2D.Double getPointHaut(){
+		Point2D.Double pts = new Point2D.Double(positionHaut.getX(), positionHaut.getY());
+		return pts;
 	}
 	
 	
