@@ -1309,9 +1309,15 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
 	 * la position du joueur, la couleur du rayon et les touches utilisées
 	 */
-	public void ecritureFichierSauvegarde() {
-		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
-		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+	public void ecritureFichierSauvegarde(String nomSauv, boolean dansOption) {
+		String nomSave = "";
+		if(dansOption) {
+			nomSave = "temporaire";
+		}
+		else {
+			nomSave = nomSauv + ".save";
+		}
+		File fichierDeTravail = new File(nomSave);
 
 		ObjectOutputStream fluxSortie = null;
 		try {
@@ -1348,10 +1354,16 @@ public class Scene extends JPanel implements Runnable {
 	 * 
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
-	private void lectureFichierSauvegarde(String nomFichier) {
-		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
+	private void lectureFichierSauvegarde(String nomFichier, boolean dansOption) {
+		String fichierSauvegarde = "";
+		
+		if(dansOption) {
+			fichierSauvegarde = "temporaire";
+		}else {
+			fichierSauvegarde =  nomFichier;
+		}
 		ObjectInputStream fluxEntree = null;
-		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+		File fichierDeTravail = new File(fichierSauvegarde);
 
 		try {
 			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
@@ -1405,9 +1417,10 @@ public class Scene extends JPanel implements Runnable {
 			
 			if(nomFichier.endsWith(".niv")) {
 				lectureNiveau(nomFichier);
-			}else {
-			lectureFichierSauvegarde(nomFichier);
-			coeurs.setCombien(nombreVies);
+			if(nomFichier.endsWith(".save")) {
+				lectureFichierSauvegarde(nomFichier, false);
+				coeurs.setCombien(nombreVies);
+			}
 			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
 			}
 		} else {
