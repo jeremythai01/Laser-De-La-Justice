@@ -107,13 +107,13 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
-				listeBalles.add(balle);
+				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
+				//listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
 
-				//trou= new TrouNoir(new Vecteur(eXR,eYR));
-				//listeTrou.add(trou);
+				trou= new TrouNoir(new Vecteur(eXR,eYR));
+				listeTrou.add(trou);
 
 
 				if(character.airePersonnage().contains(eXR, eYR)) {

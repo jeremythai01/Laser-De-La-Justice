@@ -79,6 +79,7 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheGauche = 37;
 	private double n2 = 2.00;
 	private int compteur=0;
+	private double qtRotation=0;
 	
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
@@ -508,6 +509,10 @@ public class Scene extends JPanel implements Runnable {
 		while (enCoursAnimation) {
 			compteur++;
 			calculerUneIterationPhysique();
+			qtRotation=qtRotation+0.2;
+			for(TrouNoir trou : listeTrou) {
+				trou.savoirQuantiteRotation(qtRotation);
+			}
 			try {
 				colisionLaserMiroirPlan();
 			} catch (Exception e1) {
@@ -717,13 +722,40 @@ public class Scene extends JPanel implements Runnable {
 
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
-		for (Laser laser : listeLasers) {
+		/*for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
 				if (enIntersection(trou.getAireTrou(), laser.getAire())) {
 					listeLasers.remove(laser);
 				}
 			}
+		}*/
+
+		for(Laser laser : listeLasers) {
+			for(TrouNoir trou : listeTrou ) {
+				//if(trou.getAireTrou().intersects(laser.getLine())) {
+
+				if(enIntersection(trou.getAireTrou(), laser.getAire())) {
+
+
+					listeLasers.remove(laser);   
+
+				}	
+				if(enIntersection(trou.getAireGrandTrou(), laser.getAire())) {
+					Vecteur distance=laser.getPositionHaut().soustrait(trou.getPosition());
+					System.out.println("distance entre trou et laser" + distance);
+					laser.setAngleTir(laser.getAngleTir()+distance.getX());
+					}
+			}
 		}
+		/*
+		for(Balle balle : listeBalleTouche) {
+			balle.shrink(listeBalles);
+		}
+
+
+		 */
+
+		//bloc.refraction(v, N, n1, n2);
 
 	}
 	
