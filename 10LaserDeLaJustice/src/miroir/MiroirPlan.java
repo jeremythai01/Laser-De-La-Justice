@@ -21,38 +21,57 @@ import physique.Laser;
  *
  */
 public class MiroirPlan implements Dessinable, Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private double angle=0,x=0,y=0;
 	private Rectangle2D.Double miroir;
 
-	private double longueur = 2; 
+	private double longueur = 10; 
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
 	private Vecteur positionBas;
 	private double largeur = 0.05;
-	
+
 	
 	public Vecteur getPositionBas() {
 		return positionBas;
 	}
+	
+	
+	//Par Miora
+		/**
+		 * Cette methode permet de modifier la position du bas du miroir
+		 * @return : la position du bas
+		 */
 	public void setPositionBas(Vecteur positionBas) {
 		this.positionBas = positionBas;
 	}
+	
+	/*** 
+	 * Cette methode permet de chercher la position du haut du miroir
+	 * @return la position du haut
+	 */
 	public Vecteur getPosition() {
 		return position;
 	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de modifier la position du haut du miroir
+	 * @return : la position du bas
+	 */
+
 	public void setPosition(Vecteur position) {
 		this.position = position;
 	}
-	
-	
+
+
 
 	private boolean dessin = false;
 	private Area aireMiroir;
-	
+
 	//Par Miora
 	/**
 	 * Constructeur d'un miroir plan
@@ -67,7 +86,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 		positionBas = new Vecteur ( position.getX() - (longueur * Math.cos(Math.toRadians(angle))),
 				position.getY() + (longueur * Math.sin(Math.toRadians(angle))));
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet d'obtenir l'angle du miroir
@@ -76,7 +95,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public double getAngle() {
 		return angle;
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet de modifier l'angle du miroir
@@ -85,7 +104,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}
-	
+
 	//Par Miora
 	/**
 	 * Dessiner le miroir
@@ -104,7 +123,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
 		g2d.draw(miroirTransfo); //dessine en pixel
 	}
-	
+
 	//Par Miora
 	/**
 	 * Methode qui retourne aire du miroir
@@ -115,7 +134,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.01);
 		return new Area(miroir);
-		*/
+		 */
 		AffineTransform matLocal = new AffineTransform();
 		matLocal.rotate(Math.toRadians(-angle), position.getX(), position.getY());
 		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(),longueur, this.largeur);
@@ -134,26 +153,39 @@ public class MiroirPlan implements Dessinable, Serializable {
 		normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
 		return normal;
 	}
-	
+
+	 //Arezki 
+
+
 	//Par Miora
 	/**
 	 * Methode qui retourne le miroir dans la geometrie Line2D
-	*/
+	 */
 	public Line2D.Double getLine(){
 		Line2D.Double line = new Line2D.Double(position.getX(), position.getY(), positionBas.getX(), positionBas.getY());
 		return line;
 	}
-	
-	 //Arezki 
+
+	//Arezki 
 	/**
 	 * Cette méthode permet de faire la mis à jour de la position du miroir plan 
 	 * @param x c'est la nouvelle position x du miroir dans les unités du réel
 	 * @param y c'est la nouvelle position y du miroir dans les unités du réel
 	 */
-	
+
 	public void setPosition(double x , double y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	//Par Arezki
+	/**
+	 * Cette methode permet de trouver l'aire pour deplacement
+	 * @return une aire
+	 */
+	public Area getAire() {
+		return new Area(miroir);
+	}
+
 }
+
