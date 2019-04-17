@@ -164,5 +164,8 @@ public class Prisme extends JPanel implements Dessinable {
 		this.ligne23 = ligne23;
 	}
 
+	public void setPosition(Vecteur position) {
+		
+	}
 	
 }
