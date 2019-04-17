@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 public class FenetreTuto extends JFrame {
 
 	private JPanel contentPane;
+	private SceneTutoriel sceneAnimee;
 
 	/**
 	 * Launch the application.
@@ -53,6 +54,12 @@ public class FenetreTuto extends JFrame {
 		});
 		btnQuitter.setBounds(157, 118, 89, 23);
 		contentPane.add(btnQuitter);
+		sceneAnimee = new SceneTutoriel();
+		sceneAnimee.setBounds(30, 107, 303, 303);
+		contentPane.add(sceneAnimee);
+		
+		//sceneAnimee.
+		//sceneAnimee.demarrer();
 	}
 
 }

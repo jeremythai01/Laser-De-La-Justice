@@ -94,7 +94,7 @@ public class Echelle extends Objet implements Dessinable{
 		
 		
 		trace.closePath();
-		
+		g.drawString("1m de haut", (int) posX, (int)posY);
 		g.draw(matLocal.createTransformedShape(trace));
 		
 		

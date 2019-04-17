@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -106,6 +108,19 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnJouer.setBounds(277, 173, 86, 85);
 		contentPane.add(btnJouer);
 		associerBoutonAvecImage(btnJouer, "play.png");
+		
+		//essaie delete sinon
+		//Icon imgIcon = new ImageIcon(this.getClass().getResource("ajax-loader.gif"));
+		/*JPanel panel = new JPanel();
+		//frame.getContentPane().add(panel);
+		
+		panel.setBounds(0, 0, 645, 470);
+		contentPane.add(panel);*/
+		Icon imgIcon = new ImageIcon(this.getClass().getClassLoader().getResource("astronaute.gif"));
+		JLabel label = new JLabel(imgIcon);
+		label.setBounds(0, 0, 635, 459);
+		//label.setBounds(getBounds());
+		contentPane.add(label);
 	
 	}
 
@@ -153,16 +168,4 @@ public class App10LaserDeLaJustice extends JFrame {
 		jouerPartie.setVisible(true);
 		setVisible(false);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 }
