@@ -166,7 +166,7 @@ public class FenetreJeu extends JFrame {
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nomSauv= JOptionPane.showInputDialog(null, "Entrez le nom de la sauvegarde");
-				sceneFinale.ecritureFichierSauvegarde(nomSauv,true);
+				sceneFinale.ecritureFichierSauvegarde(nomSauv,false);
 				donneFocusALasceneFinale();
 				sceneFinale.arreter();
 				tempsJeu.stop();
