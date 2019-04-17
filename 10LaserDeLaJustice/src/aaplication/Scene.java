@@ -325,6 +325,7 @@ public class Scene extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				personnage.deplacerLePersoSelonTouche(e);
 				tirLaser(e);
+				changerAngle(e);
 			}
 
 			@Override
@@ -567,8 +568,9 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de modifier l'angle du laser
 	 * 
 	 * @param angle: C'est le nouveau angle du laser
-	 * @author Arnaud
+	 * 
 	 */
+	//auteur Arnaud Lefebvre
 	public void setAngle(double angle) {
 		// System.out.println("Angle: " + angle);
 		/*
@@ -720,6 +722,11 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 
+	/**
+	 * Methode qui indique quand un laser entre en collision avec un trou et ensuite comment changer l'orientation du laser
+	 * @param listeLasers, la liste des lasers tirés
+	 */
+	// auteur Arnaud Lefebvre
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
 		/*for (Laser laser : listeLasers) {
@@ -1234,6 +1241,27 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
+	/**
+	 * Methode qui permet de changer l'angle de tir si le joueur enfonce les fleches
+	 * @param e, la touche que le joueur a enfoncée
+	 */
+	//auteur Arnaud Lefebvre
+	private void changerAngle(KeyEvent e) {
+		if(e.getKeyCode()==38 && angle<180) {
+			angle=angle+5;
+			if(angle>180)angle=180;
+		}
+		if(e.getKeyCode()==40 && angle>0) {
+			angle=angle-5;
+			if(angle<0)angle=0;
+		}
+		enMouvement=true;
+	}
+	
+	/**
+	 * Methode qui indique aux ordis de tirer
+	 */
+	//auteur Arnaud Lefebvre
 	private void tirer() {
 
 		ordi.ajouterListesObstacles(listeBalles);
@@ -1245,8 +1273,8 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * 
-	 * @param g
+	 * Methode qui permet de tracer un vecteur qui indique l'angle de tir du fusil
+	 * @param g, le composant graphique
 	 */
 	// Arnaud Lefebvre
 	private void tracerVecteurGraphique(Graphics2D g) {

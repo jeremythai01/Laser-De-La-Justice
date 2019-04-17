@@ -154,6 +154,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
+				changerAngle(e);
 				shoot(e);
 				//tirer();
 				repaint();
@@ -172,7 +173,16 @@ public class SceneTestPls extends JPanel implements Runnable {
 	}
 
 
-
+	private void changerAngle(KeyEvent e) {
+		if(e.getKeyCode()==38 && angle<180) {
+			angle=angle+5;
+		}
+		if(e.getKeyCode()==40 && angle>0) {
+			angle=angle-5;
+		}
+		enMouvement=true;
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
