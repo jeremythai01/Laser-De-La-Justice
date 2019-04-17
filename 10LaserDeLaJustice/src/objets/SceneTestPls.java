@@ -81,6 +81,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private OrdinateurNiveau2 ordi2;
 	private OrdinateurNiveau3 ordi3;
 	private boolean enMouvement=false;
+	private boolean triche=false;
 	/**
 	 * Create the panel.
 	 */
@@ -155,6 +156,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
 				changerAngle(e);
+				modeTriche();
 				shoot(e);
 				//tirer();
 				repaint();
@@ -172,7 +174,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 		 */
 	}
 
-
+	private void modeTriche() {
+		triche=true;
+	}
+	
 	private void changerAngle(KeyEvent e) {
 		if(e.getKeyCode()==38 && angle<180) {
 			angle=angle+5;
@@ -373,8 +378,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 						listeLasers.remove(laser);   
 						listeBalleTouche.add(balle);
 						balle.shrink(listeBalles, new Vecteur(0,0));
+						if(triche=false) {
 						coeur.setCombien(nombreVies-1);
-						nombreVies-=1;
+						nombreVies-=1;}
 					}	
 
 				}

@@ -105,6 +105,7 @@ public class Scene extends JPanel implements Runnable {
 	private boolean ligne13 = false;
 	private boolean ligne23 = false;
 	private boolean ligne12 = false;
+	private boolean triche=false;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -326,6 +327,7 @@ public class Scene extends JPanel implements Runnable {
 				personnage.deplacerLePersoSelonTouche(e);
 				tirLaser(e);
 				changerAngle(e);
+				//modeTriche();
 			}
 
 			@Override
@@ -712,10 +714,12 @@ public class Scene extends JPanel implements Runnable {
 				if (personnage.isBouclierActive()) {
 					personnage.setBouclierActive(false);
 				}else if (personnage.isMort() == false) {
+					if(triche==false) {
 					coeurs.setCombien(nombreVies - 1);
 					nombreVies--;
 					personnage.setTempsMort(tempsEcoule+2);
 					personnage.setMort(true);
+					}
 				}
 			}
 		}
@@ -1272,6 +1276,14 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	/**
+	 * Methode qui active le mode de triche
+	 */
+	//auteur Arnaud Lefebvre
+	private void modeTriche() {
+		triche=true;
+	}
+	
 	/**
 	 * Methode qui permet de tracer un vecteur qui indique l'angle de tir du fusil
 	 * @param g, le composant graphique
