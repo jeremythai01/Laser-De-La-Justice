@@ -165,11 +165,11 @@ public class FenetreJeu extends JFrame {
 		JButton btnEnregistrer = new JButton("enregistrer");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				sceneFinale.arreter();
+				tempsJeu.stop();
 				String nomSauv= JOptionPane.showInputDialog(null, "Entrez le nom de la sauvegarde");
 				sceneFinale.ecritureFichierSauvegarde(nomSauv,false);
 				donneFocusALasceneFinale();
-				sceneFinale.arreter();
-				tempsJeu.stop();
 				JOptionPane.showMessageDialog(null, "Votre partie a été sauvegardée");
 			}
 		});
@@ -643,7 +643,7 @@ public class FenetreJeu extends JFrame {
 		optionJeu = new Options();
 		optionJeu.setDansScene(true);
 		optionJeu.setVisible(true);
-		sceneFinale.ecritureFichierSauvegarde(null,true); // je sauvegarde
+		sceneFinale.ecritureFichierSauvegarde("temporaire",true); // je sauvegarde
 		sceneFinale.arreter();
 		tempsJeu.stop();
 		setVisible(false);

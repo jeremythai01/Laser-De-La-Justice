@@ -87,8 +87,6 @@ public class FenetrePartie extends JFrame {
 		JButton btnNouv = new JButton("Nouvelle partie");
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-	
-	   
 				jeu = new FenetreJeu(true, null);  // isNouvelle = true
 				jeu.isNouvelle(true);
 				jeu.setNouveauOption(true);
