@@ -27,14 +27,14 @@ public class Bouclier extends Pouvoir  {
 	public Bouclier ( Vecteur position , Vecteur accel) {
 		super(position, accel);
 		lireImage();
-		setLargeurImg(1.0);
-		setLongueurImg(1.6);
+		setLargeurImg(1.2);
+		setLongueurImg(1.4);
 	}
 
 	@Override
 	public void lireImage() {
 
-		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		URL fich = getClass().getClassLoader().getResource("bouclier.jpg");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
 		} else {

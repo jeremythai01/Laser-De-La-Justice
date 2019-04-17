@@ -79,6 +79,7 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheGauche = 37;
 	private double n2 = 2.00;
 	private int compteur=0;
+	private double qtRotation=0;
 	
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
@@ -184,7 +185,7 @@ public class Scene extends JPanel implements Runnable {
 
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
-		personnage.setModeSouris(true);
+		//personnage.setModeSouris(true);
 
 
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -324,6 +325,7 @@ public class Scene extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				personnage.deplacerLePersoSelonTouche(e);
 				tirLaser(e);
+				changerAngle(e);
 			}
 
 			@Override
@@ -508,6 +510,10 @@ public class Scene extends JPanel implements Runnable {
 		while (enCoursAnimation) {
 			compteur++;
 			calculerUneIterationPhysique();
+			qtRotation=qtRotation+0.2;
+			for(TrouNoir trou : listeTrou) {
+				trou.savoirQuantiteRotation(qtRotation);
+			}
 			try {
 				colisionLaserMiroirPlan();
 			} catch (Exception e1) {
@@ -562,8 +568,9 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de modifier l'angle du laser
 	 * 
 	 * @param angle: C'est le nouveau angle du laser
-	 * @author Arnaud
+	 * 
 	 */
+	//auteur Arnaud Lefebvre
 	public void setAngle(double angle) {
 		// System.out.println("Angle: " + angle);
 		/*
@@ -715,15 +722,47 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 
+	/**
+	 * Methode qui indique quand un laser entre en collision avec un trou et ensuite comment changer l'orientation du laser
+	 * @param listeLasers, la liste des lasers tirés
+	 */
+	// auteur Arnaud Lefebvre
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 
-		for (Laser laser : listeLasers) {
+		/*for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
 				if (enIntersection(trou.getAireTrou(), laser.getAire())) {
 					listeLasers.remove(laser);
 				}
 			}
+		}*/
+
+		for(Laser laser : listeLasers) {
+			for(TrouNoir trou : listeTrou ) {
+				//if(trou.getAireTrou().intersects(laser.getLine())) {
+
+				if(enIntersection(trou.getAireTrou(), laser.getAire())) {
+
+
+					listeLasers.remove(laser);   
+
+				}	
+				if(enIntersection(trou.getAireGrandTrou(), laser.getAire())) {
+					Vecteur distance=laser.getPositionHaut().soustrait(trou.getPosition());
+					System.out.println("distance entre trou et laser" + distance);
+					laser.setAngleTir(laser.getAngleTir()+distance.getX());
+					}
+			}
 		}
+		/*
+		for(Balle balle : listeBalleTouche) {
+			balle.shrink(listeBalles);
+		}
+
+
+		 */
+
+		//bloc.refraction(v, N, n1, n2);
 
 	}
 	
@@ -1202,6 +1241,27 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
+	/**
+	 * Methode qui permet de changer l'angle de tir si le joueur enfonce les fleches
+	 * @param e, la touche que le joueur a enfoncée
+	 */
+	//auteur Arnaud Lefebvre
+	private void changerAngle(KeyEvent e) {
+		if(e.getKeyCode()==38 && angle<180) {
+			angle=angle+5;
+			if(angle>180)angle=180;
+		}
+		if(e.getKeyCode()==40 && angle>0) {
+			angle=angle-5;
+			if(angle<0)angle=0;
+		}
+		enMouvement=true;
+	}
+	
+	/**
+	 * Methode qui indique aux ordis de tirer
+	 */
+	//auteur Arnaud Lefebvre
 	private void tirer() {
 
 		ordi.ajouterListesObstacles(listeBalles);
@@ -1213,8 +1273,8 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * 
-	 * @param g
+	 * Methode qui permet de tracer un vecteur qui indique l'angle de tir du fusil
+	 * @param g, le composant graphique
 	 */
 	// Arnaud Lefebvre
 	private void tracerVecteurGraphique(Graphics2D g) {

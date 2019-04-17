@@ -33,7 +33,7 @@ public class Ralenti extends Pouvoir{
 	@Override
 	public void lireImage() {
 
-		URL fich = getClass().getClassLoader().getResource("narutoDebout.png");
+		URL fich = getClass().getClassLoader().getResource("sablier.jpg");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.png introuvable!");
 		} else {

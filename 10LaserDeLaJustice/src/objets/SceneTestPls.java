@@ -107,13 +107,13 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
-				listeBalles.add(balle);
+				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
+				//listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
 
-				//trou= new TrouNoir(new Vecteur(eXR,eYR));
-				//listeTrou.add(trou);
+				trou= new TrouNoir(new Vecteur(eXR,eYR));
+				listeTrou.add(trou);
 
 
 				if(character.airePersonnage().contains(eXR, eYR)) {
@@ -154,6 +154,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
+				changerAngle(e);
 				shoot(e);
 				//tirer();
 				repaint();
@@ -172,7 +173,16 @@ public class SceneTestPls extends JPanel implements Runnable {
 	}
 
 
-
+	private void changerAngle(KeyEvent e) {
+		if(e.getKeyCode()==38 && angle<180) {
+			angle=angle+5;
+		}
+		if(e.getKeyCode()==40 && angle>0) {
+			angle=angle-5;
+		}
+		enMouvement=true;
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
