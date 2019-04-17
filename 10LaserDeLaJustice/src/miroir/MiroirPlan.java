@@ -47,9 +47,6 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public void setPosition(Vecteur position) {
 		this.position = position;
 	}
-
-
-
 	private boolean dessin = false;
 	private Area aireMiroir;
 
@@ -102,7 +99,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 		//Ellipse2D.Double haut = new Ellipse2D.Double(position.getX()-0.05, position.getY()-0.05, 0.1, 0.1);
 		//g2d.draw(matLocale.createTransformedShape(haut));
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
-		g2d.draw(miroirTransfo); //dessine en pixel
+		g2d.fill(miroirTransfo); //dessine en pixel
 	}
 
 	//Par Miora
