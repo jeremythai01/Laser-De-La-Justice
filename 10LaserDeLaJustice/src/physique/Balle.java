@@ -144,6 +144,7 @@ public class Balle implements Dessinable, Serializable {
 			g2d.setColor(Color.red);
 			break;
 		}		
+		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		g2d.fill( matLocal.createTransformedShape(cercle) );	
 
 

@@ -185,7 +185,7 @@ public class Scene extends JPanel implements Runnable {
 
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
-		personnage.setModeSouris(true);
+		//personnage.setModeSouris(true);
 
 
 		addMouseMotionListener(new MouseMotionAdapter() {
