@@ -96,7 +96,7 @@ public class FenetreJeu extends JFrame {
 		this.isNouvelle = isNouvelle;
 		this.nomFichier = nomFichier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1389, 1058);
+		setBounds(100, 100, 1390, 1084);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(new Color(255, 175, 175));
@@ -265,6 +265,11 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnPetiteBalle);
 
 		btnPrisme = new JButton("prisme");
+		btnPrisme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneFinale.ajoutPrisme();
+			}
+		});
 		btnPrisme.setEnabled(false);
 		btnPrisme.setBounds(1443, 811, 105, 23);
 		contentPane.add(btnPrisme);

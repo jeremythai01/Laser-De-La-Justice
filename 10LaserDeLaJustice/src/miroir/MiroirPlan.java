@@ -34,35 +34,16 @@ public class MiroirPlan implements Dessinable, Serializable {
 	private Vecteur positionBas;
 	private double largeur = 1;
 
-	
+
 	public Vecteur getPositionBas() {
 		return positionBas;
 	}
-	
-	
-	//Par Miora
-		/**
-		 * Cette methode permet de modifier la position du bas du miroir
-		 * @return : la position du bas
-		 */
 	public void setPositionBas(Vecteur positionBas) {
 		this.positionBas = positionBas;
 	}
-	
-	/*** 
-	 * Cette methode permet de chercher la position du haut du miroir
-	 * @return la position du haut
-	 */
 	public Vecteur getPosition() {
 		return position;
 	}
-	
-	//Par Miora
-	/**
-	 * Cette methode permet de modifier la position du haut du miroir
-	 * @return : la position du bas
-	 */
-
 	public void setPosition(Vecteur position) {
 		this.position = position;
 	}
@@ -153,9 +134,6 @@ public class MiroirPlan implements Dessinable, Serializable {
 		normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
 		return normal;
 	}
-
-	 //Arezki 
-
 
 	//Par Miora
 	/**

@@ -13,7 +13,12 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
@@ -44,6 +49,8 @@ public class Prisme extends JPanel implements Dessinable {
 
 	private Vecteur centre;
 
+	BufferedImage img;
+	
 	private Polygon triangles;
 	Line2D ligne13;
 	Line2D ligne12;
@@ -53,7 +60,19 @@ public class Prisme extends JPanel implements Dessinable {
 		p1 = position;
 		p2 = new Vecteur(position.getX() + 6, position.getY());
 		p3 = new Vecteur((p2.getX() + p1.getX()) / 2, position.getY() + 5);
-
+		
+		/*
+		URL urlCoeur = getClass().getClassLoader().getResource("diamant.jpg");
+		if (urlCoeur == null) {
+			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
+			System.exit(0);}
+		try {
+			 img = ImageIO.read(urlCoeur);
+		}
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
+	*/
 	}
 
 	@Override
@@ -79,14 +98,15 @@ public class Prisme extends JPanel implements Dessinable {
 
 		matLocal.rotate(Math.toRadians(0), p1.getX(), p1.getY());
 		// g.draw(matLocal.createTransformedShape(triangles));
-		g.setColor(Color.BLACK);
+		g.setColor(Color.YELLOW);
+		
 		g.draw(matLocal.createTransformedShape(ligne13));
 		g.draw(matLocal.createTransformedShape(ligne23));
 		g.draw(matLocal.createTransformedShape(ligne12));
 		// g.fill(new Ellipse2D.Double(xCentre, yCentre, 0.5, 0.5));
 		// g.draw(matLocal.createTransformedShape(new Ellipse2D.Double(xCentre, yCentre,
 		// 0.5, 0.5)));
-
+		//g.drawImage(img, matLocal, null);
 	}
 
 	public Vecteur getP2() {
@@ -164,5 +184,12 @@ public class Prisme extends JPanel implements Dessinable {
 		this.ligne23 = ligne23;
 	}
 
+	public void setPosition(Vecteur position) {
+		p1 = position;
+		p2 = new Vecteur(position.getX() + 6, position.getY());
+		p3 = new Vecteur((p2.getX() + p1.getX()) / 2, position.getY() + 5);
+		
+		repaint();
+	}
 	
 }

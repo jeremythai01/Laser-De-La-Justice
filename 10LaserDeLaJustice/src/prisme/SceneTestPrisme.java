@@ -111,7 +111,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		ordi3 = new OrdinateurNiveau3(new Vecteur(40, 44));
 		ordi3.ajouterListesObstacles(listeBalles);
 
-		angle = 68;
+		angle = 145;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -515,41 +515,23 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			System.out.println("normal"+ N );
 			System.out.println("position: "+ prismes.getP1());
 			T = V.multiplie(n).additionne(N.multiplie((n*(E.prodScalaire(N)) - Math.sqrt(1-Math.pow(n, 2) * (1-(Math.pow(E.prodScalaire(N), 2)))))));
-			//T = T.multiplie(-1);
+			T = T.multiplie(-1);
 		
 	
 		//laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(),  T.getY()));
 			double angleAncien= laser.getAngleTir(); 
 		System.out.println("l'angle du laser avant refraction: "+ angleAncien);
 		
-		
-		if(enIntersection(laser.getAire(), prismes.getAirPrisme())) {
-		
-		if(ligne23 &&(angle > 90)) {
-			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX()))+ angle);
-
-		}
-			else if(ligne23 && (angle < 90)) {
-			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
-
-		}
-		else if(ligne13 &&(angle < 90)) {
-			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
-
-		} else if(ligne13 &&(angle > 90)) {
-			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
-		} 
-		
-		//laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
+		laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
 		System.out.println("l'angle du laser apres refraction: "+ laser.getAngleTir());
 		
 		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );		
 		
 		double angleLaser = laser.getAngleTir();
-		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.1 ,0)), angleLaser+1, laser.getVitesse()));
+		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.01 ,0)), angleLaser+0.01, laser.getVitesse()));
 		
 			repaint();
-		}
+		
 	}
 
 	private boolean enIntersection(Area aire1, Area aire2) {
@@ -579,26 +561,61 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		
 			
 		if(resultat13 > 0 && resultat13 < 0.80) {
-			System.out.println("jai touché ligne13");
+			System.out.println("jai touché ligne13 "+ resultat13);
 			ligne13 = true;
 			ligne12 = false;
 			ligne23 = false;
-			return ((prisme.getP3().soustrait(prisme.getP1()).cross(laser.getPositionHaut()))).normalise();
+			
+			if(angle > 90) {
+				
+				double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
+				double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
+				
+				return new Vecteur (yNormal, xNormal);
+				
+			}else {
+			
+			double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
+			double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
+			
+			return new Vecteur (-yNormal, xNormal);
+			}
+			
+			
 			
 		}else if(resultat12 > 0 && resultat12 < 0.80){
-			System.out.println("jai toucher la ligne12");
+			// a refaire le calcul est pas bon 
+			
+			System.out.println("jai toucher la ligne12 "+ resultat12);
 			ligne13 = false;
 			ligne12 = true;
 			ligne23 = false;
-			return ((prisme.getP2().soustrait(prisme.getP1())).cross(laser.getPositionHaut())).normalise();
+			
+			double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+			//double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+			
+			return new Vecteur (xNormal, 0.0);
 			
 		}else if(resultat23 > 0 && resultat23 < 0.80){
-			System.out.println("jai toucher la ligne23");
+			System.out.println("jai toucher la ligne23 "+resultat23);
 			ligne13 = false;
 			ligne12 = false;
 			ligne23 = true;
-			return prisme.getNormalPrisme().cross(laser.getPositionHaut()).normalise();
 			
+			if(angle > 90) {
+				
+				double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+				double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+				
+				return new Vecteur (-yNormal, xNormal);
+				
+			}else{
+			
+			double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+			double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+			
+			return new Vecteur (-yNormal, xNormal);
+			}
 		}
 		
 		return new Vecteur ();

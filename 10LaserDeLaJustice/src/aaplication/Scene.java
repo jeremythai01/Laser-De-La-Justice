@@ -77,8 +77,9 @@ public class Scene extends JPanel implements Runnable {
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
 	private int toucheGauche = 37;
-	private Vecteur accBalle;
-
+	private double n2 = 2.00;
+	private int compteur=0;
+	
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
 	private float valeurAngleRoulette = 90;
@@ -99,10 +100,15 @@ public class Scene extends JPanel implements Runnable {
 	private boolean bonBlocEau = false;
 	private boolean editeurActiver = false;
 	private boolean couleurPersoLaser = false;
+	private boolean bonPrisme = false;
+	private boolean ligne13 = false;
+	private boolean ligne23 = false;
+	private boolean ligne12 = false;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 	private Vecteur vitesse = new Vecteur(1, 1);
+	private Vecteur accBalle;
 
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
@@ -112,6 +118,7 @@ public class Scene extends JPanel implements Runnable {
 	private ArrayList<MiroirPlan> listeMiroirePlan = new ArrayList<MiroirPlan>();
 	private ArrayList<BlocDEau> listeBlocEau = new ArrayList<BlocDEau>();
 	private ArrayList<Prisme> listePrisme = new ArrayList<Prisme>();
+	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
 
 	private Balle balle;
 	private TrouNoir trou;
@@ -120,9 +127,9 @@ public class Scene extends JPanel implements Runnable {
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
 	private OrdinateurNiveau3 ordi;
-	private int compteur=0;
+	private Laser laser;
 	private Coeurs coeurs = new Coeurs(nombreVies);
-	private Prisme prisme = new Prisme(new Vecteur(1, 1));
+	private Prisme prisme ;
 
 	private Echelle echelle;
 	private Color couleurLaser = null;
@@ -144,7 +151,7 @@ public class Scene extends JPanel implements Runnable {
 	private double tempsEcoule = 0;
 	private double deltaTInit = 0.06;
 	private double deltaT = deltaTInit;
-	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
+	
 	private Vecteur vitesseLaserInit = new Vecteur(0,0.5);
 	private Vecteur vitesseLaser = vitesseLaserInit;
 	private double compteurVitesse = 0 ;
@@ -170,14 +177,13 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 
-		listePrisme.add(prisme);
 
 		lireFond();
 
 		angle = valeurAngleRoulette;
 
 		nouvellePartie(isPartieNouveau, nomFichier);
-	//	lectureNiveau(nomFichier);
+		//lectureNiveau(nomFichier);
 		lectureFichierOption();
 		personnage.setModeSouris(true);
 
@@ -232,7 +238,7 @@ public class Scene extends JPanel implements Runnable {
 				}
 
 				for (int i = 0; i < listeMiroirePlan.size(); i++) {
-					if (listeMiroirePlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) {
+					if (listeMiroirePlan.get(i).getAire().contains(eXR, eYR)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirePlan.get(i);
@@ -261,6 +267,16 @@ public class Scene extends JPanel implements Runnable {
 					}
 				}
 
+				for (int i = 0; i < listePrisme.size(); i++) {
+					if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR)) {
+
+						bonPrisme = true;
+						prisme = listePrisme.get(i);
+
+						i = listePrisme.size();
+					}
+				}
+				
 
 				tirLaser(e, personnage);
 			}
@@ -275,6 +291,7 @@ public class Scene extends JPanel implements Runnable {
 				bonMiroirPlan = false;
 				bonTrouNoir = false;
 				bonBlocEau = false;
+				bonPrisme = false;
 
 			}
 		});
@@ -295,6 +312,8 @@ public class Scene extends JPanel implements Runnable {
 					dragTrouNoir();
 				} else if (bonBlocEau) {
 					dragBlocEau();
+				} else if (bonPrisme) {
+					dragPrisme();
 				}
 
 			}
@@ -389,9 +408,11 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 		for (Prisme pri : listePrisme) {
-			//pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
+		
+		
 		personnage.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
@@ -494,6 +515,7 @@ public class Scene extends JPanel implements Runnable {
 				e1.printStackTrace();
 			}
 			updateDureeCompteurs();
+			collisionLaserPrisme();
 
 			if(compteur==60) {
 				tirer();
@@ -989,6 +1011,12 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	public void ajoutPrisme() {
+		listePrisme.add(new Prisme(new Vecteur(2,2)));
+		repaint();
+
+	}
+	
 	/**
 	 * Arezki Issaadi permet d'ajouter et de dessiner un bloc d'eau en appuyant sur
 	 * le boutton Bloc d'eau
@@ -1133,6 +1161,25 @@ public class Scene extends JPanel implements Runnable {
 		});
 	}
 
+	
+	private void dragPrisme() {
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if (bonPrisme) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					prisme.setPosition((new Vecteur(xDrag, yDrag)));
+
+					repaint();
+				}
+
+			}
+		});
+	}
+	
+	
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -1184,42 +1231,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	private void CollisionLaserPrisme(ArrayList<Laser> listeLasers, ArrayList<Prisme> listePrismes) {
-		boolean collisionLaserPrisme = false;
-		Vecteur collision = new Vecteur();
-		while (!collisionLaserPrisme) {
-			for (Prisme pris : listePrisme) {
-				for (Laser laser : listeLasers) {
-					if (pris.getAirPrisme().contains(laser.getPositionHaut().getX(), laser.getPositionHaut().getY())) {
-						collisionLaserPrisme = true;
-						collision = laser.getPositionHaut();
-
-					}
-
-					while (!collisionLaserPrisme) {
-						for (Laser lasers : listeLasers)
-							for (Prisme pris1 : listePrismes) {
-
-								if (enIntersection(pris1.getAirPrisme(), lasers.getAire())) {
-
-									collisionLaserPrisme = true;
-									collision = laser.getPositionHaut();
-									System.out.println("jai collision avec le prisme");
-									System.err.println("le vecteur de la collision: " + collision);
-
-								} else {
-									System.out.println("exit");
-								}
-
-							}
-					}
-				}
-			}
-		}
-
-		// return collision;
-		// return collision;
-	}
+	
 
 	// Miora
 	/**
@@ -1227,8 +1239,7 @@ public class Scene extends JPanel implements Runnable {
 	 * la position du joueur, la couleur du rayon et les touches utilisées
 	 */
 	public void ecritureFichierSauvegarde() {
-		String nomSauv = JOptionPane.showInputDialog("Entrez votre nom de sauvegarde");
-		String NOM_FICHIER_OPTION = nomSauv + ".save";
+		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
 		ObjectOutputStream fluxSortie = null;
@@ -1267,9 +1278,9 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
-		String nomFichierSauv = nomFichier;
+		final String NOM_FICHIER_OPTION = "sauvegarde.d3t";
 		ObjectInputStream fluxEntree = null;
-		File fichierDeTravail = new File(nomFichierSauv);
+		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 
 		try {
 			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
@@ -1314,20 +1325,18 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle  : retourne vrai s'il s'agit d'une nouvelle scene
-	 * @param nomfichier : le nom du fichier de sauvegarde ou de niveau
 	 */
 
 	private void nouvellePartie(boolean isNouvelle, String nomFichier) {
 		if (!isNouvelle) {
-			if(nomFichier.endsWith(".niveau")) {
-				lectureNiveau(nomFichier);
-			}else {
+			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
 			lectureFichierSauvegarde(nomFichier);
 			coeurs.setCombien(nombreVies);
 			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
-			}
 		} else {
+			lectureNiveau(nomFichier);
+			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
 			personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
@@ -1542,7 +1551,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomSauv : le nom du niveau
 	 */
 	public void ecritureNiveau(String nomSauv) {
-		String NOM_FICHIER_OPTION = nomSauv + ".niveau";
+		final String NOM_FICHIER_OPTION = nomSauv;
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 		ObjectOutputStream fluxSortie = null;
 		try {
@@ -1565,4 +1574,149 @@ public class Scene extends JPanel implements Runnable {
 		} // fin finally
 	}
 
+	
+
+	private void collisionLaserPrisme() {
+		
+		
+		for (int i = 0; i < listeLasers.size(); i++) {
+			
+			for (int j = 0; j < listePrisme.size(); j++) {
+				
+				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire()) ) {
+
+					System.out.println(j);
+					prisme = listePrisme.get(j);
+					laser = listeLasers.get(i);
+					
+					j = listePrisme.size();
+					i = listeLasers.size();
+					
+					calculRefractionPrisme(laser,prisme);
+					//premiereFoisPrisme = false;
+				} 
+				
+			}
+		}
+
+		
+	}
+
+	
+
+	private void calculRefractionPrisme(Laser laser, Prisme prismes) {
+	
+		System.out.println("------------------------------------------------------------------------------");
+		Vecteur T = new Vecteur();
+		Vecteur V = laser.getPositionHaut();
+		Vecteur N = normalPrisme(laser, prismes);
+		Vecteur E = V.multiplie(-1);
+		double n = 1.0/n2;
+		System.out.println("la position laser avant refraction : "+ laser.getPositionHaut() );
+		
+			System.out.println("normal"+ N );
+			System.out.println("position: "+ prismes.getP1());
+			T = V.multiplie(n).additionne(N.multiplie((n*(E.prodScalaire(N)) - Math.sqrt(1-Math.pow(n, 2) * (1-(Math.pow(E.prodScalaire(N), 2)))))));
+			T = T.multiplie(-1);
+		
+	
+		//laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(),  T.getY()));
+			double angleAncien= laser.getAngleTir(); 
+		System.out.println("l'angle du laser avant refraction: "+ angleAncien);
+		
+		laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
+		System.out.println("l'angle du laser apres refraction: "+ laser.getAngleTir());
+		
+		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );		
+		
+		double angleLaser = laser.getAngleTir();
+		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.01 ,0)), angleLaser+0.01, laser.getVitesse()));
+		
+			repaint();
+		
+	}
+
+	
+
+	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
+		
+		//System.out.println("position p1"+ prisme.getP1());
+		//System.out.println("position p2"+ prisme.getP2());
+		//System.out.println("position p3"+ prisme.getP3());
+		
+		
+		
+		double resultat13 = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+		double resultat12 = prisme.getLigne12().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+		double resultat23 = prisme.getLigne23().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
+		//System.out.println("resultat pour la ligne 13:"+resultat13); 
+		//System.out.println("resultat pour la ligne 12:"+resultat12); 
+		//System.out.println("resultat pour la ligne 23:"+resultat13); 
+		
+		
+			
+		if(resultat13 > 0 && resultat13 < 0.80) {
+			System.out.println("jai touché ligne13 "+ resultat13);
+			ligne13 = true;
+			ligne12 = false;
+			ligne23 = false;
+			
+			if(angle > 90) {
+				
+				double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
+				double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
+				
+				return new Vecteur (yNormal, xNormal);
+				
+			}else {
+			
+			double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
+			double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
+			
+			return new Vecteur (-yNormal, xNormal);
+			}
+			
+			
+			
+		}else if(resultat12 > 0 && resultat12 < 0.80){
+			// a refaire le calcul est pas bon 
+			
+			System.out.println("jai toucher la ligne12 "+ resultat12);
+			ligne13 = false;
+			ligne12 = true;
+			ligne23 = false;
+			
+			double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+			//double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+			
+			return new Vecteur (xNormal, 0.0);
+			
+		}else if(resultat23 > 0 && resultat23 < 0.80){
+			System.out.println("jai toucher la ligne23 "+resultat23);
+			ligne13 = false;
+			ligne12 = false;
+			ligne23 = true;
+			
+			if(angle > 90) {
+				
+				double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+				double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+				
+				return new Vecteur (-yNormal, xNormal);
+				
+			}else{
+			
+			double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+			double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+			
+			return new Vecteur (-yNormal, xNormal);
+			}
+		}
+		
+		return new Vecteur ();
+	
+	}
+	
+	
+	
 }
