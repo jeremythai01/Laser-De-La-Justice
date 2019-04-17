@@ -717,43 +717,15 @@ public class Scene extends JPanel implements Runnable {
 			int n=0;
 			boolean collision = false;
 			while(n< listeMiroirePlan.size() && collision == false) {
-				if(enIntersection(listeMiroirePlan.get(n).getAireMiroirPixel(), laser.getAire())) {
+				//System.out.println(laser.getPointHaut().toString());
+				//System.out.println("laser haut :" + laser.getPositionHaut());
+				System.out.println("calcul distance" + listeMiroirePlan.get(n).getLine().ptSegDist(laser.getPointHaut()));
+				if(listeMiroirePlan.get(n).getLine().ptSegDist(laser.getPointHaut()) < 2) {
+					Vecteur posInter = laser.getPositionHaut();
+
 					collision = true;
-					Vecteur vecLaser = laser.getPositionHaut(); // un point du laser
-					System.out.println("laser" + vecLaser );
-					Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(laser.getAngleTir()) ) , Math.sin(Math.toRadians(laser.getAngleTir()) ))).normalise();;
-					System.out.println("vecteur dir laser " +vecDirLaser );
-					
-					Vecteur vecMiroir = listeMiroirePlan.get(n).getPosition();
-					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirePlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirePlan.get(n).getAngle()) ))).normalise();
-					System.out.println("miroir" + vecMiroir );
-					System.out.println("vecteur dir Miroir " +vecDirMiroir );
-		
-					
-					Vecteur sous = (vecLaser.soustrait(vecMiroir)).multiplie(-1); // de l'autre cote equation
-					Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
-					System.out.println("sous " + sous);
-					System.out.println("haut av intersection : " + laser.getPositionHaut() + "bas laser av inter : " + laser.getPositionBas());
-					double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
-					/*
-					double [] test = intersectionCramer(3,1,5,-2,9,3);
-					System.out.println("test : " + test[0] + " " + test[1]);
-					*/
-					double x = vecLaser.getX() + inter[0]*vecDirLaser.getX();
-					double y= vecLaser.getY() + inter[0]*vecDirLaser.getY();
-					
-					double x1 = vecMiroir.getX()+inter[1]*vecDirMiroir.getX();
-					double y1 = vecMiroir.getY()+inter[1]*vecDirMiroir.getY();
-					
-					System.out.println("miroir : " + x+ ", " + y + "\n" + "laser : " + x1 + " " + y1);
 
-
-					//afficherVec = true;
-					Vecteur posInter = new Vecteur (x,y);
-					System.out.println("interection laser et miroir " + posInter);
-					
-
-					Vecteur normal =listeMiroirePlan.get(n).getNormal().normalise().multiplie(-1);
+					Vecteur normal =listeMiroirePlan.get(n).getNormal().normalise();
 					System.out.println("\n"+"La normal est du miroir est :" +normal);
 
 					double angleR = Math.toRadians(laser.getAngleTir() ) ;
@@ -762,15 +734,13 @@ public class Scene extends JPanel implements Runnable {
 					System.out.println("Orientation du laser :" + incident);
 
 					Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
-					//Vecteur reflexion = incident.additionne(normal.multiplie(2.0*incident.multiplie(-1.0).prodScalaire(normal)));
-					System.out.println("Orientation apres reflexion" + reflexion);
-
+					System.out.println("Orientation apres reflexion" + reflexion);	
 
 					//change orientation 
 					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 					System.out.println("Angle reflexion en degree " + angleReflexion);
 					System.out.println("angle rad reflexion" + Math.atan(reflexion.getY()/reflexion.getX()));
-					if(Math.abs(listeMiroirePlan.get(n).getAngle())>90  ) {
+					if(Math.abs(listeMiroirePlan.get(n).getAngle())>90) {
 						System.out.println("ici");
 						laser.setAngleTir(180+angleReflexion);
 					}else{
@@ -778,7 +748,7 @@ public class Scene extends JPanel implements Runnable {
 					}
 					laser.setPositionHaut(posInter);
 					System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
-					
+
 					//Il faut faire une translation du du haut du laser
 					double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
 					double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
@@ -806,6 +776,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 
 		}
+
 	} // fin methode
 
 	// Jeremy Thai
