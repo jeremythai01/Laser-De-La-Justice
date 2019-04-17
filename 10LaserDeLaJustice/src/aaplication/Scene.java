@@ -183,7 +183,6 @@ public class Scene extends JPanel implements Runnable {
 		angle = valeurAngleRoulette;
 
 		nouvellePartie(isPartieNouveau, nomFichier);
-		//lectureNiveau(nomFichier);
 		lectureFichierOption();
 		personnage.setModeSouris(true);
 
@@ -1331,11 +1330,15 @@ public class Scene extends JPanel implements Runnable {
 		if (!isNouvelle) {
 			// partie chage
 			System.out.println("scene partie charge " + isNouvelle);
+			
+			if(nomFichier.endsWith(".niv")) {
+				lectureNiveau(nomFichier);
+			}else {
 			lectureFichierSauvegarde(nomFichier);
 			coeurs.setCombien(nombreVies);
 			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
+			}
 		} else {
-			lectureNiveau(nomFichier);
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
@@ -1551,7 +1554,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomSauv : le nom du niveau
 	 */
 	public void ecritureNiveau(String nomSauv) {
-		final String NOM_FICHIER_OPTION = nomSauv;
+		String NOM_FICHIER_OPTION = nomSauv + ".niv";
 		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
 		ObjectOutputStream fluxSortie = null;
 		try {
