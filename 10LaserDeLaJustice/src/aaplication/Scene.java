@@ -80,7 +80,7 @@ public class Scene extends JPanel implements Runnable {
 	private double n2 = 2.00;
 	private int compteur=0;
 	private double qtRotation=0;
-	
+
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
 	private float valeurAngleRoulette = 90;
@@ -153,7 +153,7 @@ public class Scene extends JPanel implements Runnable {
 	private double tempsEcoule = 0;
 	private double deltaTInit = 0.06;
 	private double deltaT = deltaTInit;
-	
+
 	private Vecteur vitesseLaserInit = new Vecteur(0,0.5);
 	private Vecteur vitesseLaser = vitesseLaserInit;
 	private double compteurVitesse = 0 ;
@@ -233,7 +233,7 @@ public class Scene extends JPanel implements Runnable {
 
 						bonMiroirConcave = true;
 						miroirConcave = listeMiroireConcave.get(i);
-						
+
 						i = listeMiroireConcave.size();
 					}
 				}
@@ -277,7 +277,7 @@ public class Scene extends JPanel implements Runnable {
 						i = listePrisme.size();
 					}
 				}
-				
+
 
 				tirLaser(e, personnage);
 			}
@@ -414,8 +414,8 @@ public class Scene extends JPanel implements Runnable {
 			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
-		
-		
+
+
 		personnage.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
@@ -640,7 +640,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 		} // fin finally
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet de mettre le niveau pesonnalise
@@ -674,8 +674,8 @@ public class Scene extends JPanel implements Runnable {
 			System.exit(0);
 		}
 
-		
-		
+
+
 	}
 
 	// Jeremy Thai
@@ -715,10 +715,10 @@ public class Scene extends JPanel implements Runnable {
 					personnage.setBouclierActive(false);
 				}else if (personnage.isMort() == false) {
 					if(triche==false) {
-					coeurs.setCombien(nombreVies - 1);
-					nombreVies--;
-					personnage.setTempsMort(tempsEcoule+2);
-					personnage.setMort(true);
+						coeurs.setCombien(nombreVies - 1);
+						nombreVies--;
+						personnage.setTempsMort(tempsEcoule+2);
+						personnage.setMort(true);
 					}
 				}
 			}
@@ -755,7 +755,7 @@ public class Scene extends JPanel implements Runnable {
 					Vecteur distance=laser.getPositionHaut().soustrait(trou.getPosition());
 					System.out.println("distance entre trou et laser" + distance);
 					laser.setAngleTir(laser.getAngleTir()+distance.getX());
-					}
+				}
 			}
 		}
 		/*
@@ -769,7 +769,7 @@ public class Scene extends JPanel implements Runnable {
 		//bloc.refraction(v, N, n1, n2);
 
 	}
-	
+
 	//Miora
 	/**
 	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
@@ -836,92 +836,92 @@ public class Scene extends JPanel implements Runnable {
 					laser.setPositionHaut(new Vecteur (c[0], c[1]));
 					System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
 					System.out.println("-----------------------------------------------------------------------------");
-					*/
-						if(enIntersection(laser.getAire(),listeMiroirePlan.get(n).getAire()) ) {
+				 */
+				if(enIntersection(laser.getAire(),listeMiroirePlan.get(n).getAire()) ) {
 
-							Vecteur vecLaser = laser.getPositionHaut(); // un point du laser
-							System.out.println("laser" + vecLaser );
-							//Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(laser.getAngleTir()) ) , Math.sin(Math.toRadians(laser.getAngleTir()) ))).normalise();;
-
-
-
-							Vecteur vecDirLaser = (new Vecteur (0,1));
-							System.out.println("vecteur dir laser " +vecDirLaser );
-							Vecteur vecMiroir = listeMiroirePlan.get(n).getPosition();
-							Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirePlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirePlan.get(n).getAngle()))));
-							System.out.println("miroir" + vecMiroir );
-							System.out.println("vecteur dir Miroir " +vecDirMiroir );
+					Vecteur vecLaser = laser.getPositionHaut(); // un point du laser
+					System.out.println("laser" + vecLaser );
+					//Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(laser.getAngleTir()) ) , Math.sin(Math.toRadians(laser.getAngleTir()) ))).normalise();;
 
 
-							Vecteur sous = (vecLaser.soustrait(vecMiroir)).multiplie(-1); // de l'autre cote equation
-							Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
-							System.out.println("sous " + sous);
-							System.out.println("haut av intersection : " + laser.getPositionHaut() + "bas laser av inter : " + laser.getPositionBas());
-							double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
-						//	double [] test = OutilsMath.intersectionCramer(5,1,3,-2,-13,0);
-						//	System.out.println("test : " + test[0] + " " + test[1]);
-						 
-							double x = vecLaser.getX() + inter[0]*vecDirLaser.getX();
-							double y= vecLaser.getY() + inter[0]*vecDirLaser.getY();
 
-							double x1 = vecMiroir.getX()+inter[1]*vecDirMiroir.getX();
-							double y1 = vecMiroir.getY()+inter[1]*vecDirMiroir.getY();
-							//System.out.println("miroir : " + x+ ", " + y + "\n" + "laser : " + x1 + " " + y1);
+					Vecteur vecDirLaser = (new Vecteur (0,1));
+					System.out.println("vecteur dir laser " +vecDirLaser );
+					Vecteur vecMiroir = listeMiroirePlan.get(n).getPosition();
+					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirePlan.get(n).getAngle()) ) , Math.sin(Math.toRadians(listeMiroirePlan.get(n).getAngle()))));
+					System.out.println("miroir" + vecMiroir );
+					System.out.println("vecteur dir Miroir " +vecDirMiroir );
 
 
-							//afficherVec = true;
-							Vecteur posInter = new Vecteur (x,y);
+					Vecteur sous = (vecLaser.soustrait(vecMiroir)).multiplie(-1); // de l'autre cote equation
+					Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
+					System.out.println("sous " + sous);
+					System.out.println("haut av intersection : " + laser.getPositionHaut() + "bas laser av inter : " + laser.getPositionBas());
+					double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+					//	double [] test = OutilsMath.intersectionCramer(5,1,3,-2,-13,0);
+					//	System.out.println("test : " + test[0] + " " + test[1]);
 
-							 Vecteur normal =listeMiroirePlan.get(n).getNormal().normalise();
-							System.out.println("\n"+"La normal est du miroir est :" +normal);
+					double x = vecLaser.getX() + inter[0]*vecDirLaser.getX();
+					double y= vecLaser.getY() + inter[0]*vecDirLaser.getY();
 
-							double angleR = Math.toRadians(laser.getAngleTir() ) ;
-							Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
-
-							System.out.println("Orientation du laser :" + incident);
-
-							Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
-
-							//Vecteur reflexion = incident.additionne(normal.multiplie(2.0*incident.multiplie(-1.0).prodScalaire(normal)));
-							System.out.println("Orientation apres reflexion" + reflexion);
+					double x1 = vecMiroir.getX()+inter[1]*vecDirMiroir.getX();
+					double y1 = vecMiroir.getY()+inter[1]*vecDirMiroir.getY();
+					//System.out.println("miroir : " + x+ ", " + y + "\n" + "laser : " + x1 + " " + y1);
 
 
-							//change orientation 
-							double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-							System.out.println("Angle reflexion en degree " + angleReflexion);
-							System.out.println("angle rad reflexion" + Math.atan(reflexion.getY()/reflexion.getX()));
-							if(Math.abs(listeMiroirePlan.get(n).getAngle())>90) {
-								System.out.println("ici");
-								laser.setAngleTir(180+angleReflexion);
-							}else{
-								laser.setAngleTir(angleReflexion);
-							}
-							laser.setPositionHaut(posInter);
-							System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
+					//afficherVec = true;
+					Vecteur posInter = new Vecteur (x,y);
 
-							//Il faut faire une translation du du haut du laser
-							double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
-							double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
-							double a[][]={{1,0,xt},{0,1,yt},{0,0,1}};
-							double b[]={laser.getPositionHaut().getX(),laser.getPositionHaut().getY(),1};  // le point a translater  
+					Vecteur normal =listeMiroirePlan.get(n).getNormal().normalise();
+					System.out.println("\n"+"La normal est du miroir est :" +normal);
 
-							//creer une matrice qui va acceuillir la transformation
-							double c[]=new double[3];  //matrice de 1 colonne et 1 ligne  
+					double angleR = Math.toRadians(laser.getAngleTir() ) ;
+					Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
 
-							//multiplication matriciel 
-							for(int i=0;i<3;i++){    
-								c[i]=0;      
-								for(int k=0;k<3;k++)      
-								{      
-									c[i]+=a[i][k]*b[k];      
-								}
-								System.out.print(c[i]+" ");
-								System.out.println();
-							} 
-							laser.setPositionHaut(new Vecteur (c[0], c[1]));
-							System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
-							System.out.println("-----------------------------------------------------------------------------");
-							
+					System.out.println("Orientation du laser :" + incident);
+
+					Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
+
+					//Vecteur reflexion = incident.additionne(normal.multiplie(2.0*incident.multiplie(-1.0).prodScalaire(normal)));
+					System.out.println("Orientation apres reflexion" + reflexion);
+
+
+					//change orientation 
+					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
+					System.out.println("Angle reflexion en degree " + angleReflexion);
+					System.out.println("angle rad reflexion" + Math.atan(reflexion.getY()/reflexion.getX()));
+					if(Math.abs(listeMiroirePlan.get(n).getAngle())>90) {
+						System.out.println("ici");
+						laser.setAngleTir(180+angleReflexion);
+					}else{
+						laser.setAngleTir(angleReflexion);
+					}
+					laser.setPositionHaut(posInter);
+					System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
+
+					//Il faut faire une translation du du haut du laser
+					double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
+					double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
+					double a[][]={{1,0,xt},{0,1,yt},{0,0,1}};
+					double b[]={laser.getPositionHaut().getX(),laser.getPositionHaut().getY(),1};  // le point a translater  
+
+					//creer une matrice qui va acceuillir la transformation
+					double c[]=new double[3];  //matrice de 1 colonne et 1 ligne  
+
+					//multiplication matriciel 
+					for(int i=0;i<3;i++){    
+						c[i]=0;      
+						for(int k=0;k<3;k++)      
+						{      
+							c[i]+=a[i][k]*b[k];      
+						}
+						System.out.print(c[i]+" ");
+						System.out.println();
+					} 
+					laser.setPositionHaut(new Vecteur (c[0], c[1]));
+					System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
+					System.out.println("-----------------------------------------------------------------------------");
+
 				}
 				n++;
 			}
@@ -1058,7 +1058,7 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 
 	}
-	
+
 	/**
 	 * Arezki Issaadi permet d'ajouter et de dessiner un bloc d'eau en appuyant sur
 	 * le boutton Bloc d'eau
@@ -1160,7 +1160,7 @@ public class Scene extends JPanel implements Runnable {
 
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					
+
 					miroirePlan.setPosition(new Vecteur (xDrag, yDrag));
 					repaint();
 				}
@@ -1203,7 +1203,7 @@ public class Scene extends JPanel implements Runnable {
 		});
 	}
 
-	
+
 	private void dragPrisme() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -1220,8 +1220,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 	}
-	
-	
+
+
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -1261,7 +1261,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 		enMouvement=true;
 	}
-	
+
 	/**
 	 * Methode qui indique aux ordis de tirer
 	 */
@@ -1283,7 +1283,7 @@ public class Scene extends JPanel implements Runnable {
 	private void modeTriche() {
 		triche=true;
 	}
-	
+
 	/**
 	 * Methode qui permet de tracer un vecteur qui indique l'angle de tir du fusil
 	 * @param g, le composant graphique
@@ -1302,7 +1302,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	
+
 
 	// Miora
 	/**
@@ -1315,8 +1315,9 @@ public class Scene extends JPanel implements Runnable {
 			nomSave = "temporaire";
 		}
 		else {
-			nomSave = nomSauv + ".save";
+			nomSave = nomSauv + "Save";
 		}
+
 		File fichierDeTravail = new File(nomSave);
 
 		ObjectOutputStream fluxSortie = null;
@@ -1354,16 +1355,18 @@ public class Scene extends JPanel implements Runnable {
 	 * 
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
-	private void lectureFichierSauvegarde(String nomFichier, boolean dansOption) {
-		String fichierSauvegarde = "";
-		
-		if(dansOption) {
-			fichierSauvegarde = "temporaire";
+	private void lectureFichierSauvegarde(String nomFichier) {
+		System.out.println("dans lecture" + nomFichier);
+		File fichierDeTravail;
+		if(nomFichier.equals("temporaire")) {
+			fichierDeTravail = new File("temporaire");
+
 		}else {
-			fichierSauvegarde =  nomFichier;
+			fichierDeTravail = new File(nomFichier);
+			System.out.println(nomFichier);
 		}
 		ObjectInputStream fluxEntree = null;
-		File fichierDeTravail = new File(fichierSauvegarde);
+
 
 		try {
 			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
@@ -1411,24 +1414,25 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	private void nouvellePartie(boolean isNouvelle, String nomFichier) {
+		System.out.println("nouvelle" + nomFichier);
 		if (!isNouvelle) {
 			// partie chage
-			System.out.println("scene partie charge " + isNouvelle);
-			
-			if(nomFichier.endsWith(".niv")) {
+			if(nomFichier.endsWith("Niv")) {
 				lectureNiveau(nomFichier);
-			if(nomFichier.endsWith(".save")) {
-				lectureFichierSauvegarde(nomFichier, false);
+			}else if(nomFichier.endsWith("Save") || nomFichier.equals("temporaire")) {
+				System.out.println("dans nouvelle " + nomFichier);
+				lectureFichierSauvegarde(nomFichier);
 				coeurs.setCombien(nombreVies);
 			}
 			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
-			}
+
 		} else {
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
 			personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 		}
+
 	}
 
 	public void addSceneListener(SceneListener ecouteur) {
@@ -1632,7 +1636,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 	}
-	
+
 	//Par Miora R. Rakoto
 	/**
 	 * Cette methode permet de sauvegarder un niveau
@@ -1662,38 +1666,38 @@ public class Scene extends JPanel implements Runnable {
 		} // fin finally
 	}
 
-	
+
 
 	private void collisionLaserPrisme() {
-		
-		
+
+
 		for (int i = 0; i < listeLasers.size(); i++) {
-			
+
 			for (int j = 0; j < listePrisme.size(); j++) {
-				
+
 				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire()) ) {
 
 					System.out.println(j);
 					prisme = listePrisme.get(j);
 					laser = listeLasers.get(i);
-					
+
 					j = listePrisme.size();
 					i = listeLasers.size();
-					
+
 					calculRefractionPrisme(laser,prisme);
 					//premiereFoisPrisme = false;
 				} 
-				
+
 			}
 		}
 
-		
+
 	}
 
-	
+
 
 	private void calculRefractionPrisme(Laser laser, Prisme prismes) {
-	
+
 		System.out.println("------------------------------------------------------------------------------");
 		Vecteur T = new Vecteur();
 		Vecteur V = laser.getPositionHaut();
@@ -1701,110 +1705,110 @@ public class Scene extends JPanel implements Runnable {
 		Vecteur E = V.multiplie(-1);
 		double n = 1.0/n2;
 		System.out.println("la position laser avant refraction : "+ laser.getPositionHaut() );
-		
-			System.out.println("normal"+ N );
-			System.out.println("position: "+ prismes.getP1());
-			T = V.multiplie(n).additionne(N.multiplie((n*(E.prodScalaire(N)) - Math.sqrt(1-Math.pow(n, 2) * (1-(Math.pow(E.prodScalaire(N), 2)))))));
-			T = T.multiplie(-1);
-		
-	
+
+		System.out.println("normal"+ N );
+		System.out.println("position: "+ prismes.getP1());
+		T = V.multiplie(n).additionne(N.multiplie((n*(E.prodScalaire(N)) - Math.sqrt(1-Math.pow(n, 2) * (1-(Math.pow(E.prodScalaire(N), 2)))))));
+		T = T.multiplie(-1);
+
+
 		//laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(),  T.getY()));
-			double angleAncien= laser.getAngleTir(); 
+		double angleAncien= laser.getAngleTir(); 
 		System.out.println("l'angle du laser avant refraction: "+ angleAncien);
-		
+
 		laser.setAngleTir(Math.toDegrees(Math.atan(T.getY()/T.getX())));
 		System.out.println("l'angle du laser apres refraction: "+ laser.getAngleTir());
-		
+
 		System.out.println("la position laser apres refraction : "+ laser.getPositionHaut() );		
-		
+
 		double angleLaser = laser.getAngleTir();
 		listeLasers.add(new Laser(laser.getPositionHaut().additionne(new Vecteur(0.01 ,0)), angleLaser+0.01, laser.getVitesse()));
-		
-			repaint();
-		
+
+		repaint();
+
 	}
 
-	
+
 
 	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
-		
+
 		//System.out.println("position p1"+ prisme.getP1());
 		//System.out.println("position p2"+ prisme.getP2());
 		//System.out.println("position p3"+ prisme.getP3());
-		
-		
-		
+
+
+
 		double resultat13 = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
 		double resultat12 = prisme.getLigne12().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
 		double resultat23 = prisme.getLigne23().ptSegDist(laser.getPositionHaut().getX(), laser.getPositionHaut().getY());
 		//System.out.println("resultat pour la ligne 13:"+resultat13); 
 		//System.out.println("resultat pour la ligne 12:"+resultat12); 
 		//System.out.println("resultat pour la ligne 23:"+resultat13); 
-		
-		
-			
+
+
+
 		if(resultat13 > 0 && resultat13 < 0.80) {
 			System.out.println("jai touché ligne13 "+ resultat13);
 			ligne13 = true;
 			ligne12 = false;
 			ligne23 = false;
-			
+
 			if(angle > 90) {
-				
+
 				double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
 				double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
-				
+
 				return new Vecteur (yNormal, xNormal);
-				
+
 			}else {
-			
-			double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
-			double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
-			
-			return new Vecteur (-yNormal, xNormal);
+
+				double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
+				double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
+
+				return new Vecteur (-yNormal, xNormal);
 			}
-			
-			
-			
+
+
+
 		}else if(resultat12 > 0 && resultat12 < 0.80){
 			// a refaire le calcul est pas bon 
-			
+
 			System.out.println("jai toucher la ligne12 "+ resultat12);
 			ligne13 = false;
 			ligne12 = true;
 			ligne23 = false;
-			
+
 			double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
 			//double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
-			
+
 			return new Vecteur (xNormal, 0.0);
-			
+
 		}else if(resultat23 > 0 && resultat23 < 0.80){
 			System.out.println("jai toucher la ligne23 "+resultat23);
 			ligne13 = false;
 			ligne12 = false;
 			ligne23 = true;
-			
+
 			if(angle > 90) {
-				
+
 				double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
 				double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
-				
+
 				return new Vecteur (-yNormal, xNormal);
-				
+
 			}else{
-			
-			double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
-			double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
-			
-			return new Vecteur (-yNormal, xNormal);
+
+				double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+				double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+
+				return new Vecteur (-yNormal, xNormal);
 			}
 		}
-		
+
 		return new Vecteur ();
-	
+
 	}
-	
-	
-	
+
+
+
 }
