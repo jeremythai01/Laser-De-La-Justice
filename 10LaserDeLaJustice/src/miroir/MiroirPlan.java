@@ -24,15 +24,15 @@ public class MiroirPlan implements Dessinable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private double angle=0,x=0,y=0;
+	private double angle,x=0,y=0;
 	private Rectangle2D.Double miroir;
 
-	private double longueur = 10; 
-	private Shape miroirTransfo;
+	private double longueur = 20; 
 	private Vecteur normal;
 	private Vecteur position;
 	private Vecteur positionBas;
-	private double largeur = 0.05;
+	private double largeur = 0.1;
+	private Shape transfo;
 
 
 	public Vecteur getPositionBas() {
@@ -47,9 +47,6 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public void setPosition(Vecteur position) {
 		this.position = position;
 	}
-
-
-
 	private boolean dessin = false;
 	private Area aireMiroir;
 
@@ -64,8 +61,8 @@ public class MiroirPlan implements Dessinable, Serializable {
 		super();
 		this.position = position;
 		this.angle = angle;
-		positionBas = new Vecteur ( position.getX() - (longueur * Math.cos(Math.toRadians(angle))),
-				position.getY() + (longueur * Math.sin(Math.toRadians(angle))));
+		positionBas = new Vecteur ( position.getX() + (longueur * Math.cos(Math.toRadians(angle))),
+				position.getY() - (longueur * Math.sin(Math.toRadians(angle))));
 	}
 
 	//Par Miora
@@ -97,12 +94,10 @@ public class MiroirPlan implements Dessinable, Serializable {
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocale = new AffineTransform(mat);
-		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, this.largeur);
-		//Ellipse2D.Double haut = new Ellipse2D.Double(position.getX()-0.05, position.getY()-0.05, 0.1, 0.1);
-		//g2d.draw(matLocale.createTransformedShape(haut));
-		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
-		g2d.draw(miroirTransfo); //dessine en pixel
+		Rectangle2D.Double miroir = new Rectangle2D.Double(position.getX(), position.getY(), longueur,this.largeur);
+		matLocale.rotate(Math.toRadians(-angle),position.getX(), position.getY());
+		transfo = matLocale.createTransformedShape(miroir);
+		g2d.fill(transfo);
 	}
 
 	//Par Miora
@@ -111,15 +106,10 @@ public class MiroirPlan implements Dessinable, Serializable {
 	 * @return aire du miroir
 	 */
 	public Area getAireMiroirPixel() {
-		/*AffineTransform matLocale = new AffineTransform();
-		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.01);
-		return new Area(miroir);
-		 */
-		AffineTransform matLocal = new AffineTransform();
-		matLocal.rotate(Math.toRadians(-angle), position.getX(), position.getY());
-		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(),longueur, this.largeur);
-		return new Area(matLocal.createTransformedShape(((rect))));
+		AffineTransform matLocale = new AffineTransform();
+		matLocale.rotate(Math.toRadians(-angle),position.getX(), position.getY());
+		Rectangle2D.Double aireMir = new Rectangle2D.Double(position.getX(), position.getY(), longueur,this.largeur);
+		return new Area (matLocale.createTransformedShape(aireMir));
 	}
 
 	//Par Miora
@@ -131,17 +121,9 @@ public class MiroirPlan implements Dessinable, Serializable {
 		double angleMiroirNormal;
 		angleMiroirNormal = Math.toRadians(angle);
 		Vecteur vecMiroir = new Vecteur (Math.cos(angleMiroirNormal), Math.sin(angleMiroirNormal));
+		System.out.println("miroir orientation dir " + vecMiroir);
 		normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
 		return normal;
-	}
-
-	//Par Miora
-	/**
-	 * Methode qui retourne le miroir dans la geometrie Line2D
-	 */
-	public Line2D.Double getLine(){
-		Line2D.Double line = new Line2D.Double(position.getX(), position.getY(), positionBas.getX(), positionBas.getY());
-		return line;
 	}
 
 	//Arezki 
