@@ -325,7 +325,6 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				personnage.deplacerLePersoSelonTouche(e);
-				tirLaser(e);
 				changerAngle(e);
 				//modeTriche();
 			}
@@ -333,6 +332,7 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			// Jeremy Thai
 			public void keyReleased(KeyEvent e) {
+				tirLaser(e);
 				personnage.relacheTouche(e);
 
 			}
@@ -376,7 +376,7 @@ public class Scene extends JPanel implements Runnable {
 		}catch (ConcurrentModificationException e) {
 		}
 
-
+		detectionCollisionPersonnageMur();
 		detectionCollisionPouvoirsPersonnages();
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
@@ -941,7 +941,6 @@ public class Scene extends JPanel implements Runnable {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
-				personnage.neBougePas(); // Pour que 1 laser soit tirer a la fois
 
 				if (couleurPersoLaser == false) {
 					System.out.println("tir laser false");
@@ -1810,5 +1809,18 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 
+	
+	private void detectionCollisionPersonnageMur() {
+		
+		
+		if(personnage.getPositionX()<= 0)
+			personnage.setPositionX(0);
+		
+		
+		if(personnage.getPositionX() + personnage.getLARGEUR_PERSO() >=LARGEUR_DU_MONDE)
+			personnage.setPositionX(LARGEUR_DU_MONDE- personnage.getLARGEUR_PERSO());
+	}
+	
+	
 
 }
