@@ -946,16 +946,14 @@ public class Scene extends JPanel implements Runnable {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
+				double x = personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle));
+				double y = HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle));
 				if (couleurPersoLaser == false) {
-					System.out.println("tir laser false");
-					listeLasers.add(new Laser(new Vecteur(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
-							HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO()), angle, vitesseLaser));
+					
+					listeLasers.add(new Laser( new Vecteur(x,y), angle, vitesseLaser));
 				} else {
-					System.out.println("tir laser false");
 					listeLasers.add(new Laser(
-							new Vecteur(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
-									HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO()),
-							angle, vitesseLaser, couleurLaser));
+							new Vecteur(x,y), angle, vitesseLaser, couleurLaser));
 				}
 				son.joue("tir");
 			}
@@ -1228,17 +1226,13 @@ public class Scene extends JPanel implements Runnable {
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				// System.out.println("wheel rotation:"+ arg0.getWheelRotation());
 				if (arg0.getWheelRotation() == -1 && (valeurAngleRoulette >= 0)) {
 					valeurAngleRoulette -= 0.05;
 					setAngle(valeurAngleRoulette);
-					System.out.println(valeurAngleRoulette);
 
 				} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
 					valeurAngleRoulette += 0.05;
 					setAngle(valeurAngleRoulette);
-					System.out.println();
-					System.out.println(valeurAngleRoulette);
 				}
 
 				enMouvement = true;
