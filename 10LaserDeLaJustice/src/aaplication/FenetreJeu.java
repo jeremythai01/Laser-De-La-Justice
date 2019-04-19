@@ -102,7 +102,7 @@ public class FenetreJeu extends JFrame {
 		this.isNouvelle = isNouvelle;
 		this.nomFichier = nomFichier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1390, 1084);
+		setBounds(100, 100, 1389, 1058);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(new Color(255, 175, 175));
@@ -171,11 +171,11 @@ public class FenetreJeu extends JFrame {
 		JButton btnEnregistrer = new JButton("enregistrer");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+			//	sceneFinale.ecritureFichierSauvegarde();
+				donneFocusALasceneFinale();
 				sceneFinale.arreter();
 				tempsJeu.stop();
-				String nomSauv= JOptionPane.showInputDialog(null, "Entrez le nom de la sauvegarde");
-				sceneFinale.ecritureFichierSauvegarde(nomSauv,false);
-				donneFocusALasceneFinale();
 				JOptionPane.showMessageDialog(null, "Votre partie a été sauvegardée");
 			}
 		});
@@ -271,11 +271,6 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnPetiteBalle);
 
 		btnPrisme = new JButton("prisme");
-		btnPrisme.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				sceneFinale.ajoutPrisme();
-			}
-		});
 		btnPrisme.setEnabled(false);
 		btnPrisme.setBounds(1443, 811, 105, 23);
 		contentPane.add(btnPrisme);
@@ -652,7 +647,7 @@ public class FenetreJeu extends JFrame {
 		optionJeu = new Options();
 		optionJeu.setDansScene(true);
 		optionJeu.setVisible(true);
-		sceneFinale.ecritureFichierSauvegarde("temporaire",true); // je sauvegarde
+	//	sceneFinale.ecritureFichierSauvegarde(); // je sauvegarde
 		sceneFinale.arreter();
 		tempsJeu.stop();
 		setVisible(false);
