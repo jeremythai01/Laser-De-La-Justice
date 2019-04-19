@@ -164,6 +164,9 @@ public class Personnage implements Dessinable, Serializable {
 		if(code == toucheDroite) {
 			droite = true;
 		}
+		
+		if (code == KeyEvent.VK_SPACE) 
+			bougePas = true;
 		update();
 	}
 
@@ -249,6 +252,12 @@ public class Personnage implements Dessinable, Serializable {
 	public void neBougePas() {
 		bougePas = true; 
 		update();
+	}
+	
+	public void neBougePasLorsqueTir(KeyEvent e) {
+		int code = e.getKeyCode();
+		if (code == KeyEvent.VK_SPACE) 
+			neBougePas();
 	}
 
 	/**
