@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.SocketOptions;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -52,6 +53,7 @@ import physique.Coeurs;
 import physique.Laser;
 import physique.MoteurPhysique;
 import prisme.Prisme;
+import son.Bruit;
 import utilite.ModeleAffichage;
 import utilite.OutilsMath;
 
@@ -159,6 +161,7 @@ public class Scene extends JPanel implements Runnable {
 	private double compteurVitesse = 0 ;
 	private double compteurRalenti= 0 ;
 	private double compteurBouclier= 0 ;
+	private Bruit son = new Bruit();
 
 
 
@@ -172,7 +175,8 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	public Scene(boolean isPartieNouveau, String nomFichier) {
-
+		
+		
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				setAngleRoulette();
@@ -511,6 +515,7 @@ public class Scene extends JPanel implements Runnable {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
 			compteur++;
+			son.joueMusique("themesong");
 			calculerUneIterationPhysique();
 			qtRotation=qtRotation+0.2;
 			for(TrouNoir trou : listeTrou) {
@@ -941,7 +946,6 @@ public class Scene extends JPanel implements Runnable {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
-
 				if (couleurPersoLaser == false) {
 					System.out.println("tir laser false");
 					listeLasers.add(new Laser(new Vecteur(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
@@ -953,7 +957,7 @@ public class Scene extends JPanel implements Runnable {
 									HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO()),
 							angle, vitesseLaser, couleurLaser));
 				}
-
+				son.joue("tir");
 			}
 		}
 	}
@@ -1494,26 +1498,30 @@ public class Scene extends JPanel implements Runnable {
 
 		case 1: 
 			pouvoir = new BoostVitesse( position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
 			listePouvoirs.add(pouvoir);
+			son.joue("pouvoirApparait");
 			break;
 
 		case 2: 
 			pouvoir = new Bouclier( position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
 			listePouvoirs.add(pouvoir);
+			son.joue("pouvoirApparait");
 			break;
 
 		case 3: 
 			pouvoir = new Ralenti( position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
 			listePouvoirs.add(pouvoir);
+			son.joue("pouvoirApparait");
 			break;
 
 		case 4: 
 			pouvoir = new AjoutVie( position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 5);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
 			listePouvoirs.add(pouvoir);
+			son.joue("pouvoirApparait");
 			break;
 		}
 	}
@@ -1567,6 +1575,7 @@ public class Scene extends JPanel implements Runnable {
 
 		for(Pouvoir pouvoir : listePouvoirs) {
 			if(enIntersection(pouvoir.getAire(), personnage.getAire() )) {
+				son.joue("pouvoirActive");
 				pouvoir.activeEffet(this);
 				ajoutCompteurs();
 				listePouvoirs.remove(pouvoir);

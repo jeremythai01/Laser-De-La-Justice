@@ -26,6 +26,7 @@ import interfaces.SceneListener;
 
 import objets.TrouNoir;
 import personnage.Personnage;
+import son.Bruit;
 import utilite.ModeleAffichage;
 
 import java.awt.event.KeyAdapter;
@@ -95,6 +96,7 @@ public class SceneTest extends JPanel implements Runnable {
 	private boolean vitessePerso = false;
 	private double qtRotation;
 
+	private Bruit son = new Bruit();
 	/**
 	 * Create the panel.
 	 */
@@ -301,10 +303,9 @@ public class SceneTest extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		while (enCoursAnimation) {	
-
+			son.joueMusique("themesong");
 			calculerUneIterationPhysique();
 			updateDureeCompteurs();
-
 			repaint();
 			try {
 				Thread.sleep(tempsDuSleep);
@@ -468,9 +469,10 @@ public class SceneTest extends JPanel implements Runnable {
 					if (perso.isBouclierActive()) {
 						perso.setBouclierActive(false);
 					}
+					son.joue("decision");
 				}
 		}
-
+		
 	}
 
 	private void shootEtAddLaser(MouseEvent e, Personnage perso) {
@@ -480,6 +482,7 @@ public class SceneTest extends JPanel implements Runnable {
 				listeLasers.add(
 						new Laser(new Vecteur(
 								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, vitesseLaser));
+				son.joue("tir");
 			}
 		}
 	}

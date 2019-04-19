@@ -30,6 +30,8 @@ import javax.swing.event.ChangeListener;
 
 import interfaces.SceneListener;
 import options.Options;
+import son.Bruit;
+
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
@@ -66,6 +68,10 @@ public class FenetreJeu extends JFrame {
 	private static boolean  isNouvelle = true, isOptiPerso = true;
 	private JProgressBar barreTempsDuJeu;
 
+	
+	private Bruit son = new Bruit();
+	
+	
 	// Par Arezki 
 	/**
 	 * Lancement de l'application
@@ -477,6 +483,8 @@ public class FenetreJeu extends JFrame {
 
 		listener = new ActionListener() {
 
+			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -489,6 +497,7 @@ public class FenetreJeu extends JFrame {
 					//sceneFinale.setTempsTotalEcoule(barreTempsDuJeu.getValue());
 
 				} else {
+					son.joue("gameover");
 					tempsJeu.stop();
 					sceneFinale.arreter();
 
