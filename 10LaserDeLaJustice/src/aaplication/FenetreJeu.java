@@ -54,11 +54,12 @@ public class FenetreJeu extends JFrame {
 	private JButton btnMiroirConcave;
 	private JButton btnMiroirConvexe;
 	private JButton btnMiroirPlan;
-	private JLabel lblValeur;
 	private Scene sceneFinale;
 	private Options optionJeu;
 
 	private boolean isNouveauOption = true;
+	boolean triche = false;
+	
 	private static String nomFichier;
 
 
@@ -102,7 +103,7 @@ public class FenetreJeu extends JFrame {
 		this.isNouvelle = isNouvelle;
 		this.nomFichier = nomFichier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1389, 1058);
+		setBounds(100, 100, 1507, 1056);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(new Color(255, 175, 175));
@@ -121,9 +122,9 @@ public class FenetreJeu extends JFrame {
 				donneFocusALasceneFinale();
 			}
 		});
-		btnPlay.setBounds(44, 61, 40, 38);
+		btnPlay.setBounds(44, 61, 96, 38);
 		contentPane.add(btnPlay);
-		associerBoutonAvecImage(btnPlay, "play.png");
+		//associerBoutonAvecImage(btnPlay, "play.png");
 
 		JButton btnPause = new JButton("pause");
 		btnPause.addActionListener(new ActionListener() {
@@ -132,9 +133,9 @@ public class FenetreJeu extends JFrame {
 				tempsJeu.stop();
 			}
 		});
-		btnPause.setBounds(94, 61, 40, 38);
+		btnPause.setBounds(150, 61, 110, 38);
 		contentPane.add(btnPause);
-		associerBoutonAvecImage(btnPause, "pause.jpg");
+		//associerBoutonAvecImage(btnPause, "pause.jpg");
 
 		btnImage = new JButton("image");
 		btnImage.addActionListener(new ActionListener() {
@@ -143,9 +144,9 @@ public class FenetreJeu extends JFrame {
 				repaint();
 			}
 		});
-		btnImage.setBounds(144, 61, 40, 38);
+		btnImage.setBounds(270, 61, 122, 38);
 		contentPane.add(btnImage);
-		associerBoutonAvecImage(btnImage, "rejouer.png");
+		//associerBoutonAvecImage(btnImage, "rejouer.png");
 
 		JButton btnTutoriel = new JButton("Tutoriel");
 		btnTutoriel.addActionListener(new ActionListener() {
@@ -155,7 +156,7 @@ public class FenetreJeu extends JFrame {
 				fenetreTuto.setVisible(true);
 			}
 		});
-		btnTutoriel.setBounds(609, 0, 89, 23);
+		btnTutoriel.setBounds(508, 61, 96, 38);
 		contentPane.add(btnTutoriel);
 
 		JButton btnOption = new JButton("Option");
@@ -164,11 +165,11 @@ public class FenetreJeu extends JFrame {
 				choixOption();
 			}
 		});
-		btnOption.setBounds(1293, 61, 40, 38);
+		btnOption.setBounds(1101, 61, 110, 38);
 		contentPane.add(btnOption);
-		associerBoutonAvecImage(btnOption, "reglage.png");
+		//associerBoutonAvecImage(btnOption, "reglage.png");
 
-		JButton btnEnregistrer = new JButton("enregistrer");
+		JButton btnEnregistrer = new JButton("Enregistrer partie\r\n");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -179,9 +180,9 @@ public class FenetreJeu extends JFrame {
 				JOptionPane.showMessageDialog(null, "Votre partie a été sauvegardée");
 			}
 		});
-		btnEnregistrer.setBounds(1193, 61, 40, 38);
+		btnEnregistrer.setBounds(776, 61, 167, 38);
 		contentPane.add(btnEnregistrer);
-		associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
+		//associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
 
 		btnMiroirPlan = new JButton("miroir Plan");
 		btnMiroirPlan.addActionListener(new ActionListener() {
@@ -191,7 +192,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirPlan.setEnabled(false);
-		btnMiroirPlan.setBounds(1443, 107, 105, 26);
+		btnMiroirPlan.setBounds(1004, 977, 105, 23);
 		contentPane.add(btnMiroirPlan);
 
 		btnMiroirConvexe = new JButton("miroir Convexe");
@@ -202,7 +203,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirConvexe.setEnabled(false);
-		btnMiroirConvexe.setBounds(1463, 171, 69, 47);
+		btnMiroirConvexe.setBounds(1004, 943, 105, 23);
 		contentPane.add(btnMiroirConvexe);
 
 		btnMiroirConcave = new JButton("miroir Concave");
@@ -213,7 +214,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirConcave.setEnabled(false);
-		btnMiroirConcave.setBounds(1463, 246, 69, 47);
+		btnMiroirConcave.setBounds(1004, 909, 105, 23);
 		contentPane.add(btnMiroirConcave);
 
 		btnTrouNoir = new JButton("Trou Noir");
@@ -224,7 +225,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnTrouNoir.setEnabled(false);
-		btnTrouNoir.setBounds(1479, 326, 53, 47);
+		btnTrouNoir.setBounds(905, 943, 89, 23);
 		contentPane.add(btnTrouNoir);
 
 		btnBlocDeau = new JButton("bloc D'eau ");
@@ -235,7 +236,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnBlocDeau.setEnabled(false);
-		btnBlocDeau.setBounds(1465, 409, 67, 47);
+		btnBlocDeau.setBounds(905, 909, 89, 23);
 		contentPane.add(btnBlocDeau);
 
 		btnGrosseBalle = new JButton("Grosse Balle");
@@ -245,7 +246,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnGrosseBalle.setEnabled(false);
-		btnGrosseBalle.setBounds(1481, 500, 53, 47);
+		btnGrosseBalle.setBounds(786, 909, 96, 23);
 		contentPane.add(btnGrosseBalle);
 
 		btnMediumBalle = new JButton("Medium Balle");
@@ -256,7 +257,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMediumBalle.setEnabled(false);
-		btnMediumBalle.setBounds(1481, 604, 51, 47);
+		btnMediumBalle.setBounds(786, 943, 96, 23);
 		contentPane.add(btnMediumBalle);
 
 		btnPetiteBalle = new JButton("petite balle ");
@@ -267,133 +268,44 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnPetiteBalle.setEnabled(false);
-		btnPetiteBalle.setBounds(1481, 706, 53, 47);
+		btnPetiteBalle.setBounds(786, 975, 96, 26);
 		contentPane.add(btnPetiteBalle);
 
 		btnPrisme = new JButton("prisme");
-		btnPrisme.setEnabled(false);
-		btnPrisme.setBounds(1443, 811, 105, 23);
-		contentPane.add(btnPrisme);
-
-		JSlider sldAngle = new JSlider();
-		sldAngle.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				// lblValeur.setText(""+(int)sldAngle.getValue());
+		btnPrisme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneFinale.ajoutPrisme();
 			}
 		});
-		sldAngle.setFocusable(false);
-		sldAngle.setMaximum(180);
-		sldAngle.setBounds(1444, 909, 200, 26);
-		contentPane.add(sldAngle);
-
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.BLACK);
-		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(1380, 0, 9, 997);
-		contentPane.add(separator);
-
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setForeground(Color.DARK_GRAY);
-		separator_1.setBounds(30, 107, 1303, 2);
-		contentPane.add(separator_1);
-
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setForeground(Color.DARK_GRAY);
-		separator_2.setOrientation(SwingConstants.VERTICAL);
-		separator_2.setBounds(30, 107, 9, 727);
-		contentPane.add(separator_2);
-
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setForeground(Color.DARK_GRAY);
-		separator_3.setBounds(30, 832, 1303, 2);
-		contentPane.add(separator_3);
-
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setOrientation(SwingConstants.VERTICAL);
-		separator_4.setForeground(Color.DARK_GRAY);
-		separator_4.setBounds(1331, 107, 9, 727);
-		contentPane.add(separator_4);
-
-		JLabel lblMiroirPlan = new JLabel("Miroir Plan");
-		lblMiroirPlan.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblMiroirPlan.setBounds(1581, 111, 117, 14);
-		contentPane.add(lblMiroirPlan);
-
-		JLabel lblMiroirConvexe = new JLabel("Miroir Convexe");
-		lblMiroirConvexe.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblMiroirConvexe.setBounds(1581, 184, 117, 14);
-		contentPane.add(lblMiroirConvexe);
-
-		JLabel lblMiroirConcave = new JLabel("Miroir Concave");
-		lblMiroirConcave.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblMiroirConcave.setBounds(1581, 259, 117, 14);
-		contentPane.add(lblMiroirConcave);
-
-		JLabel lblTrouNoir = new JLabel("Trou Noir");
-		lblTrouNoir.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblTrouNoir.setBounds(1581, 339, 117, 14);
-		contentPane.add(lblTrouNoir);
-
-		JLabel lblBlocDeau = new JLabel("Bloc d'eau ");
-		lblBlocDeau.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblBlocDeau.setBounds(1581, 422, 117, 14);
-		contentPane.add(lblBlocDeau);
-
-		JLabel lblGrosseBalle = new JLabel("Grosse Balle");
-		lblGrosseBalle.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblGrosseBalle.setBounds(1581, 513, 117, 14);
-		contentPane.add(lblGrosseBalle);
-
-		JLabel lblMediumBalle = new JLabel("Medium Balle");
-		lblMediumBalle.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblMediumBalle.setBounds(1569, 617, 117, 14);
-		contentPane.add(lblMediumBalle);
-
-		JLabel lblPetiteBalle = new JLabel("Petite balle");
-		lblPetiteBalle.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblPetiteBalle.setBounds(1581, 719, 117, 14);
-		contentPane.add(lblPetiteBalle);
-
-		JLabel lblPrisme = new JLabel("Prisme");
-		lblPrisme.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblPrisme.setBounds(1581, 815, 89, 14);
-		contentPane.add(lblPrisme);
-
-		JLabel lblAngle_1 = new JLabel("Angle: ");
-		lblAngle_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblAngle_1.setBounds(1447, 884, 69, 23);
-		contentPane.add(lblAngle_1);
-
-		lblValeur = new JLabel("Valeur");
-		lblValeur.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblValeur.setBounds(1502, 888, 60, 14);
-		contentPane.add(lblValeur);
+		btnPrisme.setEnabled(false);
+		btnPrisme.setBounds(905, 977, 89, 23);
+		contentPane.add(btnPrisme);
 
 		JSeparator separator_5 = new JSeparator();
 		separator_5.setForeground(SystemColor.activeCaption);
-		separator_5.setBounds(30, 852, 900, 2);
+		separator_5.setBounds(30, 852, 1114, 2);
 		contentPane.add(separator_5);
 
 		JSeparator separator_6 = new JSeparator();
 		separator_6.setOrientation(SwingConstants.VERTICAL);
-		separator_6.setBounds(30, 852, 9, 125);
+		separator_6.setBounds(30, 852, 9, 198);
 		contentPane.add(separator_6);
 
 		JSeparator separator_7 = new JSeparator();
 		separator_7.setForeground(SystemColor.activeCaption);
-		separator_7.setBounds(30, 975, 900, 2);
+		separator_7.setBounds(30, 1048, 1114, 2);
 		contentPane.add(separator_7);
 
 		JSeparator separator_8 = new JSeparator();
 		separator_8.setOrientation(SwingConstants.VERTICAL);
-		separator_8.setBounds(930, 852, 9, 125);
+		separator_8.setBounds(1143, 852, 9, 198);
 		contentPane.add(separator_8);
 
-		JLabel lblditeur = new JLabel("\u00C9DITEUR");
-		lblditeur.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 30));
+		JLabel lblditeur = new JLabel("Mini \u00E9diteur");
+		lblditeur.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 17));
 		lblditeur.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblditeur.setHorizontalAlignment(SwingConstants.CENTER);
-		lblditeur.setBounds(1409, 25, 362, 59);
+		lblditeur.setBounds(776, 848, 105, 59);
 		contentPane.add(lblditeur);
 
 		JLabel lblLesSorties = new JLabel("Les sorties: ");
@@ -401,7 +313,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(lblLesSorties);
 
 		sceneFinale = new Scene(isNouvelle, nomFichier);
-		sceneFinale.setBounds(30, 107, 1303, 727);
+		sceneFinale.setBounds(44, 110, 1405, 685);
 		contentPane.add(sceneFinale);
 		
 		sceneFinale.addSceneListener(new SceneListener() {
@@ -422,17 +334,7 @@ public class FenetreJeu extends JFrame {
 	
 
 		toucheScene();
-		JButton btnVidersceneFinale = new JButton("Vider sceneFinale");
-		btnVidersceneFinale.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sceneFinale.reinitialiserDessin();
-				donneFocusALasceneFinale();
-
-			}
-		});
-		btnVidersceneFinale.setBounds(1143, 61, 40, 38);
-		contentPane.add(btnVidersceneFinale);
-		associerBoutonAvecImage(btnVidersceneFinale, "corbeille.png");
+		//associerBoutonAvecImage(btnVidersceneFinale, "corbeille.png");
 
 		barreTempsDuJeu = new JProgressBar();
 		barreTempsDuJeu.setMaximum(60);
@@ -442,10 +344,10 @@ public class FenetreJeu extends JFrame {
 		barreTempsDuJeu.setOpaque(true);
 
 		barreTempsDuJeu.setStringPainted(true);
-		barreTempsDuJeu.setBounds(194, 61, 939, 38);
+		barreTempsDuJeu.setBounds(44, 796, 1405, 38);
 		contentPane.add(barreTempsDuJeu);
 
-		JToggleButton btnEditeur = new JToggleButton("New toggle button");
+		JToggleButton btnEditeur = new JToggleButton("Editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(btnEditeur.isSelected()) {
@@ -462,7 +364,7 @@ public class FenetreJeu extends JFrame {
 				}
 			}
 		});
-		btnEditeur.setBounds(1243, 61, 40, 38);
+		btnEditeur.setBounds(953, 61, 138, 38);
 		contentPane.add(btnEditeur);
 
 		JButton btnDemarrage = new JButton("demarrage\r\n");
@@ -473,7 +375,7 @@ public class FenetreJeu extends JFrame {
 
 			}
 		});
-		btnDemarrage.setBounds(0, 0, 89, 23);
+		btnDemarrage.setBounds(402, 62, 96, 36);
 		contentPane.add(btnDemarrage);
 
 		listener = new ActionListener() {
@@ -482,8 +384,9 @@ public class FenetreJeu extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				// TODO Auto-generated method stub
-
+				if(!triche)
 				if (barreTempsDuJeu.getValue() > 00 && secondes >= 0) {
 
 					barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
@@ -505,7 +408,7 @@ public class FenetreJeu extends JFrame {
 
 		tempsJeu = new Timer(1000, listener);
 
-
+		/*
 		associerBoutonAvecImage(btnBlocDeau, "Bloc.JPG");
 		associerBoutonAvecImage(btnGrosseBalle, "GrBalle.JPG");
 		associerBoutonAvecImage(btnMediumBalle, "MedBalle.JPG");
@@ -514,16 +417,32 @@ public class FenetreJeu extends JFrame {
 		associerBoutonAvecImage(btnPetiteBalle, "PetBalle.JPG");
 		associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
 		associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
-		
-		JButton btnSaveNiveau = new JButton("Sauver niveau");
+		*/
+		JButton btnSaveNiveau = new JButton("Enregistrer niveau\r\n");
 		btnSaveNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
 				sceneFinale.ecritureNiveau(nomSauv);
 			}
 		});
-		btnSaveNiveau.setBounds(929, 25, 153, 23);
+		btnSaveNiveau.setBounds(614, 61, 153, 38);
 		contentPane.add(btnSaveNiveau);
+		
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(757, 852, 9, 198);
+		contentPane.add(separator);
+		
+		JToggleButton tglbtnTriche = new JToggleButton("Triche\r\n");
+		tglbtnTriche.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(tglbtnTriche.isSelected()) {
+					triche = true;
+				}
+			}
+		});
+		tglbtnTriche.setBounds(1221, 61, 121, 38);
+		contentPane.add(tglbtnTriche);
 	}
 
 	//Par Miora
@@ -551,7 +470,6 @@ public class FenetreJeu extends JFrame {
 	 * @author Arezki
 	 */
 	public void activerEditeur() {
-		setBounds(100, 100, 1800, 1006);
 		btnBlocDeau.setEnabled(true);
 		btnGrosseBalle.setEnabled(true);
 		btnMediumBalle.setEnabled(true);
@@ -571,7 +489,6 @@ public class FenetreJeu extends JFrame {
 	 * @author Arezki
 	 */
 	public void desactiverEditeur() {
-		setBounds(100, 100, 1389, 1006);
 		btnBlocDeau.setEnabled(false);
 		btnGrosseBalle.setEnabled(false);
 		btnMediumBalle.setEnabled(false);

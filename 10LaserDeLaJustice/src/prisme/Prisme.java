@@ -44,6 +44,12 @@ public class Prisme extends JPanel implements Dessinable {
 
 	private Vecteur centre;
 
+	private double indiceRefraction = 2.0;
+	
+	private boolean science = false;
+
+
+
 	private Polygon triangles;
 	Line2D ligne13;
 	Line2D ligne12;
@@ -66,8 +72,8 @@ public class Prisme extends JPanel implements Dessinable {
 		int[] pointsY = { (int) p1.getY(), (int) p2.getY(), (int) p3.getY() };
 		// Demi cercle plein
 		triangles = new Polygon(pointsX, pointsY, 3);
-		double xCentre = ((p2.getX() + p1.getY()) / 2.0);
-		double yCentre = (p3.getY() / 2.0);
+		float xCentre = (float)((p2.getX() + p1.getY()) / 2.0);
+		float yCentre = (float)(p3.getY() / 2.0);
 
 		Point p1 = new Point((int) getP1().getX(), (int) getP1().getY());
 		Point p2 = new Point((int) getP2().getX(), (int) getP2().getY());
@@ -76,10 +82,12 @@ public class Prisme extends JPanel implements Dessinable {
 		ligne13 = new Line2D.Double(p3, p1);
 		ligne23 = new Line2D.Double(p2, p3);
 		ligne12 = new Line2D.Double(p1, p2);
-
+		if(science)
+		g.drawString("n: "+indiceRefraction,(float)(10*p1.getX()), (float)(10*p1.getY()));
+		
 		matLocal.rotate(Math.toRadians(0), p1.getX(), p1.getY());
 		// g.draw(matLocal.createTransformedShape(triangles));
-		g.setColor(Color.BLACK);
+		g.setColor(Color.yellow);
 		g.draw(matLocal.createTransformedShape(ligne13));
 		g.draw(matLocal.createTransformedShape(ligne23));
 		g.draw(matLocal.createTransformedShape(ligne12));
@@ -165,9 +173,27 @@ public class Prisme extends JPanel implements Dessinable {
 	}
 
 	public void setPosition(Vecteur pos) {
-		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
-		this.p1 = newVec;
+		p1 = pos;
+		p2 = new Vecteur(pos.getX() + 6, pos.getY());
+		p3 = new Vecteur((p2.getX() + p1.getX()) / 2, pos.getY() + 5);
 	}
 
+	
+	public double getIndiceRefraction() {
+		return indiceRefraction;
+	}
+
+	public void setIndiceRefraction(double indiceRefraction) {
+		this.indiceRefraction = indiceRefraction;
+	}
+	
+	public boolean isScience() {
+		return science;
+	}
+
+	public void setScience(boolean science) {
+		this.science = science;
+	}
+	
 	
 }

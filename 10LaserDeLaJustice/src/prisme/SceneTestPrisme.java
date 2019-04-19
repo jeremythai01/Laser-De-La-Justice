@@ -66,11 +66,12 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private ModeleAffichage modele;
 	private AffineTransform mat;
 
+	private boolean modeScien = false;
 	private boolean ligne13 = false;
 	private boolean ligne23 = false;
 	private boolean ligne12 = false;
 	
-	private double n2 = 2.0;
+
 
 	private Laser laser = new Laser(new Vecteur(), 2, new Vecteur()) ;
 	
@@ -229,8 +230,9 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 
 		for (Prisme pris : listePrisme) {
 			pris.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			
 		}
-
+		
 		for (Balle balle : listeBalles) {
 
 			// balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
@@ -509,14 +511,15 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		Vecteur V = laser.getPositionHaut();
 		Vecteur N = normalPrisme(laser, prismes);
 		Vecteur E = V.multiplie(-1);
-		double n = 1.0/n2;
+		double n = 1.0/prisme.getIndiceRefraction();
 		System.out.println("la position laser avant refraction : "+ laser.getPositionHaut() );
 		
 			System.out.println("normal"+ N );
+			System.out.println("n: "+n);
 			System.out.println("position: "+ prismes.getP1());
 			T = V.multiplie(n).additionne(N.multiplie((n*(E.prodScalaire(N)) - Math.sqrt(1-Math.pow(n, 2) * (1-(Math.pow(E.prodScalaire(N), 2)))))));
 			T = T.multiplie(-1);
-		
+			System.out.println("T: "+ T);
 	
 		//laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(),  T.getY()));
 			double angleAncien= laser.getAngleTir(); 
@@ -610,7 +613,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			if(angle > 90) {
 				
 				double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
-				double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+				double yNormal = prisme.getP2().getY() - prisme.getP3().getY();
 				
 				return new Vecteur (-yNormal, xNormal);
 				
@@ -626,6 +629,20 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		return new Vecteur ();
 	
 	}
+
+
+	public void setSciencePrisme (boolean valeur) {
+		prisme.setScience(valeur);
+		repaint();
+	}
+
+	public void setIndiceRefractionPrisme(double valeur) {
+		prisme.setIndiceRefraction(valeur);
+		repaint();
+	}
+
+
+
 }
 
 // return collision;
