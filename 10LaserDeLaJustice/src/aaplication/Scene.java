@@ -1355,8 +1355,8 @@ public class Scene extends JPanel implements Runnable {
 		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
 		
-		//Path du dossier contenant les modifications
-		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+		//Path du dossier contenant les modifications, les options sont crees par ordinateur et non par partie
+		String direction = System.getProperty("user.home") + File.separator + "Laser de la justice";
 		direction += File.separator + "Option" + File.separator + "modifie.d3t"  ;		
 		File f = new File(direction);
 		//Fin path
@@ -1365,7 +1365,8 @@ public class Scene extends JPanel implements Runnable {
 		    fichierDeTravail = new File(direction);
 	
 		}else { //sinon version initiale
-			fichierDeTravail = new File("DonneeOption.d3t");
+			String autreDir = System.getProperty("user.rep");
+			fichierDeTravail = new File(autreDir, "DonneeOption.d3t");
 		}
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));

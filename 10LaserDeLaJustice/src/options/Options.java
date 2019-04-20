@@ -200,7 +200,7 @@ public class Options extends JFrame {
 	 */
 	
 	private void ecritureFichier(boolean isIni){
-		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+		String direction = System.getProperty("user.home") + File.separator + "Laser de la justice";
 		direction += File.separator + "Option";
 		File customDir = new File(direction);
 
