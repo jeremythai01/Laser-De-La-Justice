@@ -669,7 +669,6 @@ public class Scene extends JPanel implements Runnable {
 					Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 					Vecteur vecDirLaser = (new Vecteur(Math.cos(Math.toRadians(-laser.getAngleTir())),
 							Math.sin(Math.toRadians(-laser.getAngleTir())))).normalise();
-					;
 
 					// droite associe avec miroir
 					Vecteur ptsMiroir = listeMiroirPlan.get(n).getPosition();
@@ -1049,7 +1048,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton miroire concave
 	 */
 	public void ajoutMiroireConcave() {
-		listeMiroirConcave.add(new MiroirConcave(new Vecteur(3, 0), 4,0));
+		listeMiroirConcave.add(new MiroirConcave(new Vecteur(4,4), 4,0));
 		repaint();
 	}
 
@@ -1058,7 +1057,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton miroire convexe
 	 */
 	public void ajoutMiroireConvexe() {
-		listeMiroirConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 2, 0));
+		listeMiroirConvexe.add(new MiroirConvexe(new Vecteur(4, 4), 2, 0));
 		repaint();
 	}
 
@@ -1067,7 +1066,7 @@ public class Scene extends JPanel implements Runnable {
 	 * le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
-		listeMiroirPlan.add(new MiroirPlan(new Vecteur(1, 2), 0));
+		listeMiroirPlan.add(new MiroirPlan(new Vecteur(4, 4), 0));
 		repaint();
 
 	}
@@ -1387,9 +1386,13 @@ public class Scene extends JPanel implements Runnable {
 		 * Cette methode creer de mettre le niveau pesonnalise
 		 */
 		private void lectureNiveau(String nomFichier) {
-			final String NOM_FICHIER_OPTION = nomFichier;
+			String nomFichierNiveau = nomFichier;
 			ObjectInputStream fluxEntree = null;
-			File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+			
+			String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+			direction += File.separator + "Niveau";
+			
+			File fichierDeTravail = new File(direction, nomFichierNiveau);
 
 			try {
 				fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
@@ -1412,7 +1415,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 
 			catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture");
+				JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture niveau ");
 				e.printStackTrace();
 				System.exit(0);
 			}
@@ -1436,7 +1439,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 		
 		//Creation dossier
-		String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "Laser de la justice" ;
+		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
 
@@ -1450,12 +1453,18 @@ public class Scene extends JPanel implements Runnable {
 		//Fin creation dossier
 		
 		String nomFichierSauvegarde = nomSave;
-		File fichierDeTravail = new File(direction + "\\Sauvegarde" + nomFichierSauvegarde );
+		File fichierDeTravail = new File(direction , nomFichierSauvegarde);
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
 			fluxSortie.writeInt(nombreVies); // nombre de vie
 			fluxSortie.writeObject(listeBalles); // la liste des balles
+			fluxSortie.writeObject(listeMiroirPlan);
+			fluxSortie.writeObject(listeMiroirConcave);
+			fluxSortie.writeObject(listeMiroirConvexe);
+			fluxSortie.writeObject(listePrisme);
+			fluxSortie.writeObject(listeTrou);
+			fluxSortie.writeObject(listeBlocEau);
 			fluxSortie.writeDouble(personnage.getPositionX()); // les caracteristiques du personnage
 			if (couleurLaser == null) {
 				fluxSortie.writeObject(null);
@@ -1465,12 +1474,6 @@ public class Scene extends JPanel implements Runnable {
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
 			fluxSortie.writeDouble(tempsEcoule);
-			fluxSortie.writeObject(listeMiroirPlan);
-			fluxSortie.writeObject(listeMiroirConcave);
-			fluxSortie.writeObject(listeMiroirConvexe);
-			fluxSortie.writeObject(listePrisme);
-			fluxSortie.writeObject(listeTrou);
-			fluxSortie.writeObject(listeBlocEau);
 
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
@@ -1494,13 +1497,14 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
-		System.out.println("dans lecture" + nomFichier);
+		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+		direction += File.separator + "Sauvegarde";
 		File fichierDeTravail;
 		if (nomFichier.equals("temporaire")) {
-			fichierDeTravail = new File("temporaire");
+			fichierDeTravail = new File(direction,"temporaire");
 
 		} else {
-			fichierDeTravail = new File(nomFichier);
+			fichierDeTravail = new File(direction, nomFichier);
 			System.out.println(nomFichier);
 		}
 		ObjectInputStream fluxEntree = null;
@@ -1510,6 +1514,12 @@ public class Scene extends JPanel implements Runnable {
 			nombreVies = fluxEntree.readInt();
 			try {
 				listeBalles = (ArrayList<Balle>) fluxEntree.readObject();
+				listeMiroirPlan = (ArrayList<MiroirPlan>) fluxEntree.readObject();
+				listeMiroirConcave = (ArrayList<MiroirConcave>) fluxEntree.readObject();
+				listeMiroirConvexe = (ArrayList<MiroirConvexe>) fluxEntree.readObject();
+				listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
+				listeTrou = (ArrayList<TrouNoir>) fluxEntree.readObject();
+				listeBlocEau = (ArrayList<BlocDEau>) fluxEntree.readObject();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -1529,16 +1539,6 @@ public class Scene extends JPanel implements Runnable {
 			tempsEcoule = fluxEntree.readInt();
 			System.out.println("le temps lu dans scene " + tempsEcoule);
 			leverEvenChangementTemps();
-			try {
-				listeMiroirPlan = (ArrayList<MiroirPlan>) fluxEntree.readObject();
-				listeMiroirConcave = (ArrayList<MiroirConcave>) fluxEntree.readObject();
-				listeMiroirConvexe = (ArrayList<MiroirConvexe>) fluxEntree.readObject();
-				listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
-				listeTrou = (ArrayList<TrouNoir>) fluxEntree.readObject();
-				listeBlocEau = (ArrayList<BlocDEau>) fluxEntree.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1591,7 +1591,7 @@ public class Scene extends JPanel implements Runnable {
 		 */
 		public void ecritureNiveau(String nomSauv) {
 			//Creation dossier
-			String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "Laser de la justice" ;
+			String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 			direction += File.separator + "Niveau";
 			File customDir = new File(direction);
 
@@ -1605,7 +1605,7 @@ public class Scene extends JPanel implements Runnable {
 			//Fin creation dossier
 			
 			String nomFichierNiveau = nomSauv + ".niv";
-			File fichierDeTravail = new File(direction + "\\Niveau" + nomFichierNiveau );
+			File fichierDeTravail = new File(direction , nomFichierNiveau);
 			ObjectOutputStream fluxSortie = null;
 			try {
 				fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
