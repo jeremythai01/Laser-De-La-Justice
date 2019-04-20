@@ -1,12 +1,15 @@
 package miroir;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import geometrie.Vecteur;
@@ -15,36 +18,40 @@ import prisme.Prisme;
 
 /**
  * Classe des miroirs convexes
- * @author Miora
+ * @author Miora R. Rakoto
  */
 public class MiroirConvexe implements Dessinable {
 
 	private Vecteur position;
-	private Vecteur centreMiroir;
-	private double x=0, y=0, rayon=0;  // x et y sont les coordonne du centre de l'arc
-	private Arc2D.Double miroir ;
-	private AffineTransform matLocale;
-	private Vecteur normal; 
-	private Line2D.Double m;
-	private double hauteur =0;
-	private double largeur = 0;
-	private Ellipse2D.Double centre;
-	private Vecteur vecLaser;
-	private boolean laser=false;
+	private double rayon=0;  // x et y sont les coordonne du centre de l'arc
+	private Arc2D.Double arc; 
 	private double angle;
-	private int nbSegmentsPourApproximer = 80;
-	
-	
+	double approximation = 1;
+	private ArrayList <Ligne> listeLigne = new ArrayList <Ligne> () ;
 
 	/**
-	 * Constructeur du miroir convexe
-	 * @param position : le centre du miroir sous forme vectorielle
-	 * @param rayon
+	 * Constructeur de la classe miroirConvexe
+	 * @param position : la poisition du centre
+	 * @param rayon : le rayon
+	 * @param angle : l'angle de rotation
 	 */
-	public MiroirConvexe(Vecteur position, double rayon, double angle) {
+	public MiroirConvexe(Vecteur position, double rayon, int angle) {
 		this.position = position;
 		this.rayon = rayon;
 		this.angle = angle;
+
+		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
+		for(int i=angle; i<=180+angle; i+=approximation) {
+
+			Point2D.Double pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon,position.getY()- Math.sin(Math.toRadians(-i))*rayon );
+			listePoints.add(pts);
+
+		}
+		for(int j=0;j<= listePoints.size()-2; j++) {
+			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
+			listeLigne.add(ligne);
+
+		}
 	}
 	/**
 	 * Dessiner le miroir convexe
@@ -54,19 +61,18 @@ public class MiroirConvexe implements Dessinable {
 	 * @param largeur : largeur de la scene 
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
-		this.hauteur = hauteur;
-		this.largeur = largeur;
-		AffineTransform matLocale = new AffineTransform(mat);
-		
+		//Le miroir est dessiner avec des Line2D
+	
+
+		AffineTransform aff = new AffineTransform(mat);
 		//On tourne
-		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		
-		//On place l'arc au centre
-		matLocale.translate(-rayon/2, -rayon/2);
-		
-		miroir = new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN);
-		g2d.draw(matLocale.createTransformedShape(miroir));
-		g2d.draw(matLocale.createTransformedShape(miroir.getFrame()));
+		aff.rotate(Math.toRadians(-angle),position.getX(),position.getY());
+
+		//on dessine la courbe 
+		g2d.setColor(Color.red);
+		for(Ligne ligne : listeLigne) {
+			g2d.draw(aff.createTransformedShape(ligne));
+		}
 	}
 
 	/**
@@ -75,39 +81,28 @@ public class MiroirConvexe implements Dessinable {
 	 */
 	public Area getAireMiroirConvexe() {
 		AffineTransform matLocale = new AffineTransform();
+		
 		//On tourne
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
+		
 		//On place l'arc au centre
 		matLocale.translate(-rayon/2, -rayon/2);
-		
-		miroir = new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN);
-		return new Area (matLocale.createTransformedShape(((miroir))));
+		return new Area (new Arc2D.Double(position.getX(), position.getY(), rayon, rayon, -180, 180, Arc2D.OPEN));
+		/*Area aireMiroir = null;
+		for(Ligne ligne : listeLigne) {
+			Rectangle2D.Double fantome = new Rectangle2D.Double(ligne.getX1(), ligne.getY1(),0.07, 0.01);
+			aireMiroir.add(new Area(fantome));
+		}
+		return aireMiroir;*/
 	}
 
-	/**
-	 * Cette methode retourne la liste des 180 points qui entourent le miroir
-	 * @return : une liste de point
-	 */
-	public ArrayList<Point2D.Double> getListePoint(){
-		Point2D.Double point;
-		ArrayList<Point2D.Double> listePoints = new ArrayList<Point2D.Double>();
-		for(int i = 0; i<= 180;i++) {
-			
-			double angleRad = Math.toRadians(i);
-			point = new Point2D.Double(position.getX()+rayon*Math.cos(angleRad), position.getY() + rayon*Math.sin(angleRad));
-			listePoints.add(point);
-		}
-		return listePoints;
-	}
-	
 	/**
 	 * Cette methode retourne la normal du miroir
 	 * @param x : la position du point ou on cherche la normal
 	 * @return : le vecteur normal
 	 */
-	public Vecteur getNormalPosition(Vecteur x) {
-		
-		return x.soustrait(centreMiroir) ;
+	public Vecteur getNormal(Vecteur x) {
+		return position.soustrait(x) ;
 	}
 	/**
 	 * Methode qui retourne la position du miroir
@@ -123,6 +118,14 @@ public class MiroirConvexe implements Dessinable {
 	public void setPosition(Vecteur position) {
 		this.position = position;
 	}
+
+	/**
+	 * Cette methode retourne la liste de Line2D utilise pour former le miroir
+	 */
+	public ArrayList<Ligne> getListeLigne() {
+		return listeLigne;
+	}
+
 
 
 }

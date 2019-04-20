@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -41,8 +42,29 @@ public class App10LaserDeLaJustice extends JFrame {
 				try {
 					App10LaserDeLaJustice frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
+					creationFichier();
+				
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+			}
+			
+			//Par Miora
+			/**
+			 * Cette methode va creer un fichier pour le sauvegarde des niveaux personnalise et
+			 * des parties sauvegardees
+			 */
+			
+			private void creationFichier() {
+				String direction = System.getProperty("user.home") + File.separator + "Desktop";
+				direction += File.separator + "Laser de la justice";
+				File customDir = new File(direction);
+				if (customDir.exists()) {
+				    System.out.println(customDir + " already exists");
+				} else if (customDir.mkdirs()) {
+				    System.out.println(customDir + " was created");
+				} else {
+				    System.out.println(customDir + " was not created");
 				}
 			}
 		});
