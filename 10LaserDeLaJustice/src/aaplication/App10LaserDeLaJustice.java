@@ -42,29 +42,29 @@ public class App10LaserDeLaJustice extends JFrame {
 				try {
 					App10LaserDeLaJustice frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
-					creationFichier();
-				
+					//	creationFichier();
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
+
 			//Par Miora
 			/**
 			 * Cette methode va creer un fichier pour le sauvegarde des niveaux personnalise et
 			 * des parties sauvegardees
 			 */
-			
+
 			private void creationFichier() {
-				String direction = System.getProperty("user.home") + File.separator + "Desktop";
+				String direction = System.getProperty("user.dir");// + File.separator + "Desktop";
 				direction += File.separator + "Laser de la justice";
 				File customDir = new File(direction);
 				if (customDir.exists()) {
-				    System.out.println(customDir + " already exists");
+					System.out.println(customDir + " already exists");
 				} else if (customDir.mkdirs()) {
-				    System.out.println(customDir + " was created");
+					System.out.println(customDir + " was created");
 				} else {
-				    System.out.println(customDir + " was not created");
+					System.out.println(customDir + " was not created");
 				}
 			}
 		});
@@ -80,9 +80,9 @@ public class App10LaserDeLaJustice extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
-		
+
+
+
 		JButton btnEditeurDeNiveau = new JButton("Editeur de niveau");
 		btnEditeurDeNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -93,7 +93,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		});
 		btnEditeurDeNiveau.setBounds(47, 101, 125, 45);
 		contentPane.add(btnEditeurDeNiveau);
-		
+
 		JButton btnQuitter = new JButton("quitter");
 		btnQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,17 +102,16 @@ public class App10LaserDeLaJustice extends JFrame {
 		});
 		btnQuitter.setBounds(473, 289, 125, 45);
 		contentPane.add(btnQuitter);
-		
+
 		JButton btnOption = new JButton("option du jeu ");
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fenetreOption = new Options();
-				fenetreOption.setVisible(true);
+				ouvrirOptions();
 			}
 		});
 		btnOption.setBounds(473, 101, 125, 45);
 		contentPane.add(btnOption);
-		
+
 		JButton button_2 = new JButton("Tutoriel et information");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -120,7 +119,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		});
 		button_2.setBounds(47, 289, 125, 45);
 		contentPane.add(button_2);
-		
+
 		JButton btnJouer = new JButton("jouer");
 		btnJouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -130,12 +129,12 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnJouer.setBounds(277, 173, 86, 85);
 		contentPane.add(btnJouer);
 		associerBoutonAvecImage(btnJouer, "play.png");
-		
+
 		//essaie delete sinon
 		//Icon imgIcon = new ImageIcon(this.getClass().getResource("ajax-loader.gif"));
 		/*JPanel panel = new JPanel();
 		//frame.getContentPane().add(panel);
-		
+
 		panel.setBounds(0, 0, 645, 470);
 		contentPane.add(panel);*/
 		Icon imgIcon = new ImageIcon(this.getClass().getClassLoader().getResource("astronaute.gif"));
@@ -143,7 +142,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		label.setBounds(0, 0, 635, 459);
 		//label.setBounds(getBounds());
 		contentPane.add(label);
-	
+
 	}
 
 	/**
@@ -180,7 +179,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		imgLue.flush();
 		imgRedim.flush();
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet de savoir si il s'agit d'une nouvelle partie ou d'une partie charge
@@ -189,5 +188,15 @@ public class App10LaserDeLaJustice extends JFrame {
 		jouerPartie = new FenetrePartie();
 		jouerPartie.setVisible(true);
 		setVisible(false);
+	}
+
+
+	//Par Miora
+	/**
+	 * Cette methode permet d'ouvir la fenetre des options
+	 */
+	private void ouvrirOptions() {
+		fenetreOption = new Options(true);
+		fenetreOption.setVisible(true);
 	}
 }

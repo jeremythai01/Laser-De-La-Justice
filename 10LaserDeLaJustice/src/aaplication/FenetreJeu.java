@@ -190,7 +190,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirPlan.setEnabled(false);
-		btnMiroirPlan.setBounds(1004, 977, 105, 23);
+		btnMiroirPlan.setBounds(1273, 884, 105, 23);
 		contentPane.add(btnMiroirPlan);
 
 		btnMiroirConvexe = new JButton("miroir Convexe");
@@ -201,7 +201,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirConvexe.setEnabled(false);
-		btnMiroirConvexe.setBounds(1004, 943, 105, 23);
+		btnMiroirConvexe.setBounds(1329, 852, 105, 23);
 		contentPane.add(btnMiroirConvexe);
 
 		btnMiroirConcave = new JButton("miroir Concave");
@@ -212,7 +212,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirConcave.setEnabled(false);
-		btnMiroirConcave.setBounds(1004, 909, 105, 23);
+		btnMiroirConcave.setBounds(1185, 852, 105, 23);
 		contentPane.add(btnMiroirConcave);
 
 		btnTrouNoir = new JButton("Trou Noir");
@@ -559,7 +559,7 @@ public class FenetreJeu extends JFrame {
 	 * Cette methode ouvre le menu option lorsque la touche option est cliquee
 	 */
 	private void choixOption() {
-		optionJeu = new Options();
+		optionJeu = new Options(true);
 		optionJeu.setDansScene(true);
 		optionJeu.setVisible(true);
 		sceneFinale.ecritureFichierSauvegarde("temporaire", true); // je sauvegarde

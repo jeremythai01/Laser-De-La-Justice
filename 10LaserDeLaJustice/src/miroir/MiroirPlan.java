@@ -32,7 +32,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	private Vecteur normal;
 	private Vecteur position;
 	private Vecteur positionBas;
-	private double largeur = 1;
+	private double largeur = 0.1;
 
 
 	public Vecteur getPositionBas() {

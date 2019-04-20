@@ -37,12 +37,12 @@ public class Options extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private int toucheGauche = 37, toucheDroite = 39;
-	private JSpinner snpDif;
 	private JSpinner snpAcc;
 	private JButton btnG;
 	private JButton btnD;
 	private Color couleurLaser = null;
 	private boolean dansScene = false;
+	private static boolean isIni = false;
 
 
 	public boolean isDansScene() {
@@ -55,13 +55,14 @@ public class Options extends JFrame {
 
 	private FenetreJeu jeu;
 	private boolean isModifie = false;
+	private JLabel lblCouleur;
 
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Options frame = new Options();
+					Options frame = new Options(isIni);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -72,9 +73,9 @@ public class Options extends JFrame {
 
 	/**
 	 * Creation de la fenetre.
-	 * @param dansScene retourne vrai si la scene jouait deja
+	 * @param isIni : retourne vrai si les options ont ete ouverts
 	 */
-	public Options() {
+	public Options(boolean isIni) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 787, 480);
 		contentPane = new JPanel();
@@ -87,18 +88,13 @@ public class Options extends JFrame {
 		lblOptJeu.setBounds(233, 47, 394, 64);
 		contentPane.add(lblOptJeu);
 
-		JLabel lblLvlDif = new JLabel("Niveau de difficult\u00E9 :");
-		lblLvlDif.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
-		lblLvlDif.setBounds(30, 132, 199, 30);
-		contentPane.add(lblLvlDif);
-
-		JLabel lblAccG = new JLabel("Acc\u00E9l\u00E9ration gravitationelle :\r\n");
-		lblAccG.setBounds(30, 212, 274, 22);
+		JLabel lblAccG = new JLabel("Acc\u00E9l\u00E9ration gravitationnelle :\r\n");
+		lblAccG.setBounds(30, 166, 274, 22);
 		lblAccG.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		contentPane.add(lblAccG);
 
 		JLabel lblTouchePourSe = new JLabel("Touches pour se d\u00E9placer :");
-		lblTouchePourSe.setBounds(30, 297, 274, 30);
+		lblTouchePourSe.setBounds(30, 233, 274, 30);
 		lblTouchePourSe.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		contentPane.add(lblTouchePourSe);
 
@@ -107,26 +103,21 @@ public class Options extends JFrame {
 		lblCouleurDuRayon.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		contentPane.add(lblCouleurDuRayon);
 
-		snpDif = new JSpinner();
-		snpDif.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
-		snpDif.setModel(new SpinnerNumberModel(1, 1, 5, 1));
-		snpDif.setBounds(460, 140, 54, 43);
-		contentPane.add(snpDif);
-
 		snpAcc = new JSpinner();
 		snpAcc.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
 		snpAcc.setModel(new SpinnerNumberModel(new Double(9.8), new Double(0), null, new Double(0.1)));
-		snpAcc.setBounds(460, 216, 54, 43);
+		snpAcc.setBounds(467, 157, 54, 43);
 		contentPane.add(snpAcc);
 
 		JLabel lblGaucheTxt = new JLabel();
+		lblGaucheTxt.setText("Gauche :");
 		lblGaucheTxt.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
-		lblGaucheTxt.setBounds(370, 306, 77, 21);
+		lblGaucheTxt.setBounds(353, 233, 77, 21);
 		contentPane.add(lblGaucheTxt);
 
 		JLabel lblDroiteTxt = new JLabel("Droite :");
 		lblDroiteTxt.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
-		lblDroiteTxt.setBounds(564, 304, 63, 19);
+		lblDroiteTxt.setBounds(555, 240, 63, 19);
 		contentPane.add(lblDroiteTxt);
 
 		btnG = new JButton("Gauche");
@@ -144,13 +135,13 @@ public class Options extends JFrame {
 				});
 			}
 		});
-		btnG.setBounds(434, 304, 100, 55);
+		btnG.setBounds(373, 265, 154, 55);
 		contentPane.add(btnG);
 
 		btnD = new JButton("Droite");
 		btnD.setFont(new Font("Lucida Sans Typewriter", Font.PLAIN, 12));
 		btnD.setBackground(Color.WHITE);
-		btnD.setBounds(636, 304, 100, 55);
+		btnD.setBounds(595, 270, 154, 55);
 		btnD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				btnD.addKeyListener(new KeyAdapter() {
@@ -169,40 +160,70 @@ public class Options extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(dansScene) {
 					System.out.println("dans scene option");
-					ecritureFichier();
+					ecritureFichier(true);
 					jeu = new FenetreJeu (false,"temporaire");
 					jeu.setVisible(true);
 				}
-				ecritureFichier();
+				ecritureFichier(true);
 				setVisible(false);
 			}
 		});
-		btnSauvegarder.setBounds(610, 399, 139, 43);
+		btnSauvegarder.setBounds(595, 399, 154, 43);
 		contentPane.add(btnSauvegarder);
 
 		JButton btnChangerLaCouleur = new JButton("Changer la couleur");
 		btnChangerLaCouleur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				choixCouleur();
+				changerJLabel();
 			}
 		});
 		btnChangerLaCouleur.setBounds(219, 374, 192, 21);
 		contentPane.add(btnChangerLaCouleur);
+		
+		JLabel lblMs = new JLabel("m\\s\u00B2");
+		lblMs.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
+		lblMs.setBounds(531, 165, 63, 27);
+		contentPane.add(lblMs);
+		
+		lblCouleur = new JLabel("");
+		lblCouleur.setBackground(Color.GRAY);
+		lblCouleur.setBounds(441, 358, 86, 53);
+		lblCouleur.setOpaque(true);
+		contentPane.add(lblCouleur);
 	}
 
 	// Par Miora
 	/**
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
+	 * @param isIni : retourne vrai si le fichier option a ete ouvert
 	 */
-	private void ecritureFichier(){
-		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
-		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
+	
+	private void ecritureFichier(boolean isIni){
+		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+		direction += File.separator + "Option";
+		File customDir = new File(direction);
+
+		if (customDir.exists()) {
+			System.out.println(customDir + " already exists");
+		} else if (customDir.mkdirs()) {
+			System.out.println(customDir + " was created");
+		} else {
+			System.out.println(customDir + " was not created");
+		}
+		//Fin creation dossier
+		
+		String nomFichier = "";
+		if(isIni) {
+			nomFichier= "modifie.d3t";
+		}else {
+			nomFichier = "DonneeOption.d3t";
+		}
+		File fichierDeTravail = new File(direction, nomFichier);
 
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new BufferedOutputStream(	new FileOutputStream(fichierDeTravail)));
-
-			fluxSortie.writeInt(Integer.parseInt(snpDif.getValue().toString()));
 			fluxSortie.writeDouble(Double.parseDouble(snpAcc.getValue().toString()));
 			fluxSortie.writeInt(toucheGauche);
 			fluxSortie.writeInt(toucheDroite);
@@ -251,6 +272,14 @@ public class Options extends JFrame {
 	private void choixCouleur() {
 		couleurLaser = JColorChooser.showDialog(null,"Sélectionner la couleur voulue", couleurLaser);
 	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de redonne la couleur choisie
+	 */
+	private void changerJLabel() {
+		lblCouleur.setBackground(couleurLaser);
+	}
 
 	/**
 	 * Cette methode retourne vrai si le fichier option a ete modifie
@@ -259,5 +288,4 @@ public class Options extends JFrame {
 	public boolean getIsModifie() {
 		return isModifie;
 	}
-
 }

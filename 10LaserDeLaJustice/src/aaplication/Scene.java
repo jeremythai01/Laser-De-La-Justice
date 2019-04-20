@@ -162,6 +162,8 @@ public class Scene extends JPanel implements Runnable {
 	private double compteurBouclier = 0;
 	private Bruit son = new Bruit();
 
+	final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
+
 	// Par Jeremy
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
@@ -556,9 +558,9 @@ public class Scene extends JPanel implements Runnable {
 		fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}
 
-	
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 
 
 	// Jeremy Thai
@@ -729,8 +731,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	} // fin methode
-	
-	
+
+
 	//Miora
 	/**
 	 * Cette methode reoriente l'angle de depart du laser s'il y a une intersection
@@ -979,9 +981,9 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
-	
-	
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 
 	// Jeremy Thai
 	/**
@@ -999,9 +1001,9 @@ public class Scene extends JPanel implements Runnable {
 		}
 		return false;
 	}
-	
-	
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 
 
 	/**
@@ -1097,8 +1099,8 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-	
+	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
 	/**
 	 * Arezki Issaadi permet aux dessins de safficher a chaque clic
 	 */
@@ -1130,10 +1132,10 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
-	
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-	
-	
+
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+
 	private void dragBalle() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -1253,8 +1255,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 		});
 	}
-	
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------	
 
 	/**
 	 * Methode qui permet de changer l'angle de tir si le joueur enfonce les fleches
@@ -1319,8 +1321,8 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-//----------------------------------------------------------------------------------------------------------------------------------------------
-	
+	//----------------------------------------------------------------------------------------------------------------------------------------------
+
 
 	// Par Miora
 	/**
@@ -1328,15 +1330,23 @@ public class Scene extends JPanel implements Runnable {
 	 * avant le debut de la partie
 	 */
 	private void lectureFichierOption() {
-		System.out.println("je suis lecture option");
-		final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
+		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
-		int niveau = 0;
-		File fichierDeTravail = new File(NOM_FICHIER_OPTION);
-
+		
+		//Path du dossier contenant les modifications
+		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+		direction += File.separator + "Option" + File.separator + "modifie.d3t"  ;		
+		File f = new File(direction);
+		//Fin path
+		
+		if( f.exists()) { //si le fichier modiefie existe, changement
+		    fichierDeTravail = new File(direction);
+	
+		}else { //sinon version initiale
+			fichierDeTravail = new File("DonneeOption.d3t");
+		}
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
-			niveau = fluxEntree.readInt();
 			gravite = new Vecteur(0, fluxEntree.readDouble());
 			System.out.println("accballe option" + accBalle);
 
@@ -1380,49 +1390,49 @@ public class Scene extends JPanel implements Runnable {
 		} // fin finally
 	}
 
-	
+
 	// Par Miora
-		/**
-		 * Cette methode creer de mettre le niveau pesonnalise
-		 */
-		private void lectureNiveau(String nomFichier) {
-			String nomFichierNiveau = nomFichier;
-			ObjectInputStream fluxEntree = null;
-			
-			String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
-			direction += File.separator + "Niveau";
-			
-			File fichierDeTravail = new File(direction, nomFichierNiveau);
+	/**
+	 * Cette methode creer de mettre le niveau pesonnalise
+	 */
+	private void lectureNiveau(String nomFichier) {
+		String nomFichierNiveau = nomFichier;
+		ObjectInputStream fluxEntree = null;
 
+		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+		direction += File.separator + "Niveau";
+
+		File fichierDeTravail = new File(direction, nomFichierNiveau);
+
+		try {
+			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
 			try {
-				fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
-				try {
-					listeBalles = (ArrayList<Balle>) fluxEntree.readObject();
-					listeBlocEau = (ArrayList<BlocDEau>) fluxEntree.readObject();
-					listeMiroirPlan = (ArrayList<MiroirPlan>) fluxEntree.readObject();
-					listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
-					listeTrou = (ArrayList<TrouNoir>) fluxEntree.readObject();
-					listeMiroirConvexe = (ArrayList<MiroirConvexe>) fluxEntree.readObject();
-					listeMiroirConcave = (ArrayList<MiroirConcave>) fluxEntree.readObject();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			} // fin try
-
-			catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(null, "Fichier  " + fichierDeTravail.getAbsolutePath() + "  introuvable!");
-				System.exit(0);
-			}
-
-			catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture niveau ");
+				listeBalles = (ArrayList<Balle>) fluxEntree.readObject();
+				listeBlocEau = (ArrayList<BlocDEau>) fluxEntree.readObject();
+				listeMiroirPlan = (ArrayList<MiroirPlan>) fluxEntree.readObject();
+				listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
+				listeTrou = (ArrayList<TrouNoir>) fluxEntree.readObject();
+				listeMiroirConvexe = (ArrayList<MiroirConvexe>) fluxEntree.readObject();
+				listeMiroirConcave = (ArrayList<MiroirConcave>) fluxEntree.readObject();
+			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-				System.exit(0);
 			}
+		} // fin try
 
+		catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Fichier  " + fichierDeTravail.getAbsolutePath() + "  introuvable!");
+			System.exit(0);
 		}
-	
-	
+
+		catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture niveau ");
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+	}
+
+
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
@@ -1437,21 +1447,21 @@ public class Scene extends JPanel implements Runnable {
 		} else {
 			nomSave = nomSauv + ".save";
 		}
-		
+
 		//Creation dossier
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
 
 		if (customDir.exists()) {
-		    System.out.println(customDir + " already exists");
+			System.out.println(customDir + " already exists");
 		} else if (customDir.mkdirs()) {
-		    System.out.println(customDir + " was created");
+			System.out.println(customDir + " was created");
 		} else {
-		    System.out.println(customDir + " was not created");
+			System.out.println(customDir + " was not created");
 		}
 		//Fin creation dossier
-		
+
 		String nomFichierSauvegarde = nomSave;
 		File fichierDeTravail = new File(direction , nomFichierSauvegarde);
 		ObjectOutputStream fluxSortie = null;
@@ -1582,55 +1592,55 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	
-	// Par Miora R. Rakoto
-		/**
-		 * Cette methode permet de sauvegarder un niveau
-		 * 
-		 * @param nomSauv : le nom du niveau
-		 */
-		public void ecritureNiveau(String nomSauv) {
-			//Creation dossier
-			String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
-			direction += File.separator + "Niveau";
-			File customDir = new File(direction);
 
-			if (customDir.exists()) {
-			    System.out.println(customDir + " already exists");
-			} else if (customDir.mkdirs()) {
-			    System.out.println(customDir + " was created");
-			} else {
-			    System.out.println(customDir + " was not created");
-			}
-			//Fin creation dossier
-			
-			String nomFichierNiveau = nomSauv + ".niv";
-			File fichierDeTravail = new File(direction , nomFichierNiveau);
-			ObjectOutputStream fluxSortie = null;
-			try {
-				fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
-				fluxSortie.writeObject(listeBalles); // la liste des balles
-				fluxSortie.writeObject(listeBlocEau);
-				fluxSortie.writeObject(listeMiroirPlan);
-				fluxSortie.writeObject(listePrisme);
-				fluxSortie.writeObject(listeTrou);
-				fluxSortie.writeObject(listeMiroirConvexe);
-				fluxSortie.writeObject(listeMiroirConcave);
-			} catch (IOException e) {
-				System.out.println("Erreur lors de l'écriture!");
-				e.printStackTrace();
-			} finally {
-				// on exécutera toujours ceci, erreur ou pas
-				try {
-					fluxSortie.close();
-				} catch (IOException e) {
-					System.out.println("Erreur rencontrée dans la sauvagarde de niveau!");
-				}
-			} // fin finally
+	// Par Miora R. Rakoto
+	/**
+	 * Cette methode permet de sauvegarder un niveau
+	 * 
+	 * @param nomSauv : le nom du niveau
+	 */
+	public void ecritureNiveau(String nomSauv) {
+		//Creation dossier
+		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+		direction += File.separator + "Niveau";
+		File customDir = new File(direction);
+
+		if (customDir.exists()) {
+			System.out.println(customDir + " already exists");
+		} else if (customDir.mkdirs()) {
+			System.out.println(customDir + " was created");
+		} else {
+			System.out.println(customDir + " was not created");
 		}
-	
-//--------------------------------------------------------------------------------------------------------------------------------------	
-	
+		//Fin creation dossier
+
+		String nomFichierNiveau = nomSauv + ".niv";
+		File fichierDeTravail = new File(direction , nomFichierNiveau);
+		ObjectOutputStream fluxSortie = null;
+		try {
+			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
+			fluxSortie.writeObject(listeBalles); // la liste des balles
+			fluxSortie.writeObject(listeBlocEau);
+			fluxSortie.writeObject(listeMiroirPlan);
+			fluxSortie.writeObject(listePrisme);
+			fluxSortie.writeObject(listeTrou);
+			fluxSortie.writeObject(listeMiroirConvexe);
+			fluxSortie.writeObject(listeMiroirConcave);
+		} catch (IOException e) {
+			System.out.println("Erreur lors de l'écriture!");
+			e.printStackTrace();
+		} finally {
+			// on exécutera toujours ceci, erreur ou pas
+			try {
+				fluxSortie.close();
+			} catch (IOException e) {
+				System.out.println("Erreur rencontrée dans la sauvagarde de niveau!");
+			}
+		} // fin finally
+	}
+
+	//--------------------------------------------------------------------------------------------------------------------------------------	
+
 	public void addSceneListener(SceneListener ecouteur) {
 		listeEcouteur.add(ecouteur);
 	}
@@ -1658,7 +1668,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	private void pouvoirAuHasard(Balle balle) {
 
@@ -1767,7 +1777,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Evalue une collision avec le sol ou un mur et modifie la vitesse courante
@@ -1808,10 +1818,10 @@ public class Scene extends JPanel implements Runnable {
 		if (personnage.getPositionX() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
 			personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
 	}
-	
-	
 
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	private void collisionLaserPrisme() {
 
@@ -1953,7 +1963,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Vecteur getVitesseLaser() {
 		return vitesseLaser;
@@ -1979,7 +1989,7 @@ public class Scene extends JPanel implements Runnable {
 		return toucheDroite;
 	}
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
@@ -2023,8 +2033,8 @@ public class Scene extends JPanel implements Runnable {
 		 */
 		this.angle = angle;
 	}
-	
-	
+
+
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -2044,8 +2054,8 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	
+
 
 }

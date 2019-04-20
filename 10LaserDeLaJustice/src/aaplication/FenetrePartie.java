@@ -63,8 +63,8 @@ public class FenetrePartie extends JFrame {
 		btnCharge.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nomFichier = "";
-				String userDir = System.getProperty("user.home");
-				JFileChooser fc = new JFileChooser(userDir +"/Desktop" + "/Laser de la justice" );
+				String userDir = System.getProperty("user.dir");
+				JFileChooser fc = new JFileChooser(userDir + "/Laser de la justice" );
 	            int r = fc.showSaveDialog(null); 
 	            if (r == JFileChooser.APPROVE_OPTION) { 
 	            	File selectedFile = fc.getSelectedFile();
