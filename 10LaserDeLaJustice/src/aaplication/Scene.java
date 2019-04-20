@@ -109,6 +109,7 @@ public class Scene extends JPanel implements Runnable {
 	private boolean ligne23 = false;
 	private boolean ligne12 = false;
 	private boolean triche = false;
+	private boolean effacement = false;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -208,73 +209,94 @@ public class Scene extends JPanel implements Runnable {
 				// pour drag toutes les balles
 
 				for (int i = 0; i < listeBalles.size(); i++) {
-					if ((listeBalles.get(i).getAire().contains(eXR, eYR))) {
+					if ((listeBalles.get(i).getAire().contains(eXR, eYR))&&(!effacement)) {
 
 						balle = listeBalles.get(i);
 						System.out.println(balle.getAccel());
 						bonneBalle = true;
 
 						i = listeBalles.size();
+					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+							listeBalles.remove(i);
+							repaint();
 					}
 				}
 
 				for (int i = 0; i < listeMiroirConvexe.size(); i++) {
-					if (listeMiroirConvexe.get(i).getAireMiroirConvexe().contains(eXR, eYR)) {
+					if (listeMiroirConvexe.get(i).getAireMiroirConvexe().contains(eXR, eYR)&&(!effacement)) {
 
 						bonMiroirConvexe = true;
 						miroireConvexe = listeMiroirConvexe.get(i);
 
 						i = listeMiroirConvexe.size();
+					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+						listeMiroirConvexe.remove(i);
+						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeMiroirConcave.size(); i++) {
-					if (listeMiroirConcave.get(i).getAireMiroirConcave().contains(eXR, eYR)) {
+					if (listeMiroirConcave.get(i).getAireMiroirConcave().contains(eXR, eYR)&&(!effacement)) {
 
 						bonMiroirConcave = true;
 						miroirConcave = listeMiroirConcave.get(i);
 
 						i = listeMiroirConcave.size();
+					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+						listeMiroirConcave.remove(i);
+						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeMiroirPlan.size(); i++) {
-					if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) {
+					if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR)&&(!effacement)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirPlan.get(i);
-						System.out.println("hello");
+						
 						i = listeMiroirPlan.size();
+					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+						listeMiroirPlan.remove(i);
+						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeTrou.size(); i++) {
-					if (listeTrou.get(i).getAireTrou().contains(eXR, eYR)) {
+					if (listeTrou.get(i).getAireTrou().contains(eXR, eYR)&&(!effacement)) {
 
 						bonTrouNoir = true;
 						trou = listeTrou.get(i);
 
 						i = listeTrou.size();
+					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+						listeTrou.remove(i);
+						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeBlocEau.size(); i++) {
-					if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)) {
+					if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)&&(!effacement)) {
 
 						bonBlocEau = true;
 						bloc = listeBlocEau.get(i);
 
 						i = listeBlocEau.size();
+					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+						listeBlocEau.remove(i);
+						repaint();
 					}
 				}
 
 				for (int i = 0; i < listePrisme.size(); i++) {
-					if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR)) {
+					if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR)&&(!effacement)) {
 
 						bonPrisme = true;
 						prisme = listePrisme.get(i);
 
 						i = listePrisme.size();
+					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+						listePrisme.remove(i);
+						repaint();
 					}
 				}
 
@@ -2055,6 +2077,41 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+	public void effacerBalles() {
+		listeBalles.removeAll(listeBalles);
+		repaint();
+	}
+	
+	public void effacerPrisme() {
+		listePrisme.removeAll(listePrisme);
+		repaint();
+	}
+
+	public void effacerMiroir() {
+		listeMiroirConcave.removeAll(listeMiroirConcave);
+		listeMiroirConvexe.removeAll(listeMiroirConvexe);
+		listeMiroirPlan.removeAll(listeMiroirPlan);
+		repaint();
+	}
+	
+	public void effacerTrouNoir() {
+		listeTrou.removeAll(listeTrou);
+		repaint();
+	}
+	
+	
+	public void effacerBloc() {
+		listeBlocEau.removeAll(listeBlocEau);
+		repaint();
+	}
+
+	public void effacementPrecis(boolean valeur) {
+	
+	effacement = valeur;
+	
+	}
 
 
 
