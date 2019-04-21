@@ -190,11 +190,8 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirPlan.setEnabled(false);
-<<<<<<< HEAD
-		btnMiroirPlan.setBounds(1273, 884, 105, 23);
-=======
+
 		btnMiroirPlan.setBounds(934, 868, 105, 23);
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 		contentPane.add(btnMiroirPlan);
 
 		btnMiroirConvexe = new JButton("miroir Convexe");
@@ -205,11 +202,9 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirConvexe.setEnabled(false);
-<<<<<<< HEAD
 		btnMiroirConvexe.setBounds(1329, 852, 105, 23);
-=======
-		btnMiroirConvexe.setBounds(934, 834, 105, 23);
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
+
+
 		contentPane.add(btnMiroirConvexe);
 
 		btnMiroirConcave = new JButton("miroir Concave");
@@ -220,11 +215,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirConcave.setEnabled(false);
-<<<<<<< HEAD
-		btnMiroirConcave.setBounds(1185, 852, 105, 23);
-=======
 		btnMiroirConcave.setBounds(934, 800, 105, 23);
->>>>>>> branch 'master' of https://gitlab.com/MacVac/10laserdelajustice
 		contentPane.add(btnMiroirConcave);
 
 		btnTrouNoir = new JButton("Trou Noir");

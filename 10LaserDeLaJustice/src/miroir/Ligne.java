@@ -13,19 +13,19 @@ public class Ligne extends Line2D.Double{
 
 	private Area aireLigne;
 	private Point2D.Double debut, fin;
-
-	public Ligne(double x1, double y1, double x2, double y2) {
-		super(x1, y1, x2, y2);
-	}
-
-	public Ligne(Point2D.Double debut, Point2D.Double fin) {
+	private double angle;
+	
+	public Ligne(Point2D.Double debut, Point2D.Double fin, double angle) {
 		super(debut, fin);
 		this.debut = debut;
 		this.fin = fin;
+		this.angle = angle;
 	}
 	
 	public Area getAireLigne() {
-		Rectangle2D.Double fantome = new Rectangle2D.Double(debut.getX(), debut.getY(),0.3, 0.01);
+		AffineTransform aff = new AffineTransform();
+		aff.rotate(Math.toRadians(-angle),x1,x2);
+		Rectangle2D.Double fantome = new Rectangle2D.Double(debut.getX(), debut.getY(),0.08, 0.01);
 		return new Area (fantome);
 	}
 	public Vecteur getVecDir () {

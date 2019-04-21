@@ -24,6 +24,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	private Arc2D.Double arc; 
 	private double angle;
 	double approximation = 1;
+	private boolean modeSci;
 	private ArrayList <Ligne> listeLigne = new ArrayList <Ligne> () ;
 
 	/**
@@ -35,7 +36,8 @@ public class MiroirConcave extends JPanel implements Dessinable {
 	public MiroirConcave(Vecteur position, double rayon, double angle) {
 		this.position = position;
 		this.rayon = rayon;
-		this.angle = angle;
+		this.angle = -angle;
+		this.modeSci = modeSci;
 
 		//Le miroir est dessiner avec des Line2D
 		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
@@ -44,7 +46,7 @@ public class MiroirConcave extends JPanel implements Dessinable {
 			listePoints.add(pts);
 		}
 		for(int j=0;j<= listePoints.size()-2; j++) {
-			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
+			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1),angle);
 			listeLigne.add(ligne);
 
 		}

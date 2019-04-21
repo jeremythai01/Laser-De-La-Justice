@@ -80,6 +80,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	private double n2 = 2.00;
 	private int compteur=0;
 	private double qtRotation=0;
+
 	
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
@@ -874,7 +875,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	 * sur le boutton miroire concave
 	 */
 	public void ajoutMiroireConcave() {
-		listeMiroireConcave.add(new MiroirConcave(new Vecteur(3, 0), 2));
+		listeMiroireConcave.add(new MiroirConcave( new Vecteur(3, 0) , 2,0));
 		repaint();
 	}
 
@@ -1659,6 +1660,9 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	
 	}
 	
+
+
+
 	
 	
 }

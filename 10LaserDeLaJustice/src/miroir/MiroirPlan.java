@@ -1,18 +1,17 @@
 package miroir;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 import geometrie.Vecteur;
+import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
-import physique.Laser;
 
 /**
  * Classe des miroirs plan
@@ -31,24 +30,10 @@ public class MiroirPlan implements Dessinable, Serializable {
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
-	private Vecteur positionBas;
+	private Vecteur positionInter;
 	private double largeur = 0.1;
-
-
-	public Vecteur getPositionBas() {
-		return positionBas;
-	}
-	public void setPositionBas(Vecteur positionBas) {
-		this.positionBas = positionBas;
-	}
-	public Vecteur getPosition() {
-		return position;
-	}
-	public void setPosition(Vecteur position) {
-		this.position = position;
-	}
-	private boolean dessin = false;
 	private Area aireMiroir;
+	private boolean modeSci;
 
 	//Par Miora
 	/**
@@ -61,27 +46,10 @@ public class MiroirPlan implements Dessinable, Serializable {
 		super();
 		this.position = position;
 		this.angle = angle;
-		positionBas = new Vecteur ( position.getX() - (longueur * Math.cos(Math.toRadians(angle))),
-				position.getY() + (longueur * Math.sin(Math.toRadians(angle))));
+		
+		
 	}
 
-	//Par Miora
-	/**
-	 * Cette methode permet d'obtenir l'angle du miroir
-	 * @return : l'angle du miroir
-	 */
-	public double getAngle() {
-		return angle;
-	}
-
-	//Par Miora
-	/**
-	 * Cette methode permet de modifier l'angle du miroir
-	 * @param angle : le nouvel angle
-	 */
-	public void setAngle(double angle) {
-		this.angle = angle;
-	}
 
 	//Par Miora
 	/**
@@ -96,10 +64,11 @@ public class MiroirPlan implements Dessinable, Serializable {
 		AffineTransform matLocale = new AffineTransform(mat);
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, this.largeur);
-		//Ellipse2D.Double haut = new Ellipse2D.Double(position.getX()-0.05, position.getY()-0.05, 0.1, 0.1);
-		//g2d.draw(matLocale.createTransformedShape(haut));
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
 		g2d.fill(miroirTransfo); //dessine en pixel
+		if(modeSci == true) {
+	
+		}
 	}
 
 	//Par Miora
@@ -108,11 +77,6 @@ public class MiroirPlan implements Dessinable, Serializable {
 	 * @return aire du miroir
 	 */
 	public Area getAireMiroirPixel() {
-		/*AffineTransform matLocale = new AffineTransform();
-		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, 0.01);
-		return new Area(miroir);
-		 */
 		AffineTransform matLocal = new AffineTransform();
 		matLocal.rotate(Math.toRadians(-angle), position.getX(), position.getY());
 		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(),longueur, this.largeur);
@@ -130,15 +94,6 @@ public class MiroirPlan implements Dessinable, Serializable {
 		Vecteur vecMiroir = new Vecteur (Math.cos(angleMiroirNormal), Math.sin(angleMiroirNormal));
 		normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
 		return normal;
-	}
-
-	//Par Miora
-	/**
-	 * Methode qui retourne le miroir dans la geometrie Line2D
-	 */
-	public Line2D.Double getLine(){
-		Line2D.Double line = new Line2D.Double(position.getX(), position.getY(), positionBas.getX(), positionBas.getY());
-		return line;
 	}
 
 	//Arezki 
@@ -161,6 +116,46 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public Area getAire() {
 		return new Area(miroir);
 	}
+	
+	/**
+	 * Retourne la position du miroir
+	 * @return
+	 */
+	public Vecteur getPosition() {
+		return position;
+	}
+	/**
+	 * Change la position du miroir
+	 * @param position : la nouvelle position
+	 */
+	public void setPosition(Vecteur position) {
+		this.position = position;
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet d'obtenir l'angle du miroir
+	 * @return : l'angle du miroir
+	 */
+	public double getAngle() {
+		return angle;
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de modifier l'angle du miroir
+	 * @param angle : le nouvel angle
+	 */
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+
+
+	public void afficherVecteur(Vecteur normal, Vecteur posInter) {
+		modeSci = true;
+		this.positionInter = posInter;
+	}
+
 
 }
 

@@ -163,7 +163,7 @@ public class Scene extends JPanel implements Runnable {
 	private double compteurBouclier = 0;
 	private Bruit son = new Bruit();
 
-	final String NOM_FICHIER_OPTION = "DonneeOption.d3t";
+	private int angleMiroir=0;
 
 	// Par Jeremy
 	/**
@@ -774,7 +774,7 @@ public class Scene extends JPanel implements Runnable {
 
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 						Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(-laser.getAngleTir()) ) , Math.sin(Math.toRadians(-laser.getAngleTir()) ))).normalise();;
-						//Vecteur vecDirLaser = (new Vecteur (0,1));
+						//Vecteur vecDirLaser = (new Vecteur (laser.getPositionBas().getX()-laser.getPointHaut().getX() , laser.getPointHaut().getY()-laser.getPositionBas().getY()));
 						//System.out.println("pts laser : " + ptsLaser + "\n" +  "vec dir : " +vecDirLaser );
 
 
@@ -793,36 +793,61 @@ public class Scene extends JPanel implements Runnable {
 						double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
 
 						Vecteur posInter = new Vecteur (x,y);
-
-
+						System.out.println("position inter" + posInter);
+						
+						
+						//Systeme en g2d
 						Vecteur normal = listeMiroirConvexe.get(n).getNormal(posInter);
-
-						//System.out.println("La normal est du miroir est :" +normal);
+						System.out.println("La normal du miroir est :" +normal);
 
 						double angleR = Math.toRadians(laser.getAngleTir()) ;	
 						//	System.out.println("     " + laser.getAngleTir());
-						Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
-						//System.out.println("Orientation incident :" + incident);
-
+						Vecteur incident = (new Vecteur (laser.getPositionBas().getX()-laser.getPointHaut().getX() , laser.getPointHaut().getY()-laser.getPositionBas().getY())).normalise();
+						System.out.println("Orientation incident :" + incident);
 						Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
 						System.out.println("Orientation apres reflexion" + reflexion);	
 
 						//change orientation 
+						//double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
+						//System.out.println("Angle reflexion en degree " + angleReflexion);
 						double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-						System.out.println("Angle reflexion en degree " + angleReflexion);
-						if(reflexion.getY()<-1 && reflexion.getX() <0) {
-							System.out.println("premier");
-							laser.setAngleTir(-angleReflexion);
-						}else if(reflexion.getX() >0 && reflexion.getY() <0 ) {
-							System.out.println("deuxieme");
-							laser.setAngleTir(angleReflexion-90);
-						}else if(reflexion.getX()>0 && reflexion.getY()>1) {
-							System.out.println("troisieme");
-							laser.setAngleTir(-1*angleReflexion);
-						}else if (reflexion.getX()<0 &&reflexion.getY()>-1){
-							System.out.println("quatrieme");
-							laser.setAngleTir(180+angleReflexion);
+						System.out.println("angle de reflexion" + angleReflexion);
+						
+						//ajustement des quadrants et angle en g2d a l'envers
+						if(normal.getX()>0 && normal.getY()>0) {
+							System.out.println("droite");
+							if(reflexion.getX() >0 && reflexion.getY()>0) {
+								System.out.println("premier");
+								laser.setAngleTir(-angleReflexion);
+							}else if (reflexion.getX() < 0 && reflexion.getY()>0 ){
+								System.out.println("2e");
+								laser.setAngleTir(-(angleReflexion+90));
+							}else if (reflexion.getX() < 0 && reflexion.getY()<00 ){
+								System.out.println("3e");
+								laser.setAngleTir(-(angleReflexion+180));
+							}else if (reflexion.getX() > 0 && reflexion.getY()<0 ){
+								System.out.println("4e");
+								laser.setAngleTir(angleReflexion);
+							}
 						}
+						if(normal.getX()<0 && normal.getY()>0) {
+							System.out.println("gauche");
+							if(reflexion.getX() >0 && reflexion.getY()>0) {
+								System.out.println("premier");
+								laser.setAngleTir(angleReflexion);
+							}else if (reflexion.getX() < 0 && reflexion.getY()>0 ){
+								System.out.println("2e");
+								laser.setAngleTir(180+(-angleReflexion));
+							}else if (reflexion.getX() < 0 && reflexion.getY()<00 ){
+								System.out.println("3e");
+								laser.setAngleTir((angleReflexion+180));
+							}else if (reflexion.getX() > 0 && reflexion.getY()<0 ){
+								System.out.println("4e");
+								laser.setAngleTir(180+(-angleReflexion));
+							}
+						}
+						
+						
 						System.out.println("angle final" + laser.getAngleTir());
 						laser.setPositionHaut(posInter);
 						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
@@ -859,7 +884,6 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 	// fin methode
-
 	//Miora 
 	/**
 	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
@@ -1072,7 +1096,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton miroire concave
 	 */
 	public void ajoutMiroireConcave() {
-		listeMiroirConcave.add(new MiroirConcave(new Vecteur(4,4), 4,0));
+		listeMiroirConcave.add(new MiroirConcave(new Vecteur(4,4), 4,angleMiroir));
 		repaint();
 	}
 
@@ -1081,7 +1105,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton miroire convexe
 	 */
 	public void ajoutMiroireConvexe() {
-		listeMiroirConvexe.add(new MiroirConvexe(new Vecteur(4, 4), 2, 0));
+		listeMiroirConvexe.add(new MiroirConvexe(new Vecteur(4, 4), 2, angleMiroir));
 		repaint();
 	}
 
@@ -1090,7 +1114,7 @@ public class Scene extends JPanel implements Runnable {
 	 * le boutton miroire plan
 	 */
 	public void ajoutMiroirPlan() {
-		listeMiroirPlan.add(new MiroirPlan(new Vecteur(4, 4), 0));
+		listeMiroirPlan.add(new MiroirPlan(new Vecteur(4, 4), angleMiroir));
 		repaint();
 
 	}
@@ -2113,7 +2137,14 @@ public class Scene extends JPanel implements Runnable {
 	effacement = valeur;
 	
 	}
-
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de changer l'angle des miroirs
+	 */
+	public void setAngleMiroir(int angle) {
+		this.angleMiroir = angle;
+	}
 
 
 }

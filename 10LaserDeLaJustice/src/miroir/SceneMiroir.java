@@ -42,6 +42,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private boolean miroirPlan = true, miroirConvexe = false, miroirConcave = false;
 	Vecteur posInter;
 	Vecteur normal;
+	private boolean modeScientifique = false;
 
 	private Vecteur vitesse;
 
@@ -57,7 +58,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private int nbCollison = 0;
 
 
-	private double ANGLE_DE_MIROIR;
+	private double angle = 45;
 
 
 	private double angleLaser;
@@ -94,21 +95,21 @@ public class SceneMiroir extends JPanel implements Runnable {
 				if(miroirPlan == true && miroirConcave == false && miroirConvexe == false) {
 					double posX = e.getX()/modele.getPixelsParUniteX();
 					double posY = e.getY()/modele.getPixelsParUniteY();
-					plan = new MiroirPlan (new Vecteur (posX,posY), ANGLE_DE_MIROIR);
+					plan = new MiroirPlan (new Vecteur (posX,posY), angle);
 					listeMiroirPlan.add(plan);
 					repaint();
 				}
 				if(miroirPlan == false && miroirConcave == false && miroirConvexe == true) {
 					double posX = e.getX()/modele.getPixelsParUniteX();
 					double posY = e.getY()/modele.getPixelsParUniteY();
-					convexe = new MiroirConvexe (new Vecteur(posX, posY), 4, (int) ANGLE_DE_MIROIR);
+					convexe = new MiroirConvexe (new Vecteur(posX, posY), 4, (int) angle);
 					listeMiroirConvexe.add(convexe);
 					repaint();
 				}
 				if(miroirPlan == false && miroirConcave == true && miroirConvexe == false) {
 					double posX = e.getX()/modele.getPixelsParUniteX();
 					double posY = e.getY()/modele.getPixelsParUniteY();
-					concave = new MiroirConcave (new Vecteur(posX, posY), 4, ANGLE_DE_MIROIR);
+					concave = new MiroirConcave (new Vecteur(posX, posY), 4, angle);
 					listeMiroirConcave.add(concave);
 					repaint();
 				}
@@ -153,6 +154,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			g2d.setColor(Color.gray);
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
+		
 
 		for(MiroirConvexe miroir:listeMiroirConvexe) {
 			g2d.setColor(Color.gray);
@@ -174,18 +176,6 @@ public class SceneMiroir extends JPanel implements Runnable {
 		//System.out.println("position de la souris  = " + xSouris);
 		g2d.setColor(Color.black);
 		//g2d.draw(ligne);
-
-		if(afficherVec) {
-			double diam = 0.25;
-			Ellipse2D.Double pts = new Ellipse2D.Double(posInter.getX()-diam/2,posInter.getY()-diam/2,diam,diam);
-			//laser2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			g2d.setStroke(new BasicStroke(3));
-			g2d.setColor(Color.green);
-			g2d.fill(mat.createTransformedShape(pts));
-			/*VecteurGraphique vec = new VecteurGraphique(normal.getX(), normal.getY(), posInter.getX(), posInter.getY());
-			vec.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-			 */
-		}
 
 	}//fin paintComponent
 
@@ -327,9 +317,13 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 					System.out.println(" ");
 					if(listeMiroirPlan.get(n).getAngle()<180) {
-						normal =listeMiroirPlan.get(n).getNormal().normalise().multiplie(-1);
+						normal =listeMiroirPlan.get(n).getNormal().normalise().multiplie(1);
 					}else {
-						normal =listeMiroirPlan.get(n).getNormal().normalise();
+						normal =listeMiroirPlan.get(n).getNormal().normalise().multiplie(-1);
+					}
+					if(modeScientifique) {
+						listeMiroirPlan.get(n).afficherVecteur(normal, posInter);
+						
 					}
 					System.out.println("La normal est du miroir est :" +normal);
 
@@ -402,7 +396,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 						Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(-laser.getAngleTir()) ) , Math.sin(Math.toRadians(-laser.getAngleTir()) ))).normalise();;
-						//Vecteur vecDirLaser = (new Vecteur (0,1));
+						//Vecteur vecDirLaser = (new Vecteur (laser.getPositionBas().getX()-laser.getPointHaut().getX() , laser.getPointHaut().getY()-laser.getPositionBas().getY()));
 						//System.out.println("pts laser : " + ptsLaser + "\n" +  "vec dir : " +vecDirLaser );
 
 
@@ -421,36 +415,61 @@ public class SceneMiroir extends JPanel implements Runnable {
 						double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
 
 						posInter = new Vecteur (x,y);
-
-
-						normal = listeMiroirConvexe.get(n).getNormal(posInter);
-
-						//System.out.println("La normal est du miroir est :" +normal);
+						System.out.println("position inter" + posInter);
+						
+						
+						//Systeme en g2d
+						Vecteur normal = listeMiroirConvexe.get(n).getNormal(posInter);
+						System.out.println("La normal du miroir est :" +normal);
 
 						double angleR = Math.toRadians(laser.getAngleTir()) ;	
 						//	System.out.println("     " + laser.getAngleTir());
-						Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
-						//System.out.println("Orientation incident :" + incident);
-
+						Vecteur incident = (new Vecteur (laser.getPositionBas().getX()-laser.getPointHaut().getX() , laser.getPointHaut().getY()-laser.getPositionBas().getY())).normalise();
+						System.out.println("Orientation incident :" + incident);
 						Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
 						System.out.println("Orientation apres reflexion" + reflexion);	
 
 						//change orientation 
+						//double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
+						//System.out.println("Angle reflexion en degree " + angleReflexion);
 						double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-						System.out.println("Angle reflexion en degree " + angleReflexion);
-						if(reflexion.getY()<-1 && reflexion.getX() <0) {
-							System.out.println("premier");
-							laser.setAngleTir(-angleReflexion);
-						}else if(reflexion.getX() >0 && reflexion.getY() <0 ) {
-							System.out.println("deuxieme");
-							laser.setAngleTir(angleReflexion-90);
-						}else if(reflexion.getX()>0 && reflexion.getY()>1) {
-							System.out.println("troisieme");
-							laser.setAngleTir(-1*angleReflexion);
-						}else if (reflexion.getX()<0 &&reflexion.getY()>-1){
-							System.out.println("quatrieme");
-							laser.setAngleTir(180+angleReflexion);
+						System.out.println("angle de reflexion" + angleReflexion);
+						
+						//ajustement des quadrants et angle en g2d a l'envers
+						if(normal.getX()>0 && normal.getY()>0) {
+							System.out.println("droite");
+							if(reflexion.getX() >0 && reflexion.getY()>0) {
+								System.out.println("premier");
+								laser.setAngleTir(-angleReflexion);
+							}else if (reflexion.getX() < 0 && reflexion.getY()>0 ){
+								System.out.println("2e");
+								laser.setAngleTir(-(angleReflexion+90));
+							}else if (reflexion.getX() < 0 && reflexion.getY()<00 ){
+								System.out.println("3e");
+								laser.setAngleTir(-(angleReflexion+180));
+							}else if (reflexion.getX() > 0 && reflexion.getY()<0 ){
+								System.out.println("4e");
+								laser.setAngleTir(angleReflexion);
+							}
 						}
+						if(normal.getX()<0 && normal.getY()>0) {
+							System.out.println("gauche");
+							if(reflexion.getX() >0 && reflexion.getY()>0) {
+								System.out.println("premier");
+								laser.setAngleTir(angleReflexion);
+							}else if (reflexion.getX() < 0 && reflexion.getY()>0 ){
+								System.out.println("2e");
+								laser.setAngleTir(180+(-angleReflexion));
+							}else if (reflexion.getX() < 0 && reflexion.getY()<00 ){
+								System.out.println("3e");
+								laser.setAngleTir((angleReflexion+180));
+							}else if (reflexion.getX() > 0 && reflexion.getY()<0 ){
+								System.out.println("4e");
+								laser.setAngleTir(180+(-angleReflexion));
+							}
+						}
+						
+						
 						System.out.println("angle final" + laser.getAngleTir());
 						laser.setPositionHaut(posInter);
 						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
@@ -647,7 +666,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	}
 
 	public void setAngleMiroir(int value) {
-		ANGLE_DE_MIROIR = value;
+		angle = value;
 
 	}
 
@@ -664,6 +683,10 @@ public class SceneMiroir extends JPanel implements Runnable {
 		listeMiroirConvexe.removeAll(listeMiroirConvexe);
 		listeMiroirConcave.removeAll(listeMiroirConcave);
 		repaint();
+	}
+
+	public void setScientifique() {
+		modeScientifique = true;
 	}
 
 

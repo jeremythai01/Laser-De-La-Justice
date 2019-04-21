@@ -60,6 +60,7 @@ public class FenetreEditeurNiveau extends JFrame {
 
 	
 	private Bruit son = new Bruit();
+	private JSpinner spnAngleMiroir;
 	
 	
 	// Par Arezki 
@@ -112,14 +113,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnTutoriel.setBounds(186, 61, 96, 38);
 		contentPane.add(btnTutoriel);
 
-		JButton btnOption = new JButton("Option");
-		btnOption.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				choixOption();
-			}
-		});
-		btnOption.setBounds(1067, 61, 89, 38);
-		contentPane.add(btnOption);
 		//associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
 
 		btnMiroirPlan = new JButton("miroir Plan");
@@ -356,7 +349,13 @@ public class FenetreEditeurNiveau extends JFrame {
 		lblAngleMiroir.setBounds(1198, 701, 118, 14);
 		contentPane.add(lblAngleMiroir);
 		
-		JSpinner spnAngleMiroir = new JSpinner();
+		spnAngleMiroir = new JSpinner();
+		spnAngleMiroir.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				changerAngleMiroirs();
+				
+			}
+		});
 		spnAngleMiroir.setBounds(1317, 698, 29, 20);
 		contentPane.add(spnAngleMiroir);
 		
@@ -587,5 +586,16 @@ public class FenetreEditeurNiveau extends JFrame {
 	public void isNouvelle(boolean reponse) {
 		isNouvelle = reponse;
 	}
+	
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de changer l'angle des miroirs
+	 */
+	private void changerAngleMiroirs() {
+		sceneFinale.setAngleMiroir(Integer.parseInt(spnAngleMiroir.getValue().toString()));
+		
+	}
+	
 
 }

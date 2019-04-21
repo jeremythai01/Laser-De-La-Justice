@@ -16,6 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.JCheckBox;
 
 /**
  * Cette classe permet de tester les miroirs concaves et convexes
@@ -150,5 +151,16 @@ public class AppMiroirTest extends JFrame {
 		});
 		btnCorbeille.setBounds(152, 585, 89, 23);
 		contentPane.add(btnCorbeille);
+		
+		JCheckBox chkScience = new JCheckBox("Mode scientifique");
+		chkScience.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(chkScience.isSelected()) {
+					sceneMiroir.setScientifique();
+				}
+			}
+		});
+		chkScience.setBounds(588, 188, 149, 37);
+		contentPane.add(chkScience);
 	}
 }
