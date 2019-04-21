@@ -180,12 +180,12 @@ public class Options extends JFrame {
 		});
 		btnChangerLaCouleur.setBounds(219, 374, 192, 21);
 		contentPane.add(btnChangerLaCouleur);
-		
+
 		JLabel lblMs = new JLabel("m\\s\u00B2");
 		lblMs.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
 		lblMs.setBounds(531, 165, 63, 27);
 		contentPane.add(lblMs);
-		
+
 		lblCouleur = new JLabel("");
 		lblCouleur.setBackground(Color.GRAY);
 		lblCouleur.setBounds(441, 358, 86, 53);
@@ -198,9 +198,9 @@ public class Options extends JFrame {
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
 	 * @param isIni : retourne vrai si le fichier option a ete ouvert
 	 */
-	
+
 	private void ecritureFichier(boolean isIni){
-		String direction = System.getProperty("user.home") + File.separator + "Laser de la justice";
+		String direction = System.getProperty("user.home") + File.separator + "Desktop"  + File.separator +  "Laser de la justice";
 		direction += File.separator + "Option";
 		File customDir = new File(direction);
 
@@ -212,7 +212,7 @@ public class Options extends JFrame {
 			System.out.println(customDir + " was not created");
 		}
 		//Fin creation dossier
-		
+
 		String nomFichier = "";
 		if(isIni) {
 			nomFichier= "modifie.d3t";
@@ -272,7 +272,7 @@ public class Options extends JFrame {
 	private void choixCouleur() {
 		couleurLaser = JColorChooser.showDialog(null,"Sélectionner la couleur voulue", couleurLaser);
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet de redonne la couleur choisie

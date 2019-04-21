@@ -217,8 +217,8 @@ public class Scene extends JPanel implements Runnable {
 
 						i = listeBalles.size();
 					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
-							listeBalles.remove(i);
-							repaint();
+						listeBalles.remove(i);
+						repaint();
 					}
 				}
 
@@ -253,7 +253,7 @@ public class Scene extends JPanel implements Runnable {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirPlan.get(i);
-						
+
 						i = listeMiroirPlan.size();
 					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
 						listeMiroirPlan.remove(i);
@@ -794,8 +794,8 @@ public class Scene extends JPanel implements Runnable {
 
 						Vecteur posInter = new Vecteur (x,y);
 						System.out.println("position inter" + posInter);
-						
-						
+
+
 						//Systeme en g2d
 						Vecteur normal = listeMiroirConvexe.get(n).getNormal(posInter);
 						System.out.println("La normal du miroir est :" +normal);
@@ -812,7 +812,7 @@ public class Scene extends JPanel implements Runnable {
 						//System.out.println("Angle reflexion en degree " + angleReflexion);
 						double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
 						System.out.println("angle de reflexion" + angleReflexion);
-						
+
 						//ajustement des quadrants et angle en g2d a l'envers
 						if(normal.getX()>0 && normal.getY()>0) {
 							System.out.println("droite");
@@ -846,8 +846,8 @@ public class Scene extends JPanel implements Runnable {
 								laser.setAngleTir(180+(-angleReflexion));
 							}
 						}
-						
-						
+
+
 						System.out.println("angle final" + laser.getAngleTir());
 						laser.setPositionHaut(posInter);
 						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
@@ -1378,16 +1378,16 @@ public class Scene extends JPanel implements Runnable {
 	private void lectureFichierOption() {
 		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
-		
+
 		//Path du dossier contenant les modifications, les options sont crees par ordinateur et non par partie
-		String direction = System.getProperty("user.home") + File.separator + "Laser de la justice";
+		String direction = System.getProperty("user.home") + File.separator + "Desktop"+ File.separator + "Laser de la justice";
 		direction += File.separator + "Option" + File.separator + "modifie.d3t"  ;		
 		File f = new File(direction);
 		//Fin path
-		
+
 		if( f.exists()) { //si le fichier modiefie existe, changement
-		    fichierDeTravail = new File(direction);
-	
+			fichierDeTravail = new File(direction);
+
 		}else { //sinon version initiale
 			String autreDir = System.getProperty("user.rep");
 			fichierDeTravail = new File(autreDir, "DonneeOption.d3t");
@@ -2108,7 +2108,7 @@ public class Scene extends JPanel implements Runnable {
 		listeBalles.removeAll(listeBalles);
 		repaint();
 	}
-	
+
 	public void effacerPrisme() {
 		listePrisme.removeAll(listePrisme);
 		repaint();
@@ -2120,24 +2120,24 @@ public class Scene extends JPanel implements Runnable {
 		listeMiroirPlan.removeAll(listeMiroirPlan);
 		repaint();
 	}
-	
+
 	public void effacerTrouNoir() {
 		listeTrou.removeAll(listeTrou);
 		repaint();
 	}
-	
-	
+
+
 	public void effacerBloc() {
 		listeBlocEau.removeAll(listeBlocEau);
 		repaint();
 	}
 
 	public void effacementPrecis(boolean valeur) {
-	
-	effacement = valeur;
-	
+
+		effacement = valeur;
+
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet de changer l'angle des miroirs
