@@ -163,7 +163,7 @@ public class Scene extends JPanel implements Runnable {
 	private double compteurBouclier = 0;
 	private Bruit son = new Bruit();
 
-	private int angleMiroir=0;
+	private int angleMiroir = 0;
 
 	// Par Jeremy
 	/**
@@ -209,92 +209,92 @@ public class Scene extends JPanel implements Runnable {
 				// pour drag toutes les balles
 
 				for (int i = 0; i < listeBalles.size(); i++) {
-					if ((listeBalles.get(i).getAire().contains(eXR, eYR))&&(!effacement)) {
+					if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (!effacement)) {
 
 						balle = listeBalles.get(i);
 						System.out.println(balle.getAccel());
 						bonneBalle = true;
 
 						i = listeBalles.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeBalles.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeMiroirConvexe.size(); i++) {
-					if (listeMiroirConvexe.get(i).getAireMiroirConvexe().contains(eXR, eYR)&&(!effacement)) {
+					if (listeMiroirConvexe.get(i).getAireMiroirConvexe().contains(eXR, eYR) && (!effacement)) {
 
 						bonMiroirConvexe = true;
 						miroireConvexe = listeMiroirConvexe.get(i);
 
 						i = listeMiroirConvexe.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeMiroirConvexe.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeMiroirConcave.size(); i++) {
-					if (listeMiroirConcave.get(i).getAireMiroirConcave().contains(eXR, eYR)&&(!effacement)) {
+					if (listeMiroirConcave.get(i).getAireMiroirConcave().contains(eXR, eYR) && (!effacement)) {
 
 						bonMiroirConcave = true;
 						miroirConcave = listeMiroirConcave.get(i);
 
 						i = listeMiroirConcave.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeMiroirConcave.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeMiroirPlan.size(); i++) {
-					if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR)&&(!effacement)) {
+					if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR) && (!effacement)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirPlan.get(i);
 
 						i = listeMiroirPlan.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeMiroirPlan.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeTrou.size(); i++) {
-					if (listeTrou.get(i).getAireTrou().contains(eXR, eYR)&&(!effacement)) {
+					if (listeTrou.get(i).getAireTrou().contains(eXR, eYR) && (!effacement)) {
 
 						bonTrouNoir = true;
 						trou = listeTrou.get(i);
 
 						i = listeTrou.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeTrou.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeBlocEau.size(); i++) {
-					if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)&&(!effacement)) {
+					if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR) && (!effacement)) {
 
 						bonBlocEau = true;
 						bloc = listeBlocEau.get(i);
 
 						i = listeBlocEau.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeBlocEau.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listePrisme.size(); i++) {
-					if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR)&&(!effacement)) {
+					if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR) && (!effacement)) {
 
 						bonPrisme = true;
 						prisme = listePrisme.get(i);
 
 						i = listePrisme.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listePrisme.remove(i);
 						repaint();
 					}
@@ -322,22 +322,7 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
 
-				if (bonneBalle) {
-					dragBalle();
-				} else if (bonMiroirConvexe) {
-					dragMiroirConvexe();
-				} else if (bonMiroirConcave) {
-					dragMiroirConcave();
-				} else if (bonMiroirPlan) {
-					dragMiroirPlan();
-				} else if (bonTrouNoir) {
-					dragTrouNoir();
-				} else if (bonBlocEau) {
-					dragBlocEau();
-				} else if (bonPrisme) {
-					dragPrisme();
-				}
-
+				dragObjet();
 			}
 		});
 
@@ -534,8 +519,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 			try {
 				colisionLaserMiroirPlan();
-				colisionLaserMiroirConcave() ;
-				colisionLaserMiroirConvexe() ;
+				colisionLaserMiroirConcave();
+				colisionLaserMiroirConvexe();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -580,10 +565,7 @@ public class Scene extends JPanel implements Runnable {
 		fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}
 
-
-
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Jeremy Thai
 	/**
@@ -754,249 +736,262 @@ public class Scene extends JPanel implements Runnable {
 		}
 	} // fin methode
 
-
-	//Miora
+	// Miora
 	/**
 	 * Cette methode reoriente l'angle de depart du laser s'il y a une intersection
 	 * avec un miroir convexe
+	 * 
 	 * @throws Exception
 	 */
 
-	private void colisionLaserMiroirConvexe() throws Exception{
-		for(Laser laser : listeLasers) {
-			int n=0;
+	private void colisionLaserMiroirConvexe() throws Exception {
+		for (Laser laser : listeLasers) {
+			int n = 0;
 			boolean collision = false;
-			while(n< listeMiroirConvexe.size() && collision == false) {
-				for(Ligne ligne :listeMiroirConvexe.get(n).getListeLigne()) {
-					if(enIntersection(ligne.getAireLigne(), laser.getAire())){
+			while (n < listeMiroirConvexe.size() && collision == false) {
+				for (Ligne ligne : listeMiroirConvexe.get(n).getListeLigne()) {
+					if (enIntersection(ligne.getAireLigne(), laser.getAire())) {
 						collision = true;
-						//System.out.println("position haut laser anim " + laser.getPositionHaut());
+						// System.out.println("position haut laser anim " + laser.getPositionHaut());
 
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
-						Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(-laser.getAngleTir()) ) , Math.sin(Math.toRadians(-laser.getAngleTir()) ))).normalise();;
-						//Vecteur vecDirLaser = (new Vecteur (laser.getPositionBas().getX()-laser.getPointHaut().getX() , laser.getPointHaut().getY()-laser.getPositionBas().getY()));
-						//System.out.println("pts laser : " + ptsLaser + "\n" +  "vec dir : " +vecDirLaser );
+						Vecteur vecDirLaser = (new Vecteur(Math.cos(Math.toRadians(-laser.getAngleTir())),
+								Math.sin(Math.toRadians(-laser.getAngleTir())))).normalise();
+						;
+						// Vecteur vecDirLaser = (new Vecteur
+						// (laser.getPositionBas().getX()-laser.getPointHaut().getX() ,
+						// laser.getPointHaut().getY()-laser.getPositionBas().getY()));
+						// System.out.println("pts laser : " + ptsLaser + "\n" + "vec dir : "
+						// +vecDirLaser );
 
-
-						Vecteur ptsMiroir = new Vecteur (ligne.getX1(), ligne.getY2());
+						Vecteur ptsMiroir = new Vecteur(ligne.getX1(), ligne.getY2());
 						Vecteur vecDirMiroir = ligne.getVecDir();
-						//System.out.println("pts miroir : " + ptsMiroir + "\n" +  "vec miroir : " +vecDirMiroir );
-
+						// System.out.println("pts miroir : " + ptsMiroir + "\n" + "vec miroir : "
+						// +vecDirMiroir );
 
 						Vecteur sous = (ptsLaser.soustrait(ptsMiroir)).multiplie(-1); // de l'autre cote equation
-						Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
+						Vecteur kMiroir = (new Vecteur(0, 0)).soustrait(vecDirMiroir); // devient moins
 
+						double[] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(),
+								vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
 
-						double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+						double x = ptsLaser.getX() + inter[0] * vecDirLaser.getX();
+						double y = ptsLaser.getY() + inter[0] * vecDirLaser.getY();
 
-						double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
-						double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
-
-						Vecteur posInter = new Vecteur (x,y);
+						Vecteur posInter = new Vecteur(x, y);
 						System.out.println("position inter" + posInter);
 
-
-						//Systeme en g2d
+						// Systeme en g2d
 						Vecteur normal = listeMiroirConvexe.get(n).getNormal(posInter);
-						System.out.println("La normal du miroir est :" +normal);
+						System.out.println("La normal du miroir est :" + normal);
 
-						double angleR = Math.toRadians(laser.getAngleTir()) ;	
-						//	System.out.println("     " + laser.getAngleTir());
-						Vecteur incident = (new Vecteur (laser.getPositionBas().getX()-laser.getPointHaut().getX() , laser.getPointHaut().getY()-laser.getPositionBas().getY())).normalise();
+						double angleR = Math.toRadians(laser.getAngleTir());
+						// System.out.println(" " + laser.getAngleTir());
+						Vecteur incident = (new Vecteur(laser.getPositionBas().getX() - laser.getPointHaut().getX(),
+								laser.getPointHaut().getY() - laser.getPositionBas().getY())).normalise();
 						System.out.println("Orientation incident :" + incident);
-						Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
-						System.out.println("Orientation apres reflexion" + reflexion);	
+						Vecteur reflexion = incident
+								.additionne(normal.multiplie(2.0 * (incident.multiplie(-1).prodScalaire(normal))));
+						System.out.println("Orientation apres reflexion" + reflexion);
 
-						//change orientation 
-						//double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-						//System.out.println("Angle reflexion en degree " + angleReflexion);
-						double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
+						// change orientation
+						// double angleReflexion =
+						// Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
+						// System.out.println("Angle reflexion en degree " + angleReflexion);
+						double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY() / reflexion.getX()));
 						System.out.println("angle de reflexion" + angleReflexion);
 
-						//ajustement des quadrants et angle en g2d a l'envers
-						if(normal.getX()>0 && normal.getY()>0) {
+						// ajustement des quadrants et angle en g2d a l'envers
+						if (normal.getX() > 0 && normal.getY() > 0) {
 							System.out.println("droite");
-							if(reflexion.getX() >0 && reflexion.getY()>0) {
+							if (reflexion.getX() > 0 && reflexion.getY() > 0) {
 								System.out.println("premier");
 								laser.setAngleTir(-angleReflexion);
-							}else if (reflexion.getX() < 0 && reflexion.getY()>0 ){
+							} else if (reflexion.getX() < 0 && reflexion.getY() > 0) {
 								System.out.println("2e");
-								laser.setAngleTir(-(angleReflexion+90));
-							}else if (reflexion.getX() < 0 && reflexion.getY()<00 ){
+								laser.setAngleTir(-(angleReflexion + 90));
+							} else if (reflexion.getX() < 0 && reflexion.getY() < 00) {
 								System.out.println("3e");
-								laser.setAngleTir(-(angleReflexion+180));
-							}else if (reflexion.getX() > 0 && reflexion.getY()<0 ){
+								laser.setAngleTir(-(angleReflexion + 180));
+							} else if (reflexion.getX() > 0 && reflexion.getY() < 0) {
 								System.out.println("4e");
 								laser.setAngleTir(angleReflexion);
 							}
 						}
-						if(normal.getX()<0 && normal.getY()>0) {
+						if (normal.getX() < 0 && normal.getY() > 0) {
 							System.out.println("gauche");
-							if(reflexion.getX() >0 && reflexion.getY()>0) {
+							if (reflexion.getX() > 0 && reflexion.getY() > 0) {
 								System.out.println("premier");
 								laser.setAngleTir(angleReflexion);
-							}else if (reflexion.getX() < 0 && reflexion.getY()>0 ){
+							} else if (reflexion.getX() < 0 && reflexion.getY() > 0) {
 								System.out.println("2e");
-								laser.setAngleTir(180+(-angleReflexion));
-							}else if (reflexion.getX() < 0 && reflexion.getY()<00 ){
+								laser.setAngleTir(180 + (-angleReflexion));
+							} else if (reflexion.getX() < 0 && reflexion.getY() < 00) {
 								System.out.println("3e");
-								laser.setAngleTir((angleReflexion+180));
-							}else if (reflexion.getX() > 0 && reflexion.getY()<0 ){
+								laser.setAngleTir((angleReflexion + 180));
+							} else if (reflexion.getX() > 0 && reflexion.getY() < 0) {
 								System.out.println("4e");
-								laser.setAngleTir(180+(-angleReflexion));
+								laser.setAngleTir(180 + (-angleReflexion));
 							}
 						}
-
 
 						System.out.println("angle final" + laser.getAngleTir());
 						laser.setPositionHaut(posInter);
-						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
+						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : "
+								+ laser.getPositionBas());
 
-						//Il faut faire une translation du du haut du laser
-						double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
+						// Il faut faire une translation du du haut du laser
+						double xt = (laser.getPositionHaut().getX()) - laser.getPositionBas().getX(); // translation x
 						double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
-						double a[][]={{1,0,xt},{0,1,yt},{0,0,1}};
-						double b[]={laser.getPositionHaut().getX(),laser.getPositionHaut().getY(),1};  // le point a translater  
+						double a[][] = { { 1, 0, xt }, { 0, 1, yt }, { 0, 0, 1 } };
+						double b[] = { laser.getPositionHaut().getX(), laser.getPositionHaut().getY(), 1 }; // le point
+																											// a
+																											// translater
 
-						//creer une matrice qui va acceuillir la transformation
-						double c[]=new double[3];  //matrice de 1 colonne et 1 ligne  
+						// creer une matrice qui va acceuillir la transformation
+						double c[] = new double[3]; // matrice de 1 colonne et 1 ligne
 
-						//multiplication matriciel 
-						for(int i=0;i<3;i++){    
-							c[i]=0;      
-							for(int k=0;k<3;k++)      
-							{      
-								c[i]+=a[i][k]*b[k];      
+						// multiplication matriciel
+						for (int i = 0; i < 3; i++) {
+							c[i] = 0;
+							for (int k = 0; k < 3; k++) {
+								c[i] += a[i][k] * b[k];
 							}
 							System.out.print(c[i]);
 							System.out.println();
-						} 
-						laser.setPositionHaut(new Vecteur (c[0], c[1]));
-						System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
-						System.out.println("-----------------------------------------------------------------------------");
+						}
+						laser.setPositionHaut(new Vecteur(c[0], c[1]));
+						System.out.println(
+								"laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut());
+						System.out.println(
+								"-----------------------------------------------------------------------------");
 					}
 				}
-
 
 				n++;
 
 			}
 		}
 	}
+
 	// fin methode
-	//Miora 
+	// Miora
 	/**
-	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
-	 * avec un miroir concave
+	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une
+	 * intersection avec un miroir concave
+	 * 
 	 * @throws Exception
 	 */
 
-	private void colisionLaserMiroirConcave() throws Exception{
-		for(Laser laser : listeLasers) {
-			int n=0;
+	private void colisionLaserMiroirConcave() throws Exception {
+		for (Laser laser : listeLasers) {
+			int n = 0;
 			boolean collision = false;
-			while(n< listeMiroirConcave.size() && collision == false) {
-				for(Ligne ligne :listeMiroirConcave.get(n).getListeLigne()) {
-					if(enIntersection(ligne.getAireLigne(), laser.getAire())){
+			while (n < listeMiroirConcave.size() && collision == false) {
+				for (Ligne ligne : listeMiroirConcave.get(n).getListeLigne()) {
+					if (enIntersection(ligne.getAireLigne(), laser.getAire())) {
 						collision = true;
-						//System.out.println("position haut laser anim " + laser.getPositionHaut());
+						// System.out.println("position haut laser anim " + laser.getPositionHaut());
 
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
-						Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(-laser.getAngleTir()) ) , Math.sin(Math.toRadians(-laser.getAngleTir()) ))).normalise();;
-						//Vecteur vecDirLaser = (new Vecteur (0,1));
-						//System.out.println("pts laser : " + ptsLaser + "\n" +  "vec dir : " +vecDirLaser );
+						Vecteur vecDirLaser = (new Vecteur(Math.cos(Math.toRadians(-laser.getAngleTir())),
+								Math.sin(Math.toRadians(-laser.getAngleTir())))).normalise();
+						;
+						// Vecteur vecDirLaser = (new Vecteur (0,1));
+						// System.out.println("pts laser : " + ptsLaser + "\n" + "vec dir : "
+						// +vecDirLaser );
 
-
-						Vecteur ptsMiroir = new Vecteur (ligne.getX1(), ligne.getY2());
+						Vecteur ptsMiroir = new Vecteur(ligne.getX1(), ligne.getY2());
 						Vecteur vecDirMiroir = ligne.getVecDir();
-						//System.out.println("pts miroir : " + ptsMiroir + "\n" +  "vec miroir : " +vecDirMiroir );
-
+						// System.out.println("pts miroir : " + ptsMiroir + "\n" + "vec miroir : "
+						// +vecDirMiroir );
 
 						Vecteur sous = (ptsLaser.soustrait(ptsMiroir)).multiplie(-1); // de l'autre cote equation
-						Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
+						Vecteur kMiroir = (new Vecteur(0, 0)).soustrait(vecDirMiroir); // devient moins
 
+						double[] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(),
+								vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
 
-						double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+						double x = ptsLaser.getX() + inter[0] * vecDirLaser.getX();
+						double y = ptsLaser.getY() + inter[0] * vecDirLaser.getY();
 
-						double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
-						double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
-
-						Vecteur posInter = new Vecteur (x,y);
-
+						Vecteur posInter = new Vecteur(x, y);
 
 						Vecteur normal = listeMiroirConcave.get(n).getNormal(posInter).normalise();
 
-						System.out.println("La normal est du miroir est :" +normal);
+						System.out.println("La normal est du miroir est :" + normal);
 
-						double angleR = Math.toRadians(laser.getAngleTir()) ;	
-						//	System.out.println("     " + laser.getAngleTir());
+						double angleR = Math.toRadians(laser.getAngleTir());
+						// System.out.println(" " + laser.getAngleTir());
 						Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
-						//System.out.println("Orientation incident :" + incident);
+						// System.out.println("Orientation incident :" + incident);
 
-						Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
+						Vecteur reflexion = incident
+								.additionne(normal.multiplie(2.0 * (incident.multiplie(-1).prodScalaire(normal))));
 
+						// change orientation
+						double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY() / reflexion.getX()));
+						System.out.println("angle ini aavant changement :" + angleReflexion);
 
-						//change orientation 
-						double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-						System.out.println("angle ini aavant changement :" + angleReflexion );
-
-						if(normal.getX()<0 && normal.getY()>0) {
+						if (normal.getX() < 0 && normal.getY() > 0) {
 							System.out.println("droite");
-							if(reflexion.getX()>0) {
+							if (reflexion.getX() > 0) {
 								reflexion.setX(-reflexion.getX());
 							}
-							if(reflexion.getY()<0) {
+							if (reflexion.getY() < 0) {
 								reflexion.setY(-reflexion.getY());
 							}
-							angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
+							angleReflexion = Math.toDegrees(Math.atan(reflexion.getY() / reflexion.getX()));
 							System.out.println("droite" + angleReflexion);
-							laser.setAngleTir(180-angleReflexion);
+							laser.setAngleTir(180 - angleReflexion);
 
 						}
-						if(normal.getX()>0 && normal.getY()>0){
+						if (normal.getX() > 0 && normal.getY() > 0) {
 							System.out.println("je suis a gauche");
-							if(reflexion.getX()<0) {
+							if (reflexion.getX() < 0) {
 								reflexion.setX(-reflexion.getX());
 							}
-							if(reflexion.getY() >0) {
+							if (reflexion.getY() > 0) {
 								reflexion.setY(-reflexion.getY());
 							}
-							angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
+							angleReflexion = Math.toDegrees(Math.atan(reflexion.getY() / reflexion.getX()));
 							laser.setAngleTir(angleReflexion);
 						}
-
 
 						System.out.println("Angle reflexion en degree " + angleReflexion);
 
 						System.out.println("angle final" + laser.getAngleTir());
 						laser.setPositionHaut(posInter);
-						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
+						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : "
+								+ laser.getPositionBas());
 
-						//Il faut faire une translation du du haut du laser
-						double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
+						// Il faut faire une translation du du haut du laser
+						double xt = (laser.getPositionHaut().getX()) - laser.getPositionBas().getX(); // translation x
 						double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
-						double a[][]={{1,0,xt},{0,1,yt},{0,0,1}};
-						double b[]={laser.getPositionHaut().getX(),laser.getPositionHaut().getY(),1};  // le point a translater  
+						double a[][] = { { 1, 0, xt }, { 0, 1, yt }, { 0, 0, 1 } };
+						double b[] = { laser.getPositionHaut().getX(), laser.getPositionHaut().getY(), 1 }; // le point
+																											// a
+																											// translater
 
-						//creer une matrice qui va acceuillir la transformation
-						double c[]=new double[3];  //matrice de 1 colonne et 1 ligne  
+						// creer une matrice qui va acceuillir la transformation
+						double c[] = new double[3]; // matrice de 1 colonne et 1 ligne
 
-						//multiplication matriciel 
-						for(int i=0;i<3;i++){    
-							c[i]=0;      
-							for(int k=0;k<3;k++)      
-							{      
-								c[i]+=a[i][k]*b[k];      
+						// multiplication matriciel
+						for (int i = 0; i < 3; i++) {
+							c[i] = 0;
+							for (int k = 0; k < 3; k++) {
+								c[i] += a[i][k] * b[k];
 							}
 							System.out.print(c[i]);
 							System.out.println();
-						} 
-						laser.setPositionHaut(new Vecteur (c[0], c[1]));
-						System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
-						System.out.println("-----------------------------------------------------------------------------");
+						}
+						laser.setPositionHaut(new Vecteur(c[0], c[1]));
+						System.out.println(
+								"laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut());
+						System.out.println(
+								"-----------------------------------------------------------------------------");
 					}
 				}
-
 
 				n++;
 
@@ -1028,8 +1023,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Jeremy Thai
 	/**
@@ -1048,9 +1042,7 @@ public class Scene extends JPanel implements Runnable {
 		return false;
 	}
 
-
-	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Arezki Issaadi permet d'ajouter et de dessiner une grosse balle en appuyant
@@ -1096,7 +1088,7 @@ public class Scene extends JPanel implements Runnable {
 	 * sur le boutton miroire concave
 	 */
 	public void ajoutMiroireConcave() {
-		listeMiroirConcave.add(new MiroirConcave(new Vecteur(4,4), 4,angleMiroir));
+		listeMiroirConcave.add(new MiroirConcave(new Vecteur(4, 4), 4, angleMiroir));
 		repaint();
 	}
 
@@ -1145,7 +1137,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Arezki Issaadi permet aux dessins de safficher a chaque clic
@@ -1178,114 +1170,9 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
-
-	private void dragBalle() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonneBalle) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-
-					repaint();
-				}
-
-			}
-		});
-
-	}
-
-	private void dragMiroirConvexe() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonMiroirConvexe) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragMiroirConcave() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonMiroirConcave) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					miroirConcave.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragMiroirPlan() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonMiroirPlan) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-
-					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragTrouNoir() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonTrouNoir) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					trou.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragBlocEau() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonBlocEau) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					bloc.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragPrisme() {
+	private void dragObjet() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -1297,12 +1184,68 @@ public class Scene extends JPanel implements Runnable {
 
 					repaint();
 				}
+				if (bonBlocEau) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					bloc.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonTrouNoir) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					trou.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonTrouNoir) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					trou.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonMiroirPlan) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+
+					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
+					repaint();
+				}
+				if (bonMiroirConcave) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					miroirConcave.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonMiroirConvexe) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonneBalle) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+
+					repaint();
+				}
 
 			}
 		});
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Methode qui permet de changer l'angle de tir si le joueur enfonce les fleches
@@ -1367,8 +1310,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	//----------------------------------------------------------------------------------------------------------------------------------------------
-
+	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Par Miora
 	/**
@@ -1379,16 +1321,18 @@ public class Scene extends JPanel implements Runnable {
 		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
 
-		//Path du dossier contenant les modifications, les options sont crees par ordinateur et non par partie
-		String direction = System.getProperty("user.home") + File.separator + "Desktop"+ File.separator + "Laser de la justice";
-		direction += File.separator + "Option" + File.separator + "modifie.d3t"  ;		
+		// Path du dossier contenant les modifications, les options sont crees par
+		// ordinateur et non par partie
+		String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
+				+ "Laser de la justice";
+		direction += File.separator + "Option" + File.separator + "modifie.d3t";
 		File f = new File(direction);
-		//Fin path
+		// Fin path
 
-		if( f.exists()) { //si le fichier modiefie existe, changement
+		if (f.exists()) { // si le fichier modiefie existe, changement
 			fichierDeTravail = new File(direction);
 
-		}else { //sinon version initiale
+		} else { // sinon version initiale
 			String autreDir = System.getProperty("user.rep");
 			fichierDeTravail = new File(autreDir, "DonneeOption.d3t");
 		}
@@ -1437,7 +1381,6 @@ public class Scene extends JPanel implements Runnable {
 		} // fin finally
 	}
 
-
 	// Par Miora
 	/**
 	 * Cette methode creer de mettre le niveau pesonnalise
@@ -1479,13 +1422,14 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
 	 * la position du joueur, la couleur du rayon et les touches utilisées
-	 * @param nomSauv : le nom de la sauvegardre
-	 * @param dansOption : retourne vrai si la methode est appele dans le frame option
+	 * 
+	 * @param nomSauv    : le nom de la sauvegardre
+	 * @param dansOption : retourne vrai si la methode est appele dans le frame
+	 *                   option
 	 */
 	public void ecritureFichierSauvegarde(String nomSauv, boolean dansOption) {
 		String nomSave = "";
@@ -1495,7 +1439,7 @@ public class Scene extends JPanel implements Runnable {
 			nomSave = nomSauv + ".save";
 		}
 
-		//Creation dossier
+		// Creation dossier
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
@@ -1507,10 +1451,10 @@ public class Scene extends JPanel implements Runnable {
 		} else {
 			System.out.println(customDir + " was not created");
 		}
-		//Fin creation dossier
+		// Fin creation dossier
 
 		String nomFichierSauvegarde = nomSave;
-		File fichierDeTravail = new File(direction , nomFichierSauvegarde);
+		File fichierDeTravail = new File(direction, nomFichierSauvegarde);
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
@@ -1558,7 +1502,7 @@ public class Scene extends JPanel implements Runnable {
 		direction += File.separator + "Sauvegarde";
 		File fichierDeTravail;
 		if (nomFichier.equals("temporaire")) {
-			fichierDeTravail = new File(direction,"temporaire");
+			fichierDeTravail = new File(direction, "temporaire");
 
 		} else {
 			fichierDeTravail = new File(direction, nomFichier);
@@ -1639,7 +1583,6 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-
 	// Par Miora R. Rakoto
 	/**
 	 * Cette methode permet de sauvegarder un niveau
@@ -1647,7 +1590,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomSauv : le nom du niveau
 	 */
 	public void ecritureNiveau(String nomSauv) {
-		//Creation dossier
+		// Creation dossier
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Niveau";
 		File customDir = new File(direction);
@@ -1659,10 +1602,10 @@ public class Scene extends JPanel implements Runnable {
 		} else {
 			System.out.println(customDir + " was not created");
 		}
-		//Fin creation dossier
+		// Fin creation dossier
 
 		String nomFichierNiveau = nomSauv + ".niv";
-		File fichierDeTravail = new File(direction , nomFichierNiveau);
+		File fichierDeTravail = new File(direction, nomFichierNiveau);
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
@@ -1686,7 +1629,7 @@ public class Scene extends JPanel implements Runnable {
 		} // fin finally
 	}
 
-	//--------------------------------------------------------------------------------------------------------------------------------------	
+	// --------------------------------------------------------------------------------------------------------------------------------------
 
 	public void addSceneListener(SceneListener ecouteur) {
 		listeEcouteur.add(ecouteur);
@@ -1715,7 +1658,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	private void pouvoirAuHasard(Balle balle) {
 
@@ -1866,9 +1809,7 @@ public class Scene extends JPanel implements Runnable {
 			personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
 	}
 
-
-
-	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	private void collisionLaserPrisme() {
 
@@ -2010,7 +1951,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Vecteur getVitesseLaser() {
 		return vitesseLaser;
@@ -2036,7 +1977,7 @@ public class Scene extends JPanel implements Runnable {
 		return toucheDroite;
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
@@ -2081,7 +2022,6 @@ public class Scene extends JPanel implements Runnable {
 		this.angle = angle;
 	}
 
-
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -2101,19 +2041,30 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+	/**
+	 * Methode qui permet d'effacer toutes type de balle
+	 */
+	// Auteur: Arezki
 	public void effacerBalles() {
 		listeBalles.removeAll(listeBalles);
 		repaint();
 	}
 
+	/**
+	 * Methode qui permet d'effacer tous les prismes
+	 */
+	// Auteur: Arezki
 	public void effacerPrisme() {
 		listePrisme.removeAll(listePrisme);
 		repaint();
 	}
 
+	/**
+	 * Méthode qui permet d'effacer tous les miroirs
+	 */
+	// Auteur: Arezki
 	public void effacerMiroir() {
 		listeMiroirConcave.removeAll(listeMiroirConcave);
 		listeMiroirConvexe.removeAll(listeMiroirConvexe);
@@ -2121,30 +2072,44 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
+	/**
+	 * Methode qui permet d'effacer tous les trou-noira
+	 */
+	// Auteur: Arezki
 	public void effacerTrouNoir() {
 		listeTrou.removeAll(listeTrou);
 		repaint();
 	}
 
-
+	/**
+	 * Permet d'effacer tous les blocs
+	 */
+	// Auteur: Arezki
 	public void effacerBloc() {
 		listeBlocEau.removeAll(listeBlocEau);
 		repaint();
 	}
 
+	/**
+	 * Permet d'activer ou de désactiver la fonctionnalité d'effacement precis pour
+	 * les objets: Cliquer sur l'obet et ce dernier s'éffacera
+	 * 
+	 * @param valeur: Boolean pour activer ou désactiver l'effacement des objet avec
+	 *        le clique de la souris (true or false)
+	 */
+	 //Auteur: Arezki
 	public void effacementPrecis(boolean valeur) {
 
 		effacement = valeur;
 
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode permet de changer l'angle des miroirs
 	 */
 	public void setAngleMiroir(int angle) {
 		this.angleMiroir = angle;
 	}
-
 
 }
