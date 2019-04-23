@@ -2,22 +2,19 @@ package prisme;
 
 import java.awt.BasicStroke;
 
+
 import java.awt.Color;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 import javax.swing.JPanel;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import geometrie.Vecteur;
 import objets.BlocDEau;
@@ -41,7 +38,7 @@ import java.awt.event.MouseMotionAdapter;
 
 /**
  * 
- * @author Arnaud
+ * @author Arezki
  *
  */
 public class SceneTestPrisme extends JPanel implements Runnable {
@@ -56,8 +53,6 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private double HAUTEUR_DU_MONDE;
 	private boolean enCoursAnimation = false;
 	private double tempsTotalEcoule = 0;
-	private double masse = 15; // en kg
-	private double diametre = 2; // em mètres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Balle balle1;
 	private Balle balle;
@@ -211,9 +206,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		} catch (ConcurrentModificationException e) {
 			System.out.println("le laser nexiste pas");
 		}
-		checkCollisionBalleLaserPersonnage(listeBalles, listeLasers, character);
-		checkCollisionTrouLaserPersonnage(listeLasers);
-		checkCollisionBlocLaserPersonnage(listeLasers);
+	
 		for (BlocDEau bloc : listeBloc) {
 			g2d.setColor(Color.blue);
 			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -232,15 +225,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			
 		}
 		
-		for (Balle balle : listeBalles) {
-
-			// balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
-		}
-
-		/*
-		 * for(TrouNoir trou: listeTrou) {
-		 * trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE); }
-		 */
+	
 		coeur = new Coeurs(nombreVies);
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
@@ -351,39 +336,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		}
 	}
 
-	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers,
-			Personnage character) {
-
-		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
-		try {
-			for (Laser laser : listeLasers) {
-
-				for (Balle balle : listeBalles) {
-
-					if (intersection(balle.getAire(), laser.getAire())) {
-
-						// if(balle.getAireBalle().intersects(laser.getLine())) {
-
-						listeLasers.remove(laser);
-						listeBalleTouche.add(balle);
-						balle.shrink(listeBalles, new Vecteur(0, 9.8));
-						coeur.setCombien(nombreVies - 1);
-						nombreVies -= 1;
-					}
-
-				}
-
-			}
-		} catch (ConcurrentModificationException e) {
-		}
-	}
-	/*
-	 * for(Balle balle : listeBalleTouche) { balle.shrink(listeBalles); }
-	 * 
-	 * 
-	 */
-
-	// }
+	
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -393,88 +346,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		return false;
 	}
 
-	private void checkCollisionTrouLaserPersonnage(ArrayList<Laser> listeLasers) {
-
-		for (Laser laser : listeLasers) {
-			for (TrouNoir trou : listeTrou) {
-				// if(trou.getAireTrou().intersects(laser.getLine())) {
-
-				if (intersection(trou.getAireTrou(), laser.getAire())) {
-
-					listeLasers.remove(laser);
-
-				}
-			}
-		}
-		/*
-		 * for(Balle balle : listeBalleTouche) { balle.shrink(listeBalles); }
-		 * 
-		 * 
-		 */
-
-		// bloc.refraction(v, N, n1, n2);
-
-	}
-
-	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
-		for (Laser laser : listeLasers) {
-			for (BlocDEau bloc : listeBloc) {
-				if (intersection(bloc.getAireBloc(), laser.getAire())) {
-					// if(bloc.isPremiereCollision()) {
-
-					// laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(),
-					// bloc.calculNormal(laser,bloc), 1.33,
-					// 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc),
-					// 1.33, 1).getX()));
-
-					try {
-						Vecteur ref = bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
-						laser.setAngleTir(180 + Math.toDegrees(Math.atan(ref.getY() / ref.getX())));
-						// laser.setAngleTir(30);
-						System.out.println(laser.getAngleTir());
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					// System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
-					// laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(),
-					// bloc.calculNormal(laser,bloc), 1,
-					// 1.33).getY()/bloc.refraction(laser.getVitesse(),
-					// bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
-
-					// laser.setAngleTir(90);
-					// laser.updaterAngleVitesse((laser.getAngleTir()));
-					// System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
-					// System.out.println("nouvelle vitesse laser: "+ laser.getVitesse());
-
-					// laser.setAngleTir(30);
-					// laser.updaterAngleVitesse((laser.getAngleTir()));
-					// System.out.println("laser:" + laser.getVitesse().multiplie(-1));
-					// System.out.println("nouvel normal:" + bloc.getNormal());
-					// System.out.println();
-					// System.out.println("valeur bloc: "+ ref);
-
-					// repaint();
-					// bloc.setPremiereCollision(false);
-					// }
-				}
-			}
-		}
-	}
-
-	private void tirer() {
-
-		ordi3.ajouterListesObstacles(listeBalles);
-		// listeLasers.add(ordi.tirer());
-		// listeLasers.add(ordi2.tirer());
-		// listeLasers.add(ordi3.tirer());
-		// listeLasers.add(new Laser(new
-		// Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()),
-		// angle, new Vecteur(0,0.5)));
-
-	}
-
+	
 	private void collisionLaserPrisme() {
 		
 		
@@ -635,6 +507,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 		repaint();
 	}
 
+	
 	public void setIndiceRefractionPrisme(double valeur) {
 		prisme.setIndiceRefraction(valeur);
 		repaint();

@@ -60,7 +60,7 @@ import utilite.OutilsMath;
 /**
  * Cette classe contient la scene d'animation du jeu.
  * 
- * @author Miora, Arezki, Jeremy
+ * @author Miora, Arezki, Jeremy, Arnaud
  *
  */
 public class Scene extends JPanel implements Runnable {
@@ -304,20 +304,6 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
 
-				if (bonneBalle) {
-					dragBalle();
-				} else if (bonMiroirCourbe) {
-					dragMiroirConvexe();
-				} 
-				 else if (bonMiroirPlan) {
-					dragMiroirPlan();
-				} else if (bonTrouNoir) {
-					dragTrouNoir();
-				} else if (bonBlocEau) {
-					dragBlocEau();
-				} else if (bonPrisme) {
-					//dragPrisme();
-				}
 
 				dragObjet();
 
@@ -349,7 +335,6 @@ public class Scene extends JPanel implements Runnable {
 	 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le
 	 * personnage et de savoir s'il y a des collisions entre le laser et les balles
 	 * 
-	 * @author Arezki
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -941,9 +926,11 @@ public class Scene extends JPanel implements Runnable {
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner une grosse balle en appuyant
+	 * Permet d'ajouter et de dessiner une grosse balle en appuyant
 	 * sur le boutton grosse balle
 	 */
+	// Auteur: Arezki Issaadi
+
 	public void ajoutBalleGrosse() {
 
 		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
@@ -953,9 +940,11 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner une balle medium en appuyant
+	 * Permet d'ajouter et de dessiner une balle medium en appuyant
 	 * sur le boutton medium balle
 	 */
+	// Auteur: Arezki Issaadi
+
 	public void ajoutBalleMedium() {
 
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
@@ -966,9 +955,11 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner une petite balle en appuyant
+	 * Permet d'ajouter et de dessiner une petite balle en appuyant
 	 * sur le boutton petite balle
 	 */
+	// Auteur: Arezki Issaadi
+
 	public void ajoutBallePetite() {
 
 		// System.out.println("avant :"+petiteBalle.toString());
@@ -979,15 +970,22 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	/**
+	 * Permet d'ajouter et de dessiner un miroir convexe en appuyant sur
+	 * le boutton miroire convexe
+	 */
+	// Auteur: Arezki Issaadi
 	public void ajoutMiroireConvexe() {
 		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(4, 4), 2, angleMiroir));
 		repaint();
 	}
 
 	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner un miroir plan en appuyant sur
+	 * Permet d'ajouter et de dessiner un miroir plan en appuyant sur
 	 * le boutton miroire plan
 	 */
+	// Auteur: Arezki Issaadi
+
 	public void ajoutMiroirPlan() {
 		listeMiroirPlan.add(new MiroirPlan(new Vecteur(4, 4), angleMiroir));
 		repaint();
@@ -995,15 +993,22 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner un trou noir en appuyant sur
+	 * Permet d'ajouter et de dessiner un trou noir en appuyant sur
 	 * le boutton Trou noir
 	 */
+	// Auteur: Arezki Issaadi
+
 	public void ajoutTrouNoir() {
 		listeTrou.add(new TrouNoir(new Vecteur(7, 0)));
 		repaint();
 
 	}
 
+	/**
+	 * Permet d'ajouter et de dessiner un prisme en appuyant sur
+	 * le boutton prisme
+	 */
+	// Auteur: Arezki Issaadi
 	public void ajoutPrisme() {
 		listePrisme.add(new Prisme(new Vecteur(2, 2)));
 		repaint();
@@ -1011,9 +1016,10 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner un bloc d'eau en appuyant sur
+	 * Permet d'ajouter et de dessiner un bloc d'eau en appuyant sur
 	 * le boutton Bloc d'eau
 	 */
+	// Auteur: Arezki Issaadi
 	public void ajoutBlocEau() {
 		// listeBlocEau.add(new BlocDEau(new Vecteur(9, 0)));
 		repaint();
@@ -1023,26 +1029,28 @@ public class Scene extends JPanel implements Runnable {
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Arezki Issaadi permet aux dessins de safficher a chaque clic
+	 *Permet aux dessins de safficher a chaque clic
 	 */
+	// Auteur: Arezki Issaadi
 	public void ActiverEditeur() {
 		editeurActiver = true;
 		repaint();
 	}
 
 	/**
-	 * Arezki Issaadi permet d'empecher que les dessins saffichent a chaque clic
+	 * Permet d'empecher que les dessins saffichent a chaque clic
 	 */
-
+	// Auteur: Arezki Issaadi
 	public void DesactiverEditeur() {
 		editeurActiver = false;
 
 	}
 
 	/**
-	 * @author Arezki efface tous les dessins sur la scene en effaçant tous les
-	 *         objets dans les listes. Agisse comme une corbeille
+	 * Efface tous les dessins sur la scene en effaçant tous les
+	 * objets dans les listes. Agisse comme une corbeille
 	 */
+	// Auteur: Arezki Issaadi
 	public void reinitialiserDessin() {
 		listeBalles.removeAll(listeBalles);
 		listeBlocEau.removeAll(listeBlocEau);
@@ -1055,95 +1063,13 @@ public class Scene extends JPanel implements Runnable {
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-	private void dragBalle() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonneBalle) {
+	
+		
 
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
-
-					repaint();
-				}
-
-			}
-		});
-
-	}
-
-	private void dragMiroirConvexe() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonMiroirCourbe) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-
-	private void dragMiroirPlan() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonMiroirPlan) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-
-					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragTrouNoir() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonTrouNoir) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					trou.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragBlocEau() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonBlocEau) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					bloc.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	//private void dragPrisme() {
-
+	/**
+	 * Methode qui fait drag tous les objets 
+	 */
+	// Auteur: Arezki Issaadi
 	private void dragObjet() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -1188,7 +1114,7 @@ public class Scene extends JPanel implements Runnable {
 					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
 					repaint();
 				}
-	/*			if (bonMiroirConcave) {
+		/*	if (bonMiroirConcave) {
 
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
@@ -1779,6 +1705,10 @@ public class Scene extends JPanel implements Runnable {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Méthode pour savoir quel prisme entre en collision avec quel laser
+	 */
+	// Auteur: Arezki Issaadi
 	private void collisionLaserPrisme() {
 
 		for (int i = 0; i < listeLasers.size(); i++) {
@@ -1803,6 +1733,12 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	/**
+	 * Cette méthode fait les calculs pour a réfraction du laser lorsqu'il touche un prisme et crée plusieur lasers comme dans la vraie vie 
+	 * @param laser: laser qui sera en collision avec le prisme
+	 * @param prismes: prisme qui sera en collision avec le laser
+	 */
+	// Auteur: Arezki Issaadi
 	private void calculRefractionPrisme(Laser laser, Prisme prismes) {
 
 		System.out.println("------------------------------------------------------------------------------");
@@ -1843,6 +1779,13 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	/**
+	 * Cette méthode calcule la normal pour chaque côté du prisme et la retourne en vecteur dans les unités du rélles
+	 * @param laser: laser qui sera en collision avec le prisme
+	 * @param prisme: le prisme qui sera en collision avec le laser
+	 * @return Vecteur: Vecteur en x et en y de la normal du segment du prisme
+	 */
+	// Auteur: Arezki Issaadi
 	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
 
 		// System.out.println("position p1"+ prisme.getP1());
@@ -1990,6 +1933,10 @@ public class Scene extends JPanel implements Runnable {
 		this.angle = angle;
 	}
 
+	/**
+	 * Cette méthode permet de modifier l'angle du laser avec la roulette de la souris
+	 */
+	// Auteur: Arezki Issaadi
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {

@@ -503,34 +503,7 @@ public class FenetreJeu extends JFrame {
 	 */
 	// par Caroline Houle
 
-	private void associerBoutonAvecImage(JButton leBouton, String fichierImage) {
-		Image imgLue = null;
-		java.net.URL urlImage = getClass().getClassLoader().getResource(fichierImage);
-		if (urlImage == null) {
-			JOptionPane.showMessageDialog(null, "Fichier " + fichierImage + " introuvable");
-		}
-		try {
-			imgLue = ImageIO.read(urlImage);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Erreur pendant la lecture du fichier d'image");
-		}
-
-		// redimensionner l'image de la meme grandeur que le bouton
-		Image imgRedim = imgLue.getScaledInstance(leBouton.getWidth(), leBouton.getHeight(), Image.SCALE_SMOOTH);
-
-		// au cas ou le fond de limage serait transparent
-		leBouton.setOpaque(false);
-		leBouton.setContentAreaFilled(false);
-		leBouton.setBorderPainted(false);
-
-		// associer l'image au bouton
-		leBouton.setText("");
-		leBouton.setIcon(new ImageIcon(imgRedim));
-
-		// on se debarrasse des images intermediaires
-		imgLue.flush();
-		imgRedim.flush();
-	}
+	
 
 
 	// Miora

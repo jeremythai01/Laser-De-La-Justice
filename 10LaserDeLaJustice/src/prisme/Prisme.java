@@ -19,7 +19,6 @@ public class Prisme implements Dessinable, Serializable {
 	 * @author Arezki
 	 */
 
-	private int angle;
 	private static final long serialVersionUID = 1L;
 
 	private Vecteur p1;

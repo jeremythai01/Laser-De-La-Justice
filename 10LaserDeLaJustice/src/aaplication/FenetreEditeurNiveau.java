@@ -1,25 +1,21 @@
 package aaplication;
 
-import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
@@ -28,12 +24,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import interfaces.SceneListener;
-import options.Options;
-import son.Bruit;
 import javax.swing.JSpinner;
 
 public class FenetreEditeurNiveau extends JFrame {
+	/**
+	 * Cette classe sert à éditer et créer un niveau
+	 * @author Arezki
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnPrisme;
 	private JButton btnPetiteBalle;
@@ -45,7 +43,7 @@ public class FenetreEditeurNiveau extends JFrame {
 	private JButton btnMiroirConvexe;
 	private JButton btnMiroirPlan;
 	private Scene sceneFinale;
-	private Options optionJeu;
+	//private Options optionJeu;
 
 	private boolean isNouveauOption = true;
 	boolean triche = false;
@@ -56,10 +54,9 @@ public class FenetreEditeurNiveau extends JFrame {
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
-	private static boolean  isNouvelle = true, isOptiPerso = true;
-
+	private static boolean  isNouvelle = true;
 	
-	private Bruit son = new Bruit();
+	
 	private JSpinner spnAngleMiroir;
 	
 	
@@ -275,16 +272,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			
 		tempsJeu = new Timer(1000, listener);
 
-		/*
-		associerBoutonAvecImage(btnBlocDeau, "Bloc.JPG");
-		associerBoutonAvecImage(btnGrosseBalle, "GrBalle.JPG");
-		associerBoutonAvecImage(btnMediumBalle, "MedBalle.JPG");
-		associerBoutonAvecImage(btnMiroirConcave, "convex.JPG");
-		associerBoutonAvecImage(btnMiroirConvexe, "Concave.JPG");
-		associerBoutonAvecImage(btnPetiteBalle, "PetBalle.JPG");
-		associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
-		associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
-		*/
+		
 		JButton btnSaveNiveau = new JButton("Enregistrer niveau\r\n");
 		btnSaveNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -524,40 +512,8 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnPetiteBalle.setEnabled(false);
 	}
 
-	/**
-	 * @param leBouton
-	 * @param fichierImage
-	 */
-	// par Caroline Houle
-
-	private void associerBoutonAvecImage(JButton leBouton, String fichierImage) {
-		Image imgLue = null;
-		java.net.URL urlImage = getClass().getClassLoader().getResource(fichierImage);
-		if (urlImage == null) {
-			JOptionPane.showMessageDialog(null, "Fichier " + fichierImage + " introuvable");
-		}
-		try {
-			imgLue = ImageIO.read(urlImage);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Erreur pendant la lecture du fichier d'image");
-		}
-
-		// redimensionner l'image de la meme grandeur que le bouton
-		Image imgRedim = imgLue.getScaledInstance(leBouton.getWidth(), leBouton.getHeight(), Image.SCALE_SMOOTH);
-
-		// au cas ou le fond de limage serait transparent
-		leBouton.setOpaque(false);
-		leBouton.setContentAreaFilled(false);
-		leBouton.setBorderPainted(false);
-
-		// associer l'image au bouton
-		leBouton.setText("");
-		leBouton.setIcon(new ImageIcon(imgRedim));
-
-		// on se debarrasse des images intermediaires
-		imgLue.flush();
-		imgRedim.flush();
-	}
+	
+	
 
 
 	// Miora
