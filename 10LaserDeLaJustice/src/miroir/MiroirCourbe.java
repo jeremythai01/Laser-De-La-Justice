@@ -10,6 +10,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import geometrie.Vecteur;
@@ -20,8 +21,9 @@ import prisme.Prisme;
  * Classe des miroirs convexes
  * @author Miora R. Rakoto
  */
-public class MiroirCourbe implements Dessinable {
+public class MiroirCourbe implements Dessinable, Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private Vecteur position;
 	private double rayon=0;  // x et y sont les coordonne du centre de l'arc
 	private Arc2D.Double arc; 

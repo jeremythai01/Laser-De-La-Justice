@@ -34,7 +34,7 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 	private Vecteur position;
 	private final double LARGEUR=2;
 	private final double distance=2;
-	private Image img=null;
+//	private Image img=null;
 	private double qtRot=0;
 	
 	private Ellipse2D.Double trou;
@@ -46,7 +46,7 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 	public TrouNoir(Vecteur position) {
 		this.position=position;
 		
-		URL urlCoeur = getClass().getClassLoader().getResource("trounoir2.png");
+		/*URL urlCoeur = getClass().getClassLoader().getResource("trounoir2.png");
 		if (urlCoeur == null) {
 			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
 			System.exit(0);}
@@ -57,7 +57,7 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 			System.out.println("Erreur pendant la lecture du fichier d'image");
 		}
 		
-		
+	*/	
 	}
 	
 
@@ -98,11 +98,11 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 		//Deplacement du personnage a sa position initiale
 		//matLocale.translate( (0.5) / factPersoX , (2-0.5) / factPersoY);
 		
-		double factX = (LARGEUR+distance*2)/ img.getWidth(null) ;
-		double factY = (LARGEUR+distance*2)/ img.getHeight(null) ;matLocale.rotate(qtRot, position.getX()+LARGEUR/2, position.getY()+LARGEUR/2);
-		matLocale.scale( factX, factY);
+		//double factX = (LARGEUR+distance*2)/ img.getWidth(null) ;
+		//double factY = (LARGEUR+distance*2)/ img.getHeight(null) ;matLocale.rotate(qtRot, position.getX()+LARGEUR/2, position.getY()+LARGEUR/2);
+	//	matLocale.scale( factX, factY);
 	
-		matLocale.translate( (position.getX()-distance)   / factX , (position.getY() -distance) / factY);
+	//	matLocale.translate( (position.getX()-distance)   / factX , (position.getY() -distance) / factY);
 		
 		g.setColor(Color.LIGHT_GRAY);
 		trou=new Ellipse2D.Double(position.getX()-distance, position.getY()-distance, LARGEUR+distance*2, LARGEUR+distance*2);
@@ -114,8 +114,10 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 		//g.drawImage(img, (int)position.getX(),(int) position.getY(), 60, 60, null, null);
 		//System.out.println("chris"+ (int)position.getX());
 		
-		g.drawImage(img, matLocale, null);
+		//g.drawImage(img, matLocale, null);
+		g.draw(matLocale.createTransformedShape(trou));
 		System.out.println("draw");
+		
 		
 		
 		

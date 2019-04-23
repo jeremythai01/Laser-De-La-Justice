@@ -1,17 +1,18 @@
 package prisme;
 
 import java.awt.Color;
-import java.awt.Polygon;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
+import java.io.Serializable;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
 
-public class Prisme implements Dessinable {
+public class Prisme implements Dessinable, Serializable {
 	/**
 	 * Cette classe permet de dessiner le prisme et son air
 	 * 
@@ -19,6 +20,7 @@ public class Prisme implements Dessinable {
 	 */
 
 	private int angle;
+	private static final long serialVersionUID = 1L;
 
 	private Vecteur p1;
 	private Vecteur p2;
