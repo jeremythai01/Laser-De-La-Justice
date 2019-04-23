@@ -20,7 +20,7 @@ import prisme.Prisme;
  * Classe des miroirs convexes
  * @author Miora R. Rakoto
  */
-public class MiroirConvexe implements Dessinable {
+public class MiroirCourbe implements Dessinable {
 
 	private Vecteur position;
 	private double rayon=0;  // x et y sont les coordonne du centre de l'arc
@@ -39,19 +39,36 @@ public class MiroirConvexe implements Dessinable {
 	 * @param rayon : le rayon
 	 * @param angle : l'angle de rotation
 	 */
-	public MiroirConvexe(Vecteur position, double rayon, int angle) {
+	public MiroirCourbe(Vecteur position, double rayon, double angle) {
 		this.position = position;
 		this.rayon = rayon;
 		this.angle = angle;
 
+		//Points qui vont former le demi-cercle
 		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
 		for(int i=0; i<=180; i+=approximation) {
-			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon,position.getY()- Math.sin(Math.toRadians(-i))*rayon );
-			listePoints.add(pts);
+			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
+			double a = Math.toRadians(-angle);
+			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
+			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
+			double d[]=new double[2]; //nouvelle coordonees
 
+			//multiplication matriciel avec matrice de rotation sur les points, pas utilisation aff.rotate
+			for(int j=0;j<2;j++){    
+				d[j]=0;      
+				for(int k=0;k<2;k++)      
+				{      
+					d[j]+=matR[j][k]*ptsD[k];      
+				}
+			}
+			d[0] = d[0]+position.getX();
+			d[1] = d[1]+position.getY();
+			pts = new Point2D.Double(d[0], d[1]);
+			listePoints.add(pts);
 		}
+		//Petites lignes qui vont former le demi-cercle
 		for(int j=0;j<= listePoints.size()-2; j++) {
-			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1), angle);
+			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
 			listeLigne.add(ligne);
 		}
 	}
@@ -63,22 +80,20 @@ public class MiroirConvexe implements Dessinable {
 	 * @param largeur : largeur de la scene 
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
-		//Le miroir est dessiner avec des Line2D
-	
-
 		AffineTransform aff = new AffineTransform(mat);
-		//On tourne
-		aff.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-
-		//on dessine la courbe 
+		g2d.fill(aff.createTransformedShape(new Ellipse2D.Double(position.getX()-0.5/2, position.getY()-0.5/2, 0.5, 0.5)));
+		
+		//on dessine la courbe avec des petites ligne
 		g2d.setColor(Color.red);
 		for(Ligne ligne : listeLigne) {
 			g2d.draw(aff.createTransformedShape(ligne));
 		}
-		if(dessiner) {
-			//g2d.draw(aff.createTransformedShape(new Line2D.Double(inter.getX(),inter.getY(), position.getX(), position.getY())));
-		}
 		
+		if(dessiner) {
+			aff = new AffineTransform(mat);
+			g2d.draw(aff.createTransformedShape(new Line2D.Double(inter.getX(),inter.getY(), position.getX(), position.getY())));
+			g2d.draw(aff.createTransformedShape(new Ellipse2D.Double(inter.getX()-0.5/2, inter.getY()-0.5/2, 0.5, 0.5)));
+		}
 	}
 
 	/**
@@ -90,12 +105,6 @@ public class MiroirConvexe implements Dessinable {
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		matLocale.translate(-rayon, -rayon);
 		return new Area(new Arc2D.Double(position.getX(), position.getY(), 2*rayon, 2*rayon, -180, 180, Arc2D.OPEN));
-		/*Area aireMiroir = null;
-		for(Ligne ligne : listeLigne) {
-			Rectangle2D.Double fantome = new Rectangle2D.Double(ligne.getX1(), ligne.getY1(),0.07, 0.01);
-			aireMiroir.add(new Area(fantome));
-		}
-		return aireMiroir;*/
 	}
 
 	/**
@@ -106,7 +115,7 @@ public class MiroirConvexe implements Dessinable {
 	public Vecteur getNormal(Vecteur posInter) {
 		dessiner = true;
 		this.inter = posInter;
-		return posInter.soustrait(position) ;
+		return (posInter.soustrait(position)) ;
 	}
 	/**
 	 * Methode qui retourne la position du miroir

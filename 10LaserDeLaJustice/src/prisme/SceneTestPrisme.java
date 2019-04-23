@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import geometrie.Vecteur;
-import miroir.MiroirConcave;
 import objets.BlocDEau;
 import objets.Echelle;
 import objets.Ordinateur;

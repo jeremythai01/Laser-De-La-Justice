@@ -137,13 +137,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnMiroirConvexe.setBounds(1198, 570, 105, 23);
 		contentPane.add(btnMiroirConvexe);
 
-		btnMiroirConcave = new JButton("miroir Concave");
-		btnMiroirConcave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sceneFinale.ajoutMiroireConcave();
-				donneFocusALasceneFinale();
-			}
-		});
 		btnMiroirConcave.setEnabled(false);
 		btnMiroirConcave.setBounds(1198, 536, 105, 23);
 		contentPane.add(btnMiroirConcave);

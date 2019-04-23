@@ -16,7 +16,6 @@ import java.util.ConcurrentModificationException;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
-import miroir.MiroirConcave;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;

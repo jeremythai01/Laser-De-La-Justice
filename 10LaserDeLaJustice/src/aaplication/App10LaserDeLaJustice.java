@@ -86,7 +86,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnEditeurDeNiveau = new JButton("Editeur de niveau");
 		btnEditeurDeNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FenetreJeu fenetreJeu = new FenetreJeu(false, null);
+				FenetreJeu fenetreJeu = new FenetreJeu(true, null);
 				fenetreJeu.setVisible(true);
 				setVisible(false);
 			}

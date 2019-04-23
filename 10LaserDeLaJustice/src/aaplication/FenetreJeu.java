@@ -95,6 +95,7 @@ public class FenetreJeu extends JFrame {
 	/**
 	 * Creation de la fenêtre
 	 * @param isNouvelle : retourne vrai si il s'agit d'une nouvelle partie
+	 * @author Miora nomFichier : le nom du fichier de sauvegarde ou niveau
 	 */
 	// Par Arezki
 	public FenetreJeu(boolean isNouvelle, String nomFichier) {
@@ -207,16 +208,6 @@ public class FenetreJeu extends JFrame {
 
 		contentPane.add(btnMiroirConvexe);
 
-		btnMiroirConcave = new JButton("miroir Concave");
-		btnMiroirConcave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sceneFinale.ajoutMiroireConcave();
-				donneFocusALasceneFinale();
-			}
-		});
-		btnMiroirConcave.setEnabled(false);
-		btnMiroirConcave.setBounds(934, 800, 105, 23);
-		contentPane.add(btnMiroirConcave);
 
 		btnTrouNoir = new JButton("Trou Noir");
 		btnTrouNoir.addActionListener(new ActionListener() {

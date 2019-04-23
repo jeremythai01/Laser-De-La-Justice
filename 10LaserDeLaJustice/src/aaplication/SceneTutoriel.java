@@ -39,8 +39,7 @@ import effets.Pouvoir;
 import effets.Ralenti;
 import geometrie.Vecteur;
 import interfaces.SceneListener;
-import miroir.MiroirConcave;
-import miroir.MiroirConvexe;
+import miroir.MiroirCourbe;
 import miroir.MiroirPlan;
 import objets.BlocDEau;
 import objets.Echelle;
@@ -116,8 +115,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
-	private ArrayList<MiroirConcave> listeMiroireConcave = new ArrayList<MiroirConcave>();
-	private ArrayList<MiroirConvexe> listeMiroireConvexe = new ArrayList<MiroirConvexe>();
+	private ArrayList<MiroirCourbe> listeMiroireConvexe = new ArrayList<MiroirCourbe>();
 	private ArrayList<MiroirPlan> listeMiroirePlan = new ArrayList<MiroirPlan>();
 	private ArrayList<BlocDEau> listeBlocEau = new ArrayList<BlocDEau>();
 	private ArrayList<Prisme> listePrisme = new ArrayList<Prisme>();
@@ -125,8 +123,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 
 	private Balle balle;
 	private TrouNoir trou;
-	private MiroirConcave miroirConcave;
-	private MiroirConvexe miroireConvexe;
+	private MiroirCourbe miroireConvexe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
 	private OrdinateurNiveau3 ordi;
@@ -242,12 +239,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 			balle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
-		for (MiroirConcave miroirC : listeMiroireConcave) {
-
-			miroirC.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		}
-
-		for (MiroirConvexe miroirV : listeMiroireConvexe) {
+		for (MiroirCourbe miroirV : listeMiroireConvexe) {
 
 			miroirV.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
@@ -870,21 +862,13 @@ public class SceneTutoriel extends JPanel implements Runnable {
 
 	}
 
-	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner un miroir concave en appuyant
-	 * sur le boutton miroire concave
-	 */
-	public void ajoutMiroireConcave() {
-		listeMiroireConcave.add(new MiroirConcave( new Vecteur(3, 0) , 2,0));
-		repaint();
-	}
 
 	/**
 	 * Arezki Issaadi permet d'ajouter et de dessiner un miroir convexe en appuyant
 	 * sur le boutton miroire convexe
 	 */
 	public void ajoutMiroireConvexe() {
-		listeMiroireConvexe.add(new MiroirConvexe(new Vecteur(3, 0), 2, 0));
+		listeMiroireConvexe.add(new MiroirCourbe(new Vecteur(3, 0), 2, 0));
 		repaint();
 	}
 
@@ -948,7 +932,6 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	public void reinitialiserDessin() {
 		listeBalles.removeAll(listeBalles);
 		listeBlocEau.removeAll(listeBlocEau);
-		listeMiroireConcave.removeAll(listeMiroireConcave);
 		listeMiroireConvexe.removeAll(listeMiroireConvexe);
 		listeMiroirePlan.removeAll(listeMiroirePlan);
 		listeTrou.removeAll(listeTrou);
@@ -982,23 +965,6 @@ public class SceneTutoriel extends JPanel implements Runnable {
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
 					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}
-
-			}
-		});
-	}
-
-	private void dragMiroirConcave() {
-		addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				if (bonMiroirConcave) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					miroirConcave.setPosition(new Vecteur(xDrag, yDrag));
 
 					repaint();
 				}

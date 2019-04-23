@@ -4,13 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 import geometrie.Vecteur;
-import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
 
 /**
@@ -30,7 +28,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
-	private Vecteur positionInter;
+	private Vecteur inter;
 	private double largeur = 0.1;
 	private Area aireMiroir;
 	private boolean modeSci;
@@ -67,7 +65,8 @@ public class MiroirPlan implements Dessinable, Serializable {
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
 		g2d.fill(miroirTransfo); //dessine en pixel
 		if(modeSci == true) {
-	
+			matLocale = new AffineTransform(mat);
+			g2d.fill(matLocale.createTransformedShape(new Ellipse2D.Double(inter.getX()-0.5/2, inter.getY()-0.5/2, 0.5, 0.5)));
 		}
 	}
 
@@ -151,9 +150,9 @@ public class MiroirPlan implements Dessinable, Serializable {
 	}
 
 
-	public void afficherVecteur(Vecteur normal, Vecteur posInter) {
+	public void afficherVecteur(Vecteur normal, Vecteur inter) {
 		modeSci = true;
-		this.positionInter = posInter;
+		this.inter = inter;
 	}
 
 

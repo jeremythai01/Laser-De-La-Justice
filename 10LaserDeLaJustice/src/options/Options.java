@@ -159,7 +159,6 @@ public class Options extends JFrame {
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(dansScene) {
-					System.out.println("dans scene option");
 					ecritureFichier(true);
 					jeu = new FenetreJeu (false,"temporaire");
 					jeu.setVisible(true);
@@ -228,7 +227,7 @@ public class Options extends JFrame {
 			fluxSortie.writeInt(toucheGauche);
 			fluxSortie.writeInt(toucheDroite);
 			fluxSortie.writeObject(couleurLaser);
-			JOptionPane.showMessageDialog(null,"Vos modifications ont ete sauvegardees avec succes");
+			JOptionPane.showMessageDialog(null,"Vos modifications ont ete sauvegardées avec succès");
 		} 
 		catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");

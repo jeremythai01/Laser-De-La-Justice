@@ -11,7 +11,6 @@ import java.io.Serializable;
 import geometrie.Vecteur;
 import interfaces.Dessinable;
 //import sim.math.SVector3d;
-import miroir.MiroirConcave;
 import physique.Laser;
 /**
  * Classe qui cree un bloc d'eau et memorise sa position
