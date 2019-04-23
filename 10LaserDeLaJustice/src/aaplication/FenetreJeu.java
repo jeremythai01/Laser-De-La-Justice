@@ -471,7 +471,6 @@ public class FenetreJeu extends JFrame {
 		btnBlocDeau.setEnabled(true);
 		btnGrosseBalle.setEnabled(true);
 		btnMediumBalle.setEnabled(true);
-		btnMiroirConcave.setEnabled(true);
 		btnMiroirConvexe.setEnabled(true);
 		btnMiroirPlan.setEnabled(true);
 		btnPrisme.setEnabled(true);

@@ -159,7 +159,7 @@ public class Scene extends JPanel implements Runnable {
 	private double compteurBouclier = 0;
 	private Bruit son = new Bruit();
 
-	private int angleMiroir=0;
+	private int angleMiroir = 0;
 
 	// Par Jeremy
 	/**
@@ -205,25 +205,25 @@ public class Scene extends JPanel implements Runnable {
 				// pour drag toutes les balles
 
 				for (int i = 0; i < listeBalles.size(); i++) {
-					if ((listeBalles.get(i).getAire().contains(eXR, eYR))&&(!effacement)) {
+					if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (!effacement)) {
 
 						balle = listeBalles.get(i);
 						System.out.println(balle.getAccel());
 						bonneBalle = true;
 
 						i = listeBalles.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeBalles.remove(i);
 						repaint();
 					}
 				}
+
 
 				for (int i = 0; i < listeMiroirCourbe.size(); i++) {
 					if (listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR)&&(!effacement)) {
 
 						bonMiroirCourbe = true;
 						miroireConvexe = listeMiroirCourbe.get(i);
-
 						i = listeMiroirCourbe.size();
 					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
 						listeMiroirCourbe.remove(i);
@@ -232,52 +232,52 @@ public class Scene extends JPanel implements Runnable {
 				}
 
 				for (int i = 0; i < listeMiroirPlan.size(); i++) {
-					if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR)&&(!effacement)) {
+					if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR) && (!effacement)) {
 
 						bonMiroirPlan = true;
 						miroirePlan = listeMiroirPlan.get(i);
 
 						i = listeMiroirPlan.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeMiroirPlan.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeTrou.size(); i++) {
-					if (listeTrou.get(i).getAireTrou().contains(eXR, eYR)&&(!effacement)) {
+					if (listeTrou.get(i).getAireTrou().contains(eXR, eYR) && (!effacement)) {
 
 						bonTrouNoir = true;
 						trou = listeTrou.get(i);
 
 						i = listeTrou.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeTrou.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listeBlocEau.size(); i++) {
-					if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)&&(!effacement)) {
+					if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR) && (!effacement)) {
 
 						bonBlocEau = true;
 						bloc = listeBlocEau.get(i);
 
 						i = listeBlocEau.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeBlocEau.remove(i);
 						repaint();
 					}
 				}
 
 				for (int i = 0; i < listePrisme.size(); i++) {
-					if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR)&&(!effacement)) {
+					if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR) && (!effacement)) {
 
 						bonPrisme = true;
 						prisme = listePrisme.get(i);
 
 						i = listePrisme.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listePrisme.remove(i);
 						repaint();
 					}
@@ -316,8 +316,10 @@ public class Scene extends JPanel implements Runnable {
 				} else if (bonBlocEau) {
 					dragBlocEau();
 				} else if (bonPrisme) {
-					dragPrisme();
+					//dragPrisme();
 				}
+
+				dragObjet();
 
 			}
 		});
@@ -555,10 +557,7 @@ public class Scene extends JPanel implements Runnable {
 		fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}
 
-
-
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Jeremy Thai
 	/**
@@ -731,7 +730,6 @@ public class Scene extends JPanel implements Runnable {
 
 
 
-
 	//Miora
 	/**
 	 * Cette methode reoriente l'angle de depart du laser s'il y a une intersection
@@ -873,6 +871,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+
 	private double[] translation(Laser laser) {
 		double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
 		double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
@@ -920,8 +919,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-
-	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Jeremy Thai
 	/**
@@ -940,9 +938,7 @@ public class Scene extends JPanel implements Runnable {
 		return false;
 	}
 
-
-	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Arezki Issaadi permet d'ajouter et de dessiner une grosse balle en appuyant
@@ -983,10 +979,6 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	/**
-	 * Arezki Issaadi permet d'ajouter et de dessiner un miroir convexe en appuyant
-	 * sur le boutton miroire convexe
-	 */
 	public void ajoutMiroireConvexe() {
 		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(4, 4), 2, angleMiroir));
 		repaint();
@@ -1028,7 +1020,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Arezki Issaadi permet aux dessins de safficher a chaque clic
@@ -1060,8 +1052,7 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
-
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 	private void dragBalle() {
@@ -1151,7 +1142,9 @@ public class Scene extends JPanel implements Runnable {
 		});
 	}
 
-	private void dragPrisme() {
+	//private void dragPrisme() {
+
+	private void dragObjet() {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -1163,12 +1156,68 @@ public class Scene extends JPanel implements Runnable {
 
 					repaint();
 				}
+				if (bonBlocEau) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					bloc.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonTrouNoir) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					trou.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonTrouNoir) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					trou.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonMiroirPlan) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+
+					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
+					repaint();
+				}
+	/*			if (bonMiroirConcave) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					miroirConcave.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}*/
+				if (bonMiroirCourbe) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
+
+					repaint();
+				}
+				if (bonneBalle) {
+
+					double xDrag = e.getX() / modele.getPixelsParUniteX();
+					double yDrag = e.getY() / modele.getPixelsParUniteY();
+					balle.setPosition(new Vecteur(xDrag - diametre / 2, yDrag - diametre / 2));
+
+					repaint();
+				}
 
 			}
 		});
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Methode qui permet de changer l'angle de tir si le joueur enfonce les fleches
@@ -1233,8 +1282,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	//----------------------------------------------------------------------------------------------------------------------------------------------
-
+	// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Par Miora
 	/**
@@ -1245,15 +1293,16 @@ public class Scene extends JPanel implements Runnable {
 		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
 
-		//Path du dossier contenant les modifications, les options sont crees par ordinateur et non par partie
-		String direction = System.getProperty("user.home") + File.separator + "Desktop"+ File.separator + "Laser de la justice";
-		direction += File.separator + "Option" + File.separator + "modifie.d3t"  ;		
+		// Path du dossier contenant les modifications, les options sont crees par
+		// ordinateur et non par partie
+		String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
+				+ "Laser de la justice";
+		direction += File.separator + "Option" + File.separator + "modifie.d3t";
 		File f = new File(direction);
-		//Fin path
+		// Fin path
 
-		if( f.exists()) { //si le fichier modiefie existe, changement
+		if (f.exists()) { // si le fichier modiefie existe, changement
 			fichierDeTravail = new File(direction);
-
 		}else { //sinon version initiale
 			String autreDir = System.getProperty("user.dir");
 			fichierDeTravail = new File(autreDir, "DonneeOption.d3t");
@@ -1303,7 +1352,6 @@ public class Scene extends JPanel implements Runnable {
 		} // fin finally
 	}
 
-
 	// Par Miora
 	/**
 	 * Cette methode creer de mettre le niveau pesonnalise
@@ -1345,13 +1393,14 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-
 	// Miora
 	/**
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
 	 * la position du joueur, la couleur du rayon et les touches utilisées
-	 * @param nomSauv : le nom de la sauvegardre
-	 * @param dansOption : retourne vrai si la methode est appele dans le frame option
+	 * 
+	 * @param nomSauv    : le nom de la sauvegardre
+	 * @param dansOption : retourne vrai si la methode est appele dans le frame
+	 *                   option
 	 */
 	public void ecritureFichierSauvegarde(String nomSauv, boolean dansOption) {
 		String nomSave = "";
@@ -1361,7 +1410,7 @@ public class Scene extends JPanel implements Runnable {
 			nomSave = nomSauv + ".save";
 		}
 
-		//Creation dossier
+		// Creation dossier
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
@@ -1373,10 +1422,10 @@ public class Scene extends JPanel implements Runnable {
 		} else {
 			System.out.println(customDir + " was not created");
 		}
-		//Fin creation dossier
+		// Fin creation dossier
 
 		String nomFichierSauvegarde = nomSave;
-		File fichierDeTravail = new File(direction , nomFichierSauvegarde);
+		File fichierDeTravail = new File(direction, nomFichierSauvegarde);
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
@@ -1423,7 +1472,7 @@ public class Scene extends JPanel implements Runnable {
 		direction += File.separator + "Sauvegarde";
 		File fichierDeTravail;
 		if (nomFichier.equals("temporaire")) {
-			fichierDeTravail = new File(direction,"temporaire");
+			fichierDeTravail = new File(direction, "temporaire");
 
 		} else {
 			fichierDeTravail = new File(direction, nomFichier);
@@ -1503,7 +1552,6 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-
 	// Par Miora R. Rakoto
 	/**
 	 * Cette methode permet de sauvegarder un niveau
@@ -1511,7 +1559,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomSauv : le nom du niveau
 	 */
 	public void ecritureNiveau(String nomSauv) {
-		//Creation dossier
+		// Creation dossier
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Niveau";
 		File customDir = new File(direction);
@@ -1523,10 +1571,10 @@ public class Scene extends JPanel implements Runnable {
 		} else {
 			System.out.println(customDir + " was not created");
 		}
-		//Fin creation dossier
+		// Fin creation dossier
 
 		String nomFichierNiveau = nomSauv + ".niv";
-		File fichierDeTravail = new File(direction , nomFichierNiveau);
+		File fichierDeTravail = new File(direction, nomFichierNiveau);
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
@@ -1549,7 +1597,7 @@ public class Scene extends JPanel implements Runnable {
 		} // fin finally
 	}
 
-	//--------------------------------------------------------------------------------------------------------------------------------------	
+	// --------------------------------------------------------------------------------------------------------------------------------------
 
 	public void addSceneListener(SceneListener ecouteur) {
 		listeEcouteur.add(ecouteur);
@@ -1578,7 +1626,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	private void pouvoirAuHasard(Balle balle) {
 
@@ -1729,9 +1777,7 @@ public class Scene extends JPanel implements Runnable {
 			personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
 	}
 
-
-
-	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	private void collisionLaserPrisme() {
 
@@ -1873,7 +1919,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Vecteur getVitesseLaser() {
 		return vitesseLaser;
@@ -1899,7 +1945,7 @@ public class Scene extends JPanel implements Runnable {
 		return toucheDroite;
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
@@ -1944,7 +1990,6 @@ public class Scene extends JPanel implements Runnable {
 		this.angle = angle;
 	}
 
-
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -1964,49 +2009,74 @@ public class Scene extends JPanel implements Runnable {
 		repaint();
 	}
 
-	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+	/**
+	 * Methode qui permet d'effacer toutes type de balle
+	 */
+	// Auteur: Arezki
 	public void effacerBalles() {
 		listeBalles.removeAll(listeBalles);
 		repaint();
 	}
 
+	/**
+	 * Methode qui permet d'effacer tous les prismes
+	 */
+	// Auteur: Arezki
 	public void effacerPrisme() {
 		listePrisme.removeAll(listePrisme);
 		repaint();
 	}
 
+	/**
+	 * Méthode qui permet d'effacer tous les miroirs
+	 */
+	// Auteur: Arezki
 	public void effacerMiroir() {
 		listeMiroirCourbe.removeAll(listeMiroirCourbe);
 		listeMiroirPlan.removeAll(listeMiroirPlan);
 		repaint();
 	}
 
+	/**
+	 * Methode qui permet d'effacer tous les trou-noira
+	 */
+	// Auteur: Arezki
 	public void effacerTrouNoir() {
 		listeTrou.removeAll(listeTrou);
 		repaint();
 	}
 
-
+	/**
+	 * Permet d'effacer tous les blocs
+	 */
+	// Auteur: Arezki
 	public void effacerBloc() {
 		listeBlocEau.removeAll(listeBlocEau);
 		repaint();
 	}
 
+	/**
+	 * Permet d'activer ou de désactiver la fonctionnalité d'effacement precis pour
+	 * les objets: Cliquer sur l'obet et ce dernier s'éffacera
+	 * 
+	 * @param valeur: Boolean pour activer ou désactiver l'effacement des objet avec
+	 *        le clique de la souris (true or false)
+	 */
+	 //Auteur: Arezki
 	public void effacementPrecis(boolean valeur) {
 
 		effacement = valeur;
 
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode permet de changer l'angle des miroirs
 	 */
 	public void setAngleMiroir(int angle) {
 		this.angleMiroir = angle;
 	}
-
 
 }
