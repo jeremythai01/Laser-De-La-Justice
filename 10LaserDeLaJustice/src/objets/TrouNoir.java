@@ -24,10 +24,9 @@ import physique.Laser;
  * Classe qui cree un trou noir et qui memorise sa position
  * Un trou noir, lorsqu'un laser rentre en contact avec, fait disparaitre le laser
  * @author Arnaud Lefebvre
- * @author Arezki Issaadi
  *
  */
-public class TrouNoir extends Objet implements Dessinable, Serializable {
+public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 	
     private static final long serialVersionUID = 1L;
 	
@@ -63,6 +62,10 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 
 	
 
+	/**
+	 * Methode qui permet de savoir la largeur du trou noir
+	 * @return LARGEUR, la largeur du trou noir
+	 */
 	public double getLARGEUR() {
 		return LARGEUR;
 	}
@@ -70,6 +73,10 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 
 
 
+	/**
+	 * Methode qui permet de savoir la distance entre les deux cercles du trou noir
+	 * @return distnace, la distance entre les deux cercles du trou noir
+	 */
 	public double getDistance() {
 		return distance;
 	}
@@ -127,6 +134,10 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 		
 	}
 	
+	/**
+	 * Methode qui permet au trou noir de savoir a quelle rotation il est rendu
+	 * @param rotation, la rotation a faire
+	 */
 	public void savoirQuantiteRotation(double rotation) {
 		this.qtRot=rotation;
 	}
@@ -140,6 +151,10 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 		 return new Area(aire);
 	}
 	
+	/**
+	 * Methode qui permet de calculer l'aire du trou d'attraction
+	 * @return, l'aire du trou d'attraction sous forme d'area
+	 */
 	public Area getAireGrandTrou() {
 		Ellipse2D aire = new Ellipse2D.Double(position.getX()-distance, position.getY()-distance, LARGEUR+distance*2, LARGEUR+distance*2);
 		return new Area(aire);
@@ -153,7 +168,6 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 	/**
 	 * Cette méthode permet d'avoir accès à la valeur de la position
 	 * @return le vecteur de la position du trou noir
-	 // Arezki
 	 */
 	public Vecteur getPosition() {
 		return position;
@@ -164,7 +178,6 @@ public class TrouNoir extends Objet implements Dessinable, Serializable {
 	/**
 	 * Cette méthode permet de modifier la valeur de la position du trou noir
 	 * @param position est la nouvelle position en vecteur du trou noir dans les mesures du réel
-	 //Arezki
 	 */
 	public void setPosition(Vecteur position) {
 		this.position = position;

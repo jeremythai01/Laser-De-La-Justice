@@ -9,7 +9,7 @@ import interfaces.Dessinable;
 import physique.Laser;
 
 /**
- * classe qui permet la création d'un ordinateur de plusieurs niveaux de talent
+ * classe qui permet la création d'un ordinateur de talent 2
  *@author Arnaud Lefebvre
  */
 public class OrdinateurNiveau2 implements Dessinable {

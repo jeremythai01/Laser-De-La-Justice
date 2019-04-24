@@ -31,6 +31,10 @@ public class Coeurs implements Dessinable,  Serializable {
 	private int combienGris;
 
 
+	/**
+	 * Constructeur d'un coeur dont le nombre de coeurs est specifie
+	 * @param combien, le nombre de coeurs a dessiner
+	 */
 	public Coeurs(int combien) {
 		this.combien=combien;
 		combienGris=combien;
@@ -91,14 +95,17 @@ public class Coeurs implements Dessinable,  Serializable {
 
 	}
 /**
- * 
- * @param combien
+ * Methode qui permet d'indiquer le nouveau nombre de coeurs voulus
+ * @param combien, le nouveau nombre de coeurs
  */
 	public void setCombien(int combien) {
 		this.combien=combien;
 	}
 
-	
+	/**
+	 * Methode qui permet de savoir combien de coeurs en ce moment
+	 * @return combien, le nombre de coeurs
+	 */
 	public int getCombien() {
 		return combien;
 	}

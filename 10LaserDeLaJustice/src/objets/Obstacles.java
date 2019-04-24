@@ -5,6 +5,6 @@ package objets;
  * @author arnau
  *
  */
-public class Objet {
+public class Obstacles {
 
 }

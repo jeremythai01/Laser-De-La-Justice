@@ -18,7 +18,7 @@ import physique.Laser;
  * @author Arnaud Lefebvre
  *
  */
-public class BlocDEau extends Objet implements Dessinable, Serializable {
+public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private Vecteur position;
@@ -159,11 +159,19 @@ public class BlocDEau extends Objet implements Dessinable, Serializable {
 	}
 
 
+	/**
+	 * Methode qui permet de savoir si c'est la premiere collision du bloc
+	 * @return premiereCollision, si c'est la premiere
+	 */
 	public boolean isPremiereCollision() {
 		return premiereCollision;
 	}
 
 
+	/**
+	 * Methode qui indique au bloc si la premiere collision est arrivee
+	 * @param premiereCollision, la valeur de la premiere collision
+	 */
 	public void setPremiereCollision(boolean premiereCollision) {
 		this.premiereCollision = premiereCollision;
 	}

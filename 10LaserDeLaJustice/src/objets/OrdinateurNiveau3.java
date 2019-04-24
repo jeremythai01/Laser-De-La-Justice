@@ -12,10 +12,10 @@ import physique.Balle;
 import physique.Laser;
 
 /**
- * classe qui permet la cration d'un ordinateur de plusieurs niveaux de talent
+ * classe qui permet la cration d'un ordinateur de talent 3
  *@author Arnaud Lefebvre
  */
-public class OrdinateurNiveau3 implements Dessinable, Runnable {
+public class OrdinateurNiveau3 implements Dessinable {
 
 	private double largeurOrdi=1;
 	private double longueurOrdi=1;
@@ -35,12 +35,22 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	private boolean enCollision=false;
 	private double temps;
 	
-	
+	/**
+	 * Constructeur de l'ordinateurNiveau3 qui prend en parametre la position 
+	 * @param position, la position de l'ordinateurNiveau3
+	 */
 	public OrdinateurNiveau3(Vecteur position) {
 		this.position=position;
 	}
 
 	@Override
+	/**
+	 * Permet de dessiner l'ordinateurNiveau2 selon le contexte graphique en parametre.
+	 * @param g contexte graphique
+	 * @param mat matrice de transformation monde-vers-composant
+	 * @param hauteur hauteur du monde reelle
+	 * @param largeur largeur du monde reelle
+	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		forme = new Rectangle2D.Double(position.getX(), position.getY(), largeurOrdi, longueurOrdi);
@@ -49,6 +59,9 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	}
 
 
+	/**
+	 * Methode qui permet de faire deplacer l'ordinateurNiveau3 selon sa vitesse
+	 */
 	public void bouge() {
 
 		if(position.getX()+vitesseNiveau2>45) {
@@ -65,6 +78,9 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 
 	}
 
+	/**
+	 * Methode qui change le sens de la vitesse du laser 
+	 */
 	public void changerVitesse() { 
 		//System.out.println((int)Math.random()*3+1);
 		if((Math.floor(Math.random() * (2)) + 1)%2==0) {
@@ -72,6 +88,10 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		}
 	}
 
+	/**
+	 * Methode qui tire un laser selon la position et l'angle de l'ordiNiveau3
+	 * @return, un laser selon la position et l'angle de tir
+	 */
 	public Laser tirer() {
 		angle=calculerAngleTir(savoirViser(listeBalle));
 		calculerBalleAViser();
@@ -81,15 +101,28 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 
 	}
 
+	/**
+	 * Methode qui permet de calculer un angle de tir aleatoire
+	 * @return, un angle aleatoire
+	 */
 	public int angleAleatoire() {
 		return (int) (Math.floor(Math.random() * (75 - 45 +1)) + 45);
 	}
 
+	/**
+	 * Methode qui permet a lordi de connaitre les balles(position, vitesse, etc de chaque balle)
+	 * @param listeBalle, la liste des balles
+	 */
 	public void ajouterListesObstacles(ArrayList<Balle> listeBalle) {
 		this.listeBalle=new ArrayList<Balle>(listeBalle);
 
 	}
 
+	/**
+	 * Methode qui retourne la plus petite distance entre l'ordi et une balle parmi toutes les balles
+	 * @param listeBalle, la liste de toutes les balles
+	 * @return un vecteur qui indique la distance entre l'ordi et la plus proche balle
+	 */
 	public Vecteur savoirViser(ArrayList<Balle> listeBalle) {
 		if(listeBalle.size()>0) {
 			//System.out.println("je suis dans le if");
@@ -113,7 +146,10 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 
 
 	}
-
+	
+	/**
+	 * Methode qui permet a l'ordi de savoir  quel balle 
+	 */
 	public void calculerBalleAViser() {
 		Balle balleAViser;
 		if(listeBalle.size()>0) {
@@ -150,10 +186,19 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 	//doit on dessiner un objet pour quil ait une aire 
 
 
+	/**
+	 * Methode qui permet a l'ordi de savoir le temps de sleep de la scene
+	 * @param temps, le temps de sleep de la scene
+	 */
 	public void savoirTempsSleep(double temps) {
 		this.temps=temps;
 	}
 	
+	/**
+	 * Methode qui simule le mouvement de la balle et qui lance un laser a chaque degre pour savoir a quel orientation lancer le laser pour entrer en collision avec la balle en mouvement
+	 * @param viser, la balle a viser
+	 * @param distance, la distance entre la balle a viser et l'ordi
+	 */
 	public void simulerMouvementBalle(Balle viser, Vecteur distance) {
 		double deltaT;
 		balleSimuler= new Balle(viser);
@@ -205,6 +250,10 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		//angle=angleAViser+210;
 	}
 
+	/**
+	 * Methode qui permet de simuler un laser 
+	 * @param laser, le laser a simuler
+	 */
 	public void simulerMouvementLaser(Laser laser) {
 
 		while(laser.getPositionHaut().getY()>balleSimuler.getPosition().getY()+balleSimuler.getDiametre()/2)	{
@@ -221,6 +270,12 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		double	positionBalleY=balle.getVitesse().getY()*0.8+0.5*-9.8*0.8*0.8;
 	}
 
+	/**
+	 * Methode qui permet de savori si la balle simulee et le laser simule se sont touches
+	 * @param balle, la balle simulee
+	 * @param laser, le laser simule
+	 * @return vrai  ou faux, si la balle et le laser se sont touches
+	 */
 	public boolean verifierCollisionBalleEtLaserSimulation(Balle balle, Laser laser) {
 		if(intersection(balle.getAire(), laser.getAire())) {
 			return true;
@@ -230,6 +285,10 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 			return false;
 	}
 
+	/**
+	 * Methode qui permet de savori si la balle simulee et le laser simule se sont touches
+	 * @return vrai  ou faux, si la balle et le laser se sont touches
+	 */
 	public void verifierCollisionBalleEtLaserSimulation() {
 		if(intersection(balleSimuler.getAire(), test.getAire())) {//[pour ce soir, il reste a trouver un moyen de toujours verifier si le laser simule rentre en contact avec la balle
 			enCollision=true;
@@ -242,6 +301,12 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 
 	}
 
+	/**
+	 * Methode qui permet de detecter une intersection entre deux aires
+	 * @param aire1, la premiere aire
+	 * @param aire2, la deuxieme aire
+	 * @return vrai ou faux si elles se sont touchees
+	 */
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -251,6 +316,11 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 		return false;
 	}
 
+	/**
+	 * Methode qui permet de calculer l'angle de tir a laide de la distance entre l'ordi et la balle
+	 * @param distance, la distance entre l'ordi et la balle
+	 * @return l'angle a viser
+	 */
 	public double calculerAngleTir(Vecteur distance) {
 		//System.out.println("la distance a faire est de " + distance);
 		//System.out.println("calcuer "+  Math.toDegrees(Math.atan(((-distance.getY()/distance.getX())))));
@@ -263,52 +333,47 @@ public class OrdinateurNiveau3 implements Dessinable, Runnable {
 			return Math.toDegrees(resultat);
 	}
 
-	public double getVitesseNiveau1() {
-		return vitesseNiveau2;
-	}
+	
 
-	public void setVitesseNiveau1(double vitesseNiveau1) {
-		this.vitesseNiveau2 = vitesseNiveau1;
-	}
 
-	public double getVitesseNiveau2() {
-		return vitesseNiveau2;
-	}
-
-	public void setVitesseNiveau2(double vitesseNiveau2) {
-		this.vitesseNiveau2 = vitesseNiveau2;
-	}
-
+	/**
+	 * Methode qui permet de savoir la position de l'ordi
+	 * @return position, la position de lordi en vecteur
+	 */
 	public Vecteur getPosition() {
 		return position;
 	}
+	/**
+	 * Methode qui permet de savoir la position de l'ordi en x
+	 * @return position, la position de lordi en x en vecteur
+	 */
 	public double getPositionX() {
 		return position.getX();
 	}
 
+	/**
+	 * Methode qui permet de modifier la position de l'ordi 
+	 * @param position, la nouvelle position
+	 */
 	public void setPosition(Vecteur position) {
 		this.position = position;
 	}
 
-	public boolean isEnCoursAnimation() {
-		return enCoursAnimation;
-	}
-
-	public void setEnCoursAnimation(boolean enCoursAnimation) {
-		this.enCoursAnimation = enCoursAnimation;
-	}
-
+	/**
+	 * Methode qui permet de savoir la largeur de l'ordi
+	 * @return largeurOrdi, la largeur de l'ordi
+	 */
 	public double getLargeurOrdi() {
 		return largeurOrdi;
 	}
 
+	/**
+	 * Methode qui permet de savoir la longueur de l'ordi
+	 * @return longueurOrdi, la longueur de l'ordi
+	 */
 	public double getLongueurOrdi() {
 		return longueurOrdi;
 	}
 
-	@Override
-	public void run() {
 
-
-	}
 }

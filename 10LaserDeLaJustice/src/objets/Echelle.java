@@ -12,7 +12,7 @@ import interfaces.Dessinable;
  * @author Arnaud
  *
  */
-public class Echelle extends Objet implements Dessinable{
+public class Echelle extends Obstacles implements Dessinable{
 	private double largeur; 
 	private Path2D.Double trace;
 	private double posX, posY;

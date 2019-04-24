@@ -221,6 +221,10 @@ public class Laser implements Dessinable {
 		return positionHaut;
 	}
 
+	/**
+	 * Methode qui permet de modifier la position du bas du laser
+	 * @param pos, la nouvelle position du bas du laser
+	 */
 	public void setPositionBas(Vecteur pos) {
 		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
 		this.positionBas = newVec;

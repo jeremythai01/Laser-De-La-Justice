@@ -33,6 +33,9 @@ public class BoostVitesse extends Pouvoir {
 	}
 
 
+	/**
+	 * Methode qui permet d'associer une image a l'objet
+	 */
 	@Override
 	public void lireImage() {
 
@@ -68,12 +71,19 @@ public class BoostVitesse extends Pouvoir {
 		g2d.drawImage(getImg(), matLocale, null);
 	}
 
+	/**
+	 * Methode qui permet de retourner l'aire de l'objet
+	 * @return l'aire de l'objet sous forme de area
+	 */
 	@Override
 	public Area getAire() {
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
 
+	/**
+	 * Methode qui active l'effet de l'objet lorsque appelé
+	 */
 	@Override
 	public void activeEffet(Scene scene) {
 		scene.setVitesseLaser(scene.getVitesseLaser().additionne(new Vecteur(0,5)));

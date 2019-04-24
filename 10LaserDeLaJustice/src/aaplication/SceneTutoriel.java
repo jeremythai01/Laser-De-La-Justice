@@ -55,11 +55,12 @@ import utilite.ModeleAffichage;
 import utilite.OutilsMath;
 
 /**
- * Cette classe contient la scene d'animation du jeu.
+ * Cette classe contient la scene du tutoriel.
  * 
- * @author Miora, Arezki, Jeremy
+ * @author Arnaud
  *
  */
+//Cette classe est plus avancee, mais jai completement oublie de push avant de venir au cours du mercredi 24 avril, cette classe parait donc comme la scenePrincipale en terme de javadoc
 public class SceneTutoriel extends JPanel implements Runnable {
 
 	private Image fond = null;
@@ -160,13 +161,11 @@ public class SceneTutoriel extends JPanel implements Runnable {
 
 
 
-	// Par Jeremy
+	// Par Arnaud
 	/**
-	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
-	 * souris
+	 * Constructeur de la scene du tutoriel
 	 * 
-	 * @param isPartieNouveau : retourne vrai s'il s'agit d'une nouvelle partie ou
-	 *                        d'une partie sauvegardée
+	 *
 	 */
 
 	public SceneTutoriel() {
@@ -192,13 +191,12 @@ public class SceneTutoriel extends JPanel implements Runnable {
 
 	}
 
-	// Par Jeremy
 	/**
 	 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le
 	 * personnage et de savoir s'il y a des collisions entre le laser et les balles
 	 * 
-	 * @author Arezki
 	 */
+	//Jeremy
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 

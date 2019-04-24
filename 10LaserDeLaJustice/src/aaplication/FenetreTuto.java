@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 /**
  * C'est la classe du tutoriel. Elle permet au joueur de comprendre le but du jeu.
- * @author Arezki Issaadi
+ * @author Arnaud Lefebvre
  *
  */
 public class FenetreTuto extends JFrame {
@@ -59,7 +59,7 @@ public class FenetreTuto extends JFrame {
 		contentPane.add(sceneAnimee);
 		
 		//sceneAnimee.
-		//sceneAnimee.demarrer();
+		sceneAnimee.demarrer();
 	}
 
 }
