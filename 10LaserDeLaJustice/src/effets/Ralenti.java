@@ -44,7 +44,7 @@ public class Ralenti extends Pouvoir{
 
 		URL fich = getClass().getClassLoader().getResource("sablier.jpg");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.png introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier sablier.jpg introuvable!");
 		} else {
 			try {
 				setImg(ImageIO.read(fich));

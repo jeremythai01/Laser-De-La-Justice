@@ -36,7 +36,7 @@ public class Bouclier extends Pouvoir  {
 
 		URL fich = getClass().getClassLoader().getResource("bouclier.jpg");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier narutoDebout.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier bouclier.jpg introuvable!");
 		} else {
 			try {
 				setImg(ImageIO.read(fich));

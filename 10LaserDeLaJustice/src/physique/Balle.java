@@ -160,11 +160,12 @@ public class Balle implements Dessinable, Serializable {
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		g2d.fill( matLocal.createTransformedShape(cercle) );	
 
-
+/*
 		VecteurGraphique vG = new VecteurGraphique(vitesse.getX() /2, vitesse.getY() /2);
 		vG.setOrigineXY(position.getX()+diametre/2 , position.getY()+diametre/2); // origine du vecteur au centre de la balle 
 		vG.setLongueurTete(1);
 		vG.dessiner(g2d, mat, hauteur, largeur);
+		*/
 	}
 
 
