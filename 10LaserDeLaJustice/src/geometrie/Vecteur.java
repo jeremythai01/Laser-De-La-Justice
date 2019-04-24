@@ -36,7 +36,10 @@ public class Vecteur implements Serializable {
 		this.y = y;
 	}
 	
-	
+	/**
+	 * Constructeur avec vecteur 
+	 * @param Vecteur passée en paramètre
+	 */
 	public Vecteur(Vecteur v) {
 		this.x = v.getX();
 		this.y = v.getY();

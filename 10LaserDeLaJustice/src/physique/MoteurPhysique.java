@@ -369,8 +369,6 @@ public class MoteurPhysique implements Serializable {
 	//	}
 	
 	}
-	
-
 }
 
 

@@ -1,25 +1,30 @@
 package effets;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import aaplication.Scene;
 import geometrie.Vecteur;
-import physique.SceneTest;
 
+
+/**
+ * Classe qui créée un pouvoir de bouclier et mémorise sa position, son accélération,son image et ses dimensions.
+ * @author Arnaud Lefebvre 
+ */
 
 public class BoostVitesse extends Pouvoir {
 
+
+	/**
+	 * Constructeur ou la position et l'acceleration initiales sont spécifiés qui appelle le constructeur de la classe ascendante et qui modifie la largeur et la longueur de l'image du pouvoir.
+	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
+	 * @param accel Vecteur incluant les accelerations en x et y  
+	 */
 	public BoostVitesse ( Vecteur position , Vecteur accel) {
 		super(position,accel);
 		lireImage();
@@ -27,7 +32,7 @@ public class BoostVitesse extends Pouvoir {
 		setLongueurImg(1);
 	}
 
-	
+
 	@Override
 	public void lireImage() {
 
@@ -43,23 +48,24 @@ public class BoostVitesse extends Pouvoir {
 		}
 
 	}
+
+	/**
+	 * Permet de dessiner le pouvoir selon le contexte graphique en parametre.
+	 * @param g2d contexte graphique
+	 * @param mat matrice de transformation monde-vers-composant
+	 * @param hauteur hauteur du monde reelle
+	 * @param largeur largeur du monde reelle
+	 * 
+	 */
 	@Override
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
-	
-		
-	AffineTransform matLocale = new AffineTransform(mat);
-		
+
+		AffineTransform matLocale = new AffineTransform(mat);
 		double factX = getLargeurImg()/ getImg().getWidth(null) ;
 		double factY = getLongueurImg()/ getImg().getHeight(null) ;
 		matLocale.scale( factX, factY);
-	
 		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
-		
 		g2d.drawImage(getImg(), matLocale, null);
-		
-		
-		
-	
 	}
 
 	@Override
@@ -67,13 +73,11 @@ public class BoostVitesse extends Pouvoir {
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
-	
-	
+
 	@Override
 	public void activeEffet(Scene scene) {
 		scene.setVitesseLaser(scene.getVitesseLaser().additionne(new Vecteur(0,5)));
 		scene.getPersonnage().setEnVitesse(true);
 	}
-
 
 }

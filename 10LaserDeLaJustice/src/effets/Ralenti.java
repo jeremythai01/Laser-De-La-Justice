@@ -19,10 +19,18 @@ import physique.Coeurs;
 import physique.Laser;
 import physique.SceneTest;
 
+/**
+ * Classe qui créée un pouvoir de bouclier et mémorise sa position, son accélération,son image et ses dimensions.
+ * @author Jeremy Thai 
+ */
+
 public class Ralenti extends Pouvoir{
 
-
-
+	/**
+	 * Constructeur ou la position et l'acceleration initiales sont spécifiés qui appelle le constructeur de la classe ascendante et qui modifie la largeur et la longueur de l'image du pouvoir.
+	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
+	 * @param accel Vecteur incluant les accelerations en x et y  
+	 */
 	public Ralenti ( Vecteur position, Vecteur accel) {
 		super(position, accel);
 		lireImage();
@@ -30,6 +38,7 @@ public class Ralenti extends Pouvoir{
 		setLongueurImg(1.6);
 	}
 
+	
 	@Override
 	public void lireImage() {
 
@@ -45,6 +54,15 @@ public class Ralenti extends Pouvoir{
 		}
 
 	}
+	
+	/**
+	 * Permet de dessiner le pouvoir selon le contexte graphique en parametre.
+	 * @param g2d contexte graphique
+	 * @param mat matrice de transformation monde-vers-composant
+	 * @param hauteur hauteur du monde reelle
+	 * @param largeur largeur du monde reelle
+	 * 
+	 */
 	@Override
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 

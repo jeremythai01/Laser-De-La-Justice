@@ -166,7 +166,7 @@ public class SceneTest extends JPanel implements Runnable {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				for(Personnage perso : listePerso) {
-					perso.relacheTouche();
+					perso.relacheToucheEnModeSouris();
 				}
 				repaint();
 			}

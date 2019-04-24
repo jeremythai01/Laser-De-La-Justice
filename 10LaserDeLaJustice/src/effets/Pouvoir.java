@@ -1,22 +1,17 @@
 package effets;
 
 import java.awt.Image;
-import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import aaplication.Scene;
 import geometrie.Vecteur;
 import interfaces.Dessinable;
-import personnage.Personnage;
-import physique.Balle;
-import physique.Coeurs;
-import physique.Laser;
 import physique.MoteurPhysique;
-import physique.SceneTest;
 
+/**
+ * Classe abstraite contenant les méthodes permettant de créer le "squelette" d'un objet pouvoir.
+ * @author Jérémy Thai 
+ */
 public abstract class Pouvoir implements Dessinable {
 
 	private Vecteur position; 
@@ -27,18 +22,48 @@ public abstract class Pouvoir implements Dessinable {
 	private double largeurImg, longueurImg;
 	private double compteurAvantDisparaitre = 0;
 
+	
 	Pouvoir(Vecteur position , Vecteur accel) {
 		this.position = new Vecteur(position);
 		this.vitesse = new Vecteur();
 		this.accel = new Vecteur (accel);
 	}
+	
+	/**
+	 * Méthode abstraite qui retourne l'aire du pouvoir 
+	 * @return aire du pouvoir 
+	 */
 	public abstract Area getAire();
+	
+	/**
+	 * Méthode abstraite qui permet de lire l'image selon le type de pouvoir 
+	 */
 	abstract void lireImage();
+	
+	/**
+	 * Méthode abstraite qui permet d'active l'effet selon le type de pouvoir 
+	 * @param scene scene 
+	 */
 	public abstract void activeEffet( Scene scene);
 	
 	/**
-	 * modifie ou affecte une vitesse a celle courante de la balle
-	 * @param vitesse vecteur des vitesse x et y
+	 * Constructeur ou la position et l'acceleration initiales sont spécifiés
+	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
+	 * @param accel Vecteur incluant les accelerations en x et y  
+	 */
+	
+	/**
+	 * Effectue une iteration de l'algorithme de Verlet. Calcule la nouvelle vitesse et la nouvelle
+	 * position du pouvoir
+	 * @param deltaT intervalle de temps (pas)
+	 */
+	public void unPasVerlet(double deltaT) {
+		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
+	}
+	
+	/**
+	 * modifie ou affecte une vitesse a celle courante du pouvoir 
+	 * @param vitesse vecteur des vitesse x et y du pouvoir 
 	 */
 	public void setVitesse(Vecteur vitesse) {
 		Vecteur newVec = new Vecteur(vitesse.getX(), vitesse.getY());
@@ -46,16 +71,8 @@ public abstract class Pouvoir implements Dessinable {
 	}
 
 	/**
-	 * Retourne la vitesse courante
-	 * @return la vitesse courante
-	 */
-	public Vecteur getVitesse() {
-		return (vitesse);
-	}
-
-	/**
-	 * Modifie la position de la balle
-	 * @param pos vecteur des positions x et y
+	 * Modifie la position du pouvoir 
+	 * @param pos vecteur des positions x et y du pouvoir 
 	 */
 	public void setPosition(Vecteur pos) {
 		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
@@ -63,68 +80,93 @@ public abstract class Pouvoir implements Dessinable {
 	}
 
 	/**
-	 * Retourne la position courante
-	 * @return la position courante
+	 * Associe une acceleration, ou modifie l'acceleration courante du pouvoir
+	 * @param accel vecteur des accélérations en x et y du pouvoir 
 	 */
-	public Vecteur getPosition() { return (position); }
-
 	public void setAccel(Vecteur accel) {
 		Vecteur newVec = new Vecteur(accel.getX(), accel.getY());
 		this.accel = newVec;
 	}
-
+	
+	/**
+	 * Modifie l'image du pouvoir par celle passée en paramètre
+	 * @param img nouvelle image en paramètre
+	 */
+	public void setImg(Image img) { this.img = img; }
 
 	/**
-	 * Effectue une iteration de l'algorithme de Verlet. Calcule la nouvelle vitesse et la nouvelle
-	 * position de la balle.
-	 * @param deltaT intervalle de temps (pas)
+	 * Modifie la longueur de l'image par celle passée en paramètre
+	 * @param longueurImg  nouvelle longueur de l'image 
 	 */
-	public void unPasVerlet(double deltaT) {
-		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
-	}
-
-	public Image getImg() {
-		return img;
-	}
-
-	public void setImg(BufferedImage img) {
-		this.img = img;
-	}
-
-	public void setImg(Image img) {
-		this.img = img;
-	}
-
-
-	public Rectangle2D.Double getRectFantome() {
-		return rectFantome;
-	}
-
-	public void setRectFantome(Rectangle2D.Double rectFantome) {
-		this.rectFantome = rectFantome;
-	}
-
+	public void setLongueurImg(double longueurImg) { this.longueurImg = longueurImg; }
 	
-	public double getLargeurImg() {
-		return largeurImg;
-	}
+	/**
+	 * Modifie la largeur de l'image par celle passée en paramètre
+	 * @param largeurImg  nouvelle largeur de l'image 
+	 */
 	public void setLargeurImg(double largeurImg) {
 		this.largeurImg = largeurImg;
 	}
+
+	/**
+	 * Modifie le rectangle invisible du pouvoir par celui en paramètre
+	 * @param rectFantome nouveau rectangle invisible
+	 */
+	public void setRectFantome(Rectangle2D.Double rectFantome) { this.rectFantome = rectFantome; }
 	
-	public double getLongueurImg() {
-		return longueurImg;
-	}
-	public void setLongueurImg(double longueurImg) {
-		this.longueurImg = longueurImg;
-	}
+	/**
+	 * Modifie le compteur qui compte le nombre de temps avant que le pouvoir disparait par celui passé en paramètre
+	 * @param compteurAvantDisparaitre nouveau compteur de temps 
+	 */
+	public void setCompteurAvantDisparaitre(double compteurAvantDisparaitre) { this.compteurAvantDisparaitre = compteurAvantDisparaitre; }
 	
-	public double getCompteurAvantDisparaitre() {
-		return compteurAvantDisparaitre;
-	}
-	public void setCompteurAvantDisparaitre(double compteurAvantDisparaitre) {
-		this.compteurAvantDisparaitre = compteurAvantDisparaitre;
-	}
+	
+	/**
+	 * Retourne la vitesse courante du pouvoir 
+	 * @return la vitesse courante du pouvoir 
+	 */
+	public Vecteur getVitesse() { return (vitesse); }
+
+	
+	/**
+	 * Retourne la position courante du pouvoir 
+	 * @return la position courante du pouvoir 
+	 */
+	public Vecteur getPosition() { return (position); }
+
+	
+	/**
+	 * Retourne l'image du pouvoir 
+	 * @return img image du pouvoir 
+	 */
+	public Image getImg() { return img; }
+	
+	/**
+	 * Retourne le rectangle invisible du pouvoir 
+	 * @return rectFantome rectangle invisible
+	 */
+	public Rectangle2D.Double getRectFantome() { return rectFantome; }
+
+	/**
+	 * Retourne la largeur de l'image   
+	 * @return largeurImg largeur de l'image 
+	 */
+	public double getLargeurImg() { return largeurImg; }
+	
+	
+	/**
+	 * Retourne la longueur de l'image   
+	 * @return longueurImg longueur de l'image 
+	 */
+	public double getLongueurImg() { return longueurImg; }
+	
+	
+	/**
+	 * Retourne le compteur qui compte le nombre de temps avant que le pouvoir disparait
+	 * @return compteurAvantDisparaitre compteur de temps 
+	 */
+	public double getCompteurAvantDisparaitre() { return compteurAvantDisparaitre; }
+	
 	 
 	
 }

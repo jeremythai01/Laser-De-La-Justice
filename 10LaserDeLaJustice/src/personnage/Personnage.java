@@ -172,7 +172,7 @@ public class Personnage implements Dessinable, Serializable {
 
 	//Jeremy Thai
 	/**
-	 * Cette méthode permet de rendre le changement de direction du personnage plus rapide
+	 * Cette méthode permet de rendre le changement de direction du personnage plus rapide en mode clavier 
 	 * @param e touche enfoncee
 	 */
 	public void relacheTouche(KeyEvent e) {
@@ -189,8 +189,11 @@ public class Personnage implements Dessinable, Serializable {
 		update();
 	}
 
-	public void relacheTouche() {
-
+	//Jeremy Thai
+		/**
+		 * Cette méthode permet de rendre le changement de direction du personnage plus rapide en mode souris
+		 */
+	public void relacheToucheEnModeSouris() {
 		bougePas = false;
 		update();
 	}
@@ -422,23 +425,46 @@ public class Personnage implements Dessinable, Serializable {
 		this.tempsMort = tempsMort;
 	}
 
-	
+	//Jeremy Thai
+	/**
+	 * retourne la valeur booleene mort du personnage 
+	 * @return mort booleen qui represente si le personnage est mort ou non 
+	 */
 	public boolean isMort() {
 		return mort;
 	}
-
+	
+	//Jeremy Thai
+	/**
+	 * Modifie la valeur booleene mort du personnage par celle passée en paramètre
+	 * @param mort nouveau booleen
+	 */
 	public void setMort(boolean mort) {
 		this.mort = mort;
 	}
 	
+	//Jeremy Thai
+		/**
+		 * retourne la valeur booleene de la vitesse du personnage 
+		 * @return enVitesse booleen qui represente si le personnage est en vitesse ou non  
+		 */
 	public boolean isEnVitesse() {
 		return enVitesse;
 	}
 	
+	//Jeremy Thai
+			/**
+			 * Modifie la valeur booleene de la vitesse du personnage 
+			 * @param enVitesse nouveau booleen qui represente si le personnage est en vitesse ou non  
+			 */
 	public void setEnVitesse(boolean enVitesse) {
 		this.enVitesse = enVitesse;
 	}
-
+	
+	//Jeremy Thai 
+	/**
+	 * Animation des images du personnages selon son déplacement 
+	 */
 	private void animation() {
 
 		if( vitesseX == 0)

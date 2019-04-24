@@ -169,7 +169,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isPartieNouveau : retourne vrai s'il s'agit d'une nouvelle partie ou
 	 *                        d'une partie sauvegardée
 	 */
-
+	
 	public Scene(boolean isPartieNouveau, String nomFichier) {
 
 		addMouseWheelListener(new MouseWheelListener() {
@@ -289,7 +289,7 @@ public class Scene extends JPanel implements Runnable {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 
-				personnage.relacheTouche();
+				personnage.relacheToucheEnModeSouris();
 				bonneBalle = false;
 				bonMiroirCourbe = false;
 				bonMiroirPlan = false;
@@ -330,7 +330,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	// Par Jeremy
+	// Par Arnaud Lefebvre
 	/**
 	 * Méthode qui permet de dessiner toutes les formes sur la scene incluant le
 	 * personnage et de savoir s'il y a des collisions entre le laser et les balles
@@ -416,20 +416,18 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	// Arnaud Lefebvre
 	/**
 	 * Cette méthode permet d'arreter l'animation
-	 * 
-	 * @author Jeremy
 	 */
 	public void arreter() {
 		if (enCoursAnimation)
 			enCoursAnimation = false;
 	}
 
+	//Jeremy Thai
 	/**
 	 * Cette méthode permet de démarrer l'animation
-	 * 
-	 * @author Jeremy
 	 */
 	public void demarrer() {
 		if (!enCoursAnimation) {
@@ -440,11 +438,10 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	//Jeremy Thai
 	/**
 	 * permet de calculer les collision la vitessse des balles et tout autres
 	 * animation ayant de la physiques
-	 * 
-	 * @author Jeremy
 	 */
 	public void calculerUneIterationPhysique() {
 
@@ -474,17 +471,15 @@ public class Scene extends JPanel implements Runnable {
 			personnage.bouge();
 		}
 		ordi.bouge();
-
+		
 		tempsEcoule += deltaTInit;
 
 	}
-
 	@Override
 	/**
-	 * Animation du bloc-ressort
-	 * 
-	 * @author Jeremy
-	 */
+	 * Animation du jeu 
+	 */ 
+	//Jeremy Thai
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
@@ -730,19 +725,19 @@ public class Scene extends JPanel implements Runnable {
 				for(Ligne ligne :listeMiroirCourbe.get(n).getListeLigne()) {
 					if(enIntersection(ligne.getAireLigne(), laser.getAire())){
 						collision = true;
-	
+
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 						System.out.println("centre miroir" + listeMiroirCourbe.get(n).getPosition());
-						
+
 						double angleR = Math.toRadians(laser.getAngleTir()) ;	
 						Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 						System.out.println("dir laser : " + vecDirLaser);
-						
+
 						Vecteur ptsMiroir = (new Vecteur (ligne.getX1(), ligne.getY1()));
 						System.out.println("pts miroir " + ptsMiroir);
 						//Vecteur vecDirMiroir = ligne.getVecDir(ligne);
 						//Vecteur vecDirMiroir = (ligne.getVecDir(ligne)).normalise();
-						
+
 						Vecteur vecDirMiroir = new Vecteur (ligne.x2-ligne.x1, ligne.y2-ligne.y1).normalise();
 						System.out.println("vecDirMiroir = " + vecDirMiroir);
 
@@ -759,7 +754,7 @@ public class Scene extends JPanel implements Runnable {
 						Vecteur normal = listeMiroirCourbe.get(n).getNormal(posInter).normalise();
 						System.out.println("La normal du miroir est :" +normal);
 
-						
+
 						Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 						System.out.println("incident" + incident);
 
@@ -768,7 +763,7 @@ public class Scene extends JPanel implements Runnable {
 
 						//ajustement en systeme d'axe normal
 						Vecteur nouvReflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
-						
+
 						double epsilon = 0.3;
 						if(normal.getX()<0 && normal.getY()>0) {
 							//convexe gauche
@@ -817,7 +812,7 @@ public class Scene extends JPanel implements Runnable {
 
 							//Il faut faire une translation du haut du laser
 							laser.setPositionHaut(new Vecteur (translation(laser)[0]+epsilon, translation(laser)[1]+epsilon));
-							
+
 						}
 						//}
 
@@ -878,13 +873,11 @@ public class Scene extends JPanel implements Runnable {
 		} 
 		return c;
 	}
-	
+
 
 	// Jeremy Thai
 	/**
-	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne
-	 * touche de clavier
-	 * 
+	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonnetouche de clavier
 	 * @param e touche du clavier
 	 */
 	private void tirLaser(KeyEvent e) {
@@ -1063,8 +1056,8 @@ public class Scene extends JPanel implements Runnable {
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-	
-		
+
+
 
 	/**
 	 * Methode qui fait drag tous les objets 
@@ -1114,7 +1107,7 @@ public class Scene extends JPanel implements Runnable {
 					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
 					repaint();
 				}
-		/*	if (bonMiroirConcave) {
+				/*	if (bonMiroirConcave) {
 
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
@@ -1542,6 +1535,12 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
+	//Jeremy Thai
+	/**
+	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne touche de souris et qu'il est en mode souris
+	 * @param e touche de souris
+	 * @param perso personnage
+	 */
 	private void tirLaser(MouseEvent e, Personnage perso) {
 		if (perso.isModeSouris()) {
 			if (enCoursAnimation == true) {
@@ -1554,6 +1553,11 @@ public class Scene extends JPanel implements Runnable {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	//Jeremy Thai
+	/**
+	 * 
+	 * @param balle
+	 */
 	private void pouvoirAuHasard(Balle balle) {
 
 		Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
@@ -1594,6 +1598,10 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
+	//Jeremy Thai
+	/**
+	 * Ajoute les compteurs de pouvoirs et les fait partir
+	 */
 	private void ajoutCompteurs() {
 
 		if (vitesseLaser.getY() > vitesseLaserInit.getY())
@@ -1606,6 +1614,10 @@ public class Scene extends JPanel implements Runnable {
 			compteurBouclier = tempsEcoule + 9;
 	}
 
+	//Jeremy Thai
+	/**
+	 * Met a jour la durée de compteurs de pouvoirs et de la rotation des images des balles 
+	 */
 	private void updateDureeCompteurs() {
 
 		for (Balle balle : listeBalles) {
@@ -1638,6 +1650,10 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
+	//Jérémy Thai
+	/**
+	 * Détecte et réalise la collision entre un pouvoir et le personnage
+	 */
 	private void detectionCollisionPouvoirsPersonnages() {
 
 		for (Pouvoir pouvoir : listePouvoirs) {
@@ -1650,6 +1666,10 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 
+	//Jeremy Thai
+	/**
+	 * Met a jour la position de chaque pouvoir de la liste de pouvoirs
+	 */
 	private void updateMouvementPouvoirs() {
 		for (Pouvoir pouvoir : listePouvoirs) {
 			if (pouvoir.getPosition().getY() + pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
@@ -1663,12 +1683,9 @@ public class Scene extends JPanel implements Runnable {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	//Jeremy Thai
 	/**
-	 * Evalue une collision avec le sol ou un mur et modifie la vitesse courante
-	 * selon la collision
-	 * 
-	 * @param width  largeur du monde
-	 * @param height hauteur du monde
+	 * Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
 	 */
 	private void detectionCollisionMurBalle() {
 
@@ -1694,15 +1711,22 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	private void detectionCollisionPersonnageMur() {
 
-		if (personnage.getPositionX() <= 0)
-			personnage.setPositionX(0);
+	//Jeremy Thai
+		/**
+		 * Détecte et s'il y a une collision entre le personnage et un mur et s'occupe de la collision
+		 */
+		private void detectionCollisionPersonnageMur() {
 
-		if (personnage.getPositionX() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
-			personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
-	}
+			if (personnage.getPositionX() <= 0)
+				personnage.setPositionX(0);
 
+			if (personnage.getPositionX() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
+				personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
+		}
+	
+	
+	
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
@@ -1864,21 +1888,26 @@ public class Scene extends JPanel implements Runnable {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Vecteur getVitesseLaser() {
-		return vitesseLaser;
-	}
+	//Jeremy Thai 
+	/**
+	 * Retourne la vitesse dun laser 
+	 * @return vitesseLaser vitesse du laser
+	 */
+	public Vecteur getVitesseLaser() { return vitesseLaser; }
 
-	public Personnage getPersonnage() {
-		return personnage;
-	}
+	//Jeremy Thai
+	/**
+	 * Retourne le personnage
+	 * @return personnage personnage du jeu
+	 */
+	public Personnage getPersonnage() { return personnage; }
 
-	public Coeurs getCoeurs() {
-		return coeurs;
-	}
-
-	public void setDeltaT(double deltaT) {
-		this.deltaT = deltaT;
-	}
+	//Jeremy Thai
+	/**
+	 * Retourne les coeurs
+	 * @return coeurs coeurs 
+	 */
+	public Coeurs getCoeurs() { return coeurs; }
 
 	public int getToucheGauche() {
 		return toucheGauche;
@@ -1890,6 +1919,20 @@ public class Scene extends JPanel implements Runnable {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	//Jeremy Thai
+	/**
+	 * Modifie la vitesse dun laser par celle passée en parametre
+	 * @param vitesseLaser vitesse du laser
+	 */
+	public void setVitesseLaser(Vecteur vitesseLaser) { this.vitesseLaser = vitesseLaser; }
+
+	//Jeremy Thai
+	/**
+	 * Modifie le pas d'incrémentation par celui passé en paramètre
+	 * @param deltaT nouveau pas
+	 */
+
+	public void setDeltaT(double deltaT) { this.deltaT = deltaT; }
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
@@ -1910,10 +1953,6 @@ public class Scene extends JPanel implements Runnable {
 	public void setIndiceRefractionPrisme(double valeur) {
 		prisme.setIndiceRefraction(valeur);
 		repaint();
-	}
-
-	public void setVitesseLaser(Vecteur vitesseLaser) {
-		this.vitesseLaser = vitesseLaser;
 	}
 
 	/**
@@ -2011,7 +2050,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param valeur: Boolean pour activer ou désactiver l'effacement des objet avec
 	 *        le clique de la souris (true or false)
 	 */
-	 //Auteur: Arezki
+	//Auteur: Arezki
 	public void effacementPrecis(boolean valeur) {
 
 		effacement = valeur;
@@ -2025,5 +2064,7 @@ public class Scene extends JPanel implements Runnable {
 	public void setAngleMiroir(int angle) {
 		this.angleMiroir = angle;
 	}
+
+
 
 }

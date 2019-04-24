@@ -8,13 +8,20 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+/**
+ * Classe qui s'occupe d'enregistrer tous les types de sons dans le jeu et de les jouer.
+ * @author Jérémy Thai
+ */
 
 public class Bruit {
 
 	private Clip musique;
 	
-	private boolean enCours = false;
-
+	
+	/**
+	 * Méthode qui cherche et fait jouer un son dont le nom du fichier de son est passée en paramètre 
+	 * @param str chaine de caractere qui represente le nom du fichier de son
+	 */
 	public  void joue(String str) {
 
 		try {
@@ -34,6 +41,10 @@ public class Bruit {
 
 	}
 
+	/**
+	 * Méthode qui cherche et fait jouer une musique dont le nom du fichier de musique est passée en paramètre 
+	 * @param str chaine de caractere qui represente le nom du fichier de musique
+	 */
 	public  void joueMusique(String str) {
 
 		if(musique == null || !musique.isRunning()) {
@@ -53,13 +64,15 @@ public class Bruit {
 		}
 	}
 
+	/**
+	 * Méthode qui fait jouer un son au hasard lorsque le joueur est touché par un obstacle
+	 */
 	public void joueSonLorsqueTouche() {
-
 
 		int nb = 0 + (int)(Math.random() * ((3 - 0) + 1));
 
 		switch(nb) {
-
+		
 		case 1: 
 			joue("scream");
 			break;
@@ -71,24 +84,6 @@ public class Bruit {
 		case 3: 
 			joue("chosenone");
 			break;
-
 		}
 	}
-
-
-
-	public boolean isEnCours() {
-		return enCours;
-	}
-
-
-
-	public void setEnCours(boolean enCours) {
-		this.enCours = enCours;
-	}
-
-
-
-
-
 }
