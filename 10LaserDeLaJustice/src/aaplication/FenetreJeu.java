@@ -71,6 +71,7 @@ public class FenetreJeu extends JFrame {
 
 
 	private Bruit son = new Bruit();
+	private JButton buttonMiroirCourbe;
 
 
 	// Par Arezki 
@@ -446,6 +447,16 @@ public class FenetreJeu extends JFrame {
 		separator_1.setForeground(SystemColor.activeCaption);
 		separator_1.setBounds(44, 926, 1108, 2);
 		contentPane.add(separator_1);
+		
+		buttonMiroirCourbe = new JButton("Miroir Courbe\r\n");
+		buttonMiroirCourbe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sceneFinale.ajoutMiroirCourbe();
+			}
+		});
+		buttonMiroirCourbe.setEnabled(false);
+		buttonMiroirCourbe.setBounds(934, 834, 105, 23);
+		contentPane.add(buttonMiroirCourbe);
 	}
 
 	//Par Miora
@@ -476,11 +487,11 @@ public class FenetreJeu extends JFrame {
 		btnBlocDeau.setEnabled(true);
 		btnGrosseBalle.setEnabled(true);
 		btnMediumBalle.setEnabled(true);
-		btnMiroirConvexe.setEnabled(true);
 		btnMiroirPlan.setEnabled(true);
 		btnPrisme.setEnabled(true);
 		btnTrouNoir.setEnabled(true);
 		btnPetiteBalle.setEnabled(true);
+		buttonMiroirCourbe.setEnabled(true);
 	}
 
 	// Par Arezki
@@ -494,12 +505,11 @@ public class FenetreJeu extends JFrame {
 		btnBlocDeau.setEnabled(false);
 		btnGrosseBalle.setEnabled(false);
 		btnMediumBalle.setEnabled(false);
-		btnMiroirConcave.setEnabled(false);
-		btnMiroirConvexe.setEnabled(false);
 		btnMiroirPlan.setEnabled(false);
 		btnPrisme.setEnabled(false);
 		btnTrouNoir.setEnabled(false);
 		btnPetiteBalle.setEnabled(false);
+		buttonMiroirCourbe.setEnabled(false);
 	}
 
 	/**

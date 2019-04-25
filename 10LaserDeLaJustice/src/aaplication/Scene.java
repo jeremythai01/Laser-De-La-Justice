@@ -126,7 +126,7 @@ public class Scene extends JPanel implements Runnable {
 
 	private Balle balle;
 	private TrouNoir trou;
-	private MiroirCourbe miroireConvexe;
+	private MiroirCourbe miroirCourbe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
 	private OrdinateurNiveau3 ordi;
@@ -222,11 +222,12 @@ public class Scene extends JPanel implements Runnable {
 
 				for (int i = 0; i < listeMiroirCourbe.size(); i++) {
 					if (listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR)&&(!effacement)) {
-
+						System.out.println("miroir courbe");
 						bonMiroirCourbe = true;
-						miroireConvexe = listeMiroirCourbe.get(i);
+						miroirCourbe = listeMiroirCourbe.get(i);
 						i = listeMiroirCourbe.size();
-					}else if((listeBalles.get(i).getAire().contains(eXR, eYR))&&(effacement)) {
+						
+					}else if((listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR))&&(effacement)) {
 						listeMiroirCourbe.remove(i);
 						repaint();
 					}
@@ -239,7 +240,7 @@ public class Scene extends JPanel implements Runnable {
 						miroirePlan = listeMiroirPlan.get(i);
 
 						i = listeMiroirPlan.size();
-					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
+					} else if ((listeMiroirPlan.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
 						listeMiroirPlan.remove(i);
 						repaint();
 					}
@@ -252,7 +253,7 @@ public class Scene extends JPanel implements Runnable {
 						trou = listeTrou.get(i);
 
 						i = listeTrou.size();
-					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
+					} else if ((listeTrou.get(i).getAireTrou().contains(eXR, eYR)) && (effacement)) {
 						listeTrou.remove(i);
 						repaint();
 					}
@@ -265,7 +266,7 @@ public class Scene extends JPanel implements Runnable {
 						bloc = listeBlocEau.get(i);
 
 						i = listeBlocEau.size();
-					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
+					} else if ((listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)) && (effacement)) {
 						listeBlocEau.remove(i);
 						repaint();
 					}
@@ -278,7 +279,7 @@ public class Scene extends JPanel implements Runnable {
 						prisme = listePrisme.get(i);
 
 						i = listePrisme.size();
-					} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
+					} else if ((listePrisme.get(i).getAirPrisme().contains(eXR, eYR)) && (effacement)) {
 						listePrisme.remove(i);
 						repaint();
 					}
@@ -297,6 +298,7 @@ public class Scene extends JPanel implements Runnable {
 				bonTrouNoir = false;
 				bonBlocEau = false;
 				bonPrisme = false;
+				bonMiroirCourbe = false;
 
 			}
 		});
@@ -396,6 +398,10 @@ public class Scene extends JPanel implements Runnable {
 
 		for (Prisme pri : listePrisme) {
 			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
+		
+		for(MiroirCourbe courbe : listeMiroirCourbe) {
+			courbe.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
 		personnage.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -1015,11 +1021,17 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutBlocEau() {
-		// listeBlocEau.add(new BlocDEau(new Vecteur(9, 0)));
+		listeBlocEau.add(new BlocDEau(new Vecteur(9, 0), 2));
 		repaint();
 
 	}
 
+	
+	public void ajoutMiroirCourbe() {
+		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), 2, 90));
+		repaint();
+		
+	}
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
@@ -1108,19 +1120,12 @@ public class Scene extends JPanel implements Runnable {
 					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
 					repaint();
 				}
-				/*	if (bonMiroirConcave) {
-
-					double xDrag = e.getX() / modele.getPixelsParUniteX();
-					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					miroirConcave.setPosition(new Vecteur(xDrag, yDrag));
-
-					repaint();
-				}*/
+			
 				if (bonMiroirCourbe) {
 
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
 					double yDrag = e.getY() / modele.getPixelsParUniteY();
-					miroireConvexe.setPosition(new Vecteur(xDrag, yDrag));
+					miroirCourbe.setPosition(new Vecteur(xDrag, yDrag));
 
 					repaint();
 				}
@@ -1964,6 +1969,10 @@ public class Scene extends JPanel implements Runnable {
 		prisme.setIndiceRefraction(valeur);
 		repaint();
 	}
+	
+	public void setRefractionBloc(double valeur) {
+		
+	}
 
 	/**
 	 * Cette methode permet de modifier l'angle du laser
@@ -2082,6 +2091,8 @@ public class Scene extends JPanel implements Runnable {
 	public void setTempsDuJeu(int tempsDuJeu) {
 		this.tempsDuJeu = tempsDuJeu;
 	}
+
+	
 
 
 

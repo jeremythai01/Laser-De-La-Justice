@@ -106,7 +106,8 @@ public class MiroirCourbe implements Dessinable, Serializable {
 		AffineTransform matLocale = new AffineTransform();
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		matLocale.translate(-rayon, -rayon);
-		return new Area(new Arc2D.Double(position.getX(), position.getY(), 2*rayon, 2*rayon, -180, 180, Arc2D.OPEN));
+		//return new Area(new Arc2D.Double(position.getX(), position.getY(), 2*rayon, 2*rayon, -180, 180, Arc2D.OPEN));
+		return new Area(new Rectangle2D.Double(position.getX(), position.getY(), rayon*10, rayon*10));
 	}
 
 	/**
@@ -132,6 +133,65 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 */
 	public void setPosition(Vecteur position) {
 		this.position = position;
+		if(listeLigne.size()==0) {
+		
+		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
+		for(int i=0; i<=180; i+=approximation) {
+			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
+			double a = Math.toRadians(-angle);
+			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
+			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
+			double d[]=new double[2]; //nouvelle coordonees
+
+			//multiplication matriciel avec matrice de rotation sur les points, pas utilisation aff.rotate
+			for(int j=0;j<2;j++){    
+				d[j]=0;      
+				for(int k=0;k<2;k++)      
+				{      
+					d[j]+=matR[j][k]*ptsD[k];      
+				}
+			}
+			d[0] = d[0]+position.getX();
+			d[1] = d[1]+position.getY();
+			pts = new Point2D.Double(d[0], d[1]);
+			listePoints.add(pts);
+		}
+		//Petites lignes qui vont former le demi-cercle
+		for(int j=0;j<= listePoints.size()-2; j++) {
+			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
+			listeLigne.add(ligne);
+		}
+	}
+
+	else {
+		listeLigne.removeAll(listeLigne);
+		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
+		for(int i=0; i<=180; i+=approximation) {
+			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
+			double a = Math.toRadians(-angle);
+			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
+			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
+			double d[]=new double[2]; //nouvelle coordonees
+
+			//multiplication matriciel avec matrice de rotation sur les points, pas utilisation aff.rotate
+			for(int j=0;j<2;j++){    
+				d[j]=0;      
+				for(int k=0;k<2;k++)      
+				{      
+					d[j]+=matR[j][k]*ptsD[k];      
+				}
+			}
+			d[0] = d[0]+position.getX();
+			d[1] = d[1]+position.getY();
+			pts = new Point2D.Double(d[0], d[1]);
+			listePoints.add(pts);
+		}
+		//Petites lignes qui vont former le demi-cercle
+		for(int j=0;j<= listePoints.size()-2; j++) {
+			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
+			listeLigne.add(ligne);
+		}
+	}
 	}
 
 	/**

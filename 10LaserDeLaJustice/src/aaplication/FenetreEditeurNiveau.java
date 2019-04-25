@@ -40,7 +40,7 @@ public class FenetreEditeurNiveau extends JFrame {
 	private JButton btnBlocDeau;
 	private JButton btnTrouNoir;
 	private JButton btnMiroirConcave;
-	private JButton btnMiroirConvexe;
+	private JButton btnMiroirCourbe;
 	private JButton btnMiroirPlan;
 	private Scene sceneFinale;
 	//private Options optionJeu;
@@ -120,24 +120,22 @@ public class FenetreEditeurNiveau extends JFrame {
 			}
 		});
 		btnMiroirPlan.setEnabled(false);
-		btnMiroirPlan.setBounds(1198, 604, 105, 23);
+		btnMiroirPlan.setBounds(1198, 570, 105, 23);
 		contentPane.add(btnMiroirPlan);
 
-		btnMiroirConvexe = new JButton("miroir Convexe");
-		btnMiroirConvexe.addActionListener(new ActionListener() {
+		btnMiroirCourbe = new JButton("Miroir Courbe");
+		btnMiroirCourbe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sceneFinale.ajoutMiroireConvexe();
+				sceneFinale.ajoutMiroirCourbe();
+				
 				donneFocusALasceneFinale();
 			}
 		});
-		btnMiroirConvexe.setEnabled(false);
-		btnMiroirConvexe.setBounds(1198, 570, 105, 23);
-		contentPane.add(btnMiroirConvexe);
+		btnMiroirCourbe.setEnabled(false);
+		btnMiroirCourbe.setBounds(1198, 536, 105, 23);
+		contentPane.add(btnMiroirCourbe);
 
-		btnMiroirConcave.setEnabled(false);
-		btnMiroirConcave.setBounds(1198, 536, 105, 23);
-		contentPane.add(btnMiroirConcave);
-
+		
 		btnTrouNoir = new JButton("Trou Noir");
 		btnTrouNoir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -311,7 +309,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(SystemColor.activeCaption);
-		separator_1.setBounds(1179, 652, 218, 2);
+		separator_1.setBounds(1179, 622, 218, 2);
 		contentPane.add(separator_1);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -323,7 +321,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		lblChangementsDivers.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblChangementsDivers.setHorizontalAlignment(SwingConstants.CENTER);
 		lblChangementsDivers.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 10));
-		lblChangementsDivers.setBounds(1198, 657, 105, 38);
+		lblChangementsDivers.setBounds(1198, 635, 105, 38);
 		contentPane.add(lblChangementsDivers);
 		
 		JLabel lblAngleMiroir = new JLabel("Angle Miroir");
@@ -345,6 +343,11 @@ public class FenetreEditeurNiveau extends JFrame {
 		contentPane.add(lblIndiceRefMiroir);
 		
 		JSpinner spnRefMiroir = new JSpinner();
+		spnRefMiroir.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+			
+			}
+		});
 		spnRefMiroir.setBounds(1317, 726, 29, 20);
 		contentPane.add(spnRefMiroir);
 		
@@ -353,6 +356,12 @@ public class FenetreEditeurNiveau extends JFrame {
 		contentPane.add(lblRfractionP);
 		
 		JSpinner spinner = new JSpinner();
+		spinner.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				sceneFinale.setIndiceRefractionPrisme((double) spinner.getValue());
+				repaint();
+			}
+		});
 		spinner.setBounds(1317, 757, 29, 20);
 		contentPane.add(spinner);
 		
@@ -485,8 +494,8 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnBlocDeau.setEnabled(true);
 		btnGrosseBalle.setEnabled(true);
 		btnMediumBalle.setEnabled(true);
-		btnMiroirConcave.setEnabled(true);
-		btnMiroirConvexe.setEnabled(true);
+		
+		btnMiroirCourbe.setEnabled(true);
 		btnMiroirPlan.setEnabled(true);
 		btnPrisme.setEnabled(true);
 		btnTrouNoir.setEnabled(true);
@@ -504,8 +513,8 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnBlocDeau.setEnabled(false);
 		btnGrosseBalle.setEnabled(false);
 		btnMediumBalle.setEnabled(false);
-		btnMiroirConcave.setEnabled(false);
-		btnMiroirConvexe.setEnabled(false);
+		
+		btnMiroirCourbe.setEnabled(false);
 		btnMiroirPlan.setEnabled(false);
 		btnPrisme.setEnabled(false);
 		btnTrouNoir.setEnabled(false);
