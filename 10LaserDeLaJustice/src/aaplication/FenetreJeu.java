@@ -1,4 +1,4 @@
- package aaplication;
+package aaplication;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -59,7 +59,7 @@ public class FenetreJeu extends JFrame {
 
 	private boolean isNouveauOption = true;
 	boolean triche = false;
-	
+
 	private static String nomFichier;
 
 
@@ -69,10 +69,10 @@ public class FenetreJeu extends JFrame {
 	private static boolean  isNouvelle = true, isOptiPerso = true;
 	private JProgressBar barreTempsDuJeu;
 
-	
+
 	private Bruit son = new Bruit();
-	
-	
+
+
 	// Par Arezki 
 	/**
 	 * Lancement de l'application
@@ -307,23 +307,28 @@ public class FenetreJeu extends JFrame {
 		sceneFinale = new Scene(isNouvelle, nomFichier);
 		sceneFinale.setBounds(10, 110, 1146, 585);
 		contentPane.add(sceneFinale);
-		
+
 		sceneFinale.addSceneListener(new SceneListener() {
 
 
 			@Override
 			public void couleurLaserListener() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
-			@Override
-			public void changementTempsListener(double temps) {
-				System.out.println("dans le listener dans l'application ");
-				barreTempsDuJeu.setValue((int)temps);
+			//Par Miora
+			/**
+			 * Cette methode permet de changer le temps a partir du temps sauvegardé dans le 
+			 * fichier scene
+			 * @param temps : le temps ecoule
+			 */
+			public void changementTempsListener(int temps) {
+				System.out.println("iciiiiiii man " + temps);
+				barreTempsDuJeu.setValue(temps);
 			}
 		});
-	
+
 
 		toucheScene();
 		//associerBoutonAvecImage(btnVidersceneFinale, "corbeille.png");
@@ -373,29 +378,29 @@ public class FenetreJeu extends JFrame {
 
 		listener = new ActionListener() {
 
-			
+
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				// TODO Auto-generated method stub
 				if(!triche)
-				if (barreTempsDuJeu.getValue() > 00 && secondes >= 0) {
+					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0) {
 
-					barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
+						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 
-					barreTempsDuJeu.setString(secondes-- + " secondes restantes");
-					//sceneFinale.setTempsTotalEcoule(barreTempsDuJeu.getValue());
+						barreTempsDuJeu.setString(secondes-- + " secondes restantes");
+						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
+						//System.out.println("temps dans fenetre jeu : " + barreTempsDuJeu.getValue());
+					} else {
+						son.joue("gameover");
+						tempsJeu.stop();
+						sceneFinale.arreter();
 
-				} else {
-					son.joue("gameover");
-					tempsJeu.stop();
-					sceneFinale.arreter();
-
-					FenetreGameOver gameOver = new FenetreGameOver();
-					setVisible(false);
-					gameOver.setVisible(true);
-				}
+						FenetreGameOver gameOver = new FenetreGameOver();
+						setVisible(false);
+						gameOver.setVisible(true);
+					}
 			}
 		};
 
@@ -410,7 +415,7 @@ public class FenetreJeu extends JFrame {
 		associerBoutonAvecImage(btnPetiteBalle, "PetBalle.JPG");
 		associerBoutonAvecImage(btnTrouNoir, "Trou.JPG");
 		associerBoutonAvecImage(btnMiroirPlan, "plan.JPG");
-		*/
+		 */
 		JButton btnSaveNiveau = new JButton("Enregistrer niveau\r\n");
 		btnSaveNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -420,12 +425,12 @@ public class FenetreJeu extends JFrame {
 		});
 		btnSaveNiveau.setBounds(526, 61, 153, 38);
 		contentPane.add(btnSaveNiveau);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBounds(719, 730, 9, 198);
 		contentPane.add(separator);
-		
+
 		JToggleButton tglbtnTriche = new JToggleButton("Triche\r\n");
 		tglbtnTriche.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -436,7 +441,7 @@ public class FenetreJeu extends JFrame {
 		});
 		tglbtnTriche.setBounds(1063, 61, 89, 38);
 		contentPane.add(tglbtnTriche);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(SystemColor.activeCaption);
 		separator_1.setBounds(44, 926, 1108, 2);
@@ -503,7 +508,7 @@ public class FenetreJeu extends JFrame {
 	 */
 	// par Caroline Houle
 
-	
+
 
 
 	// Miora

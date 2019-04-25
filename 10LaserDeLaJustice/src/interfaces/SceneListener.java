@@ -8,5 +8,5 @@ import java.util.EventListener;
 public interface SceneListener extends EventListener{
 	
 	public void couleurLaserListener();
-	public void changementTempsListener(double temps);
+	public void changementTempsListener(int temps);
 }

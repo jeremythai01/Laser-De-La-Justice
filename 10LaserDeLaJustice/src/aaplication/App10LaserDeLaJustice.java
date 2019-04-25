@@ -34,7 +34,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	private FenetrePartie jouerPartie;
 
 	/**
-	 * Launch the application.
+	 * Lancer l'appplication
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -42,29 +42,10 @@ public class App10LaserDeLaJustice extends JFrame {
 				try {
 					App10LaserDeLaJustice frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
-					//	creationFichier();
+				
 
 				} catch (Exception e) {
 					e.printStackTrace();
-				}
-			}
-
-			//Par Miora
-			/**
-			 * Cette methode va creer un fichier pour le sauvegarde des niveaux personnalise et
-			 * des parties sauvegardees
-			 */
-
-			private void creationFichier() {
-				String direction = System.getProperty("user.dir");// + File.separator + "Desktop";
-				direction += File.separator + "Laser de la justice";
-				File customDir = new File(direction);
-				if (customDir.exists()) {
-					System.out.println(customDir + " already exists");
-				} else if (customDir.mkdirs()) {
-					System.out.println(customDir + " was created");
-				} else {
-					System.out.println(customDir + " was not created");
 				}
 			}
 		});

@@ -78,6 +78,7 @@ public class Scene extends JPanel implements Runnable {
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
+	private int tempsDuJeu =0;
 	private int toucheGauche = 37;
 	private double n2 = 2.00;
 	private int compteur = 0;
@@ -1224,7 +1225,8 @@ public class Scene extends JPanel implements Runnable {
 			fichierDeTravail = new File(direction);
 		}else { //sinon version initiale
 			String autreDir = System.getProperty("user.dir");
-			fichierDeTravail = new File(autreDir, "DonneeOption.d3t");
+			fichierDeTravail = new File(autreDir, "DonneeInitiale.d3t");
+			System.out.println("else");
 		}
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
@@ -1363,7 +1365,7 @@ public class Scene extends JPanel implements Runnable {
 			} // la couleur du rayon
 			fluxSortie.writeInt(toucheGauche); // la touche gauche
 			fluxSortie.writeInt(toucheDroite); // la touche droite
-			fluxSortie.writeDouble(tempsEcoule);
+			fluxSortie.writeInt(tempsDuJeu);
 
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
@@ -1425,8 +1427,8 @@ public class Scene extends JPanel implements Runnable {
 			}
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
-			tempsEcoule = fluxEntree.readInt();
-			System.out.println("le temps lu dans scene " + tempsEcoule);
+			tempsDuJeu = fluxEntree.readInt();
+			System.out.println("le temps lu dans scene " + tempsDuJeu);
 			leverEvenChangementTemps();
 		} // fin try
 
@@ -1518,6 +1520,10 @@ public class Scene extends JPanel implements Runnable {
 
 	// --------------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Cette methode permet d'ajouter la liste d'écouteur a la scene
+	 * @param ecouteur : l'ecouteur
+	 */
 	public void addSceneListener(SceneListener ecouteur) {
 		listeEcouteur.add(ecouteur);
 	}
@@ -1527,11 +1533,15 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
-
+	
+	// Par Miora
+	/**
+	 * Cette methode permet de remettre le temps de la partie sauvegarde
+	 */
 	public void leverEvenChangementTemps() {
-		System.out.println("je suis dans la levee evenement " + tempsEcoule);
+		System.out.println("je suis dans la levee evenement " + tempsDuJeu);
 		for (SceneListener ecout : listeEcouteur) {
-			ecout.changementTempsListener(tempsEcoule);
+			ecout.changementTempsListener(tempsDuJeu);
 		}
 	}
 
@@ -2063,6 +2073,14 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void setAngleMiroir(int angle) {
 		this.angleMiroir = angle;
+	}
+	
+	/**
+	 * Cette methode permet de modifier le temps de jeu
+	 * @param tempsDuJeu : le temps du jeu
+	 */
+	public void setTempsDuJeu(int tempsDuJeu) {
+		this.tempsDuJeu = tempsDuJeu;
 	}
 
 

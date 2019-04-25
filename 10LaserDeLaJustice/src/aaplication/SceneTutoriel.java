@@ -1207,7 +1207,6 @@ public class SceneTutoriel extends JPanel implements Runnable {
 			toucheDroite = fluxEntree.readInt();
 			tempsEcoule = fluxEntree.readInt();
 			System.out.println("le temps lu dans scene " + tempsEcoule);
-			leverEvenChangementTemps();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1260,12 +1259,6 @@ public class SceneTutoriel extends JPanel implements Runnable {
 		}
 	}
 
-	public void leverEvenChangementTemps() {
-		System.out.println("je suis dans la levee evenement " + tempsEcoule );
-		for (SceneListener ecout : listeEcouteur) {
-			ecout.changementTempsListener(tempsEcoule);
-		}
-	}
 
 	public int getToucheGauche() {
 		return toucheGauche;
