@@ -74,7 +74,7 @@ public class FenetrePartie extends JFrame {
 	               JOptionPane.showMessageDialog(null, "Probleme lecture niveau ou sauvegarde, lancement d'une nouvelle partie");
 	            } 
 				jeu = new FenetreJeu(false, nomFichier);
-				jeu.isNouvelle(false);
+			//	jeu.isNouvelle(false);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();
 				setVisible(false);
@@ -89,7 +89,7 @@ public class FenetrePartie extends JFrame {
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jeu = new FenetreJeu(true, null);  // isNouvelle = true
-				jeu.isNouvelle(true);
+			//	jeu.isNouvelle(true);
 				jeu.setNouveauOption(true);
 				jeu.setVisible(true);
 				jeu.donneFocusALasceneFinale();

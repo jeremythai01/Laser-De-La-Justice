@@ -96,7 +96,7 @@ public class FenetreJeu extends JFrame {
 	/**
 	 * Creation de la fenêtre
 	 * @param isNouvelle : retourne vrai si il s'agit d'une nouvelle partie
-	 * @author Miora nomFichier : le nom du fichier de sauvegarde ou niveau
+	 * @param nomFichier : le nom du fichier de sauvegarde ou niveau
 	 */
 	// Par Arezki
 	public FenetreJeu(boolean isNouvelle, String nomFichier) {
@@ -117,7 +117,6 @@ public class FenetreJeu extends JFrame {
 
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
 				sceneFinale.demarrer();
 				tempsJeu.start();
@@ -174,10 +173,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnEnregistrer = new JButton("Enregistrer partie\r\n");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sceneFinale.arreter();
-				tempsJeu.stop();
-				String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
-				sceneFinale.ecritureFichierSauvegarde(nom, false);
+				enregistrer();
 			}
 		});
 		btnEnregistrer.setBounds(689, 61, 159, 38);
@@ -306,29 +302,14 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(lblLesSorties);
 
 		sceneFinale = new Scene(isNouvelle, nomFichier);
+		sceneFinale.addSceneListener(new SceneListener() {
+			public void changementTempsListener(int temps) {
+				modifierLeTemps(temps);
+			}
+		});
 		sceneFinale.setBounds(10, 110, 1146, 585);
 		contentPane.add(sceneFinale);
 
-		sceneFinale.addSceneListener(new SceneListener() {
-
-
-			@Override
-			public void couleurLaserListener() {
-				// TODO Auto-generated method stub
-
-			}
-
-			//Par Miora
-			/**
-			 * Cette methode permet de changer le temps a partir du temps sauvegardé dans le 
-			 * fichier scene
-			 * @param temps : le temps ecoule
-			 */
-			public void changementTempsListener(int temps) {
-				System.out.println("iciiiiiii man " + temps);
-				barreTempsDuJeu.setValue(temps);
-			}
-		});
 
 
 		toucheScene();
@@ -378,21 +359,14 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnDemarrage);
 
 		listener = new ActionListener() {
-
-
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				// TODO Auto-generated method stub
 				if(!triche)
 					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0) {
-
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
-
-						barreTempsDuJeu.setString(secondes-- + " secondes restantes");
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
-						//System.out.println("temps dans fenetre jeu : " + barreTempsDuJeu.getValue());
 					} else {
 						son.joue("gameover");
 						tempsJeu.stop();
@@ -420,8 +394,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnSaveNiveau = new JButton("Enregistrer niveau\r\n");
 		btnSaveNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
-				sceneFinale.ecritureNiveau(nomSauv);
+				sauvegarderNiveau();
 			}
 		});
 		btnSaveNiveau.setBounds(526, 61, 153, 38);
@@ -476,12 +449,11 @@ public class FenetreJeu extends JFrame {
 		sceneFinale.requestFocusInWindow();
 	}
 
-	// // Par Arezki
+	//Par Arezki
 	/**
 	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
 	 * les objets dans la sceneFinale
 	 * 
-	 * @author Arezki
 	 */
 	public void activerEditeur() {
 		btnBlocDeau.setEnabled(true);
@@ -512,14 +484,6 @@ public class FenetreJeu extends JFrame {
 		buttonMiroirCourbe.setEnabled(false);
 	}
 
-	/**
-	 * @param leBouton
-	 * @param fichierImage
-	 */
-	// par Caroline Houle
-
-
-
 
 	// Miora
 	/**
@@ -537,9 +501,10 @@ public class FenetreJeu extends JFrame {
 	 * sceneFinale
 	 * @param reponse : oui ou non s'il s'agit d'une nouvelle scene
 	 */
-	public void isNouvelle(boolean reponse) {
-		isNouvelle = reponse;
-	}
+//
+//	public void isNouvelle(boolean reponse) {
+//		isNouvelle = reponse;
+//	}
 
 	//Par Miora
 	/**
@@ -554,4 +519,39 @@ public class FenetreJeu extends JFrame {
 		tempsJeu.stop();
 		setVisible(false);
 	}
+	
+
+	//Par Miora
+	/**
+	 * Cette methode modifie le temps pour la barre de temps
+	 * @param temps : le nouveau temps
+	 */
+	private void modifierLeTemps(int temps) {
+		barreTempsDuJeu.setValue(temps);
+		barreTempsDuJeu.setString(temps + " secondes restantes");
+		
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder une partie
+	 */
+	private void enregistrer() {
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
+		sceneFinale.ecritureFichierSauvegarde(nom, false);
+		
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder le niveau
+	 */
+	private void sauvegarderNiveau() {
+		String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
+		sceneFinale.ecritureNiveau(nomSauv);
+		
+	}
+
 }

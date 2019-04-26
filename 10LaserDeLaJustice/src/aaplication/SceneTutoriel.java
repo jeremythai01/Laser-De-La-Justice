@@ -797,13 +797,6 @@ public class SceneTutoriel extends JPanel implements Runnable {
 		listeEcouteur.add(ecouteur);
 	}
 
-	public void leverEvenCouleurLaser() {
-		for (SceneListener ecout : listeEcouteur) {
-			ecout.couleurLaserListener();
-		}
-	}
-
-
 	public int getToucheGauche() {
 		return toucheGauche;
 	}

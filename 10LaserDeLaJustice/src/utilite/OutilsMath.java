@@ -29,6 +29,35 @@ public class OutilsMath  {
 		return tab;
 	}
 	
+
+	/**
+	 * Cette methode permet de bien d'ajuster la fonction tangente
+	 * @param angle : le vecteur de l'angle
+	 * @return la bonne orientation
+	 */
+	public static double ajustementArcTan(Vecteur angle) {
+		double angleDegre = Math.abs(Math.toDegrees(Math.atan(angle.getY()/angle.getX())));
+		if(angle.getX() >0 && angle.getY()>0) {
+			//premier quadrant
+			System.out.println("premier");
+			return angleDegre;
+		}else if (angle.getX() < 0 && angle.getY()>0 ){
+			//deuxieme quadrant
+			System.out.println("2e");
+			return (180-angleDegre);
+		}else if (angle.getX() < 0 && angle.getY()<0 ){
+			//troisieme quadrant
+			System.out.println("3e");
+			return (180+ angleDegre);
+		}else if (angle.getX() > 0 && angle.getY()<0 ){
+			//quatrieme quadrant
+			System.out.println("4e");
+			return (-angleDegre);
+		}
+		return 0; // caprice de Java
+
+	}
+	
 	
 
 }
