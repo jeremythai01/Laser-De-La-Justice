@@ -52,7 +52,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	}
 
 	/**
-	 * Creation de la fenetre
+	 * Create the frame.
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

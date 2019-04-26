@@ -151,5 +151,9 @@ public class AppMiroirTest extends JFrame {
 		});
 		chkScience.setBounds(588, 188, 149, 37);
 		contentPane.add(chkScience);
+		
+		EditeurMiroir editeurMiroir = new EditeurMiroir();
+		editeurMiroir.setBounds(571, 372, 184, 207);
+		contentPane.add(editeurMiroir);
 	}
 }

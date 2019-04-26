@@ -27,9 +27,6 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	private boolean premiereCollision=true;
 	private double indiceRefraction;
 	private final double indiceAir=1.0;
-	private Rectangle2D.Double hitbox;
-	private final double largeurHitbox=0.0000001;
-	private double hauteur=0.5;
 	
 	/**
 	 * Constructeur du bloc deau qui prend en parametre la position du bloc
@@ -51,8 +48,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteur);
-		//hitbox= new Rectangle2D.Double(position.getX(), position.getY()+LARGEUR, LARGEUR, largeurHitbox);
+		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, 0.5);
 		g.setColor(Color.blue);
 		g.fill(matLocal.createTransformedShape(bloc));
 		
@@ -152,20 +148,13 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 		return LARGEUR;
 	}
 
-	/**
-	 * Permet d'obtenir la hauteur du bloc 
-	 * @return la hauteur du bloc
-	 */
-	public double getHauteur() {
-		return hauteur;
-	}
 
 	/**
 	 * Permet d'obtenir l'aire du bloc pour faire les intersections
 	 * @return, l'aire du bloc sous forme d'area
 	 */
 	public Area getAireBloc() {
-		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY()+hauteur, LARGEUR, largeurHitbox);
+		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		 return new Area(aire);
 	}
 
