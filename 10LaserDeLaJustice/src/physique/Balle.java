@@ -39,7 +39,6 @@ public class Balle implements Dessinable, Serializable {
 
 
 
-
 	/**
 	 * Classe enumeration des types de balle
 	 * @author Jeremy Thai
@@ -417,7 +416,6 @@ public class Balle implements Dessinable, Serializable {
 	public double getEnergieCinetique() {
 		return MoteurPhysique.energieCinetique(masse, vitesse);
 	}
-
 
 	public double getEnergiePotentielle(double hauteur) {
 

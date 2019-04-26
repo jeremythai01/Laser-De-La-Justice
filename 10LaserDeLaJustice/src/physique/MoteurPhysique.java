@@ -148,8 +148,7 @@ public class MoteurPhysique implements Serializable {
 	protected static double energieCinetique(double masse, Vecteur v) {
 		
 		double vF = Math.sqrt(v.getX()*v.getX() + v.getY()*v.getY());
-	//	System.out.println(masse);
-		return (1/2) * masse* vF*vF; 
+		return (0.5 * masse* vF*vF); 
 	
 	}
 

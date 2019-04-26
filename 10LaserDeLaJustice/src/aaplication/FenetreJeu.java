@@ -80,7 +80,9 @@ public class FenetreJeu extends JFrame {
 	private JButton buttonMiroirCourbe;
 	private JCheckBox checkBoxModeScientifique;
 	private Dimension ecranDimension;
-	private BarreEnergie barreEnergie;
+	private BarreEnergie barreEnergieCinetique;
+	private BarreEnergie barreEnergiePotentielle;
+	private BarreEnergie barreEnergieMecanique;
 
 	// Par Arezki 
 	/**
@@ -329,19 +331,19 @@ public class FenetreJeu extends JFrame {
 			@Override
 			public void modeScientifiqueListener(ArrayList<Balle> listeBalles, double hauteurMonde) {
 
-				double somme = 0;
-
+				double sommeEnergieCinetique = 0;
+				double sommeEnergiePotentielle = 0;
+				
 				for(Balle balle : listeBalles) {
-					somme = somme + balle.getEnergieCinetique();
+					sommeEnergieCinetique = sommeEnergieCinetique + balle.getEnergieCinetique();
+					sommeEnergiePotentielle = sommeEnergiePotentielle + balle.getEnergiePotentielle(hauteurMonde);
 				}
-				//		System.out.println("energie cinetique total"+ somme);
-				barreEnergie.setEnergie(somme);
-				for(Balle balle : listeBalles) {
-					somme = somme + balle.getEnergiePotentielle(hauteurMonde);
-				}
-
-				barreEnergie.setEnergieMecanique(somme);
-				barreEnergie.repaint();
+				barreEnergieCinetique.setEnergies(sommeEnergieCinetique, sommeEnergieCinetique+sommeEnergiePotentielle);
+				barreEnergiePotentielle.setEnergies(sommeEnergiePotentielle, sommeEnergieCinetique+sommeEnergiePotentielle);
+				barreEnergieMecanique.setEnergies(sommeEnergieCinetique+sommeEnergiePotentielle, sommeEnergieCinetique+sommeEnergiePotentielle );
+				barreEnergieCinetique.repaint();
+				barreEnergiePotentielle.repaint();
+				barreEnergieMecanique.repaint();
 			}
 		});
 	
@@ -481,9 +483,17 @@ public class FenetreJeu extends JFrame {
 		btnModeScientifique.setBounds(473, 742, 89, 38);
 		contentPane.add(btnModeScientifique);
 
-		barreEnergie = new BarreEnergie();
-		barreEnergie.setBounds(259, 767, 187, 124);
-		contentPane.add(barreEnergie);
+		barreEnergieCinetique = new BarreEnergie();
+		barreEnergieCinetique.setBounds(250, 786, 139, 124);
+		contentPane.add(barreEnergieCinetique);
+		
+		barreEnergiePotentielle = new BarreEnergie();
+		barreEnergiePotentielle.setBounds(420, 786, 139, 124);
+		contentPane.add(barreEnergiePotentielle);
+		
+		barreEnergieMecanique = new BarreEnergie();
+		barreEnergieMecanique.setBounds(578, 786, 130, 124);
+		contentPane.add(barreEnergieMecanique);
 
 		boolean selected = checkBoxModeScientifique.isSelected();
 		if (selected) {
@@ -618,5 +628,4 @@ private void sauvegarderNiveau() {
 	sceneFinale.ecritureNiveau(nomSauv);
 
 }
-
 }
