@@ -1,15 +1,18 @@
 package aaplication;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -30,16 +33,19 @@ import javax.swing.event.ChangeListener;
 
 import interfaces.SceneListener;
 import options.Options;
+import physique.Balle;
 import son.Bruit;
 
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.JCheckBox;
+import physique.BarreEnergie;
 
 /**
  * 
  * Cette classe est la fenetre d'application du jeu
  * 
- * @author Arezki et Miora
+ * @author Arezki, Miora, Jeremy 
  */
 public class FenetreJeu extends JFrame {
 
@@ -72,7 +78,9 @@ public class FenetreJeu extends JFrame {
 
 	private Bruit son = new Bruit();
 	private JButton buttonMiroirCourbe;
-
+	private JCheckBox checkBoxModeScientifique;
+	private Dimension ecranDimension;
+	private BarreEnergie barreEnergie;
 
 	// Par Arezki 
 	/**
@@ -86,6 +94,7 @@ public class FenetreJeu extends JFrame {
 					frame = new FenetreJeu(isNouvelle, nomFichier);
 					frame.setVisible(true);
 					frame.sceneFinale.requestFocusInWindow();
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -100,12 +109,16 @@ public class FenetreJeu extends JFrame {
 	 */
 	// Par Arezki
 	public FenetreJeu(boolean isNouvelle, String nomFichier) {
+		setResizable(false);
 		setTitle("Laser de la Justice.exe");
 		setBackground(Color.GRAY);
 		this.isNouvelle = isNouvelle;
 		this.nomFichier = nomFichier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1184, 969);
+		setBounds(100, 100, 1174, 974);
+
+		ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(new Color(255, 175, 175));
@@ -204,7 +217,7 @@ public class FenetreJeu extends JFrame {
 			}
 		});
 		btnMiroirConvexe.setEnabled(false);
-		btnMiroirConvexe.setBounds(1329, 852, 105, 23);
+		btnMiroirConvexe.setBounds(934, 800, 105, 23);
 
 
 		contentPane.add(btnMiroirConvexe);
@@ -328,6 +341,29 @@ public class FenetreJeu extends JFrame {
 				System.out.println("iciiiiiii man " + temps);
 				barreTempsDuJeu.setValue(temps);
 			}
+			
+			
+			//Jeremy Thai 
+			/**
+			 * Permet de mettre à jour les sorties scientfiques des objets de la scene dans d'autres panels 
+			 * @param listeBalles liste de balles 
+			 */
+			@Override
+			public void modeScientifiqueListener(ArrayList<Balle> listeBalles, double hauteur) {
+				double somme = 0;
+				
+				for(Balle balle : listeBalles) {
+					somme = somme + balle.getEnergieCinetique();
+				}
+		//		System.out.println("energie cinetique total"+ somme);
+				barreEnergie.setEnergie(somme);
+				for(Balle balle : listeBalles) {
+					somme = somme + balle.getEnergiePotentielle(hauteur);
+				}
+				
+				barreEnergie.setEnergieMecanique(somme);
+				barreEnergie.repaint();
+			}
 		});
 
 
@@ -447,7 +483,7 @@ public class FenetreJeu extends JFrame {
 		separator_1.setForeground(SystemColor.activeCaption);
 		separator_1.setBounds(44, 926, 1108, 2);
 		contentPane.add(separator_1);
-		
+
 		buttonMiroirCourbe = new JButton("Miroir Courbe\r\n");
 		buttonMiroirCourbe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -457,6 +493,34 @@ public class FenetreJeu extends JFrame {
 		buttonMiroirCourbe.setEnabled(false);
 		buttonMiroirCourbe.setBounds(934, 834, 105, 23);
 		contentPane.add(buttonMiroirCourbe);
+		checkBoxModeScientifique = new JCheckBox("Mode scientifique");
+		checkBoxModeScientifique.setBounds(568, 743, 125, 36);
+		contentPane.add(checkBoxModeScientifique);
+
+		JButton btnModeScientifique = new JButton("Mode Scientifique");
+		btnModeScientifique.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setSize(1500, getHeight());
+				sceneFinale.setModeScientifique(true);
+			}
+		});
+		btnModeScientifique.setBounds(473, 742, 89, 38);
+		contentPane.add(btnModeScientifique);
+
+		barreEnergie = new BarreEnergie();
+		barreEnergie.setBounds(259, 767, 187, 124);
+		contentPane.add(barreEnergie);
+
+		boolean selected = checkBoxModeScientifique.isSelected();
+		if (selected) {
+			setSize(1500, getHeight());
+			System.out.println("test");
+		} else {
+			System.out.println("Check box state is not selected.");
+		}
+
+
+
 	}
 
 	//Par Miora

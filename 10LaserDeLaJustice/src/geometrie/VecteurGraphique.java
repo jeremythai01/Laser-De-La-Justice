@@ -54,17 +54,19 @@ public class VecteurGraphique extends Vecteur implements Dessinable {
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat,double hauteur, double largeur) {	
 
+		AffineTransform matLocal = new AffineTransform(mat);
 		creerRepresentationGeometrique();
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 
-		mat.translate(origX, origY);
+		matLocal.translate(origX, origY);
 
-		g2d.draw(mat.createTransformedShape(corps));  										//ligne formant le vecteur lui-meme
-		mat.rotate(angleTete/2, x,  y);
-		g2d.draw(mat.createTransformedShape(traitDeTete)); 	//un des deux traits qui forment la tete du vecteur
-		mat.rotate(-angleTete/2, x,  y);
-		g2d.draw(mat.createTransformedShape(traitDeTete)); //L'autre trait de tête
+		g2d.draw(matLocal.createTransformedShape(corps));  										//ligne formant le vecteur lui-meme
+		matLocal.rotate(angleTete/2, x,  y);
+		g2d.draw(matLocal.createTransformedShape(traitDeTete)); 	//un des deux traits qui forment la tete du vecteur
+		matLocal.rotate(-angleTete/2, x,  y);
+		matLocal.rotate(-angleTete/2, x,  y);
+		g2d.draw(matLocal.createTransformedShape(traitDeTete)); //L'autre trait de tête
 
 	}// fin
 

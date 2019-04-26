@@ -145,8 +145,12 @@ public class MoteurPhysique implements Serializable {
 	 * @param v vitesse de l'objet en metre par seconde
 	 * @return energie cinetique en Joules 
 	 */
-	public double eC(double masse, Vecteur v) {
-		return (1/2) * masse* v.getY()*v.getY(); 
+	protected static double energieCinetique(double masse, Vecteur v) {
+		
+		double vF = Math.sqrt(v.getX()*v.getX() + v.getY()*v.getY());
+	//	System.out.println(masse);
+		return (1/2) * masse* vF*vF; 
+	
 	}
 
 	//Jeremy Thai
@@ -158,7 +162,7 @@ public class MoteurPhysique implements Serializable {
 	 * @return l'energie potentielle
 	 */
 
-	public double eP(double masse, Vecteur a, double hauteur) {
+	protected static double energiePotentielle(double masse, Vecteur a, double hauteur) {
 		return a.getY()*masse*hauteur;
 	}
 	//Jeremy Thai
@@ -169,7 +173,7 @@ public class MoteurPhysique implements Serializable {
 	 * @return energie mecanique
 	 */
 
-	public double eM(double eC, double eP) {
+	protected static double energieMecanique(double eC, double eP) {
 		return eC+eP;
 	}
 
@@ -180,10 +184,11 @@ public class MoteurPhysique implements Serializable {
 	 * @param accel acceleration en m par s
 	 */
 
-	public Vecteur forceGravi(double masse, Vecteur accel) {
+	protected static Vecteur forceGravi(double masse, Vecteur accel) {
 		return new Vecteur(0, masse*accel.getY());
 	}
 
+	
 	/**
 	 *  Methode qui calcule le temps ou les temps  exactes lors  dune collision a l'aide de la formule quadratique
 	 * @param A 1er element   de l'equation

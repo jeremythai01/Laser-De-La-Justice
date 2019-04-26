@@ -162,6 +162,8 @@ public class Scene extends JPanel implements Runnable {
 
 	private int angleMiroir = 0;
 
+	private boolean modeScientifique = false;
+
 	// Par Jeremy
 	/**
 	 * Constructeur de la scene et permet de mettre les objets avec le clique de la
@@ -170,7 +172,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param isPartieNouveau : retourne vrai s'il s'agit d'une nouvelle partie ou
 	 *                        d'une partie sauvegardée
 	 */
-	
+
 	public Scene(boolean isPartieNouveau, String nomFichier) {
 
 		addMouseWheelListener(new MouseWheelListener() {
@@ -226,7 +228,7 @@ public class Scene extends JPanel implements Runnable {
 						bonMiroirCourbe = true;
 						miroirCourbe = listeMiroirCourbe.get(i);
 						i = listeMiroirCourbe.size();
-						
+
 					}else if((listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR))&&(effacement)) {
 						listeMiroirCourbe.remove(i);
 						repaint();
@@ -374,7 +376,7 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionBallePersonnage(listeBalles, personnage);
 		detectionCollisionMurBalle();
 		for (Balle balle : listeBalles) {
-
+			balle.setModeScientifique(modeScientifique);
 			balle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
@@ -399,7 +401,7 @@ public class Scene extends JPanel implements Runnable {
 		for (Prisme pri : listePrisme) {
 			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
+
 		for(MiroirCourbe courbe : listeMiroirCourbe) {
 			courbe.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
@@ -478,7 +480,7 @@ public class Scene extends JPanel implements Runnable {
 			personnage.bouge();
 		}
 		ordi.bouge();
-		
+
 		tempsEcoule += deltaTInit;
 
 	}
@@ -493,6 +495,7 @@ public class Scene extends JPanel implements Runnable {
 			compteur++;
 			son.joueMusique("themesong");
 			calculerUneIterationPhysique();
+			leverEvenModeScientifique();
 			qtRotation = qtRotation + 0.2;
 			for (TrouNoir trou : listeTrou) {
 				trou.savoirQuantiteRotation(qtRotation);
@@ -1026,11 +1029,11 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	
+
 	public void ajoutMiroirCourbe() {
 		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), 2, 90));
 		repaint();
-		
+
 	}
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1120,7 +1123,7 @@ public class Scene extends JPanel implements Runnable {
 					miroirePlan.setPosition(new Vecteur(xDrag, yDrag));
 					repaint();
 				}
-			
+
 				if (bonMiroirCourbe) {
 
 					double xDrag = e.getX() / modele.getPixelsParUniteX();
@@ -1538,7 +1541,7 @@ public class Scene extends JPanel implements Runnable {
 			ecout.couleurLaserListener();
 		}
 	}
-	
+
 	// Par Miora
 	/**
 	 * Cette methode permet de remettre le temps de la partie sauvegarde
@@ -1547,6 +1550,18 @@ public class Scene extends JPanel implements Runnable {
 		System.out.println("je suis dans la levee evenement " + tempsDuJeu);
 		for (SceneListener ecout : listeEcouteur) {
 			ecout.changementTempsListener(tempsDuJeu);
+		}
+	}
+
+	// Par Jeremy 
+	/**
+	 * Permet de mettre a jour les sorties du mode scientifique
+	 */
+	private void leverEvenModeScientifique() {
+		if(modeScientifique) {
+			for (SceneListener ecout : listeEcouteur) {
+				ecout.modeScientifiqueListener(listeBalles, HAUTEUR_DU_MONDE);
+			}
 		}
 	}
 
@@ -1728,20 +1743,20 @@ public class Scene extends JPanel implements Runnable {
 
 
 	//Jeremy Thai
-		/**
-		 * Détecte et s'il y a une collision entre le personnage et un mur et s'occupe de la collision
-		 */
-		private void detectionCollisionPersonnageMur() {
+	/**
+	 * Détecte et s'il y a une collision entre le personnage et un mur et s'occupe de la collision
+	 */
+	private void detectionCollisionPersonnageMur() {
 
-			if (personnage.getPositionX() <= 0)
-				personnage.setPositionX(0);
+		if (personnage.getPositionX() <= 0)
+			personnage.setPositionX(0);
 
-			if (personnage.getPositionX() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
-				personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
-		}
-	
-	
-	
+		if (personnage.getPositionX() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
+			personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
+	}
+
+
+
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
@@ -1969,9 +1984,9 @@ public class Scene extends JPanel implements Runnable {
 		prisme.setIndiceRefraction(valeur);
 		repaint();
 	}
-	
+
 	public void setRefractionBloc(double valeur) {
-		
+
 	}
 
 	/**
@@ -2083,7 +2098,7 @@ public class Scene extends JPanel implements Runnable {
 	public void setAngleMiroir(int angle) {
 		this.angleMiroir = angle;
 	}
-	
+
 	/**
 	 * Cette methode permet de modifier le temps de jeu
 	 * @param tempsDuJeu : le temps du jeu
@@ -2092,8 +2107,14 @@ public class Scene extends JPanel implements Runnable {
 		this.tempsDuJeu = tempsDuJeu;
 	}
 
-	
-
+	//jeremy 
+	/**
+	 * Modifie la valeur (vrai ou faux) du mode scientifique par celle passee en parametre
+	 * @param modeScientifique nouvelle valeur passee en parametre
+	 */
+	public void setModeScientifique(boolean modeScientifique) {
+		this.modeScientifique = modeScientifique;
+	}
 
 
 }

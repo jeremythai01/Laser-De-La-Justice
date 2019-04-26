@@ -34,10 +34,11 @@ public class Balle implements Dessinable, Serializable {
 	private double qtRot;
 	private Image img;
 	private final double VITESSE_ROTATION = 0.04;
-	
-	
-	
-	
+	private VecteurGraphique vG;
+	private boolean modeScientifique = false;
+
+
+
 
 	/**
 	 * Classe enumeration des types de balle
@@ -48,9 +49,9 @@ public class Balle implements Dessinable, Serializable {
 		SMALL, MEDIUM, LARGE;
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * Constructeur ou la position, la vitesse , l'acceleration et le type de balle initiales sont spécifiés
 	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
@@ -84,7 +85,7 @@ public class Balle implements Dessinable, Serializable {
 		forceGravi = mt.forceGravi(masse, accel);
 	}
 
-	
+
 
 	/**
 	 * Constructeur qui permet de copier les données dune balle passée en parametre dans la balle courante
@@ -160,12 +161,14 @@ public class Balle implements Dessinable, Serializable {
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		g2d.fill( matLocal.createTransformedShape(cercle) );	
 
-/*
-		VecteurGraphique vG = new VecteurGraphique(vitesse.getX() /2, vitesse.getY() /2);
-		vG.setOrigineXY(position.getX()+diametre/2 , position.getY()+diametre/2); // origine du vecteur au centre de la balle 
-		vG.setLongueurTete(1);
-		vG.dessiner(g2d, mat, hauteur, largeur);
-		*/
+
+		if(modeScientifique) {
+			g2d.setColor(Color.black);
+			vG = new VecteurGraphique(vitesse.getX() /2, vitesse.getY() /2);
+			vG.setOrigineXY(position.getX()+diametre/2 , position.getY()+diametre/2); // origine du vecteur au centre de la balle 
+			vG.setLongueurTete(1);
+			vG.dessiner(g2d, mat, hauteur, largeur);
+		}
 	}
 
 
@@ -183,8 +186,8 @@ public class Balle implements Dessinable, Serializable {
 
 	}
 
-	
-	
+
+
 	/**
 	 * Effectue une iteration de l'algorithme d'Euler implicite. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -200,7 +203,7 @@ public class Balle implements Dessinable, Serializable {
 	 * @param deltaT intervalle de temps (pas)
 	 */
 	public void unPasVerlet(double deltaT) {
-		MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
+		//	MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
 		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
 	}
 	/**
@@ -210,7 +213,7 @@ public class Balle implements Dessinable, Serializable {
 	 * @param tempsEcoule temps simule  (s)
 	 */
 	public void unPasRK4(double deltaT, double tempsEcoule) {
-		MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
+		//	MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
 		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
 	}
 
@@ -287,16 +290,16 @@ public class Balle implements Dessinable, Serializable {
 			liste.add(nouvBalle1);
 			liste.add(nouvBalle2);
 			break;
-			
+
 		case SMALL:
 			liste.remove(this);
 			break;
 		}		
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * Modifie la position de la balle
 	 * @param pos vecteur des positions x et y
@@ -305,8 +308,8 @@ public class Balle implements Dessinable, Serializable {
 		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
 		this.position = newVec;
 	}
-	
-	
+
+
 	/**
 	 * modifie ou affecte une vitesse a celle courante de la balle
 	 * @param vitesse vecteur des vitesse x et y
@@ -316,7 +319,7 @@ public class Balle implements Dessinable, Serializable {
 		Vecteur newVec = new Vecteur(vitesse.getX(), vitesse.getY());
 		this.vitesse = newVec;
 	}
-	
+
 	/**
 	 * Associe une acceleration, ou modifie l'acceleration courante de la balle
 	 * @param accel vecteur des accélérations en x et y
@@ -326,21 +329,21 @@ public class Balle implements Dessinable, Serializable {
 		this.accel = newVec;
 	}
 
-	
+
 	/**
 	 * Modifie le diametre de la balle
 	 * @param diametre Le nouveau diamètre
 	 */
 	public void setDiametre(double diametre) { this.diametre = diametre; }
 
-	
+
 	/**
 	 * Modifie la masse 
 	 * @param masseEnKg masse en kg
 	 */
 	public void setMasse(double masse) { this.masse = masse; }
 
-	
+
 	/**
 	 * Modifie l'image de la balle par celle passée en paramètre
 	 * @param img nouvelle image en paramètre
@@ -348,16 +351,16 @@ public class Balle implements Dessinable, Serializable {
 	public void setImg(Image img) {
 		this.img = img;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Retourne la position courante
 	 * @return la position courante
 	 */
 	public Vecteur getPosition() { return (position); }
 
-	
+
 	/**
 	 * Retourne la vitesse courante
 	 * @return la vitesse courante
@@ -385,12 +388,6 @@ public class Balle implements Dessinable, Serializable {
 	public double getMasse() {	return masse; }
 
 
-	/**
-	 * Retourne la force gravitationnelle
-	 * @return force gravitationnelle
-	 */
-	public Vecteur getForceGravi() { return forceGravi; }
-
 
 	/**
 	 * retourne l'aire d'une balle en forme de cercle
@@ -415,9 +412,38 @@ public class Balle implements Dessinable, Serializable {
 	 * @return img image de la balle 
 	 */
 	public Image getImg() {return img; }
+
+
+	public double getEnergieCinetique() {
+		return MoteurPhysique.energieCinetique(masse, vitesse);
+	}
+
+
+	public double getEnergiePotentielle(double hauteur) {
+
+		return MoteurPhysique.energiePotentielle( masse, accel, hauteur-position.getY());
+	}
+
+
+	/**
+	 * Retourne la force gravitationnelle
+	 * @return force gravitationnelle
+	 */
+	public Vecteur getForceGravi() {
+		return MoteurPhysique.forceGravi( masse, accel);
+	}
+
+
+
+	/**
+	 * Modifie la valeur (vrai ou faux) du mode scientifique par celle passee en parametre
+	 * @param modeScientifique nouvelle valeur passee en parametre
+	 */
+	public void setModeScientifique(boolean modeScientifique) {
+		this.modeScientifique = modeScientifique;
+	}
+
+
+
 }
-
-
-
-
 
