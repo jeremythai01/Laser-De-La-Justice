@@ -950,15 +950,6 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	/**
-	 * Permet d'ajouter et de dessiner un miroir convexe en appuyant sur
-	 * le boutton miroire convexe
-	 */
-	// Auteur: Arezki Issaadi
-	public void ajoutMiroireConvexe() {
-		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(4, 4), 2, angleMiroir));
-		repaint();
-	}
 
 	/**
 	 * Permet d'ajouter et de dessiner un miroir plan en appuyant sur
@@ -1012,7 +1003,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutMiroirCourbe() {
-		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), 2, 90));
+		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), 2, angleMiroir));
 		repaint();
 		
 	}
