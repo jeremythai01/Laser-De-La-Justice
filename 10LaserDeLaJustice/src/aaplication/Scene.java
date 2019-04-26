@@ -778,7 +778,7 @@ public class Scene extends JPanel implements Runnable {
 						if(normal.getX()<0 && normal.getY()>0) {
 							//convexe gauche
 							System.out.println("convexe gauche");
-							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(ajustementArcTan(nouvReflexion));
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
 							System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
@@ -790,7 +790,7 @@ public class Scene extends JPanel implements Runnable {
 							//convexe droite
 							System.out.println("convexe droite");
 
-							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -803,7 +803,7 @@ public class Scene extends JPanel implements Runnable {
 							//concave droite
 							System.out.println("concave droite");
 
-							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -814,7 +814,7 @@ public class Scene extends JPanel implements Runnable {
 						}else {
 							//convexe gauche
 							System.out.println("concave gauche");
-							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -839,6 +839,28 @@ public class Scene extends JPanel implements Runnable {
 	}
 	// fin methode
 	
+	private double ajustementArcTan(Vecteur angle) {
+		double angleDegre = Math.abs(Math.toDegrees(Math.atan(angle.getY()/angle.getX())));
+		if(angle.getX() >0 && angle.getY()>0) {
+			//premier quadrant
+			System.out.println("premier");
+			return angleDegre;
+		}else if (angle.getX() < 0 && angle.getY()>0 ){
+			//deuxieme quadrant
+			System.out.println("2e");
+			return (180-angleDegre);
+		}else if (angle.getX() < 0 && angle.getY()<0 ){
+			//troisieme quadrant
+			System.out.println("3e");
+			return (180+ angleDegre);
+		}else if (angle.getX() > 0 && angle.getY()<0 ){
+			//quatrieme quadrant
+			System.out.println("4e");
+			return (-angleDegre);
+		}
+		return 0; // caprice de Java
+
+	}
 
 
 	//Par Miora

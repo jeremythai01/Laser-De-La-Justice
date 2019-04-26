@@ -102,7 +102,7 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 * Cette methode permet d'obtenir l'aire du miroir convexe
 	 * @return l'aire du miroir convexe
 	 */
-	public Area getAireMiroirConvexe() {
+	public Area getAireMiroirCourbe() {
 		AffineTransform matLocale = new AffineTransform();
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		matLocale.translate(-rayon, -rayon);
