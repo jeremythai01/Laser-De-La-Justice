@@ -78,7 +78,7 @@ public class Scene extends JPanel implements Runnable {
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
-	private int tempsDuJeu =0;
+	private int tempsDuJeu = 60; //initialement
 	private int toucheGauche = 37;
 	private double n2 = 2.00;
 	private int compteur = 0;
@@ -87,10 +87,6 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
 	private float valeurAngleRoulette = 90;
-
-	private final int TOUCHE_GAUCHE_INI = 37;
-	private final int TOUCHE_DROITE_INI = 39;
-
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
 	private boolean isGrCercleCliquer = false;
@@ -174,7 +170,6 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	public Scene(boolean isPartieNouveau, String nomFichier) {
-
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				setAngleRoulette();
@@ -184,7 +179,6 @@ public class Scene extends JPanel implements Runnable {
 		lireFond();
 
 		angle = valeurAngleRoulette;
-
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
 		// personnage.setModeSouris(true);
@@ -223,13 +217,16 @@ public class Scene extends JPanel implements Runnable {
 
 
 				for (int i = 0; i < listeMiroirCourbe.size(); i++) {
-					if (listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR)&&(!effacement)) {
+					if (listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR)&&(!effacement)) {
 						System.out.println("miroir courbe");
 						bonMiroirCourbe = true;
 						miroirCourbe = listeMiroirCourbe.get(i);
 						i = listeMiroirCourbe.size();
 
-					}else if((listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR))&&(effacement)) {
+					}else if((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR))&&(effacement)) {
+
+						
+					}else if((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR))&&(effacement)) {
 						listeMiroirCourbe.remove(i);
 						repaint();
 					}
@@ -422,6 +419,9 @@ public class Scene extends JPanel implements Runnable {
 		for (Pouvoir pouvoir : listePouvoirs) {
 			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
+		
+		//Le listenern marche pas dans le constructeur...
+		leverEvenChangementTemps(tempsDuJeu);
 
 	}
 
@@ -484,7 +484,7 @@ public class Scene extends JPanel implements Runnable {
 		tempsEcoule += deltaTInit;
 
 	}
-	@Override
+	
 	/**
 	 * Animation du jeu 
 	 */ 
@@ -502,7 +502,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 			try {
 				colisionLaserMiroirPlan();
-				colisionLaserMiroirConvexe() ;
+				colisionLaserMiroirCourbe() ;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -723,11 +723,11 @@ public class Scene extends JPanel implements Runnable {
 	//Miora
 	/**
 	 * Cette methode reoriente l'angle de depart du laser s'il y a une intersection
-	 * avec un miroir convexe
+	 * avec un miroir courbe
 	 * @throws Exception
 	 */
 
-	private void colisionLaserMiroirConvexe() throws Exception{
+	private void colisionLaserMiroirCourbe() throws Exception{
 		for(Laser laser : listeLasers) {
 			int n=0;
 			boolean collision = false;
@@ -778,7 +778,7 @@ public class Scene extends JPanel implements Runnable {
 						if(normal.getX()<0 && normal.getY()>0) {
 							//convexe gauche
 							System.out.println("convexe gauche");
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
 							System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
@@ -790,7 +790,7 @@ public class Scene extends JPanel implements Runnable {
 							//convexe droite
 							System.out.println("convexe droite");
 
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -803,7 +803,7 @@ public class Scene extends JPanel implements Runnable {
 							//concave droite
 							System.out.println("concave droite");
 
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -814,7 +814,7 @@ public class Scene extends JPanel implements Runnable {
 						}else {
 							//convexe gauche
 							System.out.println("concave gauche");
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -838,30 +838,15 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 	// fin methode
-	private double ajustementArcTan(Vecteur angle) {
-		double angleDegre = Math.abs(Math.toDegrees(Math.atan(angle.getY()/angle.getX())));
-		if(angle.getX() >0 && angle.getY()>0) {
-			//premier quadrant
-			System.out.println("premier");
-			return angleDegre;
-		}else if (angle.getX() < 0 && angle.getY()>0 ){
-			//deuxieme quadrant
-			System.out.println("2e");
-			return (180-angleDegre);
-		}else if (angle.getX() < 0 && angle.getY()<0 ){
-			//troisieme quadrant
-			System.out.println("3e");
-			return (180+ angleDegre);
-		}else if (angle.getX() > 0 && angle.getY()<0 ){
-			//quatrieme quadrant
-			System.out.println("4e");
-			return (-angleDegre);
-		}
-		return 0; // caprice de Java
-
-	}
+	
 
 
+	//Par Miora
+	/**
+	 * Cette methode permet d'appliquer une translation a la tete du laser pour ne plus etre en intersection et rester dans la boucle
+	 * @param laser : le laser 
+	 * @return la nouvelle position de la tete du laser
+	 */
 	private double[] translation(Laser laser) {
 		double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
 		double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
@@ -935,7 +920,6 @@ public class Scene extends JPanel implements Runnable {
 	// Auteur: Arezki Issaadi
 
 	public void ajoutBalleGrosse() {
-
 		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
 		listeBalles.add(grosseBalle);
 		repaint();
@@ -949,7 +933,6 @@ public class Scene extends JPanel implements Runnable {
 	// Auteur: Arezki Issaadi
 
 	public void ajoutBalleMedium() {
-
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
 		listeBalles.add(moyenneBalle);
 
@@ -1030,6 +1013,11 @@ public class Scene extends JPanel implements Runnable {
 	}
 
 
+	/**
+	 * Permet d'ajouter et de dessiner un miroir courbe en appuyant sur
+	 * le boutton miroir courbe
+	 */
+	// Auteur: Arezki Issaadi
 	public void ajoutMiroirCourbe() {
 		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), 2, 90));
 		repaint();
@@ -1284,6 +1272,7 @@ public class Scene extends JPanel implements Runnable {
 	// Par Miora
 	/**
 	 * Cette methode creer de mettre le niveau pesonnalise
+	 * @param nomFichier : le nom du fichier a lire
 	 */
 	private void lectureNiveau(String nomFichier) {
 		String nomFichierNiveau = nomFichier;
@@ -1327,7 +1316,7 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
 	 * la position du joueur, la couleur du rayon et les touches utilisées
 	 * 
-	 * @param nomSauv    : le nom de la sauvegardre
+	 * @param nomSauv    : le nom de la sauvegarde
 	 * @param dansOption : retourne vrai si la methode est appele dans le frame
 	 *                   option
 	 */
@@ -1397,6 +1386,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
+		//leverEvenChangementTemps(10);
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File fichierDeTravail;
@@ -1436,8 +1426,6 @@ public class Scene extends JPanel implements Runnable {
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			tempsDuJeu = fluxEntree.readInt();
-			System.out.println("le temps lu dans scene " + tempsDuJeu);
-			leverEvenChangementTemps();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1457,16 +1445,15 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
+	 * @param nomFichier : le nom du fichier a jouer
 	 */
 
 	private void nouvellePartie(boolean isNouvelle, String nomFichier) {
-		System.out.println("nouvelle" + nomFichier);
 		if (isNouvelle == false) {
 			// partie chage
 			if (nomFichier.endsWith(".niv")) {
 				lectureNiveau(nomFichier);
 			} else if (nomFichier.endsWith(".save") || nomFichier.equals("temporaire")) {
-				System.out.println("dans nouvelle " + nomFichier);
 				lectureFichierSauvegarde(nomFichier);
 				coeurs.setCombien(nombreVies);
 			}
@@ -1528,6 +1515,7 @@ public class Scene extends JPanel implements Runnable {
 
 	// --------------------------------------------------------------------------------------------------------------------------------------
 
+	//Miora
 	/**
 	 * Cette methode permet d'ajouter la liste d'écouteur a la scene
 	 * @param ecouteur : l'ecouteur
@@ -1535,21 +1523,13 @@ public class Scene extends JPanel implements Runnable {
 	public void addSceneListener(SceneListener ecouteur) {
 		listeEcouteur.add(ecouteur);
 	}
-
-	public void leverEvenCouleurLaser() {
-		for (SceneListener ecout : listeEcouteur) {
-			ecout.couleurLaserListener();
-		}
-	}
-
 	// Par Miora
 	/**
 	 * Cette methode permet de remettre le temps de la partie sauvegarde
 	 */
-	public void leverEvenChangementTemps() {
-		System.out.println("je suis dans la levee evenement " + tempsDuJeu);
+	public void leverEvenChangementTemps(int temps) {
 		for (SceneListener ecout : listeEcouteur) {
-			ecout.changementTempsListener(tempsDuJeu);
+			ecout.changementTempsListener(temps);
 		}
 	}
 
