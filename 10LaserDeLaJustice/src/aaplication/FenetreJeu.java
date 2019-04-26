@@ -205,10 +205,10 @@ public class FenetreJeu extends JFrame {
 		btnMiroirPlan.setBounds(934, 868, 105, 23);
 		contentPane.add(btnMiroirPlan);
 
-		btnMiroirConvexe = new JButton("miroir Convexe");
+		btnMiroirConvexe = new JButton("Miroir courbe");
 		btnMiroirConvexe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sceneFinale.ajoutMiroireConvexe();
+				sceneFinale.ajoutMiroirCourbe();
 				donneFocusALasceneFinale();
 			}
 		});
