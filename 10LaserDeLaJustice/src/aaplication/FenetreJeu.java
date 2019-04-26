@@ -117,7 +117,6 @@ public class FenetreJeu extends JFrame {
 
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
 				sceneFinale.demarrer();
 				tempsJeu.start();
@@ -306,29 +305,14 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(lblLesSorties);
 
 		sceneFinale = new Scene(isNouvelle, nomFichier);
+		sceneFinale.addSceneListener(new SceneListener() {
+			public void changementTempsListener(int temps) {
+				modifierLeTemps(temps);
+			}
+		});
 		sceneFinale.setBounds(10, 110, 1146, 585);
 		contentPane.add(sceneFinale);
 
-		sceneFinale.addSceneListener(new SceneListener() {
-
-
-			@Override
-			public void couleurLaserListener() {
-				// TODO Auto-generated method stub
-
-			}
-
-			//Par Miora
-			/**
-			 * Cette methode permet de changer le temps a partir du temps sauvegardé dans le 
-			 * fichier scene
-			 * @param temps : le temps ecoule
-			 */
-			public void changementTempsListener(int temps) {
-				System.out.println("iciiiiiii man " + temps);
-				barreTempsDuJeu.setValue(temps);
-			}
-		});
 
 
 		toucheScene();
@@ -378,9 +362,6 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnDemarrage);
 
 		listener = new ActionListener() {
-
-
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -390,9 +371,8 @@ public class FenetreJeu extends JFrame {
 
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 
-						barreTempsDuJeu.setString(secondes-- + " secondes restantes");
+						//barreTempsDuJeu.setString(secondes-- + " secondes restantes");
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
-						//System.out.println("temps dans fenetre jeu : " + barreTempsDuJeu.getValue());
 					} else {
 						son.joue("gameover");
 						tempsJeu.stop();
@@ -476,12 +456,11 @@ public class FenetreJeu extends JFrame {
 		sceneFinale.requestFocusInWindow();
 	}
 
-	// // Par Arezki
+	//Par Arezki
 	/**
 	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
 	 * les objets dans la sceneFinale
 	 * 
-	 * @author Arezki
 	 */
 	public void activerEditeur() {
 		btnBlocDeau.setEnabled(true);
@@ -512,14 +491,6 @@ public class FenetreJeu extends JFrame {
 		buttonMiroirCourbe.setEnabled(false);
 	}
 
-	/**
-	 * @param leBouton
-	 * @param fichierImage
-	 */
-	// par Caroline Houle
-
-
-
 
 	// Miora
 	/**
@@ -537,9 +508,10 @@ public class FenetreJeu extends JFrame {
 	 * sceneFinale
 	 * @param reponse : oui ou non s'il s'agit d'une nouvelle scene
 	 */
-	public void isNouvelle(boolean reponse) {
-		isNouvelle = reponse;
-	}
+//
+//	public void isNouvelle(boolean reponse) {
+//		isNouvelle = reponse;
+//	}
 
 	//Par Miora
 	/**
@@ -554,4 +526,17 @@ public class FenetreJeu extends JFrame {
 		tempsJeu.stop();
 		setVisible(false);
 	}
+	
+
+	//Par Miora
+	/**
+	 * Cette methode modifie le temps pour la barre de temps
+	 * @param temps : le nouveau temps
+	 */
+	private void modifierLeTemps(int temps) {
+		barreTempsDuJeu.setValue(temps);
+		barreTempsDuJeu.setString(temps + " secondes restantes");
+		
+	}
+
 }

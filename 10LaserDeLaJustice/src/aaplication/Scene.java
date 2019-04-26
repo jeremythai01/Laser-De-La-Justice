@@ -78,7 +78,7 @@ public class Scene extends JPanel implements Runnable {
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
-	private int tempsDuJeu =0;
+	private int tempsDuJeu = 60; //initialement
 	private int toucheGauche = 37;
 	private double n2 = 2.00;
 	private int compteur = 0;
@@ -87,10 +87,6 @@ public class Scene extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private double positionPerso = 0;
 	private float valeurAngleRoulette = 90;
-
-	private final int TOUCHE_GAUCHE_INI = 37;
-	private final int TOUCHE_DROITE_INI = 39;
-
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
 	private boolean isGrCercleCliquer = false;
@@ -172,7 +168,6 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	
 	public Scene(boolean isPartieNouveau, String nomFichier) {
-
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				setAngleRoulette();
@@ -182,7 +177,6 @@ public class Scene extends JPanel implements Runnable {
 		lireFond();
 
 		angle = valeurAngleRoulette;
-
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
 		// personnage.setModeSouris(true);
@@ -221,13 +215,13 @@ public class Scene extends JPanel implements Runnable {
 
 
 				for (int i = 0; i < listeMiroirCourbe.size(); i++) {
-					if (listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR)&&(!effacement)) {
+					if (listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR)&&(!effacement)) {
 						System.out.println("miroir courbe");
 						bonMiroirCourbe = true;
 						miroirCourbe = listeMiroirCourbe.get(i);
 						i = listeMiroirCourbe.size();
 						
-					}else if((listeMiroirCourbe.get(i).getAireMiroirConvexe().contains(eXR, eYR))&&(effacement)) {
+					}else if((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR))&&(effacement)) {
 						listeMiroirCourbe.remove(i);
 						repaint();
 					}
@@ -420,6 +414,9 @@ public class Scene extends JPanel implements Runnable {
 		for (Pouvoir pouvoir : listePouvoirs) {
 			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
+		
+		//Le listenerne marche pas dans le constructeur...
+		leverEvenChangementTemps(tempsDuJeu);
 
 	}
 
@@ -932,7 +929,6 @@ public class Scene extends JPanel implements Runnable {
 	// Auteur: Arezki Issaadi
 
 	public void ajoutBalleGrosse() {
-
 		grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
 		listeBalles.add(grosseBalle);
 		repaint();
@@ -946,7 +942,6 @@ public class Scene extends JPanel implements Runnable {
 	// Auteur: Arezki Issaadi
 
 	public void ajoutBalleMedium() {
-
 		moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
 		listeBalles.add(moyenneBalle);
 
@@ -1039,6 +1034,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	// Auteur: Arezki Issaadi
 	public void ActiverEditeur() {
+		
 		editeurActiver = true;
 		repaint();
 	}
@@ -1394,6 +1390,7 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
+		//leverEvenChangementTemps(10);
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File fichierDeTravail;
@@ -1433,8 +1430,6 @@ public class Scene extends JPanel implements Runnable {
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
 			tempsDuJeu = fluxEntree.readInt();
-			System.out.println("le temps lu dans scene " + tempsDuJeu);
-			leverEvenChangementTemps();
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1454,16 +1449,15 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode definie si la scene est une nouvelle scene ou une scene charge
 	 * 
 	 * @param isNouvelle : retourne vrai s'il s'agit d'une nouvelle scene
+	 * @param nomFichier : le nom du fichier a jouer
 	 */
 
 	private void nouvellePartie(boolean isNouvelle, String nomFichier) {
-		System.out.println("nouvelle" + nomFichier);
 		if (isNouvelle == false) {
 			// partie chage
 			if (nomFichier.endsWith(".niv")) {
 				lectureNiveau(nomFichier);
 			} else if (nomFichier.endsWith(".save") || nomFichier.equals("temporaire")) {
-				System.out.println("dans nouvelle " + nomFichier);
 				lectureFichierSauvegarde(nomFichier);
 				coeurs.setCombien(nombreVies);
 			}
@@ -1533,20 +1527,14 @@ public class Scene extends JPanel implements Runnable {
 		listeEcouteur.add(ecouteur);
 	}
 
-	public void leverEvenCouleurLaser() {
-		for (SceneListener ecout : listeEcouteur) {
-			ecout.couleurLaserListener();
-		}
-	}
-	
+
 	// Par Miora
 	/**
 	 * Cette methode permet de remettre le temps de la partie sauvegarde
 	 */
-	public void leverEvenChangementTemps() {
-		System.out.println("je suis dans la levee evenement " + tempsDuJeu);
+	public void leverEvenChangementTemps(int temps) {
 		for (SceneListener ecout : listeEcouteur) {
-			ecout.changementTempsListener(tempsDuJeu);
+			ecout.changementTempsListener(temps);
 		}
 	}
 
@@ -2091,8 +2079,6 @@ public class Scene extends JPanel implements Runnable {
 	public void setTempsDuJeu(int tempsDuJeu) {
 		this.tempsDuJeu = tempsDuJeu;
 	}
-
-	
 
 
 

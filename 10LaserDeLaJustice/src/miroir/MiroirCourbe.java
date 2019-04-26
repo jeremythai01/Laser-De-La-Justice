@@ -18,7 +18,7 @@ import interfaces.Dessinable;
 import prisme.Prisme;
 
 /**
- * Classe des miroirs convexes
+ * Classe des miroirs courbes
  * @author Miora R. Rakoto
  */
 public class MiroirCourbe implements Dessinable, Serializable {
@@ -36,7 +36,7 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	private Point2D.Double pts;
 
 	/**
-	 * Constructeur de la classe miroirConvexe
+	 * Constructeur de la classe miroir courbe
 	 * @param position : la poisition du centre
 	 * @param rayon : le rayon
 	 * @param angle : l'angle de rotation
@@ -45,37 +45,10 @@ public class MiroirCourbe implements Dessinable, Serializable {
 		this.position = position;
 		this.rayon = rayon;
 		this.angle = angle;
-
-		//Points qui vont former le demi-cercle
-		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
-		for(int i=0; i<=180; i+=approximation) {
-			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
-			double a = Math.toRadians(-angle);
-			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
-			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
-			double d[]=new double[2]; //nouvelle coordonees
-
-			//multiplication matriciel avec matrice de rotation sur les points, pas utilisation aff.rotate
-			for(int j=0;j<2;j++){    
-				d[j]=0;      
-				for(int k=0;k<2;k++)      
-				{      
-					d[j]+=matR[j][k]*ptsD[k];      
-				}
-			}
-			d[0] = d[0]+position.getX();
-			d[1] = d[1]+position.getY();
-			pts = new Point2D.Double(d[0], d[1]);
-			listePoints.add(pts);
-		}
-		//Petites lignes qui vont former le demi-cercle
-		for(int j=0;j<= listePoints.size()-2; j++) {
-			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
-			listeLigne.add(ligne);
-		}
+		initialisationMiroir();
 	}
 	/**
-	 * Dessiner le miroir convexe
+	 * Dessiner le miroir 
 	 * @param g2d : le composant graphique
 	 * @param mat : la matrice de transformation
 	 * @param hauteur : la hauteur de la scene
@@ -84,13 +57,13 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform aff = new AffineTransform(mat);
 		g2d.fill(aff.createTransformedShape(new Ellipse2D.Double(position.getX()-0.5/2, position.getY()-0.5/2, 0.5, 0.5)));
-		
+
 		//on dessine la courbe avec des petites ligne
 		g2d.setColor(Color.red);
 		for(Ligne ligne : listeLigne) {
 			g2d.draw(aff.createTransformedShape(ligne));
 		}
-		
+
 		if(dessiner) {
 			aff = new AffineTransform(mat);
 			g2d.draw(aff.createTransformedShape(new Line2D.Double(inter.getX(),inter.getY(), position.getX(), position.getY())));
@@ -99,10 +72,10 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	}
 
 	/**
-	 * Cette methode permet d'obtenir l'aire du miroir convexe
-	 * @return l'aire du miroir convexe
+	 * Cette methode permet d'obtenir l'aire du miroir courbe
+	 * @return l'aire du miroir courbe
 	 */
-	public Area getAireMiroirConvexe() {
+	public Area getAireMiroirCourbe() {
 		AffineTransform matLocale = new AffineTransform();
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		matLocale.translate(-rayon, -rayon);
@@ -134,64 +107,13 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	public void setPosition(Vecteur position) {
 		this.position = position;
 		if(listeLigne.size()==0) {
-		
-		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
-		for(int i=0; i<=180; i+=approximation) {
-			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
-			double a = Math.toRadians(-angle);
-			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
-			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
-			double d[]=new double[2]; //nouvelle coordonees
+			initialisationMiroir();
+		} 
+		else {
+			listeLigne.removeAll(listeLigne);
+			initialisationMiroir();
+		}
 
-			//multiplication matriciel avec matrice de rotation sur les points, pas utilisation aff.rotate
-			for(int j=0;j<2;j++){    
-				d[j]=0;      
-				for(int k=0;k<2;k++)      
-				{      
-					d[j]+=matR[j][k]*ptsD[k];      
-				}
-			}
-			d[0] = d[0]+position.getX();
-			d[1] = d[1]+position.getY();
-			pts = new Point2D.Double(d[0], d[1]);
-			listePoints.add(pts);
-		}
-		//Petites lignes qui vont former le demi-cercle
-		for(int j=0;j<= listePoints.size()-2; j++) {
-			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
-			listeLigne.add(ligne);
-		}
-	}
-
-	else {
-		listeLigne.removeAll(listeLigne);
-		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
-		for(int i=0; i<=180; i+=approximation) {
-			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
-			double a = Math.toRadians(-angle);
-			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
-			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
-			double d[]=new double[2]; //nouvelle coordonees
-
-			//multiplication matriciel avec matrice de rotation sur les points, pas utilisation aff.rotate
-			for(int j=0;j<2;j++){    
-				d[j]=0;      
-				for(int k=0;k<2;k++)      
-				{      
-					d[j]+=matR[j][k]*ptsD[k];      
-				}
-			}
-			d[0] = d[0]+position.getX();
-			d[1] = d[1]+position.getY();
-			pts = new Point2D.Double(d[0], d[1]);
-			listePoints.add(pts);
-		}
-		//Petites lignes qui vont former le demi-cercle
-		for(int j=0;j<= listePoints.size()-2; j++) {
-			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
-			listeLigne.add(ligne);
-		}
-	}
 	}
 
 	/**
@@ -199,6 +121,40 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 */
 	public ArrayList<Ligne> getListeLigne() {
 		return listeLigne;
+	}
+
+	/**
+	 * Cette methode permet d'initialiser le miroir en forme de point a partir d'une position
+	 */
+	private void initialisationMiroir() {
+		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
+		for(int i=0; i<=180; i+=approximation) {
+			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
+			double a = Math.toRadians(-angle);
+			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
+			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
+			double d[]=new double[2]; //nouvelle coordonees
+
+			//produit matriciel avec matrice de rotation sur les points, pas utilisation aff.rotate car celle-ci ne change pas
+			//les coordonnes des points
+			for(int j=0;j<2;j++){    
+				d[j]=0;      
+				for(int k=0;k<2;k++)      
+				{      
+					d[j]+=matR[j][k]*ptsD[k];      
+				}
+			}
+			d[0] = d[0]+position.getX();
+			d[1] = d[1]+position.getY();
+			pts = new Point2D.Double(d[0], d[1]);
+			listePoints.add(pts);
+		}
+		//Petites lignes qui vont former le demi-cercle
+		for(int j=0;j<= listePoints.size()-2; j++) {
+			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
+			listeLigne.add(ligne);
+		}
+
 	}
 
 
