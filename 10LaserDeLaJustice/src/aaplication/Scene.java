@@ -415,7 +415,7 @@ public class Scene extends JPanel implements Runnable {
 			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 		
-		//Le listenerne marche pas dans le constructeur...
+		//Le listenern marche pas dans le constructeur...
 		leverEvenChangementTemps(tempsDuJeu);
 
 	}
@@ -479,7 +479,7 @@ public class Scene extends JPanel implements Runnable {
 		tempsEcoule += deltaTInit;
 
 	}
-	@Override
+	
 	/**
 	 * Animation du jeu 
 	 */ 
@@ -496,7 +496,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 			try {
 				colisionLaserMiroirPlan();
-				colisionLaserMiroirConvexe() ;
+				colisionLaserMiroirCourbe() ;
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -717,11 +717,11 @@ public class Scene extends JPanel implements Runnable {
 	//Miora
 	/**
 	 * Cette methode reoriente l'angle de depart du laser s'il y a une intersection
-	 * avec un miroir convexe
+	 * avec un miroir courbe
 	 * @throws Exception
 	 */
 
-	private void colisionLaserMiroirConvexe() throws Exception{
+	private void colisionLaserMiroirCourbe() throws Exception{
 		for(Laser laser : listeLasers) {
 			int n=0;
 			boolean collision = false;
@@ -772,7 +772,7 @@ public class Scene extends JPanel implements Runnable {
 						if(normal.getX()<0 && normal.getY()>0) {
 							//convexe gauche
 							System.out.println("convexe gauche");
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
 							System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
@@ -784,7 +784,7 @@ public class Scene extends JPanel implements Runnable {
 							//convexe droite
 							System.out.println("convexe droite");
 
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -797,7 +797,7 @@ public class Scene extends JPanel implements Runnable {
 							//concave droite
 							System.out.println("concave droite");
 
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -808,7 +808,7 @@ public class Scene extends JPanel implements Runnable {
 						}else {
 							//convexe gauche
 							System.out.println("concave gauche");
-							laser.setAngleTir(ajustementArcTan(nouvReflexion));
+							laser.setAngleTir(OutilsMath.ajustementArcTan(nouvReflexion));
 
 							System.out.println("angle final" + laser.getAngleTir());
 							laser.setPositionHaut(posInter);
@@ -832,30 +832,15 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 	// fin methode
-	private double ajustementArcTan(Vecteur angle) {
-		double angleDegre = Math.abs(Math.toDegrees(Math.atan(angle.getY()/angle.getX())));
-		if(angle.getX() >0 && angle.getY()>0) {
-			//premier quadrant
-			System.out.println("premier");
-			return angleDegre;
-		}else if (angle.getX() < 0 && angle.getY()>0 ){
-			//deuxieme quadrant
-			System.out.println("2e");
-			return (180-angleDegre);
-		}else if (angle.getX() < 0 && angle.getY()<0 ){
-			//troisieme quadrant
-			System.out.println("3e");
-			return (180+ angleDegre);
-		}else if (angle.getX() > 0 && angle.getY()<0 ){
-			//quatrieme quadrant
-			System.out.println("4e");
-			return (-angleDegre);
-		}
-		return 0; // caprice de Java
-
-	}
+	
 
 
+	//Par Miora
+	/**
+	 * Cette methode permet d'appliquer une translation a la tete du laser pour ne plus etre en intersection et rester dans la boucle
+	 * @param laser : le laser 
+	 * @return la nouvelle position de la tete du laser
+	 */
 	private double[] translation(Laser laser) {
 		double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
 		double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
@@ -1021,7 +1006,11 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	
+	/**
+	 * Permet d'ajouter et de dessiner un miroir courbe en appuyant sur
+	 * le boutton miroir courbe
+	 */
+	// Auteur: Arezki Issaadi
 	public void ajoutMiroirCourbe() {
 		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), 2, 90));
 		repaint();
@@ -1034,7 +1023,6 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	// Auteur: Arezki Issaadi
 	public void ActiverEditeur() {
-		
 		editeurActiver = true;
 		repaint();
 	}
@@ -1277,6 +1265,7 @@ public class Scene extends JPanel implements Runnable {
 	// Par Miora
 	/**
 	 * Cette methode creer de mettre le niveau pesonnalise
+	 * @param nomFichier : le nom du fichier a lire
 	 */
 	private void lectureNiveau(String nomFichier) {
 		String nomFichierNiveau = nomFichier;
@@ -1320,7 +1309,7 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette methode permet de sauvegarder le nombre de vie, le nombre des balles,
 	 * la position du joueur, la couleur du rayon et les touches utilisées
 	 * 
-	 * @param nomSauv    : le nom de la sauvegardre
+	 * @param nomSauv    : le nom de la sauvegarde
 	 * @param dansOption : retourne vrai si la methode est appele dans le frame
 	 *                   option
 	 */
@@ -1519,6 +1508,7 @@ public class Scene extends JPanel implements Runnable {
 
 	// --------------------------------------------------------------------------------------------------------------------------------------
 
+	//Miora
 	/**
 	 * Cette methode permet d'ajouter la liste d'écouteur a la scene
 	 * @param ecouteur : l'ecouteur

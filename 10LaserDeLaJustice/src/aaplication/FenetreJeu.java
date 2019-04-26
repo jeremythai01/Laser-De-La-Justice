@@ -96,7 +96,7 @@ public class FenetreJeu extends JFrame {
 	/**
 	 * Creation de la fenêtre
 	 * @param isNouvelle : retourne vrai si il s'agit d'une nouvelle partie
-	 * @author Miora nomFichier : le nom du fichier de sauvegarde ou niveau
+	 * @param nomFichier : le nom du fichier de sauvegarde ou niveau
 	 */
 	// Par Arezki
 	public FenetreJeu(boolean isNouvelle, String nomFichier) {
@@ -173,10 +173,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnEnregistrer = new JButton("Enregistrer partie\r\n");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sceneFinale.arreter();
-				tempsJeu.stop();
-				String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
-				sceneFinale.ecritureFichierSauvegarde(nom, false);
+				enregistrer();
 			}
 		});
 		btnEnregistrer.setBounds(689, 61, 159, 38);
@@ -368,10 +365,7 @@ public class FenetreJeu extends JFrame {
 				// TODO Auto-generated method stub
 				if(!triche)
 					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0) {
-
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
-
-						//barreTempsDuJeu.setString(secondes-- + " secondes restantes");
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
 					} else {
 						son.joue("gameover");
@@ -400,8 +394,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnSaveNiveau = new JButton("Enregistrer niveau\r\n");
 		btnSaveNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
-				sceneFinale.ecritureNiveau(nomSauv);
+				sauvegarderNiveau();
 			}
 		});
 		btnSaveNiveau.setBounds(526, 61, 153, 38);
@@ -536,6 +529,28 @@ public class FenetreJeu extends JFrame {
 	private void modifierLeTemps(int temps) {
 		barreTempsDuJeu.setValue(temps);
 		barreTempsDuJeu.setString(temps + " secondes restantes");
+		
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder une partie
+	 */
+	private void enregistrer() {
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
+		sceneFinale.ecritureFichierSauvegarde(nom, false);
+		
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder le niveau
+	 */
+	private void sauvegarderNiveau() {
+		String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
+		sceneFinale.ecritureNiveau(nomSauv);
 		
 	}
 
