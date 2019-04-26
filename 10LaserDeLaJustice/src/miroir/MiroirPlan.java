@@ -1,5 +1,6 @@
 package miroir;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -63,6 +64,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, this.largeur);
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
+		g2d.setColor(Color.RED);
 		g2d.fill(miroirTransfo); //dessine en pixel
 		if(modeSci == true) {
 			matLocale = new AffineTransform(mat);
