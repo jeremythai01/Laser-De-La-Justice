@@ -37,7 +37,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	//Par Miora
 	/**
 	 * Constructeur d'un miroir plan
-	 * @param position : la position la plus a gauche du miroir plan
+	 * @param position : la position la plus au centre du miroir
 	 * @param angle : angle de miroir avec une rotation en degre a partir de x,y
 	 // Miora
 	 */
@@ -62,7 +62,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocale = new AffineTransform(mat);
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		miroir = new Rectangle2D.Double(position.getX(),position.getY(), longueur, this.largeur);
+		miroir = new Rectangle2D.Double(position.getX()-longueur/2,position.getY(), longueur, this.largeur);
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
 		g2d.setColor(Color.RED);
 		g2d.fill(miroirTransfo); //dessine en pixel
@@ -80,7 +80,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public Area getAireMiroirPixel() {
 		AffineTransform matLocal = new AffineTransform();
 		matLocal.rotate(Math.toRadians(-angle), position.getX(), position.getY());
-		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX(), position.getY(),longueur, this.largeur);
+		Rectangle2D.Double rect = new Rectangle2D.Double(position.getX()-longueur/2, position.getY(),longueur, this.largeur);
 		return new Area(matLocal.createTransformedShape(((rect))));
 	}
 

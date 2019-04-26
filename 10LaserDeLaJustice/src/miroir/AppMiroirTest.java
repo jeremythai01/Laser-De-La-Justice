@@ -28,6 +28,7 @@ public class AppMiroirTest extends JFrame {
 	private JPanel contentPane;
 	private SceneMiroir sceneMiroir;
 	private static AppMiroirTest frame;
+	private EditeurMiroir editeurMiroir;
 
 	/**
 	 * Lancer l'application
@@ -82,6 +83,7 @@ public class AppMiroirTest extends JFrame {
 				sceneMiroir.setMiroirPlan(true);
 				sceneMiroir.setMiroirConvexe(false);
 				sceneMiroir.setMiroiConcave(false);
+				editeurMiroir.dessinerMiroirPlan();
 			}
 		});
 		btnMioirPlan.setBounds(250, 700, 132, 23);
@@ -93,6 +95,7 @@ public class AppMiroirTest extends JFrame {
 				sceneMiroir.setMiroirPlan(false);
 				sceneMiroir.setMiroirConvexe(true);
 				sceneMiroir.setMiroiConcave(false);
+				editeurMiroir.dessinerMiroirCourbe();
 			}
 		});
 		btnMiroirConvexe.setBounds(426, 700, 132, 23);
@@ -115,6 +118,7 @@ public class AppMiroirTest extends JFrame {
 		spnLaser.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				sceneMiroir.setAngleLaser(Integer.parseInt(spnLaser.getValue().toString()));
+			
 				
 			}
 		});
@@ -126,6 +130,7 @@ public class AppMiroirTest extends JFrame {
 		spnMiroir.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				sceneMiroir.setAngleMiroir(Integer.parseInt(spnMiroir.getValue().toString()));
+				editeurMiroir.setAngle(Integer.parseInt(spnMiroir.getValue().toString()));
 			}
 		});
 		spnMiroir.setModel(new SpinnerNumberModel(0, 0, 1800, 1));
@@ -152,7 +157,7 @@ public class AppMiroirTest extends JFrame {
 		chkScience.setBounds(588, 188, 149, 37);
 		contentPane.add(chkScience);
 		
-		EditeurMiroir editeurMiroir = new EditeurMiroir();
+		editeurMiroir = new EditeurMiroir();
 		editeurMiroir.setBounds(571, 372, 184, 207);
 		contentPane.add(editeurMiroir);
 	}

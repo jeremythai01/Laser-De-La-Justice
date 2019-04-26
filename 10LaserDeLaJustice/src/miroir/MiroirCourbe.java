@@ -45,7 +45,6 @@ public class MiroirCourbe implements Dessinable, Serializable {
 		this.position = position;
 		this.rayon = rayon;
 		this.angle = angle;
-
 		initialiserMiroir();
 	}
 	/**
@@ -65,6 +64,16 @@ public class MiroirCourbe implements Dessinable, Serializable {
 			g2d.draw(aff.createTransformedShape(ligne));
 		}
 
+/*
+		AffineTransform matLocale = new AffineTransform(mat);
+		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
+		double pRayon = rayon-0.5;
+		Area fantome = new Area (new Ellipse2D.Double (position.getX()-pRayon, position.getY()-pRayon, pRayon*2, pRayon*2));
+		Area rect = new Area (new Rectangle2D.Double(position.getX()-rayon, position.getY()-rayon, 2*rayon, rayon));
+		fantome.subtract(rect);
+		g2d.fill(matLocale.createTransformedShape(fantome));
+		*/
+
 		if(dessiner) {
 			aff = new AffineTransform(mat);
 			g2d.draw(aff.createTransformedShape(new Line2D.Double(inter.getX(),inter.getY(), position.getX(), position.getY())));
@@ -77,11 +86,20 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 * @return l'aire du miroir convexe
 	 */
 	public Area getAireMiroirCourbe() {
-		AffineTransform matLocale = new AffineTransform();
+		/*AffineTransform matLocale = new AffineTransform();
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		matLocale.translate(-rayon, -rayon);
 		//return new Area(new Arc2D.Double(position.getX(), position.getY(), 2*rayon, 2*rayon, -180, 180, Arc2D.OPEN));
 		return new Area(new Rectangle2D.Double(position.getX(), position.getY(), rayon*10, rayon*10));
+		 */
+		AffineTransform matLocale = new AffineTransform();
+		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
+		double pRayon = rayon-0.5;
+		Area fantome = new Area (new Ellipse2D.Double (position.getX()-pRayon, position.getY()-pRayon, pRayon*2, pRayon*2));
+		Area rect = new Area (new Rectangle2D.Double(position.getX()-rayon, position.getY()-rayon, 2*rayon, rayon));
+		fantome.subtract(rect);
+		//g2d.fill(matLocale.createTransformedShape(fantome));
+		return fantome;
 	}
 
 	/**
@@ -155,6 +173,22 @@ public class MiroirCourbe implements Dessinable, Serializable {
 			listeLigne.add(ligne);
 		}
 	}
+
+	/**
+	 * Cette methode permet de savoir l'angle du miroir
+	 * @return l'angle du miroir
+	 */
+	public double getAngle() {
+		return angle;
+	}
+	/**
+	 * Cette methode permet de changer l'angle du miroir
+	 * @param angle : le nouvel angle
+	 */
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+
 
 
 
