@@ -137,6 +137,21 @@ public class FenetreTuto extends JFrame {
 		JButton btnDfaut = new JButton("D\u00E9faut");
 		btnDfaut.setBounds(885, 840, 89, 23);
 		contentPane.add(btnDfaut);
+		
+		JButton btnRetour = new JButton("Retour");
+		btnRetour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
+				demarrage.setVisible(true);
+				setVisible(false);
+			}
+		});
+		btnRetour.setBounds(10, 0, 89, 23);
+		contentPane.add(btnRetour);
+		
+		JButton btnFin = new JButton("Fin");
+		btnFin.setBounds(885, 11, 89, 23);
+		contentPane.add(btnFin);
 		btnDfaut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.defaut();
