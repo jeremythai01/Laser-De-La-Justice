@@ -84,8 +84,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private boolean enMouvement=false;
 	private boolean triche=false;
 	private Vecteur gravite = new Vecteur(0, 9.8);
-	private double chargeBalle=0.000006;
-	private double chargeChamp=0.000004;
+	private double chargeBalle=0.0006;
+	private double chargeChamp=0.04;
 	/**
 	 * Create the panel.
 	 */
@@ -458,12 +458,14 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				if(intersection(champ.getAireChamp(), balle.getAire())) {
 		 			balle.setForcesElectrique(MoteurPhysique.forceElectrique(new Vecteur(balle.getPosition().getX()+balle.getDiametre()/2, balle.getPosition().getY()+balle.getDiametre()/2), champ.getPosition(), chargeBalle, champ.getK(), chargeChamp));
-					System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
+					System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle).multiplie(1.0/15.0)));
 					//	System.out.println("la vitess de la balle "+balle.getVitesse());
-						System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),3));
+						System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle));
 						System.out.println("champ pos"+champ.getPosition());
 
-				}	
+				}	else {
+					balle.setForcesElectrique(new Vecteur(0,0));
+				}
 				
 			}
 		}
