@@ -70,6 +70,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private ArrayList<BlocDEau> listeBloc = new ArrayList<BlocDEau>();
 	private TrouNoir trou;
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
+	private Champ champ;
+	private ArrayList<Champ> listeChamps = new ArrayList<Champ>();
 	private Coeurs coeur;
 	private int nombreVies=3;
 
@@ -107,10 +109,12 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
-				//listeBalles.add(balle);
-				bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
-				listeBloc.add(bloc);
+				balle = new Balle(new Vecteur(0, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
+				listeBalles.add(balle);
+				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
+				//listeBloc.add(bloc);
+				champ=new Champ(new Vecteur(eXR-5, eYR-5), 5);
+				listeChamps.add(champ);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
@@ -202,6 +206,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 		for(TrouNoir trou: listeTrou) {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
+		for(Champ champ: listeChamps) {
+			champ.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
 		try {
 
@@ -221,6 +228,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
 		checkCollisionTrouLaserPersonnage( listeLasers );
 		checkCollisionBlocLaserPersonnage( listeLasers );
+		checkCollisionChampBalle();
 		for(BlocDEau bloc:listeBloc) {
 			g2d.setColor(Color.blue);
 			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -435,7 +443,27 @@ public class SceneTestPls extends JPanel implements Runnable {
 		//bloc.refraction(v, N, n1, n2);
 
 	}
-	boolean premiereCollision=true;
+	
+	private void checkCollisionChampBalle() {
+		
+		for(Balle balle : listeBalles) {
+			for(Champ champ: listeChamps ) {
+				
+
+				if(intersection(champ.getAireChamp(), balle.getAire())) {
+						balle.setAccel((champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
+						System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
+						//System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),3));
+
+				}	
+				
+			}
+		}
+		
+		
+	}
+	
+	
 	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 		//for(Laser laser : listeLasers) {
 		for (int i = 0; i < listeLasers.size(); i++) {
@@ -497,7 +525,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3.ajouterListesObstacles(listeBalles);
 		//	listeLasers.add(ordi.tirer());
 		//	listeLasers.add(ordi2.tirer());
-		listeLasers.add(ordi3.tirer());
+		//listeLasers.add(ordi3.tirer());
 		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()), angle, new Vecteur(0,0.5)));
 
 	}
