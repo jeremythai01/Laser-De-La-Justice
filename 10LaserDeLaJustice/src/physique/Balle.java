@@ -138,6 +138,7 @@ public class Balle implements Dessinable, Serializable {
 
 		AffineTransform matLocal = new AffineTransform(mat);
 
+		AffineTransform matLocal2 = g2d.getTransform();
 
 		/*
 		double factX = (diametre)/ img.getWidth(null) ;
@@ -168,7 +169,6 @@ public class Balle implements Dessinable, Serializable {
 
 		if(modeScientifique) {
 			
-			matLocal = g2d.getTransform();
 			g2d.setStroke(new BasicStroke(3.0f));
 			
 			//Vecteur vitesse
@@ -198,8 +198,7 @@ public class Balle implements Dessinable, Serializable {
 			
 			g2d.drawString("FG", (int)( eXR2), (int)(eYR2));
 
-			g2d.setTransform(matLocal);
-			
+			g2d.setTransform(matLocal2);
 			
 		}
 
@@ -464,7 +463,7 @@ public class Balle implements Dessinable, Serializable {
 	 * @return force gravitationnelle
 	 */
 	public Vecteur getForceGravi() {
-		return MoteurPhysique.forceGravi( masse, accel);
+		return forceGravi;
 	}
 
 
@@ -479,13 +478,14 @@ public class Balle implements Dessinable, Serializable {
 
 
 	public void calculerForcesEtAccel() {
-		//	sommeForces = MoteurPhysique.sommeForces(getForceGravi(), getForceElectrique());
+		forceGravi = MoteurPhysique.forceGravi(masse, accel);
+		sommeForces = MoteurPhysique.sommeForces(forceGravi, forceElectrique);
 		MoteurPhysique.miseAJourAcceleration(sommeForces, masse, accel);
-
+		
 	}
 
-	public void getForcesElectrique() {
-
+	public void setForcesElectrique(Vecteur forceElectrique) {
+		this.forceElectrique = new Vecteur(forceElectrique);
 	}
 
 

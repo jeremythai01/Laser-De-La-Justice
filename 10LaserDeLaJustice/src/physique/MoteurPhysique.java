@@ -8,7 +8,7 @@ import geometrie.Vecteur;
  * Cette classe regroupera les calculs physiques nécessaires au mouvement des objets des divers objets dans la scène. 
  *  
  * @author Jeremy Thai
- *  @author Caroline Houle 
+ *  @author Arnaud Le
  *
  */
 
@@ -187,7 +187,11 @@ public class MoteurPhysique implements Serializable {
 	}
 
 	
-	protected Vecteur sommeForces(Vecteur forceGravi, Vecteur forceElectrique) {
+	public static Vecteur forceElectrique(Vecteur positionSubit, Vecteur positionApplique, double chargeSubit, double k, double charge) {
+		return ((positionSubit.soustrait(positionApplique)).multiplie(1.0/(Math.pow((positionSubit.soustrait(positionApplique)).module(),3.0)))).multiplie(k*chargeSubit*charge);
+	}
+	
+	protected static Vecteur sommeForces(Vecteur forceGravi, Vecteur forceElectrique) {
 		return new Vecteur(forceGravi.additionne(forceElectrique).getX(), forceGravi.additionne(forceElectrique).getY() );
 	}
 	
