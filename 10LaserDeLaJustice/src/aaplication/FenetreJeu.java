@@ -322,7 +322,7 @@ public class FenetreJeu extends JFrame {
 				modifierLeTemps(temps);
 			}
 
-				
+
 			//Jeremy Thai 
 			/**
 			 * Permet de mettre à jour les sorties scientfiques des objets de la scene dans d'autres panels 
@@ -333,7 +333,7 @@ public class FenetreJeu extends JFrame {
 
 				double sommeEnergieCinetique = 0;
 				double sommeEnergiePotentielle = 0;
-				
+
 				for(Balle balle : listeBalles) {
 					sommeEnergieCinetique = sommeEnergieCinetique + balle.getEnergieCinetique();
 					sommeEnergiePotentielle = sommeEnergiePotentielle + balle.getEnergiePotentielle(hauteurMonde);
@@ -346,7 +346,7 @@ public class FenetreJeu extends JFrame {
 				barreEnergieMecanique.repaint();
 			}
 		});
-	
+
 		sceneFinale.setBounds(10, 110, 1146, 585);
 		contentPane.add(sceneFinale);
 
@@ -407,7 +407,7 @@ public class FenetreJeu extends JFrame {
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
 					} else {
-						son.joue("gameover");
+						son.joueSonLorsqueFini();
 						tempsJeu.stop();
 						sceneFinale.arreter();
 
@@ -470,162 +470,167 @@ public class FenetreJeu extends JFrame {
 		buttonMiroirCourbe.setBounds(934, 834, 105, 23);
 		contentPane.add(buttonMiroirCourbe);
 		checkBoxModeScientifique = new JCheckBox("Mode scientifique");
+		checkBoxModeScientifique.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(checkBoxModeScientifique.isSelected()) {
+					setSize(1300, getHeight());
+					sceneFinale.setModeScientifique(true);
+				}else {
+					setSize(1174, getHeight());
+					sceneFinale.setModeScientifique(false);
+				}
+			}
+		});
 		checkBoxModeScientifique.setBounds(568, 743, 125, 36);
 		contentPane.add(checkBoxModeScientifique);
 
-		JButton btnModeScientifique = new JButton("Mode Scientifique");
-		btnModeScientifique.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setSize(1500, getHeight());
-				sceneFinale.setModeScientifique(true);
-			}
-		});
-		btnModeScientifique.setBounds(473, 742, 89, 38);
-		contentPane.add(btnModeScientifique);
-
 		barreEnergieCinetique = new BarreEnergie();
-		barreEnergieCinetique.setBounds(250, 786, 139, 124);
+		barreEnergieCinetique.setBounds(1178, 142, 50, 151);
 		contentPane.add(barreEnergieCinetique);
-		
+
 		barreEnergiePotentielle = new BarreEnergie();
-		barreEnergiePotentielle.setBounds(420, 786, 139, 124);
+		barreEnergiePotentielle.setBounds(1178, 337, 50, 151);
 		contentPane.add(barreEnergiePotentielle);
-		
+
 		barreEnergieMecanique = new BarreEnergie();
-		barreEnergieMecanique.setBounds(578, 786, 130, 124);
+		barreEnergieMecanique.setBounds(1178, 524, 50, 151);
 		contentPane.add(barreEnergieMecanique);
-
-		boolean selected = checkBoxModeScientifique.isSelected();
-		if (selected) {
-			setSize(1500, getHeight());
-			System.out.println("test");
-		} else {
-			System.out.println("Check box state is not selected.");
-		}
-
-
-
-}
-
-//Par Miora
-/**
- * Cette methode permet de montrer a l'utilisateur les touches pour jouer
- */
-private void toucheScene() {
-	JOptionPane.showMessageDialog(null, " " + "Vos touches ont été initialisé a " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + " et " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()));
-
-}
-
-// Par Miora
-/**
- * Methode qui donne le focus a la sceneFinale
- */
-public void donneFocusALasceneFinale() {
-	sceneFinale.requestFocusInWindow();
-}
-
-//Par Arezki
-/**
- * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
- * les objets dans la sceneFinale
- * 
- */
-public void activerEditeur() {
-	btnBlocDeau.setEnabled(true);
-	btnGrosseBalle.setEnabled(true);
-	btnMediumBalle.setEnabled(true);
-	btnMiroirPlan.setEnabled(true);
-	btnPrisme.setEnabled(true);
-	btnTrouNoir.setEnabled(true);
-	btnPetiteBalle.setEnabled(true);
-	buttonMiroirCourbe.setEnabled(true);
-}
-
-// Par Arezki
-/**
- * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons
- * de l'éditeur, mais les dessins restent
- * 
- * @author Arezki
- */
-public void desactiverEditeur() {
-	btnBlocDeau.setEnabled(false);
-	btnGrosseBalle.setEnabled(false);
-	btnMediumBalle.setEnabled(false);
-	btnMiroirPlan.setEnabled(false);
-	btnPrisme.setEnabled(false);
-	btnTrouNoir.setEnabled(false);
-	btnPetiteBalle.setEnabled(false);
-	buttonMiroirCourbe.setEnabled(false);
-}
+		
+		JLabel lblNewLabel = new JLabel("\u00C9nergie cin\u00E9tique");
+		lblNewLabel.setBounds(1166, 122, 101, 16);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblnergiePotentielle = new JLabel("\u00C9nergie potentielle");
+		lblnergiePotentielle.setBounds(1166, 304, 118, 26);
+		contentPane.add(lblnergiePotentielle);
+		
+		JLabel lblnergieMcanique = new JLabel("\u00C9nergie m\u00E9canique");
+		lblnergieMcanique.setBounds(1166, 499, 118, 26);
+		contentPane.add(lblnergieMcanique);
 
 
-// Miora
-/**
- * Cette methode defini si les options doivent etre change ou non 
- * @param isNouveauOption : s'il y a un changement ou non S
- */
-public void setNouveauOption(boolean isNouveauOption) {
-	this.isNouveauOption = isNouveauOption;
-}
+
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de montrer a l'utilisateur les touches pour jouer
+	 */
+	private void toucheScene() {
+		JOptionPane.showMessageDialog(null, " " + "Vos touches ont été initialisé a " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + " et " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()));
+
+	}
+
+	// Par Miora
+	/**
+	 * Methode qui donne le focus a la sceneFinale
+	 */
+	public void donneFocusALasceneFinale() {
+		sceneFinale.requestFocusInWindow();
+	}
+
+	//Par Arezki
+	/**
+	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
+	 * les objets dans la sceneFinale
+	 * 
+	 */
+	public void activerEditeur() {
+		btnBlocDeau.setEnabled(true);
+		btnGrosseBalle.setEnabled(true);
+		btnMediumBalle.setEnabled(true);
+		btnMiroirPlan.setEnabled(true);
+		btnPrisme.setEnabled(true);
+		btnTrouNoir.setEnabled(true);
+		btnPetiteBalle.setEnabled(true);
+		buttonMiroirCourbe.setEnabled(true);
+	}
+
+	// Par Arezki
+	/**
+	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons
+	 * de l'éditeur, mais les dessins restent
+	 * 
+	 * @author Arezki
+	 */
+	public void desactiverEditeur() {
+		btnBlocDeau.setEnabled(false);
+		btnGrosseBalle.setEnabled(false);
+		btnMediumBalle.setEnabled(false);
+		btnMiroirPlan.setEnabled(false);
+		btnPrisme.setEnabled(false);
+		btnTrouNoir.setEnabled(false);
+		btnPetiteBalle.setEnabled(false);
+		buttonMiroirCourbe.setEnabled(false);
+	}
 
 
-//Miora
-/**
- * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
- * sceneFinale
- * @param reponse : oui ou non s'il s'agit d'une nouvelle scene
- */
-//
-//	public void isNouvelle(boolean reponse) {
-//		isNouvelle = reponse;
-//	}
-
-//Par Miora
-/**
- * Cette methode ouvre le menu option lorsque la touche option est cliquee
- */
-private void choixOption() {
-	optionJeu = new Options(true);
-	optionJeu.setDansScene(true);
-	optionJeu.setVisible(true);
-	sceneFinale.ecritureFichierSauvegarde("temporaire", true); // je sauvegarde
-	sceneFinale.arreter();
-	tempsJeu.stop();
-	setVisible(false);
-}
+	// Miora
+	/**
+	 * Cette methode defini si les options doivent etre change ou non 
+	 * @param isNouveauOption : s'il y a un changement ou non S
+	 */
+	public void setNouveauOption(boolean isNouveauOption) {
+		this.isNouveauOption = isNouveauOption;
+	}
 
 
-//Par Miora
-/**
- * Cette methode modifie le temps pour la barre de temps
- * @param temps : le nouveau temps
- */
-private void modifierLeTemps(int temps) {
-	barreTempsDuJeu.setValue(temps);
-	barreTempsDuJeu.setString(temps + " secondes restantes");
+	//Miora
+	/**
+	 * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
+	 * sceneFinale
+	 * @param reponse : oui ou non s'il s'agit d'une nouvelle scene
+	 */
+	//
+	//	public void isNouvelle(boolean reponse) {
+	//		isNouvelle = reponse;
+	//	}
 
-}
+	//Par Miora
+	/**
+	 * Cette methode ouvre le menu option lorsque la touche option est cliquee
+	 */
+	private void choixOption() {
+		optionJeu = new Options(true);
+		optionJeu.setDansScene(true);
+		optionJeu.setVisible(true);
+		sceneFinale.ecritureFichierSauvegarde("temporaire", true); // je sauvegarde
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		setVisible(false);
+	}
 
-//Par Miora
-/**
- * Cette methode permet de sauvegarder une partie
- */
-private void enregistrer() {
-	sceneFinale.arreter();
-	tempsJeu.stop();
-	String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
-	sceneFinale.ecritureFichierSauvegarde(nom, false);
 
-}
+	//Par Miora
+	/**
+	 * Cette methode modifie le temps pour la barre de temps
+	 * @param temps : le nouveau temps
+	 */
+	private void modifierLeTemps(int temps) {
+		barreTempsDuJeu.setValue(temps);
+		barreTempsDuJeu.setString(temps + " secondes restantes");
 
-//Par Miora
-/**
- * Cette methode permet de sauvegarder le niveau
- */
-private void sauvegarderNiveau() {
-	String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
-	sceneFinale.ecritureNiveau(nomSauv);
+	}
 
-}
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder une partie
+	 */
+	private void enregistrer() {
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
+		sceneFinale.ecritureFichierSauvegarde(nom, false);
+
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder le niveau
+	 */
+	private void sauvegarderNiveau() {
+		String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
+		sceneFinale.ecritureNiveau(nomSauv);
+
+	}
 }

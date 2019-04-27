@@ -182,11 +182,15 @@ public class MoteurPhysique implements Serializable {
 	 /* @param masse masse (kg)
 	 * @param accel acceleration en m par s
 	 */
-
 	protected static Vecteur forceGravi(double masse, Vecteur accel) {
 		return new Vecteur(0, masse*accel.getY());
 	}
 
+	
+	protected Vecteur sommeForces(Vecteur forceGravi, Vecteur forceElectrique) {
+		return new Vecteur(forceGravi.additionne(forceElectrique).getX(), forceGravi.additionne(forceElectrique).getY() );
+	}
+	
 	
 	/**
 	 *  Methode qui calcule le temps ou les temps  exactes lors  dune collision a l'aide de la formule quadratique

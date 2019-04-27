@@ -347,6 +347,7 @@ public class Scene extends JPanel implements Runnable {
 			mat = modele.getMatMC();
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles();
 			premiereFois = false;
+			Balle.setModele(getWidth(),getHeight(),LARGEUR_DU_MONDE);
 		}
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
@@ -430,8 +431,10 @@ public class Scene extends JPanel implements Runnable {
 	 * Cette méthode permet d'arreter l'animation
 	 */
 	public void arreter() {
-		if (enCoursAnimation)
+		if (enCoursAnimation) {
 			enCoursAnimation = false;
+			son.arreter();
+		}
 	}
 
 	//Jeremy Thai
@@ -493,7 +496,7 @@ public class Scene extends JPanel implements Runnable {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
 			compteur++;
-			son.joueMusique("themesong");
+			son.joueMusique("alienMusique");
 			calculerUneIterationPhysique();
 			leverEvenModeScientifique();
 			qtRotation = qtRotation + 0.2;
@@ -536,13 +539,6 @@ public class Scene extends JPanel implements Runnable {
 	 * Methode permettant de mettre un fond a la scene
 	 **/
 	private void lireFond() {
-
-		/*
-		 * URL fich = getClass().getClassLoader().getResource("mars.png"); if (fich ==
-		 * null) { JOptionPane.showMessageDialog(null, "Fichier introuvable!"); } else {
-		 * try { fond = ImageIO.read(fich); } catch (IOException e) {
-		 * System.out.println("Erreur de lecture du fichier d'image"); } }
-		 */
 
 		fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}

@@ -16,8 +16,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class Bruit {
 
 	private Clip musique;
-	
-	
+
+
 	/**
 	 * Méthode qui cherche et fait jouer un son dont le nom du fichier de son est passée en paramètre 
 	 * @param str chaine de caractere qui represente le nom du fichier de son
@@ -25,7 +25,7 @@ public class Bruit {
 	public  void joue(String str) {
 
 		try {
-	
+
 			URL url = this.getClass().getClassLoader().getResource(str+".wav");
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
 			Clip clip = AudioSystem.getClip();
@@ -65,24 +65,60 @@ public class Bruit {
 	}
 
 	/**
+	 * Arrete la musique en cours
+	 */
+	public void arreter() {
+		if( musique.isRunning()) 
+			musique.stop();
+	}
+
+
+
+
+	/**
 	 * Méthode qui fait jouer un son au hasard lorsque le joueur est touché par un obstacle
 	 */
 	public void joueSonLorsqueTouche() {
 
-		int nb = 0 + (int)(Math.random() * ((3 - 0) + 1));
+		int nb = 0 + (int)(Math.random() * ((3 - 2) + 1));
 
 		switch(nb) {
-		
+
 		case 1: 
 			joue("scream");
 			break;
 
 		case 2: 
-			joue("chosenone");
+			joue("comeon");
+			break;
+		}
+	}
+
+
+	/**
+	 * Méthode qui fait jouer un son au hasard lorsque le personnage perd toutes ses vies ou le temps est ecoule
+	 */
+	public void joueSonLorsqueFini() {
+
+		int nb = 0 + (int)(Math.random() * ((4 - 1) + 1));
+
+		switch(nb) {
+
+		case 1: 
+			joue("gg");
+			break;
+
+		case 2: 
+			joue("careless");
 			break;
 
 		case 3: 
 			joue("chosenone");
+			break;
+
+
+		case 4:
+			joue("gameover");
 			break;
 		}
 	}

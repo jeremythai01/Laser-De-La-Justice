@@ -203,13 +203,12 @@ public class SceneTest extends JPanel implements Runnable {
 			mat = modele.getMatMC();
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles() ;
 			premiereFois = false;
+			Balle.setModele(getWidth(),getHeight(),LARGEUR_DU_MONDE);
+			
 		}
 
-
 		collisionPouvoirsPersonnages();
-
-		g2d.setStroke(new BasicStroke(3));
-
+		
 		for(Laser laser : listeLasers) { 
 
 			if(laser.getPositionHaut().getY() <= 0 ) 
@@ -225,7 +224,6 @@ public class SceneTest extends JPanel implements Runnable {
 	
 		
 		for(Balle balle: listeBalles) {
-
 			balle.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
 

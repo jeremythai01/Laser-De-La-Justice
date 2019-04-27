@@ -1,5 +1,6 @@
 package physique;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
 import geometrie.Vecteur;
 import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
+import utilite.ModeleAffichage;
 
 /**
  * Classe qui créée une balle et mémorise sa masse, son diamètre, sa position, sa vitesse, son image, son accélération, la somme des forces qui s'applique sur elle et son type.
@@ -28,7 +30,7 @@ public class Balle implements Dessinable, Serializable {
 	private double masse = 15;
 	private Ellipse2D.Double cercle;
 	private Vecteur position, vitesse, accel = new Vecteur(0,9.8);
-	private Vecteur forceGravi;
+	private Vecteur forceGravi,forceElectrique;
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
 	private double qtRot;
@@ -36,7 +38,8 @@ public class Balle implements Dessinable, Serializable {
 	private final double VITESSE_ROTATION = 0.04;
 	private VecteurGraphique vG;
 	private boolean modeScientifique = false;
-
+	private Vecteur sommeForces;
+	private static ModeleAffichage modele;
 
 
 	/**
@@ -81,7 +84,7 @@ public class Balle implements Dessinable, Serializable {
 			//	lireImage("MasterBall.jpg");
 			break;
 		}
-		forceGravi = mt.forceGravi(masse, accel);
+		forceGravi = MoteurPhysique.forceGravi(masse, accel);
 	}
 
 
@@ -132,7 +135,9 @@ public class Balle implements Dessinable, Serializable {
 	 */
 	@Override
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
+
 		AffineTransform matLocal = new AffineTransform(mat);
+
 
 		/*
 		double factX = (diametre)/ img.getWidth(null) ;
@@ -162,12 +167,43 @@ public class Balle implements Dessinable, Serializable {
 
 
 		if(modeScientifique) {
+			
+			matLocal = g2d.getTransform();
+			g2d.setStroke(new BasicStroke(3.0f));
+			
+			//Vecteur vitesse
+			
 			g2d.setColor(Color.black);
 			vG = new VecteurGraphique(vitesse.getX() /2, vitesse.getY() /2);
 			vG.setOrigineXY(position.getX()+diametre/2 , position.getY()+diametre/2); // origine du vecteur au centre de la balle 
 			vG.setLongueurTete(1);
 			vG.dessiner(g2d, mat, hauteur, largeur);
+
+	
+			double eXR1 = (position.getX()+diametre/2 +  vitesse.getX() /4 + 0.25 ) * modele.getPixelsParUniteX();
+			double eYR1 =  (position.getY()+diametre/2 + vitesse.getY() /4 ) * modele.getPixelsParUniteY();
+
+			g2d.drawString("V", (int)( eXR1), (int)(eYR1));
+			
+
+			//Vecteur forceGravi
+			g2d.setColor(Color.red);
+			vG = new VecteurGraphique(accel.getX() /2, accel.getY() /2);
+			vG.setOrigineXY(position.getX()+diametre/2 , position.getY()+diametre/2); // origine du vecteur au centre de la balle 
+			vG.setLongueurTete(1);
+			vG.dessiner(g2d, mat, hauteur, largeur);
+			
+			double eXR2 =(position.getX()+0.25+diametre/2) * modele.getPixelsParUniteX();
+			double eYR2 = ( position.getY()+diametre/2+diametre) * modele.getPixelsParUniteY();
+			
+			g2d.drawString("FG", (int)( eXR2), (int)(eYR2));
+
+			g2d.setTransform(matLocal);
+			
+			
 		}
+
+
 	}
 
 
@@ -442,6 +478,19 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
+	public void calculerForcesEtAccel() {
+		//	sommeForces = MoteurPhysique.sommeForces(getForceGravi(), getForceElectrique());
+		MoteurPhysique.miseAJourAcceleration(sommeForces, masse, accel);
 
+	}
+
+	public void getForcesElectrique() {
+
+	}
+
+
+	public static void setModele(double longueur, double hauteur, double longueurMonde) {
+	   modele =  new ModeleAffichage(longueur, hauteur, longueurMonde);
+	}
 }
 
