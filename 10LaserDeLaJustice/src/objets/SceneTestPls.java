@@ -84,8 +84,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private boolean enMouvement=false;
 	private boolean triche=false;
 	private Vecteur gravite = new Vecteur(0, 9.8);
-	private double chargeBalle=0.0006;
-	private double chargeChamp=0.04;
+	private double chargeBalle=-0.000006;
+	private double chargeChamp=0.00004;
 	/**
 	 * Create the panel.
 	 */
