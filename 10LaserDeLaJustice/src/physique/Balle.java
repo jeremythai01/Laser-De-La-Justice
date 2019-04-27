@@ -30,7 +30,7 @@ public class Balle implements Dessinable, Serializable {
 	private double masse = 15;
 	private Ellipse2D.Double cercle;
 	private Vecteur position, vitesse, accel = new Vecteur(0,9.8);
-	private Vecteur forceGravi,forceElectrique;
+	private Vecteur forceGravi,forceElectrique = new Vecteur(0,0);
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
 	private double qtRot;
