@@ -96,6 +96,9 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton button_2 = new JButton("Tutoriel et information");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				FenetreTuto fenetreTuto = new FenetreTuto();
+				fenetreTuto.setVisible(true);
+				setVisible(false);
 			}
 		});
 		button_2.setBounds(47, 289, 125, 45);

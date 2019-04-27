@@ -131,8 +131,9 @@ public class SceneTutoriel extends JPanel implements Runnable {
 					}
 				
 				personnage.neBougePas();
+				if(e.getKeyCode()==37||e.getKeyCode()==39) { // pour s'assurer que le joueur bouge bien le personnage avant de passer a la prochaine etape
 				etape1=false;
-				etape2=true;
+				etape2=true;}
 				}
 			
 				if(etape2) {
