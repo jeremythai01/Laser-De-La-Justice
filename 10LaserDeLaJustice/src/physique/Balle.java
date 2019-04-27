@@ -40,6 +40,7 @@ public class Balle implements Dessinable, Serializable {
 	private boolean modeScientifique = false;
 	private Vecteur sommeForces;
 	private static ModeleAffichage modele;
+	private double charge=0.000006;
 
 
 	/**
@@ -237,7 +238,7 @@ public class Balle implements Dessinable, Serializable {
 	 * @param deltaT intervalle de temps (pas)
 	 */
 	public void unPasVerlet(double deltaT) {
-		//	MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
+		calculerForcesEtAccel();
 		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
 	}
 	/**

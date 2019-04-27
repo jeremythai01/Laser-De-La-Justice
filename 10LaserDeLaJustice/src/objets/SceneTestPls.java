@@ -84,6 +84,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private boolean enMouvement=false;
 	private boolean triche=false;
 	private Vecteur gravite = new Vecteur(0, 9.8);
+	private double chargeBalle=0.000006;
+	private double chargeChamp=0.000004;
 	/**
 	 * Create the panel.
 	 */
@@ -114,7 +116,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
-				champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), 0.00004);
+				champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), chargeChamp);
 				listeChamps.add(champ);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
@@ -455,10 +457,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 				
 
 				if(intersection(champ.getAireChamp(), balle.getAire())) {
-		 //		ICi 	balle.setForcesElectrique(MoteurPhysique.forceElectrique(positionSubit, positionApplique, chargeSubit, k, charge));
-				//	System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
+		 			balle.setForcesElectrique(MoteurPhysique.forceElectrique(new Vecteur(balle.getPosition().getX()+balle.getDiametre()/2, balle.getPosition().getY()+balle.getDiametre()/2), champ.getPosition(), chargeBalle, champ.getK(), chargeChamp));
+					System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
 					//	System.out.println("la vitess de la balle "+balle.getVitesse());
-						//System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),3));
+						System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),3));
+						System.out.println("champ pos"+champ.getPosition());
 
 				}	
 				
