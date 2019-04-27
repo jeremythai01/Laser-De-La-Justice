@@ -46,7 +46,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private boolean enCoursAnimation= false;
 	private double tempsTotalEcoule = 0;
 	private double masse = 15; //en kg
-	private double diametre = 2;  //em mètres
+	private double diametre = 2;  //em mtres
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private Balle balle1;
 	private Balle balle;
@@ -74,6 +74,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private int nombreVies=3;
 
 	private Echelle echelle;
+
 	
 	private Ordinateur ordi;
 	private OrdinateurNiveau2 ordi2;
@@ -81,7 +82,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private boolean enMouvement=false;
 	private boolean triche=false;
 	/**
-	 * Creer la scene.
+	 * Create the panel.
 	 */
 	public SceneTestPls() {
 
@@ -91,7 +92,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3.ajouterListesObstacles(listeBalles);
 		ordi3.savoirTempsSleep(tempsDuSleep);
 
-		angle = 90;
+		angle = 30;
 		character = new Personnage();
 
 		position = new Vecteur(0.3, 10);
@@ -108,11 +109,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 				double eYR = e.getY()/modele.getPixelsParUniteY();
 				//balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
 				//listeBalles.add(balle);
-				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
-				//listeBloc.add(bloc);
+				bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
+				listeBloc.add(bloc);
 
-				trou= new TrouNoir(new Vecteur(eXR,eYR));
-				listeTrou.add(trou);
+				//trou= new TrouNoir(new Vecteur(eXR,eYR));
+				//listeTrou.add(trou);
 
 
 				if(character.airePersonnage().contains(eXR, eYR)) {
@@ -172,17 +173,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 		 */
 	}
 
-	/**
-	 * Methode qui permet d'activer le mode de triche
-	 */
 	private void modeTriche() {
 		triche=true;
 	}
 	
-	/**
-	 * Methode qui permet de changer l'angle de tir avec le clavier
-	 * @param e, l'evenement du clavier
-	 */
 	private void changerAngle(KeyEvent e) {
 		if(e.getKeyCode()==38 && angle<180) {
 			angle=angle+5;
@@ -193,11 +187,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		enMouvement=true;
 	}
 	
-	/**
-	 * Méthode qui permet de dessiner toutes les formes sur la scene 
-	 * @param g, le composant graphique de la scene
-	 */
-	public void paintComponent(Graphics2D g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
@@ -228,9 +218,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}catch(ConcurrentModificationException e) {
 			System.out.println("le laser nexiste pas");
 		}
-		checkCollisionBalleLaser( listeBalles,  listeLasers);
-		checkCollisionTrouLaser( listeLasers );
-		checkCollisionBlocLaser( listeLasers );
+		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
+		checkCollisionTrouLaserPersonnage( listeLasers );
+		checkCollisionBlocLaserPersonnage( listeLasers );
 		for(BlocDEau bloc:listeBloc) {
 			g2d.setColor(Color.blue);
 			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -285,10 +275,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 		g.draw(arg0);
 	}*/
 
-	/**
-	 * Methode qui permet de tracer l'angle d'orientation du tir du laser
-	 * @param g, le composant graphique
-	 */
 	private void tracerVecteurGraphique(Graphics2D g) {
 		if(enMouvement) {
 			g.setColor(Color.red);
@@ -299,9 +285,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 	}
 
-	/**
-	 * Methode qui permet de faire avancer le temps et de faire bouger les balles, le laser et les ordis
-	 */
+	
 	private void calculerUneIterationPhysique() {
 
 
@@ -320,17 +304,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3.bouge();
 	}
 
-	/**
-	 * Cette méthode permet d'arreter l'animation
-	 */
 	public void arreter( ) {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
 	}
 
-	/**
-	 * Cette méthode permet de démarrer l'animation
-	 */
 	public void demarrer() {
 		if (!enCoursAnimation) { 
 			Thread proc = new Thread(this);
@@ -344,9 +322,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private int compteur=0;
 	private double qtRotation=0;
 	@Override
-	/**
-	 * Animation du jeu 
-	 */ 
 	public void run() {
 
 		while (enCoursAnimation) {	
@@ -357,7 +332,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				trou.savoirQuantiteRotation(qtRotation);
 			}
 			//trou.savoirQuantiteRotation(qtRotation);
-			System.out.println("roa"+ qtRotation);
+			//System.out.println("roa"+ qtRotation);
 		//	ordi3.verifierCollisionBalleEtLaserSimulation();
 			if(compteur==60) {
 				tirer();
@@ -374,10 +349,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 	}
 
 
-	/**
-	 * Methode qui permet de tirer a laide du clavier ( touche espace)
-	 * @param e, l'evenement du clavier
-	 */
 	private void shoot(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
@@ -390,13 +361,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	}
 
 
-	/**
-	 *	 * Faire la detection dune collision entre toutes les balles et tous les lasers
-	 * 
-	 * @param listeBalles, la liste des balles
-	 * @param listeLasers, la liste des lasers
-	 */
-	private void checkCollisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
+	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
 
 		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
 		try {for(Laser laser : listeLasers) {
@@ -430,13 +395,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 	//}
-	/**
-	 * 
-	 * Retourne vrai si deux aires de formes sont en intersection, sinon faux.
-	 * @param aire1 aire de la premiere forme
-	 * @param aire2 aire de la deuxieme forme
-	 * @return boolean true or false
-	 */
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -446,11 +404,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		return false;
 	}
 
-	/**
-	 * Methode qui permet de verifier les collisions entre le trou et le laser
-	 * @param listeLasers, la liste des lasers
-	 */
-	private void checkCollisionTrouLaser( ArrayList<Laser> listeLasers ) {
+	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
 
 		for(Laser laser : listeLasers) {
@@ -482,20 +436,22 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	}
 	boolean premiereCollision=true;
-	/**
-	 * Methode qui permet de verifier les collisions entre le bloc et le laser
-	 * @param listeLasers, la liste des lasers
-	 */
-	private void checkCollisionBlocLaser(ArrayList<Laser> listeLasers) {
+	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 		//for(Laser laser : listeLasers) {
 		for (int i = 0; i < listeLasers.size(); i++) {
 			//for(BlocDEau bloc : listeBloc) {
 			for (int j = 0; j < listeBloc.size(); j++) {
-				
-				if(intersection(listeBloc.get(j).getAireBloc(), listeLasers.get(i).getAire())) {
+				//System.out.println("valeur de la position en y du laser"+ listeLasers.get(i).getPositionHaut().getY());
+				//System.out.println("valeur de la position en y du bloc"+ listeBloc.get(j).getPosition().getY()+listeBloc.get(j).getHauteur());
+				//if(intersection(listeBloc.get(j).getAireBloc(), listeLasers.get(i).getAire())) {
+				if(listeLasers.get(i).getPositionHaut().getX()>=listeBloc.get(j).getPosition().getX()&&
+						listeLasers.get(i).getPositionHaut().getX()<=listeBloc.get(j).getPosition().getX()+listeBloc.get(j).getLARGEUR()
+					&&listeLasers.get(i).getPositionHaut().getY()<=listeBloc.get(j).getPosition().getY()+listeBloc.get(j).getHauteur()+0.1&&
+					listeLasers.get(i).getPositionHaut().getY()>=listeBloc.get(j).getPosition().getY()+listeBloc.get(j).getHauteur()-0.1) {
 					BlocDEau bloc = listeBloc.get(j);
 					Laser laser = listeLasers.get(i);
 					System.out.println("je suis ici");
+					
 					//if(bloc.isPremiereCollision()) {
 
 					//laser.setAngleTir(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
@@ -511,7 +467,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
+				}
 					//System.out.println("nouvel angle:" + Math.toDegrees(laser.getAngleTir()));
 					//	laser.updaterAngleVitesse(Math.atan(bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1, 1.33).getY()/bloc.refraction(laser.getVitesse(), bloc.calculNormal(laser,bloc), 1.33, 1).getX()));
 
@@ -528,17 +484,14 @@ public class SceneTestPls extends JPanel implements Runnable {
 					//	System.out.println("valeur bloc: "+ ref);
 
 					//repaint();
-					//	bloc.setPremiereCollision(false);
+						//bloc.setPremiereCollision(false);
 					//}
 					
-				}
+				//}
 			}
 		}
 	}
 
-	/**
-	 *  Methode qui indique aux ordis de tirer
-	 */
 	private void tirer() {
 
 		ordi3.ajouterListesObstacles(listeBalles);
