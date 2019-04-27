@@ -458,10 +458,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				if(intersection(champ.getAireChamp(), balle.getAire())) {
 		 			balle.setForcesElectrique(MoteurPhysique.forceElectrique(new Vecteur(balle.getPosition().getX()+balle.getDiametre()/2, balle.getPosition().getY()+balle.getDiametre()/2), champ.getPosition(), chargeBalle, champ.getK(), chargeChamp));
-					System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle).multiplie(1.0/15.0)));
+					//System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle).multiplie(1.0/15.0)));
 					//	System.out.println("la vitess de la balle "+balle.getVitesse());
-						System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle));
-						System.out.println("champ pos"+champ.getPosition());
+					//	System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle));
+					//	System.out.println("champ pos"+champ.getPosition());
+					System.out.println(balle.getAccel());
 
 				}	else {
 					balle.setForcesElectrique(new Vecteur(0,0));

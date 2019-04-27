@@ -24,6 +24,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import son.Bruit;
+
 import javax.swing.JSpinner;
 
 public class FenetreEditeurNiveau extends JFrame {
@@ -43,6 +45,7 @@ public class FenetreEditeurNiveau extends JFrame {
 	private JButton btnMiroirCourbe;
 	private JButton btnMiroirPlan;
 	private Scene sceneFinale;
+	private Bruit son = new Bruit();
 	//private Options optionJeu;
 
 	private boolean isNouveauOption = true;
@@ -102,6 +105,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnTutoriel = new JButton("Tutoriel");
 		btnTutoriel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				FenetreTuto fenetreTuto = new FenetreTuto();
 
 				fenetreTuto.setVisible(true);
@@ -115,6 +119,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnMiroirPlan = new JButton("miroir Plan");
 		btnMiroirPlan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutMiroirPlan();
 				donneFocusALasceneFinale();
 			}
@@ -126,6 +131,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnMiroirCourbe = new JButton("Miroir Courbe");
 		btnMiroirCourbe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutMiroirCourbe();
 				
 				donneFocusALasceneFinale();
@@ -139,6 +145,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnTrouNoir = new JButton("Trou Noir");
 		btnTrouNoir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutTrouNoir();
 				donneFocusALasceneFinale();
 			}
@@ -150,6 +157,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnBlocDeau = new JButton("Bloc ");
 		btnBlocDeau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutBlocEau();
 				donneFocusALasceneFinale();
 			}
@@ -161,6 +169,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnGrosseBalle = new JButton("Grosse Balle");
 		btnGrosseBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutBalleGrosse();
 			}
 		});
@@ -171,6 +180,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnMediumBalle = new JButton("Medium Balle");
 		btnMediumBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutBalleMedium();
 				donneFocusALasceneFinale();
 			}
@@ -182,6 +192,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnPetiteBalle = new JButton("petite balle ");
 		btnPetiteBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sceneFinale.ajoutBallePetite();
 				donneFocusALasceneFinale();
 			}
@@ -193,6 +204,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnPrisme = new JButton("prisme");
 		btnPrisme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sceneFinale.ajoutPrisme();
 			}
 		});
@@ -234,6 +246,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JToggleButton btnEditeur = new JToggleButton("Editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				if(btnEditeur.isSelected()) {
 					sceneFinale.requestFocusInWindow();
 					sceneFinale.arreter();
@@ -254,6 +267,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnDemarrage = new JButton("demarrage\r\n");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 				demarrage.setVisible(true);
 				setVisible(false);
@@ -274,6 +288,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnSaveNiveau = new JButton("Enregistrer niveau\r\n");
 		btnSaveNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
 				sceneFinale.ecritureNiveau(nomSauv);
 			}
@@ -382,6 +397,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnEffacerToutesLes = new JButton("Effacer toutes balles");
 		btnEffacerToutesLes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sceneFinale.effacerBalles();
 			}
 		});
@@ -391,6 +407,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnEffacerTousLes = new JButton("Effacer tous les miroirs");
 		btnEffacerTousLes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.effacerMiroir();
 			}
 		});
@@ -400,6 +417,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnEffacerTousLes_1 = new JButton("Effacer Tous les prismes");
 		btnEffacerTousLes_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.effacerPrisme();
 			}
 		});
@@ -409,6 +427,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnEffacerTousLes_2 = new JButton("Effacer tous les blocs");
 		btnEffacerTousLes_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.effacerBloc();
 			}
 		});
@@ -418,6 +437,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnEffacerTousLes_3 = new JButton("Effacer tous les trous noirs");
 		btnEffacerTousLes_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.effacerTrouNoir();
 			}
 		});
@@ -425,6 +445,10 @@ public class FenetreEditeurNiveau extends JFrame {
 		contentPane.add(btnEffacerTousLes_3);
 		
 		JButton btnToutEffacer = new JButton("Tout effacer");
+		btnToutEffacer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnToutEffacer.setBounds(612, 61, 159, 38);
 		contentPane.add(btnToutEffacer);
 		

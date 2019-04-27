@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
 
+import son.Bruit;
+
 
 
 /**
@@ -26,6 +28,7 @@ public class FenetrePartie extends JFrame {
 
 	private JPanel contentPane;
 	private FenetreJeu jeu;
+	private Bruit son = new Bruit();
 
 	/**
 	 * Lancer l'application
@@ -62,6 +65,7 @@ public class FenetrePartie extends JFrame {
 		JButton btnCharge = new JButton("Charger une partie");
 		btnCharge.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("file_new");
 				String nomFichier = "";
 				String userDir = System.getProperty("user.dir");
 				JFileChooser fc = new JFileChooser(userDir + "/Laser de la justice" );
@@ -87,6 +91,7 @@ public class FenetrePartie extends JFrame {
 		JButton btnNouv = new JButton("Nouvelle partie");
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("file_new");
 				jeu = new FenetreJeu(true, null);  // isNouvelle = true
 				jeu.setNouveauOption(true);
 				jeu.setVisible(true);

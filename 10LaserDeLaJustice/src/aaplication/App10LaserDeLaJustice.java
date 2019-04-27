@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import options.Options;
+import son.Bruit;
 
 /**
  * Cette fenetre est la première chose que l'utilisateur va voir.
@@ -32,6 +33,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	private Options fenetreOption;
 	private FenetreJeu jeu;
 	private FenetrePartie jouerPartie;
+	private Bruit son = new Bruit();
 
 	/**
 	 * Lancer l'appplication
@@ -40,6 +42,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					App10LaserDeLaJustice frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
 				
@@ -62,11 +65,13 @@ public class App10LaserDeLaJustice extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-
+		
+		
 
 		JButton btnEditeurDeNiveau = new JButton("Editeur de niveau");
 		btnEditeurDeNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				FenetreEditeurNiveau fenetreEditeur = new FenetreEditeurNiveau();
 				fenetreEditeur.setVisible(true);
 				setVisible(false);
@@ -78,6 +83,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnQuitter = new JButton("quitter");
 		btnQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("leave");
 				setVisible(false);
 			}
 		});
@@ -87,6 +93,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnOption = new JButton("option du jeu ");
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				ouvrirOptions();
 			}
 		});
@@ -96,6 +103,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton button_2 = new JButton("Tutoriel et information");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				FenetreTuto fenetreTuto = new FenetreTuto();
 				fenetreTuto.setVisible(true);
 				setVisible(false);
@@ -107,6 +115,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		JButton btnJouer = new JButton("jouer");
 		btnJouer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				nouvellePartie();
 			}
 		});
@@ -183,4 +192,5 @@ public class App10LaserDeLaJustice extends JFrame {
 		fenetreOption = new Options(true);
 		fenetreOption.setVisible(true);
 	}
+	
 }

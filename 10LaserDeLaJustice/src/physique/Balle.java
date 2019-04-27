@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -139,8 +140,6 @@ public class Balle implements Dessinable, Serializable {
 
 		AffineTransform matLocal = new AffineTransform(mat);
 
-		AffineTransform matLocal2 = g2d.getTransform();
-
 		/*
 		double factX = (diametre)/ img.getWidth(null) ;
 		double factY = (diametre)/ img.getHeight(null) ;
@@ -170,6 +169,7 @@ public class Balle implements Dessinable, Serializable {
 
 		if(modeScientifique) {
 			
+			Stroke stroke = g2d.getStroke();
 			g2d.setStroke(new BasicStroke(3.0f));
 			
 			//Vecteur vitesse
@@ -199,11 +199,9 @@ public class Balle implements Dessinable, Serializable {
 			
 			g2d.drawString("FG", (int)( eXR2), (int)(eYR2));
 
-			g2d.setTransform(matLocal2);
-			
+		
+			g2d.setStroke(stroke);
 		}
-
-
 	}
 
 

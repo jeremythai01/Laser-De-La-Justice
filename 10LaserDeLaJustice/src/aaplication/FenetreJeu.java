@@ -133,6 +133,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnPlay = new JButton("play");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sceneFinale.demarrer();
 				tempsJeu.start();
 				donneFocusALasceneFinale();
@@ -145,6 +146,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnPause = new JButton("pause");
 		btnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.arreter();
 				tempsJeu.stop();
 			}
@@ -167,6 +169,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnTutoriel = new JButton("Tutoriel");
 		btnTutoriel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				FenetreTuto fenetreTuto = new FenetreTuto();
 
 				fenetreTuto.setVisible(true);
@@ -178,6 +181,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnOption = new JButton("Option");
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				choixOption();
 			}
 		});
@@ -188,6 +192,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnEnregistrer = new JButton("Enregistrer partie\r\n");
 		btnEnregistrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				enregistrer();
 			}
 		});
@@ -198,6 +203,7 @@ public class FenetreJeu extends JFrame {
 		btnMiroirPlan = new JButton("miroir Plan");
 		btnMiroirPlan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutMiroirPlan();
 				donneFocusALasceneFinale();
 			}
@@ -210,6 +216,7 @@ public class FenetreJeu extends JFrame {
 		btnMiroirConvexe = new JButton("Miroir courbe");
 		btnMiroirConvexe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutMiroirCourbe();
 				donneFocusALasceneFinale();
 			}
@@ -224,6 +231,7 @@ public class FenetreJeu extends JFrame {
 		btnTrouNoir = new JButton("Trou Noir");
 		btnTrouNoir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutTrouNoir();
 				donneFocusALasceneFinale();
 			}
@@ -235,6 +243,7 @@ public class FenetreJeu extends JFrame {
 		btnBlocDeau = new JButton("bloc D'eau ");
 		btnBlocDeau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutBlocEau();
 				donneFocusALasceneFinale();
 			}
@@ -246,6 +255,7 @@ public class FenetreJeu extends JFrame {
 		btnGrosseBalle = new JButton("Grosse Balle");
 		btnGrosseBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutBalleGrosse();
 			}
 		});
@@ -256,6 +266,7 @@ public class FenetreJeu extends JFrame {
 		btnMediumBalle = new JButton("Medium Balle");
 		btnMediumBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneFinale.ajoutBalleMedium();
 				donneFocusALasceneFinale();
 			}
@@ -267,6 +278,7 @@ public class FenetreJeu extends JFrame {
 		btnPetiteBalle = new JButton("petite balle ");
 		btnPetiteBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sceneFinale.ajoutBallePetite();
 				donneFocusALasceneFinale();
 			}
@@ -278,6 +290,7 @@ public class FenetreJeu extends JFrame {
 		btnPrisme = new JButton("prisme");
 		btnPrisme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sceneFinale.ajoutPrisme();
 			}
 		});
@@ -368,6 +381,7 @@ public class FenetreJeu extends JFrame {
 		JToggleButton btnEditeur = new JToggleButton("Editeur");
 		btnEditeur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				if(btnEditeur.isSelected()) {
 					sceneFinale.requestFocusInWindow();
 					sceneFinale.arreter();
@@ -433,6 +447,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnSaveNiveau = new JButton("Enregistrer niveau\r\n");
 		btnSaveNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sauvegarderNiveau();
 			}
 		});
@@ -463,6 +478,7 @@ public class FenetreJeu extends JFrame {
 		buttonMiroirCourbe = new JButton("Miroir Courbe\r\n");
 		buttonMiroirCourbe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				sceneFinale.ajoutMiroirCourbe();
 			}
 		});
@@ -472,6 +488,8 @@ public class FenetreJeu extends JFrame {
 		checkBoxModeScientifique = new JCheckBox("Mode scientifique");
 		checkBoxModeScientifique.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
+				donneFocusALasceneFinale();
 				if(checkBoxModeScientifique.isSelected()) {
 					setSize(1300, getHeight());
 					sceneFinale.setModeScientifique(true);

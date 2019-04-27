@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import son.Bruit;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -13,6 +16,7 @@ import java.awt.event.ActionEvent;
 public class FenetreGameOver extends JFrame {
 
 	private JPanel contentPane;
+	private Bruit son = new Bruit() ;
 
 	/**
 	 * Launch the application.
@@ -44,6 +48,7 @@ public class FenetreGameOver extends JFrame {
 		JButton btnRessayer = new JButton("R\u00E9essayer");
 		btnRessayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 						demarrage.setVisible(true);
 						setVisible(false);
@@ -55,6 +60,7 @@ public class FenetreGameOver extends JFrame {
 		JButton btnQuitter = new JButton("Quitter");
 		btnQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("leave");
 				setVisible(false);
 			}
 		});
