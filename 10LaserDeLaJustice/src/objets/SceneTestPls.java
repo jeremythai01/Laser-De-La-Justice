@@ -114,7 +114,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
-				champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), 000004);
+				champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), 0.00004);
 				listeChamps.add(champ);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
@@ -455,9 +455,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 				
 
 				if(intersection(champ.getAireChamp(), balle.getAire())) {
-						balle.setAccel((champ.forceElectrique(balle.getPosition(), champ.getPosition(),0.0000006).multiplie(1.0/15.0)));
-						System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
-						System.out.println("la vitess de la balle "+balle.getVitesse());
+		 //		ICi 	balle.setForcesElectrique(MoteurPhysique.forceElectrique(positionSubit, positionApplique, chargeSubit, k, charge));
+				//	System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
+					//	System.out.println("la vitess de la balle "+balle.getVitesse());
 						//System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),3));
 
 				}	
