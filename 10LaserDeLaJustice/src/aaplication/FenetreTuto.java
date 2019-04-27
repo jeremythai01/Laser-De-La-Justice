@@ -84,6 +84,8 @@ public class FenetreTuto extends JFrame {
 		contentPane.add(lblCommandesImportantes);
 		
 		JTextArea txtrPourBienMaitriser = new JTextArea();
+		txtrPourBienMaitriser.setEditable(false);
+		txtrPourBienMaitriser.setEnabled(false);
 		txtrPourBienMaitriser.setWrapStyleWord(true);
 		txtrPourBienMaitriser.setLineWrap(true);
 		txtrPourBienMaitriser.setFont(new Font("Monospaced", Font.PLAIN, 12));
