@@ -113,7 +113,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
-				champ=new Champ(new Vecteur(eXR-5, eYR-5), 5);
+				champ=new Champ(new Vecteur(eXR-5, eYR-5), -0.0005);
 				listeChamps.add(champ);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
@@ -259,8 +259,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeur.setCombien(nombreVies-1);
 		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		echelle = new Echelle(50, 3,4);
+		echelle = new Echelle(LARGEUR_DU_MONDE, 10,10);
+		echelle.savoirModele(getWidth(), getHeight(), LARGEUR_DU_MONDE);
+		System.out.println("sadsadsad"+ getWidth());
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		
 		g2d.setColor(Color.yellow);
 		//ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		//ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -298,7 +301,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 		for(Balle balle: listeBalles) {
-			balle.unPasEuler(deltaT);
+			balle.unPasVerlet(deltaT);
 		}
 
 		for(Laser laser : listeLasers) {
@@ -451,7 +454,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				
 
 				if(intersection(champ.getAireChamp(), balle.getAire())) {
-						balle.setAccel((champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
+						balle.setAccel((champ.forceElectrique(balle.getPosition(), champ.getPosition(),0.0006).multiplie(1.0/15.0)));
 						System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
 						//System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),3));
 

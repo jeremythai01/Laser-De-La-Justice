@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 
 import interfaces.Dessinable;
+import utilite.ModeleAffichage;
 
 /**
  * Classe qui permet la creation d'une echelle de mesure pour identifier la difference entre le monde reel et pixel
@@ -16,6 +17,10 @@ public class Echelle extends Obstacles implements Dessinable{
 	private double largeur; 
 	private Path2D.Double trace;
 	private double posX, posY;
+	private ModeleAffichage modele;
+	private int hauteurPixels=0;
+	private int largeurPixels=0;
+	private double LARGEUR_DU_MONDE=0;
 	
 	/**
 	 * Constructeur de l'echelle qui prend en parametre ou nous voulons dessiner l'echelle et la largeur du monde reel
@@ -94,10 +99,24 @@ public class Echelle extends Obstacles implements Dessinable{
 		
 		
 		trace.closePath();
-		g.drawString("1m de haut", (int) posX, (int)posY);
+		modele= new ModeleAffichage(largeurPixels, hauteurPixels, LARGEUR_DU_MONDE);
+		g.drawString("1m", (int)(posX*modele.getPixelsParUniteX()-1), (int)(modele.getPixelsParUniteY()*posY-10));
 		g.draw(matLocal.createTransformedShape(trace));
 		
 		
+	}
+	
+	/**
+	 * Methode qui permet a lechelle de connaitre les donnees necessaires a la creation d'un modeledonnees pour pouvoir ecrire les lettres
+	 * en unites reelles
+	 * @param lARGEUR_DU_MONDE 
+	 * @param hauteurPixels 
+	 * @param largeurPixels 
+	 */
+	public void savoirModele(int largeurPixels, int hauteurPixels, double LARGEUR_DU_MONDE) {
+		 this.largeurPixels=largeurPixels;
+		 this.hauteurPixels=hauteurPixels;
+		 this.LARGEUR_DU_MONDE=LARGEUR_DU_MONDE;
 	}
 
 }

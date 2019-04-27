@@ -13,9 +13,9 @@ public class Champ implements Dessinable {
 	
 	private Vecteur position;
 	private double charge;
-	private double k=9*(10^9);
+	private double k=9000000000.0;
 	private Ellipse2D.Double champ;
-	private double LARGEUR=10;
+	private double LARGEUR=25;
 	
 	public Champ(Vecteur position, double charge) {
 		this.position=position;
@@ -30,10 +30,14 @@ public class Champ implements Dessinable {
 		champ = new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g2d.draw(matLocal.createTransformedShape(champ));;
 		
+		
 	}
 
 	public Vecteur forceElectrique(Vecteur positionSubit, Vecteur positionApplique, double chargeSubit) {
-		return (positionSubit.soustrait(positionApplique).multiplie(1/(Math.pow((positionSubit.soustrait(positionApplique)).module(),3)))).multiplie(k*chargeSubit*charge);
+		System.out.println("subit "+positionSubit);
+		System.out.println("applique "+positionApplique);
+		System.out.println("sous "+ positionSubit.soustrait(positionApplique));
+		return ((positionSubit.soustrait(positionApplique)).multiplie(1.0/(Math.pow((positionSubit.soustrait(positionApplique)).module(),3.0)))).multiplie(k*chargeSubit*charge);
 	}
 	
 	public Area getAireChamp() {

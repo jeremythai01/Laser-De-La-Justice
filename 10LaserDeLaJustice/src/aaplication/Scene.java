@@ -408,6 +408,7 @@ public class Scene extends JPanel implements Runnable {
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 		echelle = new Echelle(LARGEUR_DU_MONDE, LARGEUR_DU_MONDE - 3.5, HAUTEUR_DU_MONDE - 0.75);
+		echelle.savoirModele(getWidth(), getHeight(), LARGEUR_DU_MONDE);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
 		ordi = new OrdinateurNiveau3(new Vecteur(28, LARGEUR_DU_MONDE - 10));
