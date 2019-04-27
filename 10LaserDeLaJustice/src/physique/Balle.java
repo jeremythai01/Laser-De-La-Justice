@@ -180,7 +180,7 @@ public class Balle implements Dessinable, Serializable {
 			vG.dessiner(g2d, mat, hauteur, largeur);
 
 	
-			double eXR1 = (position.getX()+diametre/2 +  vitesse.getX() /4 + 0.25 ) * modele.getPixelsParUniteX();
+			double eXR1 = (position.getX()+diametre/2 +  vitesse.getX() /4 + (0.30*(vitesse.getX()/Math.abs(vitesse.getX()))) ) * modele.getPixelsParUniteX();
 			double eYR1 =  (position.getY()+diametre/2 + vitesse.getY() /4 ) * modele.getPixelsParUniteY();
 
 			g2d.drawString("V", (int)( eXR1), (int)(eYR1));
