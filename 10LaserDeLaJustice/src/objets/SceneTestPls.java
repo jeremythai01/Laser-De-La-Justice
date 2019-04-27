@@ -114,7 +114,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
-				champ=new Champ(new Vecteur(eXR-5, eYR-5), 0.000005);
+				champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), 000004);
 				listeChamps.add(champ);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
@@ -230,6 +230,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		checkCollisionTrouLaserPersonnage( listeLasers );
 		checkCollisionBlocLaserPersonnage( listeLasers );
 		checkCollisionChampBalle();
+		detectionCollisionMurBalle();
 		for(BlocDEau bloc:listeBloc) {
 			g2d.setColor(Color.blue);
 			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
@@ -533,6 +534,32 @@ public class SceneTestPls extends JPanel implements Runnable {
 		//listeLasers.add(new Laser(new Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()), angle, new Vecteur(0,0.5)));
 
 	}
+	
+	private void detectionCollisionMurBalle() {
+
+		for (Balle balle : listeBalles) {
+
+			Vecteur position = new Vecteur(balle.getPosition());
+			double diametre = balle.getDiametre();
+
+			if (position.getY() + diametre >= HAUTEUR_DU_MONDE) { // touche le sol
+				balle.getVitesse().setY(-balle.getVitesse().getY());
+			}
+
+			if (position.getX() + diametre >= LARGEUR_DU_MONDE) {
+				if (balle.getVitesse().getX() > 0)
+					balle.getVitesse().setX(-balle.getVitesse().getX());
+
+			}
+			if (position.getX() <= 0) {
+				if (balle.getVitesse().getX() < 0)
+					balle.getVitesse().setX(-balle.getVitesse().getX());
+			}
+		}
+
+	}
+	
+	
 }
 
 
