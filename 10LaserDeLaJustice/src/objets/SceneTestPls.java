@@ -83,6 +83,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private OrdinateurNiveau3 ordi3;
 	private boolean enMouvement=false;
 	private boolean triche=false;
+	private Vecteur gravite = new Vecteur(0, 9.8);
 	/**
 	 * Create the panel.
 	 */
@@ -109,11 +110,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(0, eYR-diametre/2),vitesse, "LARGE", new Vecteur(0,0));
+				balle = new Balle(new Vecteur(0, eYR-diametre/2),vitesse, "LARGE", gravite);
 				listeBalles.add(balle);
 				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
 				//listeBloc.add(bloc);
-				champ=new Champ(new Vecteur(eXR-5, eYR-5), -0.0005);
+				champ=new Champ(new Vecteur(eXR-5, eYR-5), 0.000005);
 				listeChamps.add(champ);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
@@ -169,7 +170,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 
-		balle1 = new Balle(position, vitesse, "LARGE", new Vecteur(0,0));
+		balle1 = new Balle(position, vitesse, "LARGE", new Vecteur(0,9.8));
 		/*
 		laser = new Laser(
 				new Vecteur(
@@ -261,7 +262,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 		coeur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		echelle = new Echelle(LARGEUR_DU_MONDE, 10,10);
 		echelle.savoirModele(getWidth(), getHeight(), LARGEUR_DU_MONDE);
-		System.out.println("sadsadsad"+ getWidth());
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		
 		g2d.setColor(Color.yellow);
@@ -385,7 +385,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 						listeLasers.remove(laser);   
 						listeBalleTouche.add(balle);
-						balle.shrink(listeBalles, new Vecteur(0,0));
+						balle.shrink(listeBalles, gravite);
 						if(triche=false) {
 						coeur.setCombien(nombreVies-1);
 						nombreVies-=1;}
@@ -454,8 +454,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 				
 
 				if(intersection(champ.getAireChamp(), balle.getAire())) {
-						balle.setAccel((champ.forceElectrique(balle.getPosition(), champ.getPosition(),0.0006).multiplie(1.0/15.0)));
+						balle.setAccel((champ.forceElectrique(balle.getPosition(), champ.getPosition(),0.0000006).multiplie(1.0/15.0)));
 						System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),3).multiplie(1.0/15.0)));
+						System.out.println("la vitess de la balle "+balle.getVitesse());
 						//System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),3));
 
 				}	

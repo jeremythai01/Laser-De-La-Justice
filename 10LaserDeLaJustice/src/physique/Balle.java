@@ -361,7 +361,7 @@ public class Balle implements Dessinable, Serializable {
 	 */
 	public void setAccel(Vecteur accel) {
 		Vecteur newVec = new Vecteur(accel.getX(), accel.getY());
-		this.accel = newVec;
+		this.accel = newVec.additionne(this.accel);
 	}
 
 
