@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -86,6 +87,8 @@ public class FenetreJeu extends JFrame {
 	private BarreEnergie barreEnergiePotentielle;
 	private BarreEnergie barreEnergieMecanique;
 	private JLabel lblVitesse;
+	private JLabel lblGravit;
+	private JLabel lblAccel;
 
 	// Par Arezki 
 	/**
@@ -364,11 +367,17 @@ public class FenetreJeu extends JFrame {
 			public void vitesesMoyenneBalle(ArrayList<Balle> listeBalles) {
 				double vitesseMoyX = 0;
 				double vitesseMoyY = 0;
+				DecimalFormat df = new DecimalFormat("#.##");
+				lblAccel.setText("[x: "+(listeBalles.get(0).getAccel().getX()+ " , y: "+ listeBalles.get(0).getAccel().getY()+" ] m²/s"));
 				for(int i = 0; i < listeBalles.size();i++ ) {
 					vitesseMoyX += listeBalles.get(i).getVitesse().getX();
+					
 					vitesseMoyY += listeBalles.get(i).getVitesse().getY();
 					System.out.println();
-					lblVitesse.setText("X: "+vitesseMoyX+" ,Y: "+vitesseMoyY);
+					lblVitesse.setText("[x: "+df.format(vitesseMoyX)+" ,y : "+df.format(vitesseMoyY)+" ] m/s");
+					lblGravit.setText("[x: "+listeBalles.get(i).getForceGravi().getX()+ " , y: "+ listeBalles.get(i).getForceGravi().getY()+" ] N");
+					
+					
 				}
 			}
 		});
@@ -548,13 +557,29 @@ public class FenetreJeu extends JFrame {
 		btnLireLesConcepts.setBounds(858, 11, 195, 39);
 		contentPane.add(btnLireLesConcepts);
 		
-		JLabel lblVitesseMoyenneDes = new JLabel("Vitesse Moyenne des balles : ");
-		lblVitesseMoyenneDes.setBounds(60, 783, 145, 14);
+		JLabel lblVitesseMoyenneDes = new JLabel("Vitesse Moyenne des balles :");
+		lblVitesseMoyenneDes.setBounds(60, 784, 145, 14);
 		contentPane.add(lblVitesseMoyenneDes);
 		
 		lblVitesse = new JLabel("vitesse");
 		lblVitesse.setBounds(215, 783, 145, 14);
 		contentPane.add(lblVitesse);
+		
+		JLabel lblForceRavitationnelle = new JLabel("Force gravitationnelle :");
+		lblForceRavitationnelle.setBounds(63, 822, 142, 14);
+		contentPane.add(lblForceRavitationnelle);
+		
+		lblGravit = new JLabel("Gravit\u00E9");
+		lblGravit.setBounds(215, 822, 130, 14);
+		contentPane.add(lblGravit);
+		
+		JLabel lblAcclerationGravitationnelle = new JLabel("Acc\u00E9leration Gravitationnelle: ");
+		lblAcclerationGravitationnelle.setBounds(60, 868, 145, 14);
+		contentPane.add(lblAcclerationGravitationnelle);
+		
+		lblAccel = new JLabel("Accel");
+		lblAccel.setBounds(215, 868, 130, 14);
+		contentPane.add(lblAccel);
 		
 	
 	

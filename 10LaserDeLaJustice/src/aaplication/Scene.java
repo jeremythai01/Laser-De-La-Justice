@@ -133,7 +133,7 @@ public class Scene extends JPanel implements Runnable {
 	private Echelle echelle;
 	private Color couleurLaser = null;
 
-	private Vecteur gravite = new Vecteur(0, 9.8); // pour miora
+	private Vecteur gravite = new Vecteur(0, 0); // pour miora
 
 	private Balle grosseBalle = new Balle(new Vecteur(), vitesse, "LARGE", gravite);
 	private Balle moyenneBalle = new Balle(new Vecteur(1, 0), vitesse, "MEDIUM", gravite);
@@ -464,6 +464,7 @@ public class Scene extends JPanel implements Runnable {
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	
 	// Jeremy Thai
 	/**
 	 * Fait la detection d une collision entre toutes les balles et tous les lasers

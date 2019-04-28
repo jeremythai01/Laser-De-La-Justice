@@ -16,4 +16,5 @@ public interface SceneListener extends EventListener{
 	public void changementTempsListener(int temps);
 	public void modeScientifiqueListener(ArrayList<Balle> listeBalles, double hauteurMonde);
 	public void vitesesMoyenneBalle(ArrayList<Balle> listeBalles);
+	
 }
