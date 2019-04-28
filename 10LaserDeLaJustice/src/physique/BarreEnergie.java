@@ -12,8 +12,10 @@ import javax.swing.JPanel;
  */
 
 public class BarreEnergie extends JPanel  {
+	public BarreEnergie() {
+	}
 	private Rectangle2D.Double rect1, rectVide;
-	private int largeurForme=50;
+	private int largeurForme=70;
 	private double x=0;
 	private double y=0;
 	private int longueurForme=50;
@@ -42,8 +44,8 @@ public class BarreEnergie extends JPanel  {
 		g2d.setTransform(mat);
 		
 		g2d.setColor(Color.BLACK);
-		g2d.drawString((int)energie+" J", largeurForme/4- largeurForme/8,longueurForme/2 + 15);
-	
+		g2d.drawString((int)energie+"J", largeurForme/4  - largeurForme/5,longueurForme/2 + 15);
+		g2d.drawString("("+ Math.round(pourcentageEnergie*100)+"%)", largeurForme/4- largeurForme/8,longueurForme/2 + 30);
 		
 		
 	}

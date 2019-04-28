@@ -27,8 +27,8 @@ public class AjoutVie extends Pouvoir {
 	public AjoutVie ( Vecteur position , Vecteur accel) {
 		super(position,accel);
 		lireImage();
-		setLargeurImg(0.5);
-		setLongueurImg(0.5);
+		setLargeurImg(2);
+		setLongueurImg(2);
 	}
 
 	

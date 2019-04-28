@@ -27,16 +27,16 @@ public class Bouclier extends Pouvoir  {
 	public Bouclier ( Vecteur position , Vecteur accel) {
 		super(position, accel);
 		lireImage();
-		setLargeurImg(1.2);
-		setLongueurImg(1.4);
+		setLargeurImg(2.2);
+		setLongueurImg(2.4);
 	}
 
 	@Override
 	public void lireImage() {
 
-		URL fich = getClass().getClassLoader().getResource("bouclier.jpg");
+		URL fich = getClass().getClassLoader().getResource("bouclier.png");
 		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier bouclier.jpg introuvable!");
+			JOptionPane.showMessageDialog(null, "Fichier bouclier.png introuvable!");
 		} else {
 			try {
 				setImg(ImageIO.read(fich));
