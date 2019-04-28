@@ -287,6 +287,7 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionPouvoirsPersonnages();
 		detectionCollisionBalleLaser(listeBalles, listeLasers);
 		detectionCollisionTrouLaser(listeLasers);
+		detectionCollisionBlocLaser(listeLasers);
 		detectionCollisionBallePersonnage(listeBalles, personnage);
 		detectionCollisionMurBalle();
 		for (Balle balle : listeBalles) {
@@ -546,6 +547,43 @@ public class Scene extends JPanel implements Runnable {
 					System.out.println("distance entre trou et laser" + distance);
 					laser.setAngleTir(laser.getAngleTir() + distance.getX());
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Methode qui indique quand un laser entre en collision avec un bloc pour ensuite lui savoir comment changer l'orientation du laser selon l'indice du bloc
+	 * @param listeLasers, la liste des lasers tires
+	 */
+	//Arnaud Lefebvre
+	private void detectionCollisionBlocLaser(ArrayList<Laser> listeLasers) {
+		for (int i = 0; i < listeLasers.size(); i++) {
+			for (int j = 0; j < listeBlocEau.size(); j++) {
+				if(listeLasers.get(i).getPositionHaut().getX()>=listeBlocEau.get(j).getPosition().getX()&&
+						listeLasers.get(i).getPositionHaut().getX()<=listeBlocEau.get(j).getPosition().getX()+listeBlocEau.get(j).getLARGEUR()
+					&&listeLasers.get(i).getPositionHaut().getY()<=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()+0.2&&
+					listeLasers.get(i).getPositionHaut().getY()>=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()-0.2) {
+					BlocDEau bloc = listeBlocEau.get(j);
+					Laser laser = listeLasers.get(i);
+					System.out.println("je suis ici");
+					
+					
+					try {
+						System.out.println("le veiel angle est de "+laser.getAngleTir());
+						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
+						double angle = Math.toDegrees(Math.atan(ref.getY()/ref.getX()));
+						if(angle<0) {
+							angle=angle+180;
+						}
+						laser.setAngleTir(angle);
+						j=listeBlocEau.size();
+						System.out.println("le nouvel angle est de "+laser.getAngleTir());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+					
 			}
 		}
 	}

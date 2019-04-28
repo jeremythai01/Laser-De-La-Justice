@@ -112,12 +112,12 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(0, eYR-diametre/2),vitesse, "LARGE", gravite);
-				listeBalles.add(balle);
-				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
-				//listeBloc.add(bloc);
-				champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), chargeChamp);
-				listeChamps.add(champ);
+				//balle = new Balle(new Vecteur(0, eYR-diametre/2),vitesse, "LARGE", gravite);
+				//listeBalles.add(balle);
+				bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
+				listeBloc.add(bloc);
+				//champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), chargeChamp);
+				//listeChamps.add(champ);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
@@ -498,7 +498,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 					try {
 						System.out.println("le veiel angle est de "+laser.getAngleTir());
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
-						laser.setAngleTir(Math.toDegrees(Math.atan(ref.getY()/ref.getX())));
+						double angle = Math.toDegrees(Math.atan(ref.getY()/ref.getX()));
+						if(angle<0) {
+							angle=angle+180;
+						}
+						laser.setAngleTir(angle);
 						j=listeBloc.size();
 						//laser.setAngleTir(30);
 						System.out.println("le nouvel angle est de "+laser.getAngleTir());

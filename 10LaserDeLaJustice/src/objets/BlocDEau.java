@@ -165,7 +165,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 * @return, l'aire du bloc sous forme d'area
 	 */
 	public Area getAireBloc() {
-		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY()+hauteur, LARGEUR, largeurHitbox);
+		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteur);
 		 return new Area(aire);
 	}
 
