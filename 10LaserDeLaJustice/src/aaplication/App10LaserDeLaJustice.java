@@ -1,4 +1,4 @@
-package aaplication;
+package aaplication; 
 
 import java.awt.EventQueue;
 import java.awt.Image;
