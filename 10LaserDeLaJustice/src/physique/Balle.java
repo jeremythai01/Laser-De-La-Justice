@@ -150,7 +150,7 @@ public class Balle implements Dessinable, Serializable {
         }
     }
 
-	//Jeremy Thai
+	//Par Miora
 	/**
 	 * Cette methode permet lire les images de la classe balle
 	 * @param in : l'objet qui s'occupe des flux d'entrees
