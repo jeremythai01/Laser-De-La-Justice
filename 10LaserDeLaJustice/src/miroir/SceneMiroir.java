@@ -267,10 +267,17 @@ public class SceneMiroir extends JPanel implements Runnable {
 			while(n< listeMiroirPlan.size() && collision == false) {
 				if(enIntersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
-
+					
 					Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
-					Vecteur vecDirLaser = (new Vecteur (Math.cos(Math.toRadians(laser.getAngleTir()) ) , -Math.sin(Math.toRadians(laser.getAngleTir()) ))).normalise();;
-					System.out.println("pts laser : " + ptsLaser + "\n" +  "vec dir laser : " +vecDirLaser );
+					System.out.println("pts Laser : " + ptsLaser );
+
+					double angleR = Math.toRadians(laser.getAngleTir()) ;	
+					if(angleR>180) {
+						angleR = angleR-180; //ca donne le meme miroir 
+					}
+					
+					Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+					System.out.println("dir laser : " + vecDirLaser);
 
 					Vecteur ptsMiroir = listeMiroirPlan.get(n).getPosition();
 					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ) , -Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()))));
@@ -286,58 +293,44 @@ public class SceneMiroir extends JPanel implements Runnable {
 					double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
 					double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
 
+					Vecteur haut = listeMiroirPlan.get(n).coordonneHautBas()[0];
+					Vecteur bas = listeMiroirPlan.get(n).coordonneHautBas()[1];
+					double d = ( (laser.getPositionBas().getX()-bas.getX()) * (haut.getY()-bas.getY())  ) - ( (laser.getPositionBas().getY()-bas.getX()) * (haut.getX()-bas.getX()) );
+					boolean isHaut;
+					if(d>0) {
+						isHaut = true;
+						System.out.println("haut");
+					}else {
+						isHaut = false;
+						System.out.println("bas");
+					}
+					
 					posInter = new Vecteur (x,y);
 					System.out.println("position intersection :" + posInter);
 					System.out.println(" ");
 
 					//Le calcul selon le systeme d'axe normal
-					Vecteur normal = listeMiroirPlan.get(n).getNormal().normalise();
-
+					
+					Vecteur normal = listeMiroirPlan.get(n).getNormal(isHaut).normalise();
+					normal = new Vecteur (normal.getX(), -normal.getY());
 					if(modeScientifique) {
 						listeMiroirPlan.get(n).afficherVecteur(posInter);
 					}
 					System.out.println("La normal est du miroir est :" +normal);
 
-					double angleR = Math.toRadians(laser.getAngleTir()) ;	
-					System.out.println("     " + laser.getAngleTir());
+					Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+					System.out.println("incident" + incident);
 
-					//calcul de facon normal, sans ajustement g2d
-					Vecteur incident = new Vecteur(Math.cos(angleR), Math.sin(angleR)).normalise();
-					System.out.println("Orientation incident :" + incident);
-
-					Vecteur reflexion = incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))));
+					Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
 					System.out.println("Orientation apres reflexion" + reflexion);	
 
-					//change orientation 
-					double angleReflexion = Math.toDegrees(Math.atan(reflexion.getY()/reflexion.getX()));
-					if (reflexion.getX() < 0) { // ajustement
-						laser.setAngleTir(angleReflexion + 180);
-					} else {
-						laser.setAngleTir(angleReflexion);
-					}
-					System.out.println(laser.getAngleTir());
+					//ajustement en systeme d'axe normal
+					reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
 
-					laser.setPositionHaut(new Vecteur (posInter.getX(), posInter.getY()));
+					laser.setAngleTir(ajustementArcTan(reflexion));
+
 					System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
-
-					//Il faut faire une translation du du haut du laser
-					double xt = (laser.getPositionHaut().getX())-laser.getPositionBas().getX(); // translation x
-					double yt = laser.getPositionHaut().getY() - laser.getPositionBas().getY(); // translation y
-					double a[][]={{1,0,xt},{0,1,yt},{0,0,1}};
-					double b[]={laser.getPositionHaut().getX(),laser.getPositionHaut().getY(),1};  // le point a translater  
-
-					//creer une matrice qui va acceuillir la transformation
-					double c[]=new double[3];  //matrice de 1 colonne et 1 ligne  
-
-					//multiplication matriciel 
-					for(int i=0;i<3;i++){    
-						c[i]=0;      
-						for(int k=0;k<3;k++)      
-						{      
-							c[i]+=a[i][k]*b[k];      
-						}
-					} 
-					laser.setPositionHaut(new Vecteur (c[0], c[1]));
+					laser.setPositionHaut(new Vecteur (translation(laser)[0],translation(laser)[1]));
 
 					System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
 					System.out.println("-----------------------------------------------------------------------------");
@@ -361,11 +354,11 @@ public class SceneMiroir extends JPanel implements Runnable {
 		for(Laser laser : listeLasers) {
 			int n=0;
 			boolean collision = false;
-			while(n< listeMiroirCourbe.size() && collision == false) {
+			while(n < listeMiroirCourbe.size() && collision == false) {
 				for(Ligne ligne :listeMiroirCourbe.get(n).getListeLigne()) {
 					if(enIntersection(ligne.getAireLigne(), laser.getAire())){
 						collision = true;
-
+						
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 						System.out.println("centre miroir" + listeMiroirCourbe.get(n).getPosition());
 
@@ -393,6 +386,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 						System.out.println("La normal du miroir est :" +normal);
 
 
+
 						Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 						System.out.println("incident" + incident);
 
@@ -401,8 +395,6 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 						//ajustement en systeme d'axe normal
 						reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
-
-						double epsilon = 0.02;
 
 						laser.setAngleTir(ajustementArcTan(reflexion));
 
@@ -449,12 +441,13 @@ public class SceneMiroir extends JPanel implements Runnable {
 	//Par Miora
 	/**
 	 * Cette methode permet d'appliquer une translation a la tete du laser pour ne plus etre en intersection et rester dans la boucle
-	 * @param laser : le laser 
+	 * @param laser le laser 
 	 * @return la nouvelle position de la tete du laser
 	 */
 	private double[] translation(Laser laser) {
-		double xt = 1.5*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
-		double yt = 1.5*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
+		double decalage = 1.25; // Pour annuler le "en intersection"
+		double xt = decalage*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
+		double yt = decalage*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
 		double a[][]={{1,0,xt},{0,1,yt},{0,0,1}};
 		double b[]={laser.getPositionHaut().getX(),laser.getPositionHaut().getY(),1};  // le point a translater  
 
