@@ -341,7 +341,6 @@ public class FenetreJeu extends JFrame {
 			/**
 			 * Permet de mettre à jour les sorties scientfiques des objets de la scene dans d'autres panels 
 			 * @param listeBalles liste de balles 
-			 *  @param hauteurMonde  hauteur de la scene en unites reelles
 			 */
 			@Override
 			public void modeScientifiqueListener(ArrayList<Balle> listeBalles, double hauteurMonde) {
