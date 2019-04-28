@@ -1,6 +1,7 @@
 package effets;
 
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -28,8 +29,8 @@ public class BoostVitesse extends Pouvoir {
 	public BoostVitesse ( Vecteur position , Vecteur accel) {
 		super(position,accel);
 		lireImage();
-		setLargeurImg(1.6);
-		setLongueurImg(1);
+		setLargeurImg(2);
+		setLongueurImg(3);
 	}
 
 
@@ -38,7 +39,7 @@ public class BoostVitesse extends Pouvoir {
 	 */
 	@Override
 	public void lireImage() {
-
+/*
 		URL fich = getClass().getClassLoader().getResource("eclair.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier eclair.jpg introuvable!");
@@ -49,6 +50,9 @@ public class BoostVitesse extends Pouvoir {
 				System.out.println("Erreur de lecture du fichier d'image du BoostVitesse");
 			}
 		}
+
+		*/
+		setImg(Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("boost.gif")));
 
 	}
 

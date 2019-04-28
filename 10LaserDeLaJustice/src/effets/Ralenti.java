@@ -1,6 +1,7 @@
 package effets;
 
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -34,14 +35,14 @@ public class Ralenti extends Pouvoir{
 	public Ralenti ( Vecteur position, Vecteur accel) {
 		super(position, accel);
 		lireImage();
-		setLargeurImg(1.0);
-		setLongueurImg(1.6);
+		setLargeurImg(2);
+		setLongueurImg(3.6);
 	}
 
 	
 	@Override
 	public void lireImage() {
-
+/*
 		URL fich = getClass().getClassLoader().getResource("sablier.jpg");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier sablier.jpg introuvable!");
@@ -52,6 +53,9 @@ public class Ralenti extends Pouvoir{
 				System.out.println("Erreur de lecture du fichier d'image du BoostVitesse");
 			}
 		}
+		*/
+		
+		setImg(Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("sablier.gif")));
 
 	}
 	

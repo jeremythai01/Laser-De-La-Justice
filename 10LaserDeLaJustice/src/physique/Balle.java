@@ -35,7 +35,7 @@ import utilite.ModeleAffichage;
 public class Balle implements Dessinable, Serializable { 
 
 	private static final long serialVersionUID = 1L ;
-	private double diametre = 3;
+	private double diametre = 5;
 	private double masse = 15;
 	private Ellipse2D.Double cercle;
 	private Vecteur position, vitesse, accel = new Vecteur(0,9.8);
@@ -80,18 +80,18 @@ public class Balle implements Dessinable, Serializable {
 		case "SMALL":
 			this.type = Type.SMALL;
 			setMasse(5);
-			setDiametre(1);
-			lireImage("Pokeball.png");
+			setDiametre(2);
+			lireImage("alienBalleRouge.png");
 			break;
 		case "MEDIUM":
 			this.type = Type.MEDIUM;
 			setMasse(10);
-			setDiametre(2);
-			lireImage("UltraBall.png");
+			setDiametre(3);
+			lireImage("alienBalleVerte.png");
 			break;
 		case "LARGE":
 			this.type = Type.LARGE;
-			lireImage("MasterBall.jpg");
+			lireImage("alienBalleBleue.png");
 			break;
 		}
 		forceGravi = MoteurPhysique.forceGravi(masse, accel);
@@ -124,7 +124,7 @@ public class Balle implements Dessinable, Serializable {
 
 		URL urlBalle= getClass().getClassLoader().getResource(str);
 		if (urlBalle == null) {
-			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
+			JOptionPane.showMessageDialog(null , "Fichier "+str+" introuvable");
 			System.exit(0);}
 		try {
 			img = ImageIO.read(urlBalle);
@@ -179,7 +179,15 @@ public class Balle implements Dessinable, Serializable {
 
 		AffineTransform matLocal = new AffineTransform(mat);
 
-	
+		
+		
+		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
+		Stroke stroke = g2d.getStroke();
+		g2d.setColor(Color.black);
+		g2d.setStroke(new BasicStroke(2.0f));
+		g2d.draw( matLocal.createTransformedShape(cercle) );
+		g2d.setStroke(stroke);
+		
 		double factX = (diametre)/ img.getWidth(null) ;
 		double factY = (diametre)/ img.getHeight(null) ;
 		matLocal.rotate(qtRot, position.getX()+diametre/2, position.getY()+diametre/2);
@@ -190,25 +198,10 @@ public class Balle implements Dessinable, Serializable {
 		g2d.drawImage(img, matLocal, null);
 		 
 
-		switch(type){
-		case LARGE:
-			g2d.setColor(Color.blue);
-			break;
-		case MEDIUM:
-			g2d.setColor(Color.green);
-			break;
-		case SMALL:
-			g2d.setColor(Color.red);
-			break;
-		}		
-
-		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
-		g2d.fill( matLocal.createTransformedShape(cercle) );	
-
 
 		if(modeScientifique) {
 			
-			Stroke stroke = g2d.getStroke();
+			Stroke stroke1 = g2d.getStroke();
 			g2d.setStroke(new BasicStroke(3.0f));
 			
 			//Vecteur vitesse
@@ -239,7 +232,7 @@ public class Balle implements Dessinable, Serializable {
 			g2d.drawString("FG", (int)( eXR2), (int)(eYR2));
 
 		
-			g2d.setStroke(stroke);
+			g2d.setStroke(stroke1);
 		}
 	}
 
@@ -316,21 +309,21 @@ public class Balle implements Dessinable, Serializable {
 
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
-				nouvBalle1.getPosition().setX(position.getX()-1.000005);
+				nouvBalle1.getPosition().setX(position.getX()- nouvBalle1.getDiametre()/2 - 0.5  );
 
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
-				nouvBalle2.getPosition().setX(position.getX()+1.000005);
+				nouvBalle2.getPosition().setX(position.getX()+nouvBalle1.getDiametre()/2  + 0.5 );
 			}
 
 			if(vitesse.getX() > 0) {
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
-				nouvBalle1.getPosition().setX(position.getX()-1.000005);
+				nouvBalle1.getPosition().setX(position.getX()-nouvBalle1.getDiametre()/2  - 0.5 );
 
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
-				nouvBalle2.getPosition().setX(position.getX()+1.000005);
+				nouvBalle2.getPosition().setX(position.getX()+nouvBalle1.getDiametre()/2  + 0.5 );
 			}
 			liste.remove(this);
 			liste.add(nouvBalle1);
@@ -345,11 +338,11 @@ public class Balle implements Dessinable, Serializable {
 			if(vitesse.getX() < 0) {
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
-				nouvBalle1.getPosition().setX(position.getX()-0.7);
+				nouvBalle1.getPosition().setX(position.getX()- nouvBalle1.getDiametre()/2 - 0.5);
 
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
-				nouvBalle2.getPosition().setX(position.getX()+0.7);
+				nouvBalle2.getPosition().setX(position.getX() + nouvBalle1.getDiametre()/2 + 0.5);
 
 			}
 
@@ -357,11 +350,11 @@ public class Balle implements Dessinable, Serializable {
 
 				//gauche
 				nouvBalle1.setVitesse(new Vecteur(-vitesse.getX(),vitesse.getY())); 
-				nouvBalle1.getPosition().setX(position.getX()-0.7);
+				nouvBalle1.getPosition().setX(position.getX()- nouvBalle1.getDiametre()/2 - 0.5);
 
 				//droite
 				nouvBalle2.setVitesse(new Vecteur(vitesse.getX(),vitesse.getY())); 
-				nouvBalle2.getPosition().setX(position.getX()+0.7);
+				nouvBalle2.getPosition().setX(position.getX()+ nouvBalle1.getDiametre()/2 + 0.5);
 			}
 			liste.remove(this);
 			liste.add(nouvBalle1);
