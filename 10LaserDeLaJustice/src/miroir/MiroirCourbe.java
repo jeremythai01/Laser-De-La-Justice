@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import geometrie.Vecteur;
+import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
 import prisme.Prisme;
 
@@ -34,7 +35,8 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	Vecteur inter ;
 	boolean dessiner =false;
 	private Point2D.Double pts;
-
+	private Vecteur normal;
+	private VecteurGraphique vecGraph;
 	/**
 	 * Constructeur de la classe miroirConvexe
 	 * @param position : la poisition du centre
@@ -63,21 +65,14 @@ public class MiroirCourbe implements Dessinable, Serializable {
 		for(Ligne ligne : listeLigne) {
 			g2d.draw(aff.createTransformedShape(ligne));
 		}
-
-/*
-		AffineTransform matLocale = new AffineTransform(mat);
-		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		double pRayon = rayon-0.5;
-		Area fantome = new Area (new Ellipse2D.Double (position.getX()-pRayon, position.getY()-pRayon, pRayon*2, pRayon*2));
-		Area rect = new Area (new Rectangle2D.Double(position.getX()-rayon, position.getY()-rayon, 2*rayon, rayon));
-		fantome.subtract(rect);
-		g2d.fill(matLocale.createTransformedShape(fantome));
-		*/
-
 		if(dessiner) {
-			aff = new AffineTransform(mat);
-			g2d.draw(aff.createTransformedShape(new Line2D.Double(inter.getX(),inter.getY(), position.getX(), position.getY())));
-			g2d.draw(aff.createTransformedShape(new Ellipse2D.Double(inter.getX()-0.5/2, inter.getY()-0.5/2, 0.5, 0.5)));
+			int lgVec = 8;
+			g2d.setColor(Color.black);
+			normal = normal.multiplie(lgVec/normal.module()); //on agrandit la taille du vecteur
+			vecGraph = new VecteurGraphique(normal.getX(), normal.getY()); //adaptation g2d
+			vecGraph.setOrigineXY(position.getX(), position.getY());  
+			vecGraph.setLongueurTete(0.5);
+			vecGraph.dessiner(g2d, mat, hauteur, largeur);
 		}
 	}
 
@@ -86,19 +81,12 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 * @return l'aire du miroir convexe
 	 */
 	public Area getAireMiroirCourbe() {
-		/*AffineTransform matLocale = new AffineTransform();
-		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		matLocale.translate(-rayon, -rayon);
-		//return new Area(new Arc2D.Double(position.getX(), position.getY(), 2*rayon, 2*rayon, -180, 180, Arc2D.OPEN));
-		return new Area(new Rectangle2D.Double(position.getX(), position.getY(), rayon*10, rayon*10));
-		 */
 		AffineTransform matLocale = new AffineTransform();
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
 		double pRayon = rayon-0.5;
 		Area fantome = new Area (new Ellipse2D.Double (position.getX()-pRayon, position.getY()-pRayon, pRayon*2, pRayon*2));
 		Area rect = new Area (new Rectangle2D.Double(position.getX()-rayon, position.getY()-rayon, 2*rayon, rayon));
 		fantome.subtract(rect);
-		//g2d.fill(matLocale.createTransformedShape(fantome));
 		return fantome;
 	}
 
@@ -110,7 +98,8 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	public Vecteur getNormal(Vecteur posInter) {
 		dessiner = true;
 		this.inter = posInter;
-		return (posInter.soustrait(position)) ;
+		this.normal = (posInter.soustrait(position)) ;
+		return normal ;
 	}
 	/**
 	 * Methode qui retourne la position du miroir
@@ -188,8 +177,6 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}
-
-
 
 
 }

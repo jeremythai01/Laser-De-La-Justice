@@ -18,7 +18,7 @@ public class Ligne extends Line2D.Double{
 
 
 	private Point2D.Double debut, fin;
-	private double epaisseur = 0.08;
+	private double epaisseur = 0.1;
 
 	/**
 	 * Constructeur de la classe

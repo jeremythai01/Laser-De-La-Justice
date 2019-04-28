@@ -5,11 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 import geometrie.Vecteur;
+import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
 
 /**
@@ -25,14 +25,14 @@ public class MiroirPlan implements Dessinable, Serializable {
 	private double angle=0,x=0,y=0;
 	private Rectangle2D.Double miroir;
 
-	private double longueur = 10; 
+	private double longueur = 50; 
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
 	private Vecteur inter;
 	private double largeur = 0.1;
-	private Area aireMiroir;
 	private boolean modeSci;
+	private VecteurGraphique vecGraph;
 
 	//Par Miora
 	/**
@@ -45,11 +45,10 @@ public class MiroirPlan implements Dessinable, Serializable {
 		super();
 		this.position = position;
 		this.angle = angle;
-		
-		
+
+
 	}
-
-
+	
 	//Par Miora
 	/**
 	 * Dessiner le miroir
@@ -66,9 +65,20 @@ public class MiroirPlan implements Dessinable, Serializable {
 		miroirTransfo = matLocale.createTransformedShape(miroir); // transforme en pixel
 		g2d.setColor(Color.RED);
 		g2d.fill(miroirTransfo); //dessine en pixel
-		if(modeSci == true) {
-			matLocale = new AffineTransform(mat);
-			g2d.fill(matLocale.createTransformedShape(new Ellipse2D.Double(inter.getX()-0.5/2, inter.getY()-0.5/2, 0.5, 0.5)));
+		if(modeSci) {
+			//Vecteur normal
+			int lgVec = 4;
+			g2d.setColor(Color.black);
+			if(angle<=90) {
+				normal = normal.multiplie(lgVec/normal.module()); //on agrandit la taille du vecteur
+				vecGraph = new VecteurGraphique(-normal.getX(), normal.getY()); //adaptation g2d
+			}else {
+				normal = normal.multiplie(lgVec/normal.module()); //on agrandit la taille du vecteur
+				vecGraph = new VecteurGraphique(normal.getX(), -normal.getY()); //adaptation g2d
+			}
+			vecGraph.setOrigineXY(inter.getX(), inter.getY());  
+			vecGraph.setLongueurTete(0.5);
+			vecGraph.dessiner(g2d, mat, hauteur, largeur);
 		}
 	}
 
@@ -93,7 +103,11 @@ public class MiroirPlan implements Dessinable, Serializable {
 		double angleMiroirNormal;
 		angleMiroirNormal = Math.toRadians(angle);
 		Vecteur vecMiroir = new Vecteur (Math.cos(angleMiroirNormal), Math.sin(angleMiroirNormal));
-		normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
+		if (angle < 180) { // ajustement de la normal
+			normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).multiplie(-1).normalise();;
+		} else {
+			normal = new Vecteur(vecMiroir.getY(), -vecMiroir.getX()).normalise();
+		}
 		return normal;
 	}
 
@@ -117,7 +131,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public Area getAire() {
 		return new Area(miroir);
 	}
-	
+
 	/**
 	 * Retourne la position du miroir
 	 * @return
@@ -132,7 +146,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	public void setPosition(Vecteur position) {
 		this.position = position;
 	}
-	
+
 	//Par Miora
 	/**
 	 * Cette methode permet d'obtenir l'angle du miroir
@@ -152,7 +166,7 @@ public class MiroirPlan implements Dessinable, Serializable {
 	}
 
 
-	public void afficherVecteur(Vecteur normal, Vecteur inter) {
+	public void afficherVecteur(Vecteur inter) {
 		modeSci = true;
 		this.inter = inter;
 	}
