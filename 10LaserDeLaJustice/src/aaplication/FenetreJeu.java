@@ -32,6 +32,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import documentation.FenetreConcept;
+import geometrie.Vecteur;
 import interfaces.SceneListener;
 import options.Options;
 import physique.Balle;
@@ -84,6 +85,7 @@ public class FenetreJeu extends JFrame {
 	private BarreEnergie barreEnergieCinetique;
 	private BarreEnergie barreEnergiePotentielle;
 	private BarreEnergie barreEnergieMecanique;
+	private JLabel lblVitesse;
 
 	// Par Arezki 
 	/**
@@ -359,6 +361,16 @@ public class FenetreJeu extends JFrame {
 				barreEnergiePotentielle.repaint();
 				barreEnergieMecanique.repaint();
 			}
+			public void vitesesMoyenneBalle(ArrayList<Balle> listeBalles) {
+				double vitesseMoyX = 0;
+				double vitesseMoyY = 0;
+				for(int i = 0; i < listeBalles.size();i++ ) {
+					vitesseMoyX += listeBalles.get(i).getVitesse().getX();
+					vitesseMoyY += listeBalles.get(i).getVitesse().getY();
+					System.out.println();
+					lblVitesse.setText("X: "+vitesseMoyX+" ,Y: "+vitesseMoyY);
+				}
+			}
 		});
 
 		sceneFinale.setBounds(10, 110, 1146, 585);
@@ -535,6 +547,16 @@ public class FenetreJeu extends JFrame {
 		});
 		btnLireLesConcepts.setBounds(858, 11, 195, 39);
 		contentPane.add(btnLireLesConcepts);
+		
+		JLabel lblVitesseMoyenneDes = new JLabel("Vitesse Moyenne des balles : ");
+		lblVitesseMoyenneDes.setBounds(60, 783, 145, 14);
+		contentPane.add(lblVitesseMoyenneDes);
+		
+		lblVitesse = new JLabel("vitesse");
+		lblVitesse.setBounds(215, 783, 145, 14);
+		contentPane.add(lblVitesse);
+		
+	
 	
 	}
 
