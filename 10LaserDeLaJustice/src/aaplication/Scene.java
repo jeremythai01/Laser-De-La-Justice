@@ -416,7 +416,8 @@ public class Scene extends JPanel implements Runnable {
 			compteur++;
 			son.joueMusique("alienMusique");
 			calculerUneIterationPhysique();
-			leverEventVitesseMoyenneBalle(listeBalles);
+			leverEventBalle(listeBalles);
+			leverEventPersonnage(personnage);
 			leverEvenModeScientifique();
 			qtRotation = qtRotation + 0.2;
 			for (TrouNoir trou : listeTrou) {
@@ -832,8 +833,10 @@ public class Scene extends JPanel implements Runnable {
 				double y = HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle));
 				if (couleurPersoLaser == false) {
 					listeLasers.add(new Laser(new Vecteur(x, y), angle, vitesseLaser));
+					leverEventLaser(listeLasers, angle);
 				} else {
 					listeLasers.add(new Laser(new Vecteur(x, y), angle, vitesseLaser, couleurLaser));
+					leverEventLaser(listeLasers, angle);
 				}
 				son.joue("tir");
 			}
@@ -1464,13 +1467,34 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 	
-	
-	public void leverEventVitesseMoyenneBalle(ArrayList<Balle> listeBalles) {
+	/**
+	 * Permet d'avoir en sortie la vitesse, l'accélération et la force gravitationnelle des balles. 
+	 * @param listeBalles
+	 */
+	// Arezki
+	public void leverEventBalle(ArrayList<Balle> listeBalles) {
 		for(SceneListener ecout : listeEcouteur) {
-			ecout.vitesesMoyenneBalle(listeBalles);
+			ecout.evenementBalles(listeBalles);
+		}
+	}
+	/**
+	 * Cette méthode gère les évènements qui sont reliés au laser
+	 * @param lasers
+	 * @param angle
+	 */
+	//Arezki
+	public void leverEventLaser(ArrayList<Laser> lasers, double angle) {
+		for(SceneListener ecout : listeEcouteur) {
+			ecout.evenementLaser(lasers, angle);
 		}
 	}
 
+	public void leverEventPersonnage(Personnage personnage) {
+		for(SceneListener ecout : listeEcouteur) {
+			ecout.evenementPersonnage(personnage);
+		}
+	}
+	
 	// Par Jeremy 
 	/**
 	 * Permet de mettre a jour les sorties du mode scientifique

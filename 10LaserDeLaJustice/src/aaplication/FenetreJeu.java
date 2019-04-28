@@ -36,6 +36,7 @@ import documentation.FenetreConcept;
 import geometrie.Vecteur;
 import interfaces.SceneListener;
 import options.Options;
+import personnage.Personnage;
 import physique.Balle;
 import son.Bruit;
 
@@ -43,6 +44,7 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
 import physique.BarreEnergie;
+import physique.Laser;
 
 /**
  * 
@@ -89,6 +91,9 @@ public class FenetreJeu extends JFrame {
 	private JLabel lblVitesse;
 	private JLabel lblGravit;
 	private JLabel lblAccel;
+	private JLabel lblAngle;
+	private JLabel  lblCouleur;
+	private JLabel lblPer;
 
 	// Par Arezki 
 	/**
@@ -364,10 +369,16 @@ public class FenetreJeu extends JFrame {
 				barreEnergiePotentielle.repaint();
 				barreEnergieMecanique.repaint();
 			}
-			public void vitesesMoyenneBalle(ArrayList<Balle> listeBalles) {
+			
+			/**
+			 * Permet d'avoir en sortie la vitesse, l'accélération et la force gravitationnelle des balles. 
+			 */
+			//Arezki 
+			public void evenementBalles(ArrayList<Balle> listeBalles) {
 				double vitesseMoyX = 0;
 				double vitesseMoyY = 0;
 				DecimalFormat df = new DecimalFormat("#.##");
+				if(listeBalles.size()!=0) {
 				lblAccel.setText("[x: "+(listeBalles.get(0).getAccel().getX()+ " , y: "+ listeBalles.get(0).getAccel().getY()+" ] m²/s"));
 				for(int i = 0; i < listeBalles.size();i++ ) {
 					vitesseMoyX += listeBalles.get(i).getVitesse().getX();
@@ -377,8 +388,28 @@ public class FenetreJeu extends JFrame {
 					lblVitesse.setText("[x: "+df.format(vitesseMoyX)+" ,y : "+df.format(vitesseMoyY)+" ] m/s");
 					lblGravit.setText("[x: "+listeBalles.get(i).getForceGravi().getX()+ " , y: "+ listeBalles.get(i).getForceGravi().getY()+" ] N");
 					
-					
+				    }
 				}
+			}
+
+			/**
+			 * 
+			 */
+			@Override
+			public void evenementLaser(ArrayList<Laser> lasers, double angle) {
+				DecimalFormat df = new DecimalFormat("#.##");
+				lblAngle.setText(""+df.format(angle));
+				
+				lblCouleur.setForeground(lasers.get(0).getCouleurLaser());
+				
+			}
+
+
+			@Override
+			public void evenementPersonnage(Personnage personnage) {
+				DecimalFormat df = new DecimalFormat("#.##");
+
+				lblPer.setText("[x: "+df.format(personnage.getPosition())+"]");
 			}
 		});
 
@@ -557,7 +588,7 @@ public class FenetreJeu extends JFrame {
 		btnLireLesConcepts.setBounds(858, 11, 195, 39);
 		contentPane.add(btnLireLesConcepts);
 		
-		JLabel lblVitesseMoyenneDes = new JLabel("Vitesse Moyenne des balles :");
+		JLabel lblVitesseMoyenneDes = new JLabel("Vitesse totale des balles :");
 		lblVitesseMoyenneDes.setBounds(60, 784, 145, 14);
 		contentPane.add(lblVitesseMoyenneDes);
 		
@@ -566,11 +597,11 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(lblVitesse);
 		
 		JLabel lblForceRavitationnelle = new JLabel("Force gravitationnelle :");
-		lblForceRavitationnelle.setBounds(63, 822, 142, 14);
+		lblForceRavitationnelle.setBounds(63, 825, 142, 14);
 		contentPane.add(lblForceRavitationnelle);
 		
 		lblGravit = new JLabel("Gravit\u00E9");
-		lblGravit.setBounds(215, 822, 130, 14);
+		lblGravit.setBounds(215, 825, 130, 14);
 		contentPane.add(lblGravit);
 		
 		JLabel lblAcclerationGravitationnelle = new JLabel("Acc\u00E9leration Gravitationnelle: ");
@@ -582,7 +613,35 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(lblAccel);
 		
 	
-	
+		JLabel lblAngleLaser = new JLabel("L'angle du laser: ");
+		lblAngleLaser.setBounds(360, 784, 145, 14);
+		contentPane.add(lblAngleLaser);
+		
+		lblAngle = new JLabel("Angle");
+		lblAngle.setBounds(470, 784, 130, 14);
+		contentPane.add(lblAngle);
+		
+		
+		JLabel lblCouleurLaser = new JLabel("Couleur du laser :");
+		lblCouleurLaser.setBounds(360, 825, 142, 14);
+		contentPane.add(lblCouleurLaser);
+		
+		lblCouleur= new JLabel ("Couleur");
+		lblCouleur.setBackground(Color.GRAY);
+		lblCouleur.setBounds(470, 825, 130, 14);
+		contentPane.add(lblCouleur);
+		
+		
+
+		JLabel lblPersonnage = new JLabel("Position du personnage :");
+		lblPersonnage.setBounds(360, 868, 142, 14);
+		contentPane.add(lblPersonnage);
+		
+		lblPer= new JLabel ("position");
+		lblPer.setBounds(500, 868, 130, 14);
+		contentPane.add(lblPer);
+		
+		
 	}
 
 
