@@ -8,12 +8,19 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+
 import geometrie.Vecteur;
 import geometrie.VecteurGraphique;
 import interfaces.Dessinable;
@@ -22,6 +29,7 @@ import utilite.ModeleAffichage;
 /**
  * Classe qui créée une balle et mémorise sa masse, son diamètre, sa position, sa vitesse, son image, son accélération, la somme des forces qui s'applique sur elle et son type.
  * @author Jeremy Thai 
+ * @author Miora R. Rakoto
  */
 
 public class Balle implements Dessinable, Serializable { 
@@ -35,13 +43,15 @@ public class Balle implements Dessinable, Serializable {
 	private MoteurPhysique mt = new MoteurPhysique();
 	private Type type;
 	private double qtRot;
-	private Image img;
 	private final double VITESSE_ROTATION = 0.04;
 	private VecteurGraphique vG;
 	private boolean modeScientifique = false;
 	private Vecteur sommeForces;
 	private static ModeleAffichage modele;
 	private double charge=0.000006;
+	
+	private transient BufferedImage img;
+	transient ArrayList<BufferedImage> images = new ArrayList ();
 
 
 	/**
@@ -53,9 +63,7 @@ public class Balle implements Dessinable, Serializable {
 		SMALL, MEDIUM, LARGE;
 	}
 
-
-
-
+	//Jeremy Thai
 	/**
 	 * Constructeur ou la position, la vitesse , l'acceleration et le type de balle initiales sont spécifiés
 	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
@@ -73,24 +81,24 @@ public class Balle implements Dessinable, Serializable {
 			this.type = Type.SMALL;
 			setMasse(5);
 			setDiametre(1);
-			//lireImage("Pokeball.png");
+			lireImage("Pokeball.png");
 			break;
 		case "MEDIUM":
 			this.type = Type.MEDIUM;
 			setMasse(10);
 			setDiametre(2);
-			//	lireImage("UltraBall.png");
+			lireImage("UltraBall.png");
 			break;
 		case "LARGE":
 			this.type = Type.LARGE;
-			//	lireImage("MasterBall.jpg");
+			lireImage("MasterBall.jpg");
 			break;
 		}
 		forceGravi = MoteurPhysique.forceGravi(masse, accel);
 	}
 
 
-
+	//Jeremy Thai
 	/**
 	 * Constructeur qui permet de copier les données dune balle passée en parametre dans la balle courante
 	 * @param balle balle dont les données seront copiés 
@@ -107,7 +115,7 @@ public class Balle implements Dessinable, Serializable {
 
 	}
 
-
+	//Jeremy Thai
 	/**
 	 * Permet de lire et enregistrer limage de la balle 
 	 * @param str chaine de caractere representant le nom du fichier image 
@@ -120,13 +128,45 @@ public class Balle implements Dessinable, Serializable {
 			System.exit(0);}
 		try {
 			img = ImageIO.read(urlBalle);
+			images.add(img); // on rentre les images dans une listes
 		}
 		catch (IOException e) {
 			System.out.println("Erreur pendant la lecture du fichier d'image");
 		}
 	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet d'écrire les images de la classe balle
+	 * @param out : l'objet qui s'occupe des flux de sorties
+	 * @throws IOException
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(images.size());
+        for (BufferedImage chaqueImage : images) {
+            ImageIO.write(chaqueImage, "png", out);
+            ImageIO.write(chaqueImage, "jpg", out);
+        }
+    }
 
+	//Jeremy Thai
+	/**
+	 * Cette methode permet lire les images de la classe balle
+	 * @param in : l'objet qui s'occupe des flux d'entrees
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        final int imageCount = in.readInt();
+        images = new ArrayList<BufferedImage>(imageCount);
+        for (int i=0; i<imageCount; i++) {
+            img = ImageIO.read(in);
+        }
+    }
 
+    //Jeremy Thai
 	/**
 	 * Permet de dessiner la balle selon le contexte graphique en parametre.
 	 * @param g2d contexte graphique
@@ -135,12 +175,11 @@ public class Balle implements Dessinable, Serializable {
 	 * @param largeur largeur du monde reelle
 	 * 
 	 */
-	@Override
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 
 		AffineTransform matLocal = new AffineTransform(mat);
 
-		/*
+	
 		double factX = (diametre)/ img.getWidth(null) ;
 		double factY = (diametre)/ img.getHeight(null) ;
 		matLocal.rotate(qtRot, position.getX()+diametre/2, position.getY()+diametre/2);
@@ -149,7 +188,7 @@ public class Balle implements Dessinable, Serializable {
 		matLocal.translate( (position.getX() )   / factX , (position.getY()) / factY);
 
 		g2d.drawImage(img, matLocal, null);
-		 */
+		 
 
 		switch(type){
 		case LARGE:
@@ -206,7 +245,7 @@ public class Balle implements Dessinable, Serializable {
 
 
 
-
+	//Jeremy Thai
 	/**
 	 * Méthode qui permet de faire tourner l'image de la balle 
 	 */
@@ -220,7 +259,7 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
-
+	//Jeremy Thai
 	/**
 	 * Effectue une iteration de l'algorithme d'Euler implicite. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -230,6 +269,8 @@ public class Balle implements Dessinable, Serializable {
 		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
 		//System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
+	
+	//Jeremy Thai
 	/**
 	 * Effectue une iteration de l'algorithme Verlet. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -239,6 +280,8 @@ public class Balle implements Dessinable, Serializable {
 		calculerForcesEtAccel();
 		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
 	}
+	
+	//Jeremy Thai
 	/**
 	 * Effectue une iteration de l'algorithme de Runge-Kutta ordre 4. Calcule la nouvelle vitesse et la nouvelle
 	 * position de la balle.
@@ -252,6 +295,7 @@ public class Balle implements Dessinable, Serializable {
 
 
 
+	//Jeremy Thai
 	/**
 	 * Modifie le type de balle en creant 2 balles d'un plus petit type et en les ajoutant dans la liste de balles 
 	 * @param liste liste des balles 
@@ -333,6 +377,7 @@ public class Balle implements Dessinable, Serializable {
 
 
 
+	//Jeremy Thai
 	/**
 	 * Modifie la position de la balle
 	 * @param pos vecteur des positions x et y
@@ -343,6 +388,7 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
+	//Jeremy Thai
 	/**
 	 * modifie ou affecte une vitesse a celle courante de la balle
 	 * @param vitesse vecteur des vitesse x et y
@@ -353,6 +399,7 @@ public class Balle implements Dessinable, Serializable {
 		this.vitesse = newVec;
 	}
 
+	//Jeremy Thai
 	/**
 	 * Associe une acceleration, ou modifie l'acceleration courante de la balle
 	 * @param accel vecteur des accélérations en x et y
@@ -363,6 +410,7 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
+	//Jeremy Thai
 	/**
 	 * Modifie le diametre de la balle
 	 * @param diametre Le nouveau diamètre
@@ -370,6 +418,7 @@ public class Balle implements Dessinable, Serializable {
 	public void setDiametre(double diametre) { this.diametre = diametre; }
 
 
+	//Jeremy Thai
 	/**
 	 * Modifie la masse 
 	 * @param masseEnKg masse en kg
@@ -377,16 +426,18 @@ public class Balle implements Dessinable, Serializable {
 	public void setMasse(double masse) { this.masse = masse; }
 
 
+	//Jeremy Thai
 	/**
 	 * Modifie l'image de la balle par celle passée en paramètre
 	 * @param img nouvelle image en paramètre
 	 */
-	public void setImg(Image img) {
+	public void setImg(BufferedImage img) {
 		this.img = img;
 	}
 
 
 
+	//Jeremy Thai
 	/**
 	 * Retourne la position courante
 	 * @return la position courante
@@ -394,12 +445,14 @@ public class Balle implements Dessinable, Serializable {
 	public Vecteur getPosition() { return (position); }
 
 
+	//Jeremy Thai
 	/**
 	 * Retourne la vitesse courante
 	 * @return la vitesse courante
 	 */
 	public Vecteur getVitesse() { return (vitesse); }
 
+	//Jeremy Thai
 	/**
 	 * Retourne l'acceleration courante
 	 * @return acceleration courante
@@ -407,6 +460,7 @@ public class Balle implements Dessinable, Serializable {
 	public Vecteur getAccel() { return (accel); }
 
 
+	//Jeremy Thai
 	/**
 	 * Retourne le diametre de la balle
 	 * @return Le diamètre
@@ -414,6 +468,7 @@ public class Balle implements Dessinable, Serializable {
 	public double getDiametre() { return diametre; }
 
 
+	//Jeremy Thai
 	/**
 	 * Retourne la masse en Kg
 	 * @return La masse en kg
@@ -422,6 +477,7 @@ public class Balle implements Dessinable, Serializable {
 
 
 
+	//Jeremy Thai
 	/**
 	 * retourne l'aire d'une balle en forme de cercle
 	 * @return aire de la balle 
@@ -433,6 +489,7 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
+	//Jeremy Thai
 	/**
 	 * Methode qui retourne le type de la balle 
 	 * @return type type de la balle
@@ -440,23 +497,27 @@ public class Balle implements Dessinable, Serializable {
 	public Type getType()  {return type; }
 
 
+	//Jeremy Thai
 	/**
 	 * Retourne l'image de la balle 
 	 * @return img image de la balle 
 	 */
-	public Image getImg() {return img; }
+	public BufferedImage getImg() {return img; }
 
 
+	//Jeremy Thai
 	public double getEnergieCinetique() {
 		return MoteurPhysique.energieCinetique(masse, vitesse);
 	}
 
+	//Jeremy Thai
 	public double getEnergiePotentielle(double hauteur) {
 
 		return MoteurPhysique.energiePotentielle( masse, accel, hauteur-position.getY());
 	}
 
 
+	//Jeremy Thai
 	/**
 	 * Retourne la force gravitationnelle
 	 * @return force gravitationnelle
@@ -467,6 +528,7 @@ public class Balle implements Dessinable, Serializable {
 
 
 
+	//Jeremy Thai
 	/**
 	 * Modifie la valeur (vrai ou faux) du mode scientifique par celle passee en parametre
 	 * @param modeScientifique nouvelle valeur passee en parametre
@@ -475,7 +537,8 @@ public class Balle implements Dessinable, Serializable {
 		this.modeScientifique = modeScientifique;
 	}
 
-
+	//Jeremy Thai
+	
 	public void calculerForcesEtAccel() {
 		forceGravi = MoteurPhysique.forceGravi(masse, accel);
 		sommeForces = MoteurPhysique.sommeForces(forceGravi, forceElectrique);
@@ -483,11 +546,13 @@ public class Balle implements Dessinable, Serializable {
 		
 	}
 
+	//Jeremy Thai
 	public void setForcesElectrique(Vecteur forceElectrique) {
 		this.forceElectrique = new Vecteur(forceElectrique);
 	}
 
 
+	//Jeremy Thai
 	public static void setModele(double longueur, double hauteur, double longueurMonde) {
 	   modele =  new ModeleAffichage(longueur, hauteur, longueurMonde);
 	}
