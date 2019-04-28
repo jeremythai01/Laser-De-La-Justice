@@ -453,7 +453,7 @@ public class SceneTest extends JPanel implements Runnable {
 					perso.neBougePas();
 					listeLasers.add(
 							new Laser(new Vecteur(
-									perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, vitesseLaser));
+									perso.getPosition()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, vitesseLaser));
 				}
 			}
 		}
@@ -479,7 +479,7 @@ public class SceneTest extends JPanel implements Runnable {
 				perso.neBougePas();
 				listeLasers.add(
 						new Laser(new Vecteur(
-								perso.getPositionX()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, vitesseLaser));
+								perso.getPosition()+perso.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-perso.getLONGUEUR_PERSO()) , angle, vitesseLaser));
 				son.joue("tir");
 			}
 		}

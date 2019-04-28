@@ -51,7 +51,7 @@ public class Balle implements Dessinable, Serializable {
 	private double charge=0.000006;
 	
 	private transient BufferedImage img;
-	transient ArrayList<BufferedImage> images = new ArrayList ();
+	private transient ArrayList<BufferedImage> images = new ArrayList ();
 
 
 	/**

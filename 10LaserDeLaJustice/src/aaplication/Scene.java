@@ -85,7 +85,7 @@ public class Scene extends JPanel implements Runnable {
 	private double qtRotation = 0;
 
 	private int toucheDroite = 39;
-	private double positionPerso = 0;
+	private double positionPerso;
 	private float valeurAngleRoulette = 90;
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
@@ -225,7 +225,7 @@ public class Scene extends JPanel implements Runnable {
 
 					}else if((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR))&&(effacement)) {
 
-						
+
 					}else if((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR))&&(effacement)) {
 						listeMiroirCourbe.remove(i);
 						repaint();
@@ -421,7 +421,7 @@ public class Scene extends JPanel implements Runnable {
 		for (Pouvoir pouvoir : listePouvoirs) {
 			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
+
 		//Le listenern marche pas dans le constructeur...
 		leverEvenChangementTemps(tempsDuJeu);
 
@@ -488,7 +488,7 @@ public class Scene extends JPanel implements Runnable {
 		tempsEcoule += deltaTInit;
 
 	}
-	
+
 	/**
 	 * Animation du jeu 
 	 */ 
@@ -835,7 +835,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 	// fin methode
-	
+
 	private double ajustementArcTan(Vecteur angle) {
 		double angleDegre = Math.abs(Math.toDegrees(Math.atan(angle.getY()/angle.getX())));
 		if(angle.getX() >0 && angle.getY()>0) {
@@ -898,7 +898,7 @@ public class Scene extends JPanel implements Runnable {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
 			if (code == KeyEvent.VK_SPACE) {
-				double x = personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2
+				double x = personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2
 						+ 2 * Math.cos(Math.toRadians(angle));
 				double y = HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle));
 				if (couleurPersoLaser == false) {
@@ -1199,10 +1199,10 @@ public class Scene extends JPanel implements Runnable {
 		if (enMouvement) {
 			g.setColor(Color.red);
 			Path2D.Double trace = new Path2D.Double();
-			trace.moveTo(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
+			trace.moveTo(personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2,
 					HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO());
 			trace.lineTo(
-					personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle)),
+					personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle)),
 					HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle)));
 			g.draw(mat.createTransformedShape(trace));
 		}
@@ -1251,8 +1251,6 @@ public class Scene extends JPanel implements Runnable {
 					couleurPersoLaser = true;
 					couleurLaser = couleurOption;
 				}
-				personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
-
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -1342,14 +1340,6 @@ public class Scene extends JPanel implements Runnable {
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
-
-		if (customDir.exists()) {
-			System.out.println(customDir + " already exists");
-		} else if (customDir.mkdirs()) {
-			System.out.println(customDir + " was created");
-		} else {
-			System.out.println(customDir + " was not created");
-		}
 		// Fin creation dossier
 
 		String nomFichierSauvegarde = nomSave;
@@ -1364,7 +1354,8 @@ public class Scene extends JPanel implements Runnable {
 			fluxSortie.writeObject(listePrisme);
 			fluxSortie.writeObject(listeTrou);
 			fluxSortie.writeObject(listeBlocEau);
-			fluxSortie.writeDouble(personnage.getPositionX()); // les caracteristiques du personnage
+			fluxSortie.writeDouble(personnage.getPosition());
+			System.out.println("ecrit " + personnage.getPosition() );
 			if (couleurLaser == null) {
 				fluxSortie.writeObject(null);
 			} else {
@@ -1396,7 +1387,6 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
-		//leverEvenChangementTemps(10);
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File fichierDeTravail;
@@ -1423,6 +1413,7 @@ public class Scene extends JPanel implements Runnable {
 				e.printStackTrace();
 			}
 			positionPerso = fluxEntree.readDouble();
+			System.out.println("lu" + positionPerso );
 			try {
 				couleurLaser = (Color) fluxEntree.readObject();
 				if (couleurLaser == null) {
@@ -1463,648 +1454,658 @@ public class Scene extends JPanel implements Runnable {
 			// partie chage
 			if (nomFichier.endsWith(".niv")) {
 				lectureNiveau(nomFichier);
+				personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 			} else if (nomFichier.endsWith(".save") || nomFichier.equals("temporaire")) {
 				lectureFichierSauvegarde(nomFichier);
 				coeurs.setCombien(nombreVies);
+				personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
 			}
-			personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
-
-		} else {
+		}else {
 			// partie nouvelle
 			System.out.println("nouvelle partie come on");
 			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
 			personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 		}
-
-	}
-
-	// Par Miora R. Rakoto
-	/**
-	 * Cette methode permet de sauvegarder un niveau
-	 * 
-	 * @param nomSauv : le nom du niveau
-	 */
-	public void ecritureNiveau(String nomSauv) {
-		// Creation dossier
-		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
-		direction += File.separator + "Niveau";
-		File customDir = new File(direction);
-
-		if (customDir.exists()) {
-			System.out.println(customDir + " already exists");
-		} else if (customDir.mkdirs()) {
-			System.out.println(customDir + " was created");
-		} else {
-			System.out.println(customDir + " was not created");
-		}
-		// Fin creation dossier
-
-		String nomFichierNiveau = nomSauv + ".niv";
-		File fichierDeTravail = new File(direction, nomFichierNiveau);
-		ObjectOutputStream fluxSortie = null;
-		try {
-			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
-			fluxSortie.writeObject(listeBalles); // la liste des balles
-			fluxSortie.writeObject(listeBlocEau);
-			fluxSortie.writeObject(listeMiroirPlan);
-			fluxSortie.writeObject(listePrisme);
-			fluxSortie.writeObject(listeTrou);
-			fluxSortie.writeObject(listeMiroirCourbe);
-		} catch (IOException e) {
-			System.out.println("Erreur lors de l'écriture!");
-			e.printStackTrace();
-		} finally {
-			// on exécutera toujours ceci, erreur ou pas
-			try {
-				fluxSortie.close();
-			} catch (IOException e) {
-				System.out.println("Erreur rencontrée dans la sauvagarde de niveau!");
-			}
-		} // fin finally
-	}
-
-	// --------------------------------------------------------------------------------------------------------------------------------------
-
-	//Miora
-	/**
-	 * Cette methode permet d'ajouter la liste d'écouteur a la scene
-	 * @param ecouteur : l'ecouteur
-	 */
-	public void addSceneListener(SceneListener ecouteur) {
-		listeEcouteur.add(ecouteur);
-	}
-	// Par Miora
-	/**
-	 * Cette methode permet de remettre le temps de la partie sauvegarde
-	 */
-	public void leverEvenChangementTemps(int temps) {
-		for (SceneListener ecout : listeEcouteur) {
-			ecout.changementTempsListener(temps);
-		}
-	}
-
-	// Par Jeremy 
-	/**
-	 * Permet de mettre a jour les sorties du mode scientifique
-	 */
-	private void leverEvenModeScientifique() {
-		if(modeScientifique) {
-			for (SceneListener ecout : listeEcouteur) {
-				ecout.modeScientifiqueListener(listeBalles, HAUTEUR_DU_MONDE);
-			}
-		}
-	}
-
-	//Jeremy Thai
-	/**
-	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne touche de souris et qu'il est en mode souris
-	 * @param e touche de souris
-	 * @param perso personnage
-	 */
-	private void tirLaser(MouseEvent e, Personnage perso) {
-		if (perso.isModeSouris()) {
-			if (enCoursAnimation == true) {
-				perso.neBougePas();
-				listeLasers.add(new Laser(new Vecteur(perso.getPositionX() + perso.getLARGEUR_PERSO() / 2,
-						HAUTEUR_DU_MONDE - perso.getLONGUEUR_PERSO()), angle, vitesseLaser));
-			}
-		}
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	//Jeremy Thai
-	/**
-	 * 
-	 * @param balle
-	 */
-	private void pouvoirAuHasard(Balle balle) {
-
-		Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
-		Vecteur accel = new Vecteur(gravite);
-
-		int nb = 0 + (int) (Math.random() * ((10 - 0) + 1));
-
-		Pouvoir pouvoir;
-		switch (nb) {
-
-		case 1:
-			pouvoir = new BoostVitesse(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
-			listePouvoirs.add(pouvoir);
-			son.joue("pouvoirApparait");
-			break;
-
-		case 2:
-			pouvoir = new Bouclier(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
-			listePouvoirs.add(pouvoir);
-			son.joue("pouvoirApparait");
-			break;
-
-		case 3:
-			pouvoir = new Ralenti(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
-			listePouvoirs.add(pouvoir);
-			son.joue("pouvoirApparait");
-			break;
-
-		case 4:
-			pouvoir = new AjoutVie(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
-			listePouvoirs.add(pouvoir);
-			son.joue("pouvoirApparait");
-			break;
-		}
-	}
-
-	//Jeremy Thai
-	/**
-	 * Ajoute les compteurs de pouvoirs et les fait partir
-	 */
-	private void ajoutCompteurs() {
-
-		if (vitesseLaser.getY() > vitesseLaserInit.getY())
-			compteurVitesse = tempsEcoule + 5;
-
-		if (deltaT < deltaTInit)
-			compteurRalenti = tempsEcoule + 5;
-
-		if (personnage.isBouclierActive())
-			compteurBouclier = tempsEcoule + 9;
-	}
-
-	//Jeremy Thai
-	/**
-	 * Met a jour la durée de compteurs de pouvoirs et de la rotation des images des balles 
-	 */
-	private void updateDureeCompteurs() {
-
-		for (Balle balle : listeBalles) {
-			balle.updateRotation();
-		}
-		try {
-			for (Pouvoir pouvoir : listePouvoirs) {
-				if (pouvoir.getCompteurAvantDisparaitre() <= tempsEcoule)
-					listePouvoirs.remove(pouvoir);
-			}
-		} catch (ConcurrentModificationException e) {
-		}
-
-		if (compteurVitesse <= tempsEcoule) {
-			vitesseLaser = vitesseLaserInit;
-			compteurVitesse = 0;
-			personnage.setEnVitesse(false);
-		}
-
-		if (compteurRalenti <= tempsEcoule) {
-			deltaT = deltaTInit;
-			compteurRalenti = 0;
-		}
-
-		if (compteurBouclier <= tempsEcoule)
-			personnage.setBouclierActive(false);
-
-		if (personnage.getTempsMort() <= tempsEcoule)
-			personnage.setMort(false);
-
-	}
-
-	//Jérémy Thai
-	/**
-	 * Détecte et réalise la collision entre un pouvoir et le personnage
-	 */
-	private void detectionCollisionPouvoirsPersonnages() {
-
-		for (Pouvoir pouvoir : listePouvoirs) {
-			if (enIntersection(pouvoir.getAire(), personnage.getAire())) {
-				son.joue("pouvoirActive");
-				pouvoir.activeEffet(this);
-				ajoutCompteurs();
-				listePouvoirs.remove(pouvoir);
-			}
-		}
-	}
-
-	//Jeremy Thai
-	/**
-	 * Met a jour la position de chaque pouvoir de la liste de pouvoirs
-	 */
-	private void updateMouvementPouvoirs() {
-		for (Pouvoir pouvoir : listePouvoirs) {
-			if (pouvoir.getPosition().getY() + pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
-				pouvoir.getPosition().setY(HAUTEUR_DU_MONDE - pouvoir.getLongueurImg());
-			} else {
-				pouvoir.unPasVerlet(deltaT);
-			}
-
-		}
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	//Jeremy Thai
-	/**
-	 * Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
-	 */
-	private void detectionCollisionMurBalle() {
-
-		for (Balle balle : listeBalles) {
-
-			Vecteur position = new Vecteur(balle.getPosition());
-			double diametre = balle.getDiametre();
-
-			if (position.getY() + diametre >= HAUTEUR_DU_MONDE) { // touche le sol
-				balle.getVitesse().setY(-balle.getVitesse().getY());
-			}
-
-			if (position.getX() + diametre >= LARGEUR_DU_MONDE) {
-				if (balle.getVitesse().getX() > 0)
-					balle.getVitesse().setX(-balle.getVitesse().getX());
-
-			}
-			if (position.getX() <= 0) {
-				if (balle.getVitesse().getX() < 0)
-					balle.getVitesse().setX(-balle.getVitesse().getX());
-			}
-		}
-
 	}
 
 
-	//Jeremy Thai
-	/**
-	 * Détecte et s'il y a une collision entre le personnage et un mur et s'occupe de la collision
-	 */
-	private void detectionCollisionPersonnageMur() {
-
-		if (personnage.getPositionX() <= 0)
-			personnage.setPositionX(0);
-
-		if (personnage.getPositionX() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
-			personnage.setPositionX(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
-	}
-
-
-
-	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Méthode pour savoir quel prisme entre en collision avec quel laser
-	 */
-	// Auteur: Arezki Issaadi
-	private void collisionLaserPrisme() {
-
-		for (int i = 0; i < listeLasers.size(); i++) {
-
-			for (int j = 0; j < listePrisme.size(); j++) {
-
-				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire())) {
-
-					System.out.println(j);
-					prisme = listePrisme.get(j);
-					laser = listeLasers.get(i);
-
-					j = listePrisme.size();
-					i = listeLasers.size();
-
-					calculRefractionPrisme(laser, prisme);
-					// premiereFoisPrisme = false;
-				}
-
-			}
-		}
-
-	}
-
-	/**
-	 * Cette méthode fait les calculs pour a réfraction du laser lorsqu'il touche un prisme et crée plusieur lasers comme dans la vraie vie 
-	 * @param laser: laser qui sera en collision avec le prisme
-	 * @param prismes: prisme qui sera en collision avec le laser
-	 */
-	// Auteur: Arezki Issaadi
-	private void calculRefractionPrisme(Laser laser, Prisme prismes) {
-
-		System.out.println("------------------------------------------------------------------------------");
-		Vecteur T = new Vecteur();
-		Vecteur V = laser.getPositionHaut();
-		Vecteur N = normalPrisme(laser, prismes);
-		Vecteur E = V.multiplie(-1);
-		double n = 1.0 / prisme.getIndiceRefraction();
-		System.out.println("la position laser avant refraction : " + laser.getPositionHaut());
-
-		System.out.println("normal" + N);
-		System.out.println("n: " + n);
-		System.out.println("position: " + prismes.getP1());
-		T = V.multiplie(n).additionne(N.multiplie(
-				(n * (E.prodScalaire(N)) - Math.sqrt(1 - Math.pow(n, 2) * (1 - (Math.pow(E.prodScalaire(N), 2)))))));
-		T = T.multiplie(-1);
-		System.out.println("T: " + T);
-
-		// laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(), T.getY()));
-		double angleAncien = laser.getAngleTir();
-		System.out.println("l'angle du laser avant refraction: " + angleAncien);
-
-		if (ligne23) {
-			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())) + angle);
-		} else {
-			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())));
-		}
-
-		System.out.println("l'angle du laser apres refraction: " + laser.getAngleTir());
-
-		System.out.println("la position laser apres refraction : " + laser.getPositionHaut());
-
-		double angleLaser = laser.getAngleTir();
-		listeLasers.add(
-				new Laser(laser.getPositionHaut().additionne(new Vecteur(0.005, 0)), angleLaser, laser.getVitesse()));
-
-		repaint();
-
-	}
-
-	/**
-	 * Cette méthode calcule la normal pour chaque côté du prisme et la retourne en vecteur dans les unités du rélles
-	 * @param laser: laser qui sera en collision avec le prisme
-	 * @param prisme: le prisme qui sera en collision avec le laser
-	 * @return Vecteur: Vecteur en x et en y de la normal du segment du prisme
-	 */
-	// Auteur: Arezki Issaadi
-	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
-
-		// System.out.println("position p1"+ prisme.getP1());
-		// System.out.println("position p2"+ prisme.getP2());
-		// System.out.println("position p3"+ prisme.getP3());
-
-		double resultat13 = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(),
-				laser.getPositionHaut().getY());
-		double resultat12 = prisme.getLigne12().ptSegDist(laser.getPositionHaut().getX(),
-				laser.getPositionHaut().getY());
-		double resultat23 = prisme.getLigne23().ptSegDist(laser.getPositionHaut().getX(),
-				laser.getPositionHaut().getY());
-		// System.out.println("resultat pour la ligne 13:"+resultat13);
-		// System.out.println("resultat pour la ligne 12:"+resultat12);
-		// System.out.println("resultat pour la ligne 23:"+resultat13);
-
-		if (resultat13 > 0 && resultat13 < 0.80) {
-			System.out.println("jai touché ligne13 " + resultat13);
-			ligne13 = true;
-			ligne12 = false;
-			ligne23 = false;
-
-			if (angle > 90) {
-
-				double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
-				double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
-
-				return new Vecteur(yNormal, xNormal);
-
-			} else {
-
-				double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
-				double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
-
-				return new Vecteur(-yNormal, xNormal);
-			}
-
-		} else if (resultat12 > 0 && resultat12 < 0.80) {
-			// a refaire le calcul est pas bon
-
-			System.out.println("jai toucher la ligne12 " + resultat12);
-			ligne13 = false;
-			ligne12 = true;
-			ligne23 = false;
-
-			double xNormal = prisme.getP2().getX() - prisme.getP1().getX();
-			double yNormal = prisme.getP2().getY() - prisme.getP1().getY();
-
-			return new Vecteur(xNormal, yNormal);
-
-		} else if (resultat23 > 0 && resultat23 < 0.80) {
-			System.out.println("jai toucher la ligne23 " + resultat23);
-			ligne13 = false;
-			ligne12 = false;
-			ligne23 = true;
-
-			if (angle > 90) {
-
-				double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
-				double yNormal = prisme.getP2().getY() - prisme.getP3().getY();
-
-				return new Vecteur(-yNormal, xNormal);
-
-			} else {
-
-				double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
-				double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
-
-				return new Vecteur(-yNormal, xNormal);
-			}
-		}
-
-		return new Vecteur();
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	//Jeremy Thai 
-	/**
-	 * Retourne la vitesse dun laser 
-	 * @return vitesseLaser vitesse du laser
-	 */
-	public Vecteur getVitesseLaser() { return vitesseLaser; }
-
-	//Jeremy Thai
-	/**
-	 * Retourne le personnage
-	 * @return personnage personnage du jeu
-	 */
-	public Personnage getPersonnage() { return personnage; }
-
-	//Jeremy Thai
-	/**
-	 * Retourne les coeurs
-	 * @return coeurs coeurs 
-	 */
-	public Coeurs getCoeurs() { return coeurs; }
-
-	public int getToucheGauche() {
-		return toucheGauche;
-	}
-
-	public int getToucheDroite() {
-		return toucheDroite;
-	}
-
-	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	//Jeremy Thai
-	/**
-	 * Modifie la vitesse dun laser par celle passée en parametre
-	 * @param vitesseLaser vitesse du laser
-	 */
-	public void setVitesseLaser(Vecteur vitesseLaser) { this.vitesseLaser = vitesseLaser; }
-
-	//Jeremy Thai
-	/**
-	 * Modifie le pas d'incrémentation par celui passé en paramètre
-	 * @param deltaT nouveau pas
-	 */
-
-	public void setDeltaT(double deltaT) { this.deltaT = deltaT; }
-	public void setToucheDroite(int toucheDroite) {
-		this.toucheDroite = toucheDroite;
-	}
-
-	public void setTempsTotalEcoule(int value) {
-		this.tempsEcoule = value;
-	}
-
-	public void setToucheGauche(int toucheGauche) {
-		this.toucheGauche = toucheGauche;
-	}
-
-	public void setSciencePrisme(boolean valeur) {
-		prisme.setScience(valeur);
-		repaint();
-	}
-
-	public void setIndiceRefractionPrisme(double valeur) {
-		prisme.setIndiceRefraction(valeur);
-		repaint();
-	}
-
-	public void setRefractionBloc(double valeur) {
-
-	}
-
-	/**
-	 * Cette methode permet de modifier l'angle du laser
-	 * 
-	 * @param angle: C'est le nouveau angle du laser
-	 * 
-	 */
-	// auteur Arnaud Lefebvre
-	public void setAngle(double angle) {
-		// System.out.println("Angle: " + angle);
-		/*
-		 * try { laser.setAngleTir(angle); System.out.println("Angle: " + angle); }
-		 * catch (NullPointerException e) {
-		 * System.out.println("Laser existe pas, enlevez vos Sysout"); }
+		// Par Miora R. Rakoto
+		/**
+		 * Cette methode permet de sauvegarder un niveau
+		 * 
+		 * @param nomSauv : le nom du niveau
 		 */
-		this.angle = angle;
-	}
+		public void ecritureNiveau(String nomSauv) {
+			// Creation dossier
+			String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
+			direction += File.separator + "Niveau";
+			File customDir = new File(direction);
 
-	/**
-	 * Cette méthode permet de modifier l'angle du laser avec la roulette de la souris
-	 */
-	// Auteur: Arezki Issaadi
-	private void setAngleRoulette() {
-		addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				if (arg0.getWheelRotation() == -1 && (valeurAngleRoulette >= 0)) {
-					valeurAngleRoulette -= 0.05;
-					setAngle(valeurAngleRoulette);
+			if (customDir.exists()) {
+				System.out.println(customDir + " already exists");
+			} else if (customDir.mkdirs()) {
+				System.out.println(customDir + " was created");
+			} else {
+				System.out.println(customDir + " was not created");
+			}
+			// Fin creation dossier
 
-				} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
-					valeurAngleRoulette += 0.05;
-					setAngle(valeurAngleRoulette);
+			String nomFichierNiveau = nomSauv + ".niv";
+			File fichierDeTravail = new File(direction, nomFichierNiveau);
+			ObjectOutputStream fluxSortie = null;
+			try {
+				fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
+				fluxSortie.writeObject(listeBalles); // la liste des balles
+				fluxSortie.writeObject(listeBlocEau);
+				fluxSortie.writeObject(listeMiroirPlan);
+				fluxSortie.writeObject(listePrisme);
+				fluxSortie.writeObject(listeTrou);
+				fluxSortie.writeObject(listeMiroirCourbe);
+			} catch (IOException e) {
+				System.out.println("Erreur lors de l'écriture!");
+				e.printStackTrace();
+			} finally {
+				// on exécutera toujours ceci, erreur ou pas
+				try {
+					fluxSortie.close();
+				} catch (IOException e) {
+					System.out.println("Erreur rencontrée dans la sauvagarde de niveau!");
+				}
+			} // fin finally
+		}
+
+		// --------------------------------------------------------------------------------------------------------------------------------------
+
+		//Miora
+		/**
+		 * Cette methode permet d'ajouter la liste d'écouteur a la scene
+		 * @param ecouteur : l'ecouteur
+		 */
+		public void addSceneListener(SceneListener ecouteur) {
+			listeEcouteur.add(ecouteur);
+		}
+		// Par Miora
+		/**
+		 * Cette methode permet de remettre le temps de la partie sauvegarde
+		 */
+		public void leverEvenChangementTemps(int temps) {
+			for (SceneListener ecout : listeEcouteur) {
+				ecout.changementTempsListener(temps);
+			}
+		}
+
+		// Par Jeremy 
+		/**
+		 * Permet de mettre a jour les sorties du mode scientifique
+		 */
+		private void leverEvenModeScientifique() {
+			if(modeScientifique) {
+				for (SceneListener ecout : listeEcouteur) {
+					ecout.modeScientifiqueListener(listeBalles, HAUTEUR_DU_MONDE);
+				}
+			}
+		}
+
+		//Jeremy Thai
+		/**
+		 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne touche de souris et qu'il est en mode souris
+		 * @param e touche de souris
+		 * @param perso personnage
+		 */
+		private void tirLaser(MouseEvent e, Personnage perso) {
+			if (perso.isModeSouris()) {
+				if (enCoursAnimation == true) {
+					perso.neBougePas();
+					listeLasers.add(new Laser(new Vecteur(perso.getPosition() + perso.getLARGEUR_PERSO() / 2,
+							HAUTEUR_DU_MONDE - perso.getLONGUEUR_PERSO()), angle, vitesseLaser));
+				}
+			}
+		}
+
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		//Jeremy Thai
+		/**
+		 * 
+		 * @param balle
+		 */
+		private void pouvoirAuHasard(Balle balle) {
+
+			Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
+			Vecteur accel = new Vecteur(gravite);
+
+			int nb = 0 + (int) (Math.random() * ((10 - 0) + 1));
+
+			Pouvoir pouvoir;
+			switch (nb) {
+
+			case 1:
+				pouvoir = new BoostVitesse(position, accel);
+				pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
+				listePouvoirs.add(pouvoir);
+				son.joue("pouvoirApparait");
+				break;
+
+			case 2:
+				pouvoir = new Bouclier(position, accel);
+				pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
+				listePouvoirs.add(pouvoir);
+				son.joue("pouvoirApparait");
+				break;
+
+			case 3:
+				pouvoir = new Ralenti(position, accel);
+				pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
+				listePouvoirs.add(pouvoir);
+				son.joue("pouvoirApparait");
+				break;
+
+			case 4:
+				pouvoir = new AjoutVie(position, accel);
+				pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 10);
+				listePouvoirs.add(pouvoir);
+				son.joue("pouvoirApparait");
+				break;
+			}
+		}
+
+		//Jeremy Thai
+		/**
+		 * Ajoute les compteurs de pouvoirs et les fait partir
+		 */
+		private void ajoutCompteurs() {
+
+			if (vitesseLaser.getY() > vitesseLaserInit.getY())
+				compteurVitesse = tempsEcoule + 5;
+
+			if (deltaT < deltaTInit)
+				compteurRalenti = tempsEcoule + 5;
+
+			if (personnage.isBouclierActive())
+				compteurBouclier = tempsEcoule + 9;
+		}
+
+		//Jeremy Thai
+		/**
+		 * Met a jour la durée de compteurs de pouvoirs et de la rotation des images des balles 
+		 */
+		private void updateDureeCompteurs() {
+
+			for (Balle balle : listeBalles) {
+				balle.updateRotation();
+			}
+			try {
+				for (Pouvoir pouvoir : listePouvoirs) {
+					if (pouvoir.getCompteurAvantDisparaitre() <= tempsEcoule)
+						listePouvoirs.remove(pouvoir);
+				}
+			} catch (ConcurrentModificationException e) {
+			}
+
+			if (compteurVitesse <= tempsEcoule) {
+				vitesseLaser = vitesseLaserInit;
+				compteurVitesse = 0;
+				personnage.setEnVitesse(false);
+			}
+
+			if (compteurRalenti <= tempsEcoule) {
+				deltaT = deltaTInit;
+				compteurRalenti = 0;
+			}
+
+			if (compteurBouclier <= tempsEcoule)
+				personnage.setBouclierActive(false);
+
+			if (personnage.getTempsMort() <= tempsEcoule)
+				personnage.setMort(false);
+
+		}
+
+		//Jérémy Thai
+		/**
+		 * Détecte et réalise la collision entre un pouvoir et le personnage
+		 */
+		private void detectionCollisionPouvoirsPersonnages() {
+
+			for (Pouvoir pouvoir : listePouvoirs) {
+				if (enIntersection(pouvoir.getAire(), personnage.getAire())) {
+					son.joue("pouvoirActive");
+					pouvoir.activeEffet(this);
+					ajoutCompteurs();
+					listePouvoirs.remove(pouvoir);
+				}
+			}
+		}
+
+		//Jeremy Thai
+		/**
+		 * Met a jour la position de chaque pouvoir de la liste de pouvoirs
+		 */
+		private void updateMouvementPouvoirs() {
+			for (Pouvoir pouvoir : listePouvoirs) {
+				if (pouvoir.getPosition().getY() + pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
+					pouvoir.getPosition().setY(HAUTEUR_DU_MONDE - pouvoir.getLongueurImg());
+				} else {
+					pouvoir.unPasVerlet(deltaT);
 				}
 
-				enMouvement = true;
 			}
-		});
+		}
 
-		repaint();
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		//Jeremy Thai
+		/**
+		 * Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
+		 */
+		private void detectionCollisionMurBalle() {
+
+			for (Balle balle : listeBalles) {
+
+				Vecteur position = new Vecteur(balle.getPosition());
+				double diametre = balle.getDiametre();
+
+				if (position.getY() + diametre >= HAUTEUR_DU_MONDE) { // touche le sol
+					balle.getVitesse().setY(-balle.getVitesse().getY());
+				}
+
+				if (position.getX() + diametre >= LARGEUR_DU_MONDE) {
+					if (balle.getVitesse().getX() > 0)
+						balle.getVitesse().setX(-balle.getVitesse().getX());
+
+				}
+				if (position.getX() <= 0) {
+					if (balle.getVitesse().getX() < 0)
+						balle.getVitesse().setX(-balle.getVitesse().getX());
+				}
+			}
+
+		}
+
+
+		//Jeremy Thai
+		/**
+		 * Détecte et s'il y a une collision entre le personnage et un mur et s'occupe de la collision
+		 */
+		private void detectionCollisionPersonnageMur() {
+
+			if (personnage.getPosition() <= 0)
+				personnage.setPosition(0);
+
+			if (personnage.getPosition() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
+				personnage.setPosition(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
+		}
+
+
+
+		// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		/**
+		 * Méthode pour savoir quel prisme entre en collision avec quel laser
+		 */
+		// Auteur: Arezki Issaadi
+		private void collisionLaserPrisme() {
+
+			for (int i = 0; i < listeLasers.size(); i++) {
+
+				for (int j = 0; j < listePrisme.size(); j++) {
+
+					if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire())) {
+
+						System.out.println(j);
+						prisme = listePrisme.get(j);
+						laser = listeLasers.get(i);
+
+						j = listePrisme.size();
+						i = listeLasers.size();
+
+						calculRefractionPrisme(laser, prisme);
+						// premiereFoisPrisme = false;
+					}
+
+				}
+			}
+
+		}
+
+		/**
+		 * Cette méthode fait les calculs pour a réfraction du laser lorsqu'il touche un prisme et crée plusieur lasers comme dans la vraie vie 
+		 * @param laser: laser qui sera en collision avec le prisme
+		 * @param prismes: prisme qui sera en collision avec le laser
+		 */
+		// Auteur: Arezki Issaadi
+		private void calculRefractionPrisme(Laser laser, Prisme prismes) {
+
+			System.out.println("------------------------------------------------------------------------------");
+			Vecteur T = new Vecteur();
+			Vecteur V = laser.getPositionHaut();
+			Vecteur N = normalPrisme(laser, prismes);
+			Vecteur E = V.multiplie(-1);
+			double n = 1.0 / prisme.getIndiceRefraction();
+			System.out.println("la position laser avant refraction : " + laser.getPositionHaut());
+
+			System.out.println("normal" + N);
+			System.out.println("n: " + n);
+			System.out.println("position: " + prismes.getP1());
+			T = V.multiplie(n).additionne(N.multiplie(
+					(n * (E.prodScalaire(N)) - Math.sqrt(1 - Math.pow(n, 2) * (1 - (Math.pow(E.prodScalaire(N), 2)))))));
+			T = T.multiplie(-1);
+			System.out.println("T: " + T);
+
+			// laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(), T.getY()));
+			double angleAncien = laser.getAngleTir();
+			System.out.println("l'angle du laser avant refraction: " + angleAncien);
+
+			if (ligne23) {
+				laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())) + angle);
+			} else {
+				laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())));
+			}
+
+			System.out.println("l'angle du laser apres refraction: " + laser.getAngleTir());
+
+			System.out.println("la position laser apres refraction : " + laser.getPositionHaut());
+
+			double angleLaser = laser.getAngleTir();
+			listeLasers.add(
+					new Laser(laser.getPositionHaut().additionne(new Vecteur(0.005, 0)), angleLaser, laser.getVitesse()));
+
+			repaint();
+
+		}
+
+		/**
+		 * Cette méthode calcule la normal pour chaque côté du prisme et la retourne en vecteur dans les unités du rélles
+		 * @param laser: laser qui sera en collision avec le prisme
+		 * @param prisme: le prisme qui sera en collision avec le laser
+		 * @return Vecteur: Vecteur en x et en y de la normal du segment du prisme
+		 */
+		// Auteur: Arezki Issaadi
+		private Vecteur normalPrisme(Laser laser, Prisme prisme) {
+
+			// System.out.println("position p1"+ prisme.getP1());
+			// System.out.println("position p2"+ prisme.getP2());
+			// System.out.println("position p3"+ prisme.getP3());
+
+			double resultat13 = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(),
+					laser.getPositionHaut().getY());
+			double resultat12 = prisme.getLigne12().ptSegDist(laser.getPositionHaut().getX(),
+					laser.getPositionHaut().getY());
+			double resultat23 = prisme.getLigne23().ptSegDist(laser.getPositionHaut().getX(),
+					laser.getPositionHaut().getY());
+			// System.out.println("resultat pour la ligne 13:"+resultat13);
+			// System.out.println("resultat pour la ligne 12:"+resultat12);
+			// System.out.println("resultat pour la ligne 23:"+resultat13);
+
+			if (resultat13 > 0 && resultat13 < 0.80) {
+				System.out.println("jai touché ligne13 " + resultat13);
+				ligne13 = true;
+				ligne12 = false;
+				ligne23 = false;
+
+				if (angle > 90) {
+
+					double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
+					double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
+
+					return new Vecteur(yNormal, xNormal);
+
+				} else {
+
+					double xNormal = prisme.getP3().getX() - prisme.getP1().getX();
+					double yNormal = prisme.getP3().getY() - prisme.getP1().getY();
+
+					return new Vecteur(-yNormal, xNormal);
+				}
+
+			} else if (resultat12 > 0 && resultat12 < 0.80) {
+				// a refaire le calcul est pas bon
+
+				System.out.println("jai toucher la ligne12 " + resultat12);
+				ligne13 = false;
+				ligne12 = true;
+				ligne23 = false;
+
+				double xNormal = prisme.getP2().getX() - prisme.getP1().getX();
+				double yNormal = prisme.getP2().getY() - prisme.getP1().getY();
+
+				return new Vecteur(xNormal, yNormal);
+
+			} else if (resultat23 > 0 && resultat23 < 0.80) {
+				System.out.println("jai toucher la ligne23 " + resultat23);
+				ligne13 = false;
+				ligne12 = false;
+				ligne23 = true;
+
+				if (angle > 90) {
+
+					double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+					double yNormal = prisme.getP2().getY() - prisme.getP3().getY();
+
+					return new Vecteur(-yNormal, xNormal);
+
+				} else {
+
+					double xNormal = prisme.getP2().getX() - prisme.getP3().getX();
+					double yNormal = prisme.getP3().getY() - prisme.getP2().getY();
+
+					return new Vecteur(-yNormal, xNormal);
+				}
+			}
+
+			return new Vecteur();
+
+		}
+
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		//Jeremy Thai 
+		/**
+		 * Retourne la vitesse dun laser 
+		 * @return vitesseLaser vitesse du laser
+		 */
+		public Vecteur getVitesseLaser() { return vitesseLaser; }
+
+		//Jeremy Thai
+		/**
+		 * Retourne le personnage
+		 * @return personnage personnage du jeu
+		 */
+		public Personnage getPersonnage() { return personnage; }
+
+		//Jeremy Thai
+		/**
+		 * Retourne les coeurs
+		 * @return coeurs coeurs 
+		 */
+		public Coeurs getCoeurs() { return coeurs; }
+
+		//Par Miora
+		/**
+		 * Cette methode retourne la touche gauche pour deplacer le personnage
+		 * @return le KeyCode de la touche gauche
+		 */
+		public int getToucheGauche() {
+			return toucheGauche;
+		}
+
+		//Par Miora
+		/**
+		 * Cette methode retourne la touche droite pour deplacer le personnage
+		 * @return le KeyCode de la touche droite
+		 */
+		public int getToucheDroite() {
+			return toucheDroite;
+		}
+
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		//Jeremy Thai
+		/**
+		 * Modifie la vitesse dun laser par celle passée en parametre
+		 * @param vitesseLaser vitesse du laser
+		 */
+		public void setVitesseLaser(Vecteur vitesseLaser) { this.vitesseLaser = vitesseLaser; }
+
+		//Jeremy Thai
+		/**
+		 * Modifie le pas d'incrémentation par celui passé en paramètre
+		 * @param deltaT nouveau pas
+		 */
+
+		public void setDeltaT(double deltaT) { this.deltaT = deltaT; }
+		public void setToucheDroite(int toucheDroite) {
+			this.toucheDroite = toucheDroite;
+		}
+
+		public void setTempsTotalEcoule(int value) {
+			this.tempsEcoule = value;
+		}
+
+		public void setToucheGauche(int toucheGauche) {
+			this.toucheGauche = toucheGauche;
+		}
+
+		public void setSciencePrisme(boolean valeur) {
+			prisme.setScience(valeur);
+			repaint();
+		}
+
+		public void setIndiceRefractionPrisme(double valeur) {
+			prisme.setIndiceRefraction(valeur);
+			repaint();
+		}
+
+		public void setRefractionBloc(double valeur) {
+
+		}
+
+		/**
+		 * Cette methode permet de modifier l'angle du laser
+		 * 
+		 * @param angle: C'est le nouveau angle du laser
+		 * 
+		 */
+		// auteur Arnaud Lefebvre
+		public void setAngle(double angle) {
+			// System.out.println("Angle: " + angle);
+			/*
+			 * try { laser.setAngleTir(angle); System.out.println("Angle: " + angle); }
+			 * catch (NullPointerException e) {
+			 * System.out.println("Laser existe pas, enlevez vos Sysout"); }
+			 */
+			this.angle = angle;
+		}
+
+		/**
+		 * Cette méthode permet de modifier l'angle du laser avec la roulette de la souris
+		 */
+		// Auteur: Arezki Issaadi
+		private void setAngleRoulette() {
+			addMouseWheelListener(new MouseWheelListener() {
+				public void mouseWheelMoved(MouseWheelEvent arg0) {
+					if (arg0.getWheelRotation() == -1 && (valeurAngleRoulette >= 0)) {
+						valeurAngleRoulette -= 0.05;
+						setAngle(valeurAngleRoulette);
+
+					} else if (arg0.getWheelRotation() == 1 && (valeurAngleRoulette < 180)) {
+						valeurAngleRoulette += 0.05;
+						setAngle(valeurAngleRoulette);
+					}
+
+					enMouvement = true;
+				}
+			});
+
+			repaint();
+		}
+
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		/**
+		 * Methode qui permet d'effacer toutes type de balle
+		 */
+		// Auteur: Arezki
+		public void effacerBalles() {
+			listeBalles.removeAll(listeBalles);
+			repaint();
+		}
+
+		/**
+		 * Methode qui permet d'effacer tous les prismes
+		 */
+		// Auteur: Arezki
+		public void effacerPrisme() {
+			listePrisme.removeAll(listePrisme);
+			repaint();
+		}
+
+		/**
+		 * Méthode qui permet d'effacer tous les miroirs
+		 */
+		// Auteur: Arezki
+		public void effacerMiroir() {
+			listeMiroirCourbe.removeAll(listeMiroirCourbe);
+			listeMiroirPlan.removeAll(listeMiroirPlan);
+			repaint();
+		}
+
+		/**
+		 * Methode qui permet d'effacer tous les trou-noira
+		 */
+		// Auteur: Arezki
+		public void effacerTrouNoir() {
+			listeTrou.removeAll(listeTrou);
+			repaint();
+		}
+
+		/**
+		 * Permet d'effacer tous les blocs
+		 */
+		// Auteur: Arezki
+		public void effacerBloc() {
+			listeBlocEau.removeAll(listeBlocEau);
+			repaint();
+		}
+
+		/**
+		 * Permet d'activer ou de désactiver la fonctionnalité d'effacement precis pour
+		 * les objets: Cliquer sur l'obet et ce dernier s'éffacera
+		 * 
+		 * @param valeur: Boolean pour activer ou désactiver l'effacement des objet avec
+		 *        le clique de la souris (true or false)
+		 */
+		//Auteur: Arezki
+		public void effacementPrecis(boolean valeur) {
+
+			effacement = valeur;
+
+		}
+
+		// Par Miora
+		/**
+		 * Cette methode permet de changer l'angle des miroirs
+		 */
+		public void setAngleMiroir(int angle) {
+			this.angleMiroir = angle;
+		}
+
+		/**
+		 * Cette methode permet de modifier le temps de jeu
+		 * @param tempsDuJeu : le temps du jeu
+		 */
+		public void setTempsDuJeu(int tempsDuJeu) {
+			this.tempsDuJeu = tempsDuJeu;
+		}
+
+		//jeremy 
+		/**
+		 * Modifie la valeur (vrai ou faux) du mode scientifique par celle passee en parametre
+		 * @param modeScientifique nouvelle valeur passee en parametre
+		 */
+		public void setModeScientifique(boolean modeScientifique) {
+			this.modeScientifique = modeScientifique;
+		}
+
+
 	}
-
-	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Methode qui permet d'effacer toutes type de balle
-	 */
-	// Auteur: Arezki
-	public void effacerBalles() {
-		listeBalles.removeAll(listeBalles);
-		repaint();
-	}
-
-	/**
-	 * Methode qui permet d'effacer tous les prismes
-	 */
-	// Auteur: Arezki
-	public void effacerPrisme() {
-		listePrisme.removeAll(listePrisme);
-		repaint();
-	}
-
-	/**
-	 * Méthode qui permet d'effacer tous les miroirs
-	 */
-	// Auteur: Arezki
-	public void effacerMiroir() {
-		listeMiroirCourbe.removeAll(listeMiroirCourbe);
-		listeMiroirPlan.removeAll(listeMiroirPlan);
-		repaint();
-	}
-
-	/**
-	 * Methode qui permet d'effacer tous les trou-noira
-	 */
-	// Auteur: Arezki
-	public void effacerTrouNoir() {
-		listeTrou.removeAll(listeTrou);
-		repaint();
-	}
-
-	/**
-	 * Permet d'effacer tous les blocs
-	 */
-	// Auteur: Arezki
-	public void effacerBloc() {
-		listeBlocEau.removeAll(listeBlocEau);
-		repaint();
-	}
-
-	/**
-	 * Permet d'activer ou de désactiver la fonctionnalité d'effacement precis pour
-	 * les objets: Cliquer sur l'obet et ce dernier s'éffacera
-	 * 
-	 * @param valeur: Boolean pour activer ou désactiver l'effacement des objet avec
-	 *        le clique de la souris (true or false)
-	 */
-	//Auteur: Arezki
-	public void effacementPrecis(boolean valeur) {
-
-		effacement = valeur;
-
-	}
-
-	// Par Miora
-	/**
-	 * Cette methode permet de changer l'angle des miroirs
-	 */
-	public void setAngleMiroir(int angle) {
-		this.angleMiroir = angle;
-	}
-
-	/**
-	 * Cette methode permet de modifier le temps de jeu
-	 * @param tempsDuJeu : le temps du jeu
-	 */
-	public void setTempsDuJeu(int tempsDuJeu) {
-		this.tempsDuJeu = tempsDuJeu;
-	}
-
-	//jeremy 
-	/**
-	 * Modifie la valeur (vrai ou faux) du mode scientifique par celle passee en parametre
-	 * @param modeScientifique nouvelle valeur passee en parametre
-	 */
-	public void setModeScientifique(boolean modeScientifique) {
-		this.modeScientifique = modeScientifique;
-	}
-
-
-}

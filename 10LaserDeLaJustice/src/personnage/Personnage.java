@@ -35,10 +35,9 @@ public class Personnage implements Dessinable, Serializable {
 	private final double LONGUEUR_PERSO = 1.6;
 	private final double LARGEUR_PERSO = 1;
 	private double largeurCompo;
-	private double positionIni;
+	private double position;
 	private Image imgPerso = null;
 	private double HAUTEUR_COMPO;
-	private double positionX ;
 	private boolean premiereFois = true;
 	private int toucheGauche = 37, toucheDroite = 39, toucheTir = 32;
 	private double vitesseX =0;
@@ -59,13 +58,13 @@ public class Personnage implements Dessinable, Serializable {
 
 	/**
 	 Constructeur 1 de la classe.
+	 @param position: la position du personnage
 	 @param gauche : le code (KeyCode) de la touche gauche lorsque clique, le personnage va aller a gauche
 	 @param droite : le code (KeyCode) de la touche droite lorsque clique, le personnage va aller a droite
+	@param tir : le code (keyCode) de la touche de tir
 	 */
 	//Miora
 	public Personnage(double position, int gauche, int droite, int tir) {
-
-
 		URL fich = getClass().getClassLoader().getResource("AstronautMilieu.png");
 		if (fich == null) {
 			JOptionPane.showMessageDialog(null, "Fichier astronaut introuvable!");
@@ -77,8 +76,7 @@ public class Personnage implements Dessinable, Serializable {
 				System.out.println("Erreur de lecture du fichier d'image");
 			}
 		}
-
-		this.positionIni = position;
+		this.position = position;
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
 		this.toucheTir = tir;
@@ -100,15 +98,6 @@ public class Personnage implements Dessinable, Serializable {
 	}
 
 	/**
-	 * Methode permettant de savoir la position initial du personnage a partir du cote le plus a
-	 * gauche.
-	 * @return la position initial du personnage
-	 */
-	//Miora
-	public double getPOSITION_INITIALE() {
-		return positionIni;
-	}
-	/**
 	 * Methode permettant de dessiner le personnage
 	 * @param g2d : le contexte graphique
 	 * @param mat : la matrice de transformation
@@ -117,15 +106,13 @@ public class Personnage implements Dessinable, Serializable {
 	 */
 	//Miora
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteurScene, double largeurScene) {
-		//System.out.println("je suis dans dessiner " + getPositionX() );
 		AffineTransform matLocale = new AffineTransform(mat);
 		largeurCompo = largeurScene;
 		HAUTEUR_COMPO = hauteurScene;
-		if(premiereFois) {
-			//System.out.println("je suis dans dessiner " + positionIni);
-			positionX = positionIni-LARGEUR_PERSO/2;
-			premiereFois = false;
-		}
+		
+		//position = positionIni-LARGEUR_PERSO/2;
+		premiereFois = false;
+		
 		//Facteur de réduction de l'image du bloc 
 		double factPersoY = LONGUEUR_PERSO / imgPerso.getHeight(null);
 		double factPersoX = LARGEUR_PERSO / imgPerso.getWidth(null);
@@ -134,13 +121,12 @@ public class Personnage implements Dessinable, Serializable {
 		matLocale.scale(factPersoX, factPersoY);
 
 		//Deplacement du personnage a sa position initiale
-		matLocale.translate( (positionX) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
+		matLocale.translate( (position) / factPersoX , (HAUTEUR_COMPO-LONGUEUR_PERSO) / factPersoY);
 		g2d.drawImage(imgPerso, matLocale, null); 
 
 		if(bouclierActive) {
-
 			matLocale.setTransform(mat);
-			ellipse = new Ellipse2D.Double(positionX,HAUTEUR_COMPO-LONGUEUR_PERSO , LARGEUR_PERSO, LONGUEUR_PERSO);
+			ellipse = new Ellipse2D.Double(position,HAUTEUR_COMPO-LONGUEUR_PERSO , LARGEUR_PERSO, LONGUEUR_PERSO);
 			g2d.setColor(new Color(1.0f, 1.0f, 0.5f, 0.6f ));	
 			g2d.fill(matLocale.createTransformedShape(ellipse));
 			g2d.setColor(new Color(0.0f, 1.0f, 0.2f, 0.9f ));	
@@ -204,7 +190,7 @@ public class Personnage implements Dessinable, Serializable {
 	 * Méthode qui permet de modifier la position du personnage selon la vitesse en x 
 	 */
 	public void bouge() { 
-		positionX += vitesseX;
+		position += vitesseX;
 		update();
 	}
 
@@ -223,15 +209,15 @@ public class Personnage implements Dessinable, Serializable {
 				return;
 			}
 
-			if(Math.abs(posSouris-positionX) < 0.1 ) {
+			if(Math.abs(posSouris-position) < 0.1 ) {
 				vitesseX = 0;
 				return;
 			}
-			if(posSouris < positionX ){
+			if(posSouris < position ){
 				vitesseX = -VITESSE;
 				return;
 			}
-			if(posSouris > positionX) {
+			if(posSouris > position) {
 				vitesseX = VITESSE;
 				return;
 			}
@@ -272,20 +258,18 @@ public class Personnage implements Dessinable, Serializable {
 	}
 	/**
 	 * Methode permettant de savoir la position du personnage
-	 * @return la position initiale du personnage
 	 */
 	//Miora
-	public double getPositionX() {
-		return positionX;
+	public double getPosition() {
+		return position;
 	}
 	/**
 	 * Methode permettant de modifier la position du personnage.
 	 * @param positionX : position voulue du personnage
 	 */
 	//Miora
-	public void setPositionX(double positionX) {
-		this.positionX = positionX;
-		System.out.println(this.positionX);
+	public void setPosition(double positionX) {
+		this.position = positionX;
 	}
 	/**
 	 * Methode permettant qui retourne la longueur du personnage.
@@ -344,7 +328,7 @@ public class Personnage implements Dessinable, Serializable {
 	 */
 	//Jeremy Thai
 	public Area getAire() {
-		return new Area( new Rectangle2D.Double(positionX,
+		return new Area( new Rectangle2D.Double(position,
 				HAUTEUR_COMPO - LONGUEUR_PERSO, LARGEUR_PERSO, LONGUEUR_PERSO));
 	}
 

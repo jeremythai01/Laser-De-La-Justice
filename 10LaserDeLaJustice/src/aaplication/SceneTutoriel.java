@@ -379,10 +379,10 @@ public class SceneTutoriel extends JPanel implements Runnable {
 		if (enMouvement) {
 			g.setColor(Color.red);
 			Path2D.Double trace = new Path2D.Double();
-			trace.moveTo(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
+			trace.moveTo(personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2,
 					HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO());
 			trace.lineTo(
-					personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle)),
+					personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2 + 2 * Math.cos(Math.toRadians(angle)),
 					HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle)));
 			g.draw(mat.createTransformedShape(trace));
 		}
@@ -564,14 +564,14 @@ public class SceneTutoriel extends JPanel implements Runnable {
 
 				if (couleurPersoLaser == false) {
 					System.out.println("tir laser false");
-					listeLasers.add(new Laser(new Vecteur(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
+					listeLasers.add(new Laser(new Vecteur(personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2,
 							HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO()), angle, vitesseLaser));
 
 					laserEteTire=true;
 				} else {
 					System.out.println("tir laser false");
 					listeLasers.add(new Laser(
-							new Vecteur(personnage.getPositionX() + personnage.getLARGEUR_PERSO() / 2,
+							new Vecteur(personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2,
 									HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO()),
 							angle, vitesseLaser, couleurLaser));
 
