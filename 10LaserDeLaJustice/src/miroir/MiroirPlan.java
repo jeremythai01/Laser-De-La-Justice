@@ -44,6 +44,9 @@ public class MiroirPlan implements Dessinable, Serializable {
 		super();
 		this.position = position;
 		this.angle = angle;
+		if(angle>180) {
+			this.angle = angle-180;
+		}
 
 
 	}
