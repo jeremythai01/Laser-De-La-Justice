@@ -416,6 +416,7 @@ public class Scene extends JPanel implements Runnable {
 			compteur++;
 			son.joueMusique("alienMusique");
 			calculerUneIterationPhysique();
+			leverEventVitesseMoyenneBalle(listeBalles);
 			leverEvenModeScientifique();
 			qtRotation = qtRotation + 0.2;
 			for (TrouNoir trou : listeTrou) {
@@ -1452,6 +1453,13 @@ public class Scene extends JPanel implements Runnable {
 	public void leverEvenChangementTemps(int temps) {
 		for (SceneListener ecout : listeEcouteur) {
 			ecout.changementTempsListener(temps);
+		}
+	}
+	
+	
+	public void leverEventVitesseMoyenneBalle(ArrayList<Balle> listeBalles) {
+		for(SceneListener ecout : listeEcouteur) {
+			ecout.vitesesMoyenneBalle(listeBalles);
 		}
 	}
 
