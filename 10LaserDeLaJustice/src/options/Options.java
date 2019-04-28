@@ -204,11 +204,11 @@ public class Options extends JFrame {
 		File customDir = new File(direction);
 
 		if (customDir.exists()) {
-			System.out.println(customDir + " already exists");
+			System.out.println(customDir + "Le fichier niveau n'existe pas");
 		} else if (customDir.mkdirs()) {
-			System.out.println(customDir + " was created");
+			System.out.println(customDir + "Le fichier niveau a ete cree");
 		} else {
-			System.out.println(customDir + " was not created");
+			System.out.println(customDir + "Le fichier niveau n'a pas ete cree");
 		}
 		//Fin creation dossier
 

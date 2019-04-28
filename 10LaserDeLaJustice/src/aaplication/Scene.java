@@ -1261,10 +1261,17 @@ public class Scene extends JPanel implements Runnable {
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
+		if (customDir.exists()) {
+			System.out.println(customDir + "le fichier existe deja");
+		} else if (customDir.mkdirs()) {
+			System.out.println(customDir + "il a ete cree");
+		} else {
+			System.out.println(customDir + "le fichier n'a pas ete cree");
+		}
 		// Fin creation dossier
-
+		
 		String nomFichierSauvegarde = nomSave;
-		File fichierDeTravail = new File(direction, nomFichierSauvegarde);
+		File fichierDeTravail = new File(customDir, nomFichierSauvegarde);
 		ObjectOutputStream fluxSortie = null;
 		try {
 			fluxSortie = new ObjectOutputStream(new FileOutputStream(fichierDeTravail));
@@ -1403,11 +1410,11 @@ public class Scene extends JPanel implements Runnable {
 		File customDir = new File(direction);
 
 		if (customDir.exists()) {
-			System.out.println(customDir + " already exists");
+			System.out.println(customDir + "Le fichier niveau n'existe pas");
 		} else if (customDir.mkdirs()) {
-			System.out.println(customDir + " was created");
+			System.out.println(customDir + "Le fichier niveau a ete cree");
 		} else {
-			System.out.println(customDir + " was not created");
+			System.out.println(customDir + "Le fichier niveau n'a pas ete cree");
 		}
 		// Fin creation dossier
 
