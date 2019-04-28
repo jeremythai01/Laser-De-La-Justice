@@ -1,29 +1,25 @@
 package aaplication;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import java.awt.Font;
 import java.awt.Color;
-import javax.swing.JTextArea;
-import interfaces.SceneTutorielListener;
-import javax.swing.JScrollBar;
-import java.awt.event.AdjustmentListener;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.border.EmptyBorder;
+
+import documentation.FenetreConcept;
+import interfaces.SceneTutorielListener;
 /**
  * C'est la classe du tutoriel. Elle permet au joueur de comprendre le but du jeu.
- * @author Arnaud Lefebvre
+ * @author Arnaud Lefebvre, Miora R. Rakoto
  *
  */
 public class FenetreTuto extends JFrame {
@@ -52,7 +48,7 @@ public class FenetreTuto extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creation de la fenetre
 	 */
 	public FenetreTuto() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,7 +69,7 @@ public class FenetreTuto extends JFrame {
 		JLabel lblCommentJouer = new JLabel("COMMENT JOUER?");
 		lblCommentJouer.setForeground(Color.GREEN);
 		lblCommentJouer.setFont(new Font("Linux Libertine G", Font.PLAIN, 40));
-		lblCommentJouer.setBounds(246, 11, 348, 34);
+		lblCommentJouer.setBounds(246, 11, 447, 34);
 		contentPane.add(lblCommentJouer);
 		
 		JLabel lblSeDplacer = new JLabel("Se d\u00E9placer");
@@ -146,12 +142,17 @@ public class FenetreTuto extends JFrame {
 				setVisible(false);
 			}
 		});
-		btnRetour.setBounds(10, 0, 89, 23);
+		btnRetour.setBounds(31, 22, 89, 23);
 		contentPane.add(btnRetour);
 		
-		JButton btnFin = new JButton("Fin");
-		btnFin.setBounds(885, 11, 89, 23);
-		contentPane.add(btnFin);
+		JButton btnConcept = new JButton("Concept scientifique");
+		btnConcept.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				affichierConcept();
+			}
+		});
+		btnConcept.setBounds(810, 11, 152, 23);
+		contentPane.add(btnConcept);
 		btnDfaut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.defaut();
@@ -160,5 +161,17 @@ public class FenetreTuto extends JFrame {
 		
 		sceneAnimee.ajoutBalleGrosse();
 		sceneAnimee.demarrer();
+	}
+	
+	//Par Miora
+	/**
+	 * Cette methode permet d'ouvrir une fenetre pour consulter les concepts scientifiques
+	 * derriere l'application
+	 */
+	private void affichierConcept() {
+		FenetreConcept fenetreConcept = new FenetreConcept();
+		fenetreConcept.setVisible(true);
+		setVisible(false);
+		
 	}
 }

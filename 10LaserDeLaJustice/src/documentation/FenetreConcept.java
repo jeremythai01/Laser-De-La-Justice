@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
  * Cette classe permet de lire les concepts derriere scientifiques du jeu l'application
  *
  */
-public class ConceptSci extends JFrame {
+public class FenetreConcept extends JFrame {
 
 	private JPanel contentPane;
 	private int compteur = 0;
@@ -47,7 +47,7 @@ public class ConceptSci extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ConceptSci frame = new ConceptSci();
+					FenetreConcept frame = new FenetreConcept();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,7 +59,7 @@ public class ConceptSci extends JFrame {
 	/**
 	 * Creation de la fenetre
 	 */
-	public ConceptSci() {
+	public FenetreConcept() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 762, 925);
 		this.setLocationRelativeTo(null);

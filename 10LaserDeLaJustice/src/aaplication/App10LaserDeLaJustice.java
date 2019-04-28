@@ -55,11 +55,11 @@ public class App10LaserDeLaJustice extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creation de la fenetre
 	 */
 	public App10LaserDeLaJustice() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 661, 509);
+		setBounds(100, 100, 662, 501);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -77,27 +77,27 @@ public class App10LaserDeLaJustice extends JFrame {
 				setVisible(false);
 			}
 		});
-		btnEditeurDeNiveau.setBounds(47, 101, 125, 45);
+		btnEditeurDeNiveau.setBounds(47, 101, 175, 45);
 		contentPane.add(btnEditeurDeNiveau);
 
-		JButton btnQuitter = new JButton("quitter");
+		JButton btnQuitter = new JButton("Quitter");
 		btnQuitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("leave");
 				setVisible(false);
 			}
 		});
-		btnQuitter.setBounds(473, 289, 125, 45);
+		btnQuitter.setBounds(413, 289, 175, 45);
 		contentPane.add(btnQuitter);
 
-		JButton btnOption = new JButton("option du jeu ");
+		JButton btnOption = new JButton("Option du jeu ");
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				ouvrirOptions();
 			}
 		});
-		btnOption.setBounds(473, 101, 125, 45);
+		btnOption.setBounds(413, 101, 175, 45);
 		contentPane.add(btnOption);
 
 		JButton button_2 = new JButton("Tutoriel et information");
@@ -109,7 +109,7 @@ public class App10LaserDeLaJustice extends JFrame {
 				setVisible(false);
 			}
 		});
-		button_2.setBounds(47, 289, 125, 45);
+		button_2.setBounds(47, 289, 175, 45);
 		contentPane.add(button_2);
 
 		JButton btnJouer = new JButton("jouer");
@@ -138,7 +138,7 @@ public class App10LaserDeLaJustice extends JFrame {
 
 	}
 
-	/**
+	/**Cette methode permet d'associer un bouton a une image
 	 * @param leBouton
 	 * @param fichierImage
 	 */
