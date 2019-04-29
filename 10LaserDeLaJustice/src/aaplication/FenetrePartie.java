@@ -91,7 +91,7 @@ public class FenetrePartie extends JFrame {
 	            } 
 				jeu = new FenetreJeu(false, nomFichier);
 				jeu.setVisible(true);
-				jeu.donneFocusALasceneFinale();
+				//jeu.donneFocusALasceneFinale();
 				setVisible(false);
 			}
 		});
@@ -105,9 +105,7 @@ public class FenetrePartie extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("file_new");
 				jeu = new FenetreJeu(true, null);  // isNouvelle = true
-				jeu.setNouveauOption(true);
 				jeu.setVisible(true);
-				jeu.donneFocusALasceneFinale();
 				setVisible(false);
 			}
 		});

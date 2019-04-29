@@ -47,6 +47,8 @@ public class FenetreAuteur extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+
+
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
