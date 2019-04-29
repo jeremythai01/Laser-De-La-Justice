@@ -205,7 +205,7 @@ public class FenetreTuto extends JFrame {
 	private void affichierConcept() {
 		FenetreConcept fenetreConcept = new FenetreConcept();
 		fenetreConcept.setVisible(true);
-		setVisible(false);
+		//setVisible(false);
 		
 	}
 }

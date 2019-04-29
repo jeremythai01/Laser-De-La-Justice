@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
  *
  */
 public class FenetreAuteur extends JFrame {
-
 	private JPanel contentPane;
 
 	/**
