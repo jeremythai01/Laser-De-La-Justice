@@ -64,6 +64,7 @@ public class FenetreJeu extends JFrame {
 	private JButton btnTrouNoir;
 	private JButton btnMiroirConcave;
 	private JButton btnMiroirPlan;
+	private JButton btnTeleportation;
 	private JLabel lblTempsInfini;
 	private Scene sceneFinale;
 	private Options optionJeu;
@@ -290,6 +291,18 @@ public class FenetreJeu extends JFrame {
 		btnPetiteBalle.setBounds(729, 868, 96, 26);
 		contentPane.add(btnPetiteBalle);
 		
+		btnTeleportation = new JButton("Téléporteur");
+		btnTeleportation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
+				sceneFinale.ajoutTeleporteur();
+				donneFocusALasceneFinale();
+			}
+		});
+		btnTeleportation.setEnabled(false);
+		btnTeleportation.setBounds(729, 900, 96, 26);
+		contentPane.add(btnTeleportation); 
+		
 		
 		rbtnOrdiNiveau1 = new JRadioButton("Aide niveau 1");
 		rbtnOrdiNiveau1.addActionListener(new ActionListener() {
@@ -505,15 +518,13 @@ public class FenetreJeu extends JFrame {
 		listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				// TODO Auto-generated method stub
 				if(!triche)
 					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
 						
 					} else {
-						son.joueSonLorsqueFini();
+						//son.joueSonLorsqueFini();
 						tempsJeu.stop();
 						sceneFinale.arreter();
 
@@ -523,9 +534,9 @@ public class FenetreJeu extends JFrame {
 					}
 		
 				if(sceneFinale.getListeBalles().size()==0) {
-					son.joueSonLorsqueFini();
+					//son.joueSonLorsqueFini();
 					victoire.setVisible(true);
-					//barreTempsDuJeu.setValue(0);
+					barreTempsDuJeu.setValue(0);
 					setVisible(false);
 				}
 			
@@ -803,6 +814,7 @@ public class FenetreJeu extends JFrame {
 			btnPetiteBalle.setEnabled(true);
 			buttonMiroirCourbe.setEnabled(true);
 			cbxAide.setEnabled(true);
+			btnTeleportation.setEnabled(true);
 		}
 
 		// Par Arezki
@@ -824,6 +836,7 @@ public class FenetreJeu extends JFrame {
 			rbtnOrdiNiveau1.setEnabled(false);
 			rbtnOrdiNiveau2.setEnabled(false);
 			rbtnOrdiNiveau3.setEnabled(false);
+			btnTeleportation.setEnabled(false);
 		}
 
 

@@ -166,7 +166,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			}
 		});
 		btnTrouNoir.setEnabled(true);
-		btnTrouNoir.setBounds(1198, 379, 148, 23);
+		btnTrouNoir.setBounds(1198, 372, 148, 23);
 		contentPane.add(btnTrouNoir);
 
 		btnBlocDeau = new JButton("Bloc ");
@@ -180,7 +180,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			}
 		});
 		btnBlocDeau.setEnabled(true);
-		btnBlocDeau.setBounds(1198, 345, 148, 23);
+		btnBlocDeau.setBounds(1198, 337, 148, 23);
 		contentPane.add(btnBlocDeau);
 
 		btnGrosseBalle = new JButton("Grosse Balle");
@@ -230,7 +230,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			}
 		});
 		btnPrisme.setEnabled(true);
-		btnPrisme.setBounds(1198, 413, 148, 23);
+		btnPrisme.setBounds(1198, 407, 148, 23);
 		contentPane.add(btnPrisme);
 
 		JSeparator separator_5 = new JSeparator();
@@ -293,11 +293,11 @@ public class FenetreEditeurNiveau extends JFrame {
 		lblTypeDeBalle.setBounds(1215, 119, 105, 38);
 		contentPane.add(lblTypeDeBalle);
 
-		JLabel lblTypeDeRfraction = new JLabel("R\u00E9fraction\r\n");
+		JLabel lblTypeDeRfraction = new JLabel("Translation\r\n");
 		lblTypeDeRfraction.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblTypeDeRfraction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTypeDeRfraction.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 10));
-		lblTypeDeRfraction.setBounds(1215, 306, 105, 38);
+		lblTypeDeRfraction.setBounds(1215, 304, 105, 38);
 		contentPane.add(lblTypeDeRfraction);
 
 		JSeparator separator = new JSeparator();
@@ -501,6 +501,18 @@ public class FenetreEditeurNiveau extends JFrame {
 		cmbBloc.setModel(new DefaultComboBoxModel(new String[] {"Eau(n=1.33)", "Verre(n=1.5)", "Diamant(n=2.42)", "Disulfure de carbone(n=1.63)"}));
 		cmbBloc.setBounds(1179, 741, 182, 24);
 		contentPane.add(cmbBloc);
+		
+		JButton btnTeleporteur = new JButton("T\u00E9l\u00E9porteur");
+		btnTeleporteur.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
+				sceneFinale.ajoutTeleporteur();
+				sceneFinale.activerDrag(true);
+				donneFocusALasceneFinale();
+			}
+		});
+		btnTeleporteur.setBounds(1198, 442, 148, 23);
+		contentPane.add(btnTeleporteur);
 	}
 
 	// Par Miora
@@ -575,7 +587,4 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnTrouNoir.setEnabled(false);
 		btnPetiteBalle.setEnabled(false);
 	}
-
-	
-	
 }

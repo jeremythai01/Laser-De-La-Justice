@@ -1,7 +1,6 @@
 package aaplication;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -36,6 +35,7 @@ import interfaces.SceneListener;
 import miroir.Ligne;
 import miroir.MiroirCourbe;
 import miroir.MiroirPlan;
+import miroir.Teleporteur;
 import objets.BlocRefraction;
 import objets.Echelle;
 import objets.Ordinateur;
@@ -99,6 +99,8 @@ public class Scene extends JPanel implements Runnable{
 	private boolean bonMiroirPlan = false;
 	private boolean bonTrouNoir = false;
 	private boolean bonBlocEau = false;
+	private boolean bonTelepoteur1 = false;
+	private boolean bonTelepoteur2 = false;
 	private boolean editeurActiver = false;
 	private boolean couleurPersoLaser = false;
 	private boolean bonPrisme = false;
@@ -123,6 +125,7 @@ public class Scene extends JPanel implements Runnable{
 	private ArrayList<MiroirCourbe> listeMiroirCourbe = new ArrayList<MiroirCourbe>();
 	private ArrayList<MiroirPlan> listeMiroirPlan = new ArrayList<MiroirPlan>();
 	private ArrayList<BlocRefraction> listeBlocEau = new ArrayList<BlocRefraction>();
+	private ArrayList<Teleporteur> listeTeleporteur = new ArrayList<Teleporteur>();
 	private ArrayList<Prisme> listePrisme = new ArrayList<Prisme>();
 	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
 
@@ -137,6 +140,7 @@ public class Scene extends JPanel implements Runnable{
 	private Laser laser;
 	private Coeurs coeurs = new Coeurs(nombreVies);
 	private Prisme prisme;
+	private Teleporteur teleporteur;
 
 	private Echelle echelle;
 	private Color couleurLaser = null;
@@ -228,6 +232,8 @@ public class Scene extends JPanel implements Runnable{
 				bonBlocEau = false;
 				bonPrisme = false;
 				bonMiroirCourbe = false;
+				bonTelepoteur1 = false;
+				bonTelepoteur2 = false;
 
 			}
 		});
@@ -337,6 +343,8 @@ public class Scene extends JPanel implements Runnable{
 			courbe.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
+		dessinerLesTeleporteur(g2d, mat);
+		
 		personnage.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
@@ -365,12 +373,25 @@ public class Scene extends JPanel implements Runnable{
 		for (Pouvoir pouvoir : listePouvoirs) {
 			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
+		
+		
 
 		//Le listenern marche pas dans le constructeur...
 		leverEvenChangementTemps(tempsDuJeu);
 
 	}
 
+
+	//Par Miora
+	/**
+	 * Cette methode permet de dessiner les teleporteurs
+	 */
+	private void dessinerLesTeleporteur(Graphics2D g2d, AffineTransform mat) {
+		for(Teleporteur teleporteur : listeTeleporteur) {
+			teleporteur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
+		
+	}
 
 	// Arnaud Lefebvre
 	/**
@@ -456,6 +477,7 @@ public class Scene extends JPanel implements Runnable{
 			try {
 				colisionLaserMiroirPlan();
 				colisionLaserMiroirCourbe() ;
+				collisionTeleporteur();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -761,6 +783,71 @@ public class Scene extends JPanel implements Runnable{
 		}
 	}
 	// fin methode
+	
+	//Par Miora
+	/**
+	 * Cette methode change la position du laser lorsque celui-ci touche un des teleporteurs
+	 */
+	private void collisionTeleporteur() {
+		for(Laser laser : listeLasers) {
+			int n=0;
+			boolean collision = false;
+			while(n< listeTeleporteur.size() && collision == false) {
+				if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire()) ||
+				   enIntersection(listeTeleporteur.get(n).getAireTeleporteur2(), laser.getAire()) ) {
+					boolean isIntersectionPremier;
+					collision = true;
+					
+					if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
+						isIntersectionPremier = true;
+					}else {
+						isIntersectionPremier = false;
+					}
+		
+					Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
+					double angleR = Math.toRadians(laser.getAngleTir()) ;	
+					Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+					
+					Vecteur ptsTeleporteur ;
+					if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
+						ptsTeleporteur = listeTeleporteur.get(n).getPositionPremier();
+					}else {
+						ptsTeleporteur = listeTeleporteur.get(n).getPositionDeuxieme();
+					}
+					
+					Vecteur vecTeleporteur = new Vecteur (1,0).normalise();
+				
+					Vecteur sous = (ptsLaser.soustrait(ptsTeleporteur)).multiplie(-1); // de l'autre cote equation
+					Vecteur kTeleporteur = (new Vecteur (0,0)).soustrait(vecTeleporteur); // devient moins
+
+					double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kTeleporteur.getX(), vecDirLaser.getY(), kTeleporteur.getY(), sous.getX(), sous.getY());
+
+					double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
+					double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
+				
+					Vecteur posInter = new Vecteur (x,y);
+					
+					laser.setPositionHaut(posInter);
+					
+					
+					double xt = 1.1*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
+					double yt = 1.1*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
+					Vecteur trans = OutilsMath.translation(xt, yt, laser.getPositionHaut());
+					
+					
+					if(isIntersectionPremier) {
+						//Tete a la meme position en x sur les deux teleporteurs 
+						double positionInterTel = trans.getX() - listeTeleporteur.get(n).getPositionPremier().getX();
+						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionDeuxieme().getX()+positionInterTel, trans.getY()));
+					}else {
+						double positionInterTel = trans.getX() - listeTeleporteur.get(n).getPositionDeuxieme().getX();
+						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionPremier().getX()+positionInterTel, trans.getY()));
+					}
+				}// fin if intersection
+			n++;
+			} //fin while
+		} // fin for 
+	}
 
 
 	// Jeremy Thai
@@ -885,6 +972,15 @@ public class Scene extends JPanel implements Runnable{
 		repaint();
 
 	}
+	
+	//Par Miora
+	/**
+	 * Permet d'ajouter les telepoteurs dans la liste
+	 */
+	public void ajoutTeleporteur() {
+		listeTeleporteur.add(new Teleporteur ((new Vecteur(2, 2))));
+		repaint();
+	}
 
 	/**
 	 * Permet d'ajouter et de dessiner un bloc d'eau en appuyant sur
@@ -982,6 +1078,22 @@ public class Scene extends JPanel implements Runnable{
 			double xDrag = e.getX() / modele.getPixelsParUniteX();
 			double yDrag = e.getY() / modele.getPixelsParUniteY();
 			trou.setPosition(new Vecteur(xDrag, yDrag));
+
+			repaint();
+		}
+		
+		if(bonTelepoteur1) {
+			double xDrag = e.getX() / modele.getPixelsParUniteX();
+			double yDrag = e.getY() / modele.getPixelsParUniteY();
+			teleporteur.setPositionPremier(new Vecteur(xDrag, yDrag));
+
+			repaint();
+		}
+		
+		if(bonTelepoteur2) {
+			double xDrag = e.getX() / modele.getPixelsParUniteX();
+			double yDrag = e.getY() / modele.getPixelsParUniteY();
+			teleporteur.setPositionDeuxieme(new Vecteur(xDrag, yDrag));
 
 			repaint();
 		}
@@ -1241,6 +1353,7 @@ public class Scene extends JPanel implements Runnable{
 				listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
 				listeTrou = (ArrayList<TrouNoir>) fluxEntree.readObject();
 				listeMiroirCourbe = (ArrayList<MiroirCourbe>) fluxEntree.readObject();
+				listeTeleporteur = (ArrayList<Teleporteur>) fluxEntree.readObject();
 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -1306,6 +1419,7 @@ public class Scene extends JPanel implements Runnable{
 				fluxSortie.writeObject(couleurLaser);
 			} // la couleur du rayon
 			fluxSortie.writeInt(tempsDuJeu);
+			fluxSortie.writeObject(listeTeleporteur);
 
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
@@ -1365,6 +1479,11 @@ public class Scene extends JPanel implements Runnable{
 				e.printStackTrace();
 			}
 			tempsDuJeu = fluxEntree.readInt();
+			try {
+				listeTeleporteur = (ArrayList<Teleporteur>) fluxEntree.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		} // fin try
 
 		catch (FileNotFoundException e) {
@@ -1437,6 +1556,7 @@ public class Scene extends JPanel implements Runnable{
 			fluxSortie.writeObject(listePrisme);
 			fluxSortie.writeObject(listeTrou);
 			fluxSortie.writeObject(listeMiroirCourbe);
+			fluxSortie.writeObject(listeTeleporteur);
 		} catch (IOException e) {
 			System.out.println("Erreur lors de l'écriture!");
 			e.printStackTrace();
@@ -2143,6 +2263,8 @@ try {
 				repaint();
 			}
 		}
+		
+		selectionTeleporteur(eXR,eYR);
 
 		for (int i = 0; i < listeTrou.size(); i++) {
 			if (listeTrou.get(i).getAireTrou().contains(eXR, eYR) && (!effacement)) {
@@ -2184,6 +2306,41 @@ try {
 		}
 	}
 }
+
+	//Par Miora
+	/**
+	 * Cette methode permet de deplacer les teleporteur a l'aide de la souris
+	 * @param eXR : la position en x de la souris
+	 * @param eYR : la position en y de la souris
+	 */
+	private void selectionTeleporteur(double eXR, double eYR) {
+		for (int i = 0; i < listeTeleporteur.size(); i++) {
+			if (listeTeleporteur.get(i).getAireTeleporteur1().contains(eXR, eYR) && (!effacement)) {
+
+				bonTelepoteur1 = true;
+				teleporteur = listeTeleporteur.get(i);
+
+				i = listeTeleporteur.size();
+			} else if ((listeTeleporteur.get(i).getAireTeleporteur1().contains(eXR, eYR)) && (effacement)) {
+				listeTeleporteur.remove(i);
+				repaint();
+			}
+		}
+		
+		for (int i = 0; i < listeTeleporteur.size(); i++) {
+			if (listeTeleporteur.get(i).getAireTeleporteur2().contains(eXR, eYR) && (!effacement)) {
+
+				bonTelepoteur2 = true;
+				teleporteur = listeTeleporteur.get(i);
+
+				i = listeTeleporteur.size();
+			} else if ((listeTeleporteur.get(i).getAireTeleporteur2().contains(eXR, eYR)) && (effacement)) {
+				listeTeleporteur.remove(i);
+				repaint();
+			}
+		}
+		
+	}
 
 	//Par Miora
 	/**

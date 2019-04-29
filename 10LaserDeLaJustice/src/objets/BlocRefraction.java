@@ -7,9 +7,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -39,7 +43,8 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	private boolean verre=false;
 	private boolean diamant=false;
 	private boolean disulfureCarbone=false;
-	private Image img=null;
+	private transient BufferedImage img;
+	private transient ArrayList<BufferedImage> images = new ArrayList ();
 	private URL urlCoeur;
 	
 	
@@ -78,6 +83,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 			System.exit(0);}
 		try {
 			img = ImageIO.read(urlCoeur);
+		    images.add(img);
 		}
 		catch (IOException e) {
 			System.out.println("Erreur pendant la lecture du fichier d'image");
@@ -105,6 +111,37 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		g.drawImage(img, matLocal, null);
 		
 	}
+	
+	//Par Miora
+		/**
+		 * Cette methode permet d'écrire les images de la classe balle
+		 * @param out : l'objet qui s'occupe des flux de sorties
+		 * @throws IOException
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+	        out.defaultWriteObject();
+	        out.writeInt(images.size());
+	        for (BufferedImage chaqueImage : images) {
+	            ImageIO.write(chaqueImage, "jpg", out);
+	        }
+	    }
+
+		//Par Miora
+		/**
+		 * Cette methode permet lire les images de la classe balle
+		 * @param in : l'objet qui s'occupe des flux d'entrees
+		 * @throws IOException
+		 * @throws ClassNotFoundException
+		 */
+	    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	        in.defaultReadObject();
+	        final int imageCount = in.readInt();
+	        images = new ArrayList<BufferedImage>(imageCount);
+	        for (int i=0; i<imageCount; i++) {
+	            img = ImageIO.read(in);
+
+	        }
+	    }
 	
 	/**
 	 * Methode qui permet d'effectuer le calcul de la refraction
