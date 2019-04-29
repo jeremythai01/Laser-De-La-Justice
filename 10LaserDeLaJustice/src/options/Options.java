@@ -9,10 +9,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
@@ -28,6 +32,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import aaplication.FenetreJeu;
+import geometrie.Vecteur;
+
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 /**
@@ -45,7 +51,7 @@ public class Options extends JFrame {
 	private JButton btnG;
 	private JButton btnD;
 	private Color couleurLaser = null;
-	private boolean dansScene = false;
+	private static boolean dansScene;
 	private static boolean isIni = false;
 	private FenetreJeu jeu;
 	private boolean isModifie = false;
@@ -65,7 +71,7 @@ public class Options extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Options frame = new Options(isIni);
+					Options frame = new Options(isIni, dansScene);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,8 +83,11 @@ public class Options extends JFrame {
 	/**
 	 * Creation de la fenetre.
 	 * @param isIni : retourne vrai si les options ont ete ouverts
+	 * @param dansScene : retourne vrai si appele quand le jeu a deja demarre
+	 * @throws IOException : si mauvaise lecture
+	 * @throws FileNotFoundException : si fichier non-trouve
 	 */
-	public Options(boolean isIni) {
+	public Options(boolean isIni, boolean dansScene) throws FileNotFoundException, IOException {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 798, 515);
 		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -199,11 +208,12 @@ public class Options extends JFrame {
 		lblCouleur.setBounds(531, 386, 71, 36);
 		lblCouleur.setOpaque(true);
 		contentPane.add(lblCouleur);
-		
+
 		JLabel lblModeDeDplacement = new JLabel("Mode de d\u00E9placement :");
 		lblModeDeDplacement.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		lblModeDeDplacement.setBounds(30, 147, 274, 30);
 		contentPane.add(lblModeDeDplacement);
+
 		
 		btnRadSouris = new JRadioButton("Souris");
 		btnRadSouris.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
@@ -217,7 +227,7 @@ public class Options extends JFrame {
 		buttonGroup.add(btnRadSouris);
 		btnRadSouris.setBounds(334, 152, 109, 23);
 		contentPane.add(btnRadSouris);
-		
+
 		rdbtnClavier = new JRadioButton("Clavier");
 		rdbtnClavier.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
 		rdbtnClavier.addActionListener(new ActionListener() {
@@ -231,12 +241,12 @@ public class Options extends JFrame {
 		rdbtnClavier.setSelected(true);
 		rdbtnClavier.setBounds(554, 152, 109, 23);
 		contentPane.add(rdbtnClavier);
-		
+
 		JLabel btnTir = new JLabel("Touche pour tirer : ");
 		btnTir.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		btnTir.setBounds(33, 292, 226, 30);
 		contentPane.add(btnTir);
-		
+
 		btnTirer = new JButton("Espace");
 		btnTirer.setBackground(Color.WHITE);
 		btnTirer.addActionListener(new ActionListener() {
@@ -252,6 +262,11 @@ public class Options extends JFrame {
 		btnTirer.setFont(new Font("Lucida Sans", Font.PLAIN, 12));
 		btnTirer.setBounds(334, 303, 163, 46);
 		contentPane.add(btnTirer);
+		
+		if(dansScene) {
+			lectureFichierOption();
+			desactiverLesBoutons() ;
+		}
 	}
 
 	//Par Miora
@@ -262,16 +277,16 @@ public class Options extends JFrame {
 		btnG.setEnabled(true);
 		btnD.setEnabled(true);
 	}
-	
+
 	//Par Miora
-		/**
-		 * Cette methode permet desactiver les boutons gauches et droites
-		 */
-		private void desactiverLesBoutons() {
-			btnG.setEnabled(false);
-			btnD.setEnabled(false);
-		}
-	
+	/**
+	 * Cette methode permet desactiver les boutons gauches et droites
+	 */
+	private void desactiverLesBoutons() {
+		btnG.setEnabled(false);
+		btnD.setEnabled(false);
+	}
+
 	// Par Miora
 	/**
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
@@ -306,6 +321,7 @@ public class Options extends JFrame {
 			fluxSortie.writeDouble(Double.parseDouble(snpAcc.getValue().toString()));
 			if(btnRadSouris.isSelected()) {
 				fluxSortie.writeBoolean(true);
+				desactiverLesBoutons() ;
 			}else {
 				fluxSortie.writeBoolean(false);
 			}
@@ -349,12 +365,12 @@ public class Options extends JFrame {
 		toucheDroite = e.getKeyCode() ;
 		btnD.setText(KeyEvent.getKeyText(e.getKeyCode()));
 	}
-	
+
 	//Par Miora
-		/**
-		 * Cette methode permet d'initialiser la touche de tir 
-		 * @param e : la touche du clavier
-		 */
+	/**
+	 * Cette methode permet d'initialiser la touche de tir 
+	 * @param e : la touche du clavier
+	 */
 	private void modificationTir (KeyEvent e) {
 		toucheTir = e.getKeyCode() ;
 		btnTirer.setText(KeyEvent.getKeyText(e.getKeyCode()));
@@ -384,7 +400,7 @@ public class Options extends JFrame {
 	public boolean getIsModifie() {
 		return isModifie;
 	}
-	
+
 
 	//Par Miora
 	/**
@@ -403,4 +419,59 @@ public class Options extends JFrame {
 	public void setDansScene(boolean dansScene) {
 		this.dansScene = dansScene;
 	}
+
+	// Par Miora
+	/**
+	 * Cette methode permet de remettre les donnes de fichier option
+	 *
+	 */
+	private void lectureFichierOption() throws FileNotFoundException, IOException {
+		File fichierDeTravail;
+		ObjectInputStream fluxEntree = null;
+
+		// Path du dossier contenant les modifications, les options sont crees par
+		// ordinateur et non par partie
+		String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
+				+ "Laser de la justice";
+		direction += File.separator + "Option" + File.separator + "modifie.d3t";
+		File f = new File(direction);
+		fichierDeTravail = new File(direction);
+		// Fin path
+
+		try {
+			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
+			snpAcc.setValue(fluxEntree.readDouble());
+			if(fluxEntree.readBoolean()) {
+				btnRadSouris.setSelected(true);
+			}
+			btnG.setText(KeyEvent.getKeyText(fluxEntree.readInt()));
+			btnD.setText(KeyEvent.getKeyText(fluxEntree.readInt()));
+			btnTirer.setText(KeyEvent.getKeyText(fluxEntree.readInt()));
+			try {
+				lblCouleur.setBackground((Color)fluxEntree.readObject());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+			catch (FileNotFoundException e) {
+				System.exit(0);
+			}
+
+			catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture");
+				e.printStackTrace();
+				System.exit(0);
+			}
+
+			finally {
+				// on exécutera toujours ceci, erreur ou pas
+				try {
+					fluxEntree.close();
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Erreur rencontrée lors de la fermeture!");
+				}
+			} // fin finally
+	
+	}
+
 }

@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -104,7 +105,13 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnOption.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
-				ouvrirOptions();
+				try {
+					ouvrirOptions();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnOption.setBounds(413, 101, 175, 45);
@@ -218,9 +225,11 @@ private void nouvellePartie() {
 //Par Miora
 /**
  * Cette methode permet d'ouvir la fenetre des options
+ * @throws IOException lecture possible du fichier
+ * @throws FileNotFoundException fichier non trouve
  */
-private void ouvrirOptions() {
-	fenetreOption = new Options(true);
+private void ouvrirOptions() throws FileNotFoundException, IOException {
+	fenetreOption = new Options(true, false);
 	fenetreOption.setVisible(true);
 }
 
