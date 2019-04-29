@@ -72,16 +72,16 @@ public class Bruit {
 			musique.stop();
 	}
 
-
-
-
 	/**
 	 * Méthode qui fait jouer un son au hasard lorsque le joueur est touché par un obstacle
 	 */
 	public void joueSonLorsqueTouche() {
 
-		int nb = 0 + (int)(Math.random() * ((3 - 2) + 1));
+		
+		int range = (2 - 1) + 1;     
 
+		int nb =  (int)(Math.random() * range) + 1;
+		
 		switch(nb) {
 
 		case 1: 
@@ -100,8 +100,9 @@ public class Bruit {
 	 */
 	public void joueSonLorsqueFini() {
 
-		int nb = 0 + (int)(Math.random() * ((4 - 1) + 1));
-
+		int range = (4 - 1) + 1;     
+		int nb =  (int)(Math.random() * range) + 1;
+	
 		switch(nb) {
 
 		case 1: 
@@ -115,7 +116,6 @@ public class Bruit {
 		case 3: 
 			joue("chosenone");
 			break;
-
 
 		case 4:
 			joue("gameover");

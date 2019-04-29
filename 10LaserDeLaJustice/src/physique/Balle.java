@@ -39,20 +39,15 @@ public class Balle implements Dessinable, Serializable {
 	private double masse = 15;
 	private Ellipse2D.Double cercle;
 	private Vecteur position, vitesse, accel = new Vecteur(0,0);
-	private Vecteur forceGravi,forceElectrique = new Vecteur(0,0);
-	private MoteurPhysique mt = new MoteurPhysique();
+	private Vecteur forceGravi;
 	private Type type;
 	private double qtRot;
 	private final double VITESSE_ROTATION = 0.04;
 	private VecteurGraphique vG;
 	private boolean modeScientifique = false;
-	private Vecteur sommeForces;
-	private static ModeleAffichage modele;
-	private double charge=0.000006;
-	
+	private static ModeleAffichage modele;	
 	private transient BufferedImage img;
 	private transient ArrayList<BufferedImage> images = new ArrayList ();
-
 
 	/**
 	 * Classe enumeration des types de balle
@@ -260,7 +255,6 @@ public class Balle implements Dessinable, Serializable {
 	 */
 	public void unPasEuler(double deltaT) {
 		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
-		//System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
 	}
 	
 	//Jeremy Thai
@@ -270,7 +264,6 @@ public class Balle implements Dessinable, Serializable {
 	 * @param deltaT intervalle de temps (pas)
 	 */
 	public void unPasVerlet(double deltaT) {
-		calculerForcesEtAccel();
 		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
 	}
 	
@@ -282,7 +275,6 @@ public class Balle implements Dessinable, Serializable {
 	 * @param tempsEcoule temps simule  (s)
 	 */
 	public void unPasRK4(double deltaT, double tempsEcoule) {
-		//	MoteurPhysique.miseAJourAcceleration(forceGravi, masse, accel);
 		MoteurPhysique.unPasRK4(deltaT, tempsEcoule, position, vitesse, accel);
 	}
 
@@ -516,10 +508,8 @@ public class Balle implements Dessinable, Serializable {
 	 * @return force gravitationnelle
 	 */
 	public Vecteur getForceGravi() {
-		return forceGravi;
+		return MoteurPhysique.forceGravi(masse, accel);
 	}
-
-
 
 	//Jeremy Thai
 	/**
@@ -530,24 +520,16 @@ public class Balle implements Dessinable, Serializable {
 		this.modeScientifique = modeScientifique;
 	}
 
-	//Jeremy Thai
-	
-	public void calculerForcesEtAccel() {
-		forceGravi = MoteurPhysique.forceGravi(masse, accel);
-		sommeForces = MoteurPhysique.sommeForces(forceGravi, forceElectrique);
-		MoteurPhysique.miseAJourAcceleration(sommeForces, masse, accel);
-		
-	}
 
 	//Jeremy Thai
-	public void setForcesElectrique(Vecteur forceElectrique) {
-		this.forceElectrique = new Vecteur(forceElectrique);
-	}
-
-
-	//Jeremy Thai
-	public static void setModele(double longueur, double hauteur, double longueurMonde) {
-	   modele =  new ModeleAffichage(longueur, hauteur, longueurMonde);
+	/**
+	 * Modifie et creer un modele d'affichage avec les valeurs reelles venant de la scene 
+	 * @param largeur largeur du monde en pixels  
+	 * @param hauteur hauteur du monde en pixels 
+	 * @param largeurMonde largeur du monde en unites reelles 
+	 */
+	public static void setModele(double largeur, double hauteur, double largeurMonde) {
+	   modele =  new ModeleAffichage(largeur, hauteur, largeurMonde);
 	}
 }
 

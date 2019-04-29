@@ -42,19 +42,7 @@ public class Ralenti extends Pouvoir{
 	
 	@Override
 	public void lireImage() {
-/*
-		URL fich = getClass().getClassLoader().getResource("sablier.jpg");
-		if (fich == null) {
-			JOptionPane.showMessageDialog(null, "Fichier sablier.jpg introuvable!");
-		} else {
-			try {
-				setImg(ImageIO.read(fich));
-			} catch (IOException e) {
-				System.out.println("Erreur de lecture du fichier d'image du BoostVitesse");
-			}
-		}
-		*/
-		
+	
 		setImg(Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("sablier.gif")));
 
 	}

@@ -12,6 +12,8 @@ import son.Bruit;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class FenetreGameOver extends JFrame {
 
@@ -66,5 +68,10 @@ public class FenetreGameOver extends JFrame {
 		});
 		btnQuitter.setBounds(266, 106, 105, 55);
 		contentPane.add(btnQuitter);
+		
+		JLabel lblNewLabel = new JLabel("VOUS AVEZ PERDU");
+		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 17));
+		lblNewLabel.setBounds(135, 42, 167, 40);
+		contentPane.add(lblNewLabel);
 	}
 }

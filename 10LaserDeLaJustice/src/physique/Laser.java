@@ -33,10 +33,8 @@ public class Laser implements Dessinable {
 	private Path2D.Double trace;
 	private Color couleurLaser = null;
 	private boolean isCouleurPerso = false;
-
 	private Vecteur positionBas ;
 	private double vitesseConstante;
-
 
 	private Random rand = new Random();
 
@@ -56,8 +54,6 @@ public class Laser implements Dessinable {
 		this.vitesse = vitesse;
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = false;
-
-
 	}
 
 	// Par Miora
@@ -77,7 +73,6 @@ public class Laser implements Dessinable {
 		updaterAngleVitesse(angleTir);
 		isCouleurPerso = true;
 	}
-	
 	
 	
 
@@ -121,17 +116,24 @@ public class Laser implements Dessinable {
 	private void changerCouleurPerso(Graphics2D g2d) {
 		if (!isCouleurPerso) {
 			randomColor(g2d);
-			// System.out.println("on ne change pas la couleur");
 		} else {
 			g2d.setColor(couleurLaser);
-			//System.out.println("on va changer la couleur");
 		}
 	}
 
+	// Miora 
+	/**
+	 * Retourne la couleur du laser 
+	 * @return couleur du laser
+	 */
 	public Color getCouleurLaser() {
 		return couleurLaser;
 	}
-
+	// Miora 
+		/**
+		 * Modifie la couleur du laser par celle passee en parametre
+		 * @param couleur du laser en parametre
+		 */
 	public void setCouleurLaser(Color couleurLaser) {
 		this.couleurLaser = couleurLaser;
 	}
@@ -160,16 +162,8 @@ public class Laser implements Dessinable {
 
 		positionHaut.setY(positionHaut.getY()-vitesse.getY());
 		positionHaut.setX(positionHaut.getX() + vitesse.getX());
-
-		/*positionBas = new Vecteur ( positionHaut.getX() + (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
-				positionHaut.getY() - (LONGUEUR * Math.sin(Math.toRadians(angleTir))));*/
 	}
 	
-	public void unPasEuler(double deltaT) {
-		MoteurPhysique.unPasEuler(deltaT, positionHaut, vitesse, new Vecteur(0,0));
-		//System.out.println("Nouvelle vitesse: " + vitesse.toString() + "  Nouvelle position: " + position.toString());
-	}
-
 	/**
 	 * Retourne l'aire en forme de rectangle du laser
 	 * 
@@ -192,7 +186,6 @@ public class Laser implements Dessinable {
 		return pts;
 	}
 	
-	
 
 	/**
 	 * Retourne la longueur du laser @return, LONGUEUR, constante de longueur du
@@ -208,7 +201,6 @@ public class Laser implements Dessinable {
 	 */
 	// auteur Arnaud Lefebvre
 	public Vecteur getPositionBas() {
-		// return new Vecteur (positionHaut.getX(),positionHaut.getY());
 		return new Vecteur(positionHaut.getX() - (LONGUEUR * Math.cos(Math.toRadians(angleTir))),
 				positionHaut.getY() + (LONGUEUR * Math.sin(Math.toRadians(angleTir))));
 	}
@@ -229,7 +221,6 @@ public class Laser implements Dessinable {
 		Vecteur newVec = new Vecteur(pos.getX(), pos.getY());
 		this.positionBas = newVec;
 	}
-
 
 
 	/**
@@ -295,7 +286,6 @@ public class Laser implements Dessinable {
 		double vitesseEnY = vitesseConstante * Math.sin(Math.toRadians(angle));
 		Vecteur vec = new Vecteur(vitesseEnX, vitesseEnY);
 		setVitesse(vec);
-		// System.out.println("modification vitesse"+ vec );
 	}
 	
 

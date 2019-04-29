@@ -27,7 +27,6 @@ import java.net.SocketOptions;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -80,7 +79,7 @@ public class Scene extends JPanel implements Runnable {
 	private int tempsDuJeu = 60; //initialement
 	private int toucheGauche = 37;
 	private double n2 = 2.00;
-	private int compteur = 0;
+	private int compteurOrdi = 0;
 	private double qtRotation = 0;
 
 	private int toucheDroite = 39;
@@ -343,7 +342,7 @@ public class Scene extends JPanel implements Runnable {
 
 	}
 
-	
+
 	// Arnaud Lefebvre
 	/**
 	 * Cette méthode permet d'arreter l'animation
@@ -413,7 +412,7 @@ public class Scene extends JPanel implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
-			compteur++;
+			compteurOrdi++;
 			son.joueMusique("alienMusique");
 			calculerUneIterationPhysique();
 			leverEventBalle(listeBalles);
@@ -431,9 +430,9 @@ public class Scene extends JPanel implements Runnable {
 			updateDureeCompteurs();
 			collisionLaserPrisme();
 
-			if (compteur == 60) {
+			if (compteurOrdi == 60) {
 				tirer();
-				compteur = 0;
+				compteurOrdi = 0;
 			}
 			repaint();
 
@@ -459,12 +458,23 @@ public class Scene extends JPanel implements Runnable {
 	 **/
 	private void lireFond() {
 
-		fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
+		URL fich = getClass().getClassLoader().getResource("Europa.jpg");
+		if (fich == null) {
+			JOptionPane.showMessageDialog(null, "Fichier coeur.png introuvable!");
+		} else {
+			try {
+				fond = ImageIO.read(fich);
+			} catch (IOException e) {
+				System.out.println("Erreur de lecture du fichier d'image du AjoutVie");
+			}
+		}
+		
+	//	fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	
+
 	// Jeremy Thai
 	/**
 	 * Fait la detection d une collision entre toutes les balles et tous les lasers
@@ -548,7 +558,7 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Methode qui indique quand un laser entre en collision avec un bloc pour ensuite lui savoir comment changer l'orientation du laser selon l'indice du bloc
 	 * @param listeLasers, la liste des lasers tires
@@ -559,13 +569,13 @@ public class Scene extends JPanel implements Runnable {
 			for (int j = 0; j < listeBlocEau.size(); j++) {
 				if(listeLasers.get(i).getPositionHaut().getX()>=listeBlocEau.get(j).getPosition().getX()&&
 						listeLasers.get(i).getPositionHaut().getX()<=listeBlocEau.get(j).getPosition().getX()+listeBlocEau.get(j).getLARGEUR()
-					&&listeLasers.get(i).getPositionHaut().getY()<=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()+0.2&&
-					listeLasers.get(i).getPositionHaut().getY()>=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()-0.2) {
+						&&listeLasers.get(i).getPositionHaut().getY()<=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()+0.2&&
+						listeLasers.get(i).getPositionHaut().getY()>=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()-0.2) {
 					BlocDEau bloc = listeBlocEau.get(j);
 					Laser laser = listeLasers.get(i);
 					System.out.println("je suis ici");
-					
-					
+
+
 					try {
 						System.out.println("le veiel angle est de "+laser.getAngleTir());
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
@@ -581,7 +591,7 @@ public class Scene extends JPanel implements Runnable {
 						e.printStackTrace();
 					}
 				}
-					
+
 			}
 		}
 	}
@@ -599,7 +609,7 @@ public class Scene extends JPanel implements Runnable {
 			while(n< listeMiroirPlan.size() && collision == false) {
 				if(enIntersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
-					
+
 					//Les calculs se font a partir du referentiel g2d. Calcul position d'intersection
 					//entre deux droites
 					double angleR = Math.toRadians(laser.getAngleTir()) ;
@@ -616,11 +626,11 @@ public class Scene extends JPanel implements Runnable {
 
 					double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
 					double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
-					
-					
+
+
 					Vecteur posInter = new Vecteur (x,y);
-			
-					
+
+
 					//Calcul du nouvel angle
 					Vecteur normal = listeMiroirPlan.get(n).getNormal(vecDirLaser).normalise();
 					if(modeScientifique) {
@@ -628,7 +638,7 @@ public class Scene extends JPanel implements Runnable {
 					}
 					Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 					Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
-	
+
 					//ajustement en systeme d'axe normal
 					reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
 
@@ -641,7 +651,7 @@ public class Scene extends JPanel implements Runnable {
 					double yt = decalage*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
 
 					Vecteur nouveauHaut = OutilsMath.translation(xt, yt, laser.getPositionHaut());
-					
+
 					laser.setPositionHaut(nouveauHaut);
 				}
 				n++;
@@ -666,9 +676,9 @@ public class Scene extends JPanel implements Runnable {
 				for(Ligne ligne :listeMiroirCourbe.get(n).getListeLigne()) {
 					if(enIntersection(ligne.getAireLigne(), laser.getAire())){
 						collision = true;
-						
+
 						//Calcul selon g2d
-						
+
 						//Calcul position intersection (intersection entre deux droites)
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 						System.out.println("centre miroir" + listeMiroirCourbe.get(n).getPosition());
@@ -679,7 +689,7 @@ public class Scene extends JPanel implements Runnable {
 
 						Vecteur ptsMiroir = (new Vecteur (ligne.getX1(), ligne.getY1()));
 						Vecteur vecDirMiroir = new Vecteur (ligne.x2-ligne.x1, ligne.y2-ligne.y1).normalise();
-		
+
 						Vecteur sous = (ptsLaser.soustrait(ptsMiroir)).multiplie(-1); // de l'autre cote equation
 						Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
 						double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
@@ -692,13 +702,13 @@ public class Scene extends JPanel implements Runnable {
 						Vecteur normal = listeMiroirCourbe.get(n).getNormal(posInter).normalise();
 						Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 						Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
-	
+
 						//ajustement en systeme d'axe normal
 						reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
 
 						//Nouvel angle
 						laser.setAngleTir(OutilsMath.ajustementArcTan(reflexion));
-						
+
 						//Translation pour mettre le laser au bon endroit. Le bas du laser va aller a la position intersection
 						//le haut va aller a sa nouvelle position
 						double decalage = 1.5; // Pour annuler le "en intersection"
@@ -706,7 +716,7 @@ public class Scene extends JPanel implements Runnable {
 						double yt = decalage*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
 
 						Vecteur nouveauHaut = OutilsMath.translation(xt, yt, laser.getPositionHaut());
-						
+
 						laser.setPositionHaut(nouveauHaut);
 					}
 				}
@@ -716,7 +726,7 @@ public class Scene extends JPanel implements Runnable {
 		}
 	}
 	// fin methode
-	
+
 
 	// Jeremy Thai
 	/**
@@ -1173,7 +1183,7 @@ public class Scene extends JPanel implements Runnable {
 			System.out.println(customDir + "le fichier n'a pas ete cree");
 		}
 		// Fin creation dossier
-		
+
 		String nomFichierSauvegarde = nomSave;
 		File fichierDeTravail = new File(customDir, nomFichierSauvegarde);
 		ObjectOutputStream fluxSortie = null;
@@ -1365,7 +1375,7 @@ public class Scene extends JPanel implements Runnable {
 			ecout.changementTempsListener(temps);
 		}
 	}
-	
+
 	/**
 	 * Permet d'avoir en sortie la vitesse, l'accélération et la force gravitationnelle des balles. 
 	 * @param listeBalles
@@ -1393,7 +1403,7 @@ public class Scene extends JPanel implements Runnable {
 			ecout.evenementPersonnage(personnage);
 		}
 	}
-	
+
 	// Par Jeremy 
 	/**
 	 * Permet de mettre a jour les sorties du mode scientifique
@@ -1548,7 +1558,7 @@ public class Scene extends JPanel implements Runnable {
 			if (pouvoir.getPosition().getY() + pouvoir.getLongueurImg() >= HAUTEUR_DU_MONDE) {
 				pouvoir.getPosition().setY(HAUTEUR_DU_MONDE - pouvoir.getLongueurImg());
 			} else {
-				pouvoir.unPasVerlet(deltaT);
+				pouvoir.unPasVerlet(deltaTInit);
 			}
 
 		}
@@ -1816,23 +1826,35 @@ public class Scene extends JPanel implements Runnable {
 	 */
 
 	public void setDeltaT(double deltaT) { this.deltaT = deltaT; }
+
+
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
 
-	public void setTempsTotalEcoule(int value) {
-		this.tempsEcoule = value;
+	//Jeremy Thai
+	/**
+	 * Modifie le temps ecoule depuis le debut de lanimation par celui passe en parametre
+	 * @param tempsEcoule nouveau temps ecoule 
+	 */
+	public void setTempsTotalEcoule(int tempsEcoule) {
+		this.tempsEcoule = tempsEcoule;
 	}
 
+	//Par Miora
+	/**
+	 * Cette methode modifie le KeyCode de la touche gauche par celle passee en parametre
+	 * @param le KeyCode de la nouvelle touche gauche en parametre
+	 */
 	public void setToucheGauche(int toucheGauche) {
 		this.toucheGauche = toucheGauche;
 	}
 
-	
 	public void setIndiceRefractionPrisme(double valeur) {
 		prisme.setIndiceRefraction(valeur);
 		repaint();
 	}
+
 
 	public void setRefractionBloc(double valeur) {
 
@@ -2065,7 +2087,7 @@ public class Scene extends JPanel implements Runnable {
 	public void setAngleBloc(double value) {
 		bloc.setAngle(value);		
 	}
-	
+
 }
 
 

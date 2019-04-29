@@ -8,12 +8,12 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 
 /**
- * @author Jeremy Thai
+ * Classe qui permet de créer les barres de progression des énergies utilisés par les balles. 
+ * @author Jérémy Thai
+ *
  */
-
 public class BarreEnergie extends JPanel  {
-	public BarreEnergie() {
-	}
+	
 	private Rectangle2D.Double rect1, rectVide;
 	private int largeurForme=70;
 	private double x=0;
@@ -22,7 +22,11 @@ public class BarreEnergie extends JPanel  {
 	private double pourcentageEnergie;
 	private double energie, energieMecanique;
 
-
+	
+/**
+ * 	Méthode qui permet de dessiner la barre de progression
+ * @param g contexte graphique  
+ */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
@@ -37,32 +41,20 @@ public class BarreEnergie extends JPanel  {
 		g2d.fill(rectVide);
 
 		g2d.setColor(Color.GREEN);
-		//g2d.rotate(Math.toRadians(180), x,y);
-		//g2d.translate(x+largeurForme, y+ 150);
 		rect1  = new Rectangle2D.Double(x, y, largeurForme,longueurForme);
 		g2d.fill(rect1);
-		g2d.setTransform(mat);
+		
 		
 		g2d.setColor(Color.BLACK);
 		g2d.drawString((int)energie+"J", largeurForme/4  - largeurForme/5,longueurForme/2 + 15);
 		g2d.drawString("("+ Math.round(pourcentageEnergie*100)+"%)", largeurForme/4- largeurForme/8,longueurForme/2 + 30);
 		
-		
+		g2d.setTransform(mat);
 	}
-
-
-	public double getEnergie() {
-		return energie;
-	}
-
-	public double getEnergieMecanique() {
-		return energieMecanique;
-	}
-
+	
 	public void setEnergies(double energie, double energieMecanique) {
 		this.energie = energie;
 		this.energieMecanique = energieMecanique;
-
 	}
 
 

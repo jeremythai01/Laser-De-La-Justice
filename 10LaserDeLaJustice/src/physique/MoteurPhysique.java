@@ -8,27 +8,14 @@ import geometrie.Vecteur;
  * Cette classe regroupera les calculs physiques nécessaires au mouvement des objets des divers objets dans la scène. 
  *  
  * @author Jeremy Thai
- *  @author Arnaud Le
+ *  @author Caroline Houle
  *
  */
 
 public class MoteurPhysique implements Serializable {
 	
 	  private static final long serialVersionUID = 2057630780843954427L;
-
-	// Caroline Houle 
-	/**
-	 * Calcule l'acceleration en fonction de la masse et des forces appliquees
-	 * @param sommeDesForces La somme des forces appliquees
-	 * @param masse La masse 
-	 * @param accel En sortie, l'acceleraion calculee, avec a=m/F
-	 */
-	public static void miseAJourAcceleration(Vecteur sommeDesForces, double masse, Vecteur accel) {
-		//sachant que f=ma, on calcule a = m / f
-		accel.setX( sommeDesForces.getX() / masse );
-		accel.setY( sommeDesForces.getY() / masse );
-
-	}
+	  
 	// Caroline Houle 
 	/**
 	 * Calcule une itération de l'algorithem d'intégration numérique d'Euler semi-implicite. 
@@ -50,9 +37,7 @@ public class MoteurPhysique implements Serializable {
 		Vecteur resultP = position.additionne(deltaPosition); //on calcule la position en considerant la nouvelle vitesse
 		position.setX(resultP.getX());  //on change le vecteur position
 		position.setY(resultP.getY());
-
-
-	}//fin méthode
+	}
 
 	// Jeremy Thai 
 	/**
@@ -75,8 +60,6 @@ public class MoteurPhysique implements Serializable {
 
 		vitesse.setX(resultV.getX());			// ajout du prof de physique !!!
 		vitesse.setY(resultV.getY());
-
-
 	}
 
 	// Jeremy Thai 
@@ -160,7 +143,6 @@ public class MoteurPhysique implements Serializable {
 	 * @param hauteur hauteur de l'objet par rapport au sol ( en m)
 	 * @return l'energie potentielle
 	 */
-
 	protected static double energiePotentielle(double masse, Vecteur a, double hauteur) {
 		return a.getY()*masse*hauteur;
 	}
@@ -171,11 +153,10 @@ public class MoteurPhysique implements Serializable {
 	 * @param eP l'energie potentielle  de l'objet 	(J)
 	 * @return energie mecanique
 	 */
-
 	protected static double energieMecanique(double eC, double eP) {
 		return eC+eP;
 	}
-
+	
 	//Jeremy Thai
 	/** 
 	 * retourne un vecteur du calcul de la force gravitationnelle
@@ -185,16 +166,6 @@ public class MoteurPhysique implements Serializable {
 	protected static Vecteur forceGravi(double masse, Vecteur accel) {
 		return new Vecteur(0, masse*accel.getY());
 	}
-
-	
-	public static Vecteur forceElectrique(Vecteur positionSubit, Vecteur positionApplique, double chargeSubit, double k, double charge) {
-		return ((positionSubit.soustrait(positionApplique)).multiplie(1.0/(Math.pow((positionSubit.soustrait(positionApplique)).module(),3.0)))).multiplie(k*chargeSubit*charge);
-	}
-	
-	protected static Vecteur sommeForces(Vecteur forceGravi, Vecteur forceElectrique) {
-		return new Vecteur(forceGravi.additionne(forceElectrique).getX(), forceGravi.additionne(forceElectrique).getY() );
-	}
-	
 	
 	/**
 	 *  Methode qui calcule le temps ou les temps  exactes lors  dune collision a l'aide de la formule quadratique
@@ -270,116 +241,6 @@ public class MoteurPhysique implements Serializable {
 
 		balle1.setVitesse(vA.additionne(nAB.multiplie(impulsion/masseA)));
 		balle2.setVitesse(vB.soustrait(nAB.multiplie(impulsion/masseB)));
-	}
-	
-	/**
-	 * Methode qui permet de faire la detection de balles et murs  et s il y en a une, realiser la collision entre celles-ci
-	 * @param balle1 une balle
-	 * @param mur un mur 
-	 */
-	//Jeremy Thai
-	public static void detectionCollisionMurBalle(Balle balle, Mur mur) {
-
-		double rayonA = balle.getDiametre()/2 ;
-		Vecteur rA0 = new Vecteur(balle.getPosition().getX()+ rayonA ,balle.getPosition().getY() +  rayonA );
-
-		Vecteur vA = balle.getVitesse();
-		Vecteur rP0 =  new Vecteur(mur.getPosition().getX()  ,mur.getPosition().getY() );
-		
-		double distance = rayonA;
-		
-	/*	Vecteur nP = mur.getNormal().normalise();
-		
-		double v = vA.prodScalaire(nP);
-		double R = nP.prodScalaire(rA0.soustrait(rP0));
-		
-
-		double temps[] = {0,0};
-		 if(distance >= nP.prodScalaire(rP0.soustrait(rA0)))
-			collisionMurBalle(balle, mur, temps);
-			
-	
-	/*
-		double A = v*v;
-		double B = v*R*2;
-		double C = R*R - distance*distance;
-
-		double temps[] = quadricRealRoot( A, B, C); 
-		
-		if( temps.length == 1 || temps.length == 2) 
-			collisionMurBalle(balle, mur, temps);
-		*/
-
-	}
-	
-	
-	/**
-	 * Methode qui permet de  realiser la collision entre une balle et un mur 
-	 * @param balle1 une balle
-	 * @param mur un mur 
-	 */
-	//Jeremy Thai
-	public static void collisionMurBalle(Balle balle, Mur mur, double temps[]) {
-	/*
-		Vecteur v = balle.getVitesse();
-		
-		Vecteur n = mur.getNormal().normalise();
-		
-		Vecteur E = v.multiplie(-1);
-		
-		Vecteur R = v.additionne(n.multiplie(n.prodScalaire(E)*2));
-		
-		balle.setVitesse(R);
-		
-		*/
-		
-/*		
-		Vecteur n = mur.getNormal().normalise();
-		Vecteur v = balle.getVitesse();
-		
-		Vecteur u = n.multiplie(v.prodScalaire(n) / n.prodScalaire(n));
-		
-		Vecteur w = v.soustrait(u);
-		
-		double frottement = mur.getCoefE();
-		
-		double r =0; // pour collision parfaitement elastique 
-		Vecteur vFinal = w.multiplie(frottement).soustrait(u.multiplie(r));
-		
-		balle.setVitesse(vFinal);
-		
-		
-		double rayon = balle.getDiametre()/2;
-		Vecteur rA = new Vecteur(balle.getPosition().getX()+ rayon ,balle.getPosition().getY() +  rayon );
-
-	*/
-		double rayonA = balle.getDiametre()/2 ;
-		Vecteur rA0 = new Vecteur(balle.getPosition().getX()+ rayonA ,balle.getPosition().getY() +  rayonA );
-
-		Vecteur vA = balle.getVitesse();
-		Vecteur rP0 =  new Vecteur(mur.getPosition().getX()  ,mur.getPosition().getY() );
-		
-	
-		//Vecteur nP = mur.getNormal().normalise();
-		
-	
-	//	for (int i = 0; i < temps.length; i++) {
-		//	if( temps[i] > 0) {
-				
-				Vecteur nAB = rP0.soustrait(rA0).normalise();
-
-				double masseA = balle.getMasse();
-				double masseB = Double.POSITIVE_INFINITY;
-				
-				Vecteur vB = new Vecteur(0,0);		
-				double e = 1;
-				double impulsion = nAB.prodScalaire(vA.soustrait(vB))*(-1-e)/(1/masseA + 1/masseB);
-				balle.setVitesse(vA.additionne(nAB.multiplie(impulsion/masseA)));
-				
-		//		return;
-		//	}
-	//	}
-	
 	}
 }
 
