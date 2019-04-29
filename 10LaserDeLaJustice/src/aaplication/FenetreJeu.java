@@ -79,7 +79,6 @@ public class FenetreJeu extends JFrame {
 
 	private static String nomFichier;
 
-
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
@@ -513,7 +512,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnDemarrage);
 
 		
-		FenetreVictoire victoire = new FenetreVictoire();
+	
 		
 		listener = new ActionListener() {
 			@Override
@@ -533,12 +532,7 @@ public class FenetreJeu extends JFrame {
 						gameOver.setVisible(true);
 					}
 		
-				if(sceneFinale.getListeBalles().size()==0) {
-					//son.joueSonLorsqueFini();
-					victoire.setVisible(true);
-					barreTempsDuJeu.setValue(0);
-					setVisible(false);
-				}
+			
 			
 			}
 		
