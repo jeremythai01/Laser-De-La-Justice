@@ -1,6 +1,7 @@
 package aaplication;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -35,7 +36,7 @@ import interfaces.SceneListener;
 import miroir.Ligne;
 import miroir.MiroirCourbe;
 import miroir.MiroirPlan;
-import objets.BlocDEau;
+import objets.BlocRefraction;
 import objets.Echelle;
 import objets.Ordinateur;
 import objets.OrdinateurNiveau2;
@@ -83,6 +84,7 @@ public class Scene extends JPanel implements Runnable{
 	private double n2 = 2.00;
 	private int compteurOrdi = 0;
 	private double qtRotation = 0;
+	private double indiceRefraction=1.33;//par defaut
 
 	private int toucheDroite = 39;
 	private double positionPerso;
@@ -120,7 +122,7 @@ public class Scene extends JPanel implements Runnable{
 	private ArrayList<Balle> listeBalles = new ArrayList<Balle>();
 	private ArrayList<MiroirCourbe> listeMiroirCourbe = new ArrayList<MiroirCourbe>();
 	private ArrayList<MiroirPlan> listeMiroirPlan = new ArrayList<MiroirPlan>();
-	private ArrayList<BlocDEau> listeBlocEau = new ArrayList<BlocDEau>();
+	private ArrayList<BlocRefraction> listeBlocEau = new ArrayList<BlocRefraction>();
 	private ArrayList<Prisme> listePrisme = new ArrayList<Prisme>();
 	private ArrayList<Pouvoir> listePouvoirs = new ArrayList<Pouvoir>();
 
@@ -128,7 +130,7 @@ public class Scene extends JPanel implements Runnable{
 	private TrouNoir trou;
 	private MiroirCourbe miroirCourbe;
 	private MiroirPlan miroirePlan;
-	private BlocDEau bloc;
+	private BlocRefraction bloc;
 	private Ordinateur ordi1;
 	private OrdinateurNiveau2 ordi2;
 	private OrdinateurNiveau3 ordi3;
@@ -187,7 +189,7 @@ public class Scene extends JPanel implements Runnable{
 		
 		angle = valeurAngleRoulette;
 		nouvellePartie(isPartieNouveau, nomFichier);
-		lectureFichierOption();
+		//lectureFichierOption();
 		if(deplacementSouris) {
 			personnage.setModeSouris(true);
 			personnage.setToucheDroite(898); //touches au hasard
@@ -323,7 +325,7 @@ public class Scene extends JPanel implements Runnable{
 			trou.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
-		for (BlocDEau blocE : listeBlocEau) {
+		for (BlocRefraction blocE : listeBlocEau) {
 			blocE.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
@@ -603,7 +605,7 @@ public class Scene extends JPanel implements Runnable{
 						listeLasers.get(i).getPositionHaut().getX()<=listeBlocEau.get(j).getPosition().getX()+listeBlocEau.get(j).getLARGEUR()
 						&&listeLasers.get(i).getPositionHaut().getY()<=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()+0.2&&//0.2 pour permettre une approximation, car deux x ne seront jamais egaux
 						listeLasers.get(i).getPositionHaut().getY()>=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()-0.2) {
-					BlocDEau bloc = listeBlocEau.get(j);
+					BlocRefraction bloc = listeBlocEau.get(j);
 					Laser laser = listeLasers.get(i);
 
 
@@ -613,7 +615,7 @@ public class Scene extends JPanel implements Runnable{
 						if(angle<0) {
 							angle=angle+180;
 						}
-						laser.setAngleTir(angle);
+						laser.setAngleTir(angle-2*1);//erreur d'imprecision causee par les vecteurs orientations pas assez precis
 						j=listeBlocEau.size();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -890,7 +892,7 @@ public class Scene extends JPanel implements Runnable{
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutBlocEau() {
-		listeBlocEau.add(new BlocDEau(new Vecteur(9, 0), 2));
+		listeBlocEau.add(new BlocRefraction(new Vecteur(9, 0), indiceRefraction));
 		repaint();
 
 	}
@@ -1052,6 +1054,25 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
+	 * Methode qui indique aux blocs quel est leur indice
+	 * @param index, l'index de la combobox, commencant par l'eau
+	 */
+	//Arnaud Lefebvre
+	public void modifierIndiceBloc(int index) {
+		switch (index) {
+		
+		case 0: indiceRefraction=(1.33);
+				break;
+		case 1: indiceRefraction=(1.5);
+				break;
+		case 2: indiceRefraction=(2.42);
+				break;
+		case 3: indiceRefraction=(1.63);
+				break;
+		}
+	}
+	
+	/**
 	 * Methode qui active l'ordinateur 1
 	 */
 	//Arnaud Lefebvre
@@ -1082,6 +1103,15 @@ public class Scene extends JPanel implements Runnable{
 		activerOrdi3=true;
 }
 	
+	/**
+	 * Methode qui desactive les ordis
+	 */
+	//Arnaud
+	public void desactiverOrdi() {
+		activerOrdi1=false;
+		activerOrdi2=false;
+		activerOrdi3=false;
+	}
 	
 	/**
 	 * Methode qui active le mode de triche
@@ -1206,7 +1236,7 @@ public class Scene extends JPanel implements Runnable{
 			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
 			try {
 				listeBalles = (ArrayList<Balle>) fluxEntree.readObject();
-				listeBlocEau = (ArrayList<BlocDEau>) fluxEntree.readObject();
+				listeBlocEau = (ArrayList<BlocRefraction>) fluxEntree.readObject();
 				listeMiroirPlan = (ArrayList<MiroirPlan>) fluxEntree.readObject();
 				listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
 				listeTrou = (ArrayList<TrouNoir>) fluxEntree.readObject();
@@ -1319,7 +1349,7 @@ public class Scene extends JPanel implements Runnable{
 				listeMiroirCourbe = (ArrayList<MiroirCourbe>) fluxEntree.readObject();
 				listePrisme = (ArrayList<Prisme>) fluxEntree.readObject();
 				listeTrou = (ArrayList<TrouNoir>) fluxEntree.readObject();
-				listeBlocEau = (ArrayList<BlocDEau>) fluxEntree.readObject();
+				listeBlocEau = (ArrayList<BlocRefraction>) fluxEntree.readObject();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -2189,6 +2219,11 @@ try {
 	 */
 	public int getToucheTir() {
 		return toucheTir;
+	}
+
+	public ArrayList<Balle> getListeBalles() {
+		// TODO Auto-generated method stub
+		return listeBalles;
 	}
 
 
