@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import javax.imageio.ImageIO;
+import javax.swing.BoundedRangeModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -88,6 +89,8 @@ public class Scene extends JPanel implements Runnable{
 	private int toucheDroite = 39;
 	private double positionPerso;
 	private float valeurAngleRoulette = 90;
+
+	private boolean dragBon = false;
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
 	private boolean isGrCercleCliquer = false;
@@ -424,6 +427,7 @@ public class Scene extends JPanel implements Runnable{
 			calculerUneIterationPhysique();
 			leverEventBalle(listeBalles);
 			leverEvenModeScientifique();
+			leverEventPersonnage(personnage);
 			qtRotation = qtRotation + 0.2;
 			for (TrouNoir trou : listeTrou) {
 				trou.savoirQuantiteRotation(qtRotation);
@@ -456,7 +460,6 @@ public class Scene extends JPanel implements Runnable{
 				e.printStackTrace();
 			}
 		} // fin while
-		System.out.println("Le thread est mort...");
 	}
 
 	// Par Miora
@@ -472,7 +475,6 @@ public class Scene extends JPanel implements Runnable{
 			try {
 				fond = ImageIO.read(fich);
 			} catch (IOException e) {
-				System.out.println("Erreur de lecture du fichier d'image du AjoutVie");
 			}
 		}
 
@@ -491,8 +493,10 @@ public class Scene extends JPanel implements Runnable{
 	 * @param character   personnage
 	 */
 	private void detectionCollisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
-
+		
+		try {
 		for (Laser laser : listeLasers) {
+	
 			for (Balle balle : listeBalles) {
 				if (enIntersection(balle.getAire(), laser.getAire())) {
 					listeLasers.remove(laser);
@@ -500,6 +504,8 @@ public class Scene extends JPanel implements Runnable{
 					balle.shrink(listeBalles, gravite);
 				}
 			}
+		}}catch(ConcurrentModificationException e) {
+		
 		}
 	}
 
@@ -559,7 +565,6 @@ public class Scene extends JPanel implements Runnable{
 				}
 				if (enIntersection(trou.getAireGrandTrou(), laser.getAire())) {
 					Vecteur distance = laser.getPositionHaut().soustrait(trou.getPosition());
-					System.out.println("distance entre trou et laser" + distance);
 					laser.setAngleTir(laser.getAngleTir() + distance.getX());
 				}
 			}
@@ -580,11 +585,9 @@ public class Scene extends JPanel implements Runnable{
 						listeLasers.get(i).getPositionHaut().getY()>=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()-0.2) {
 					BlocDEau bloc = listeBlocEau.get(j);
 					Laser laser = listeLasers.get(i);
-					System.out.println("je suis ici");
 
 
 					try {
-						System.out.println("le veiel angle est de "+laser.getAngleTir());
 						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
 						double angle = Math.toDegrees(Math.atan(ref.getY()/ref.getX()));
 						if(angle<0) {
@@ -592,7 +595,6 @@ public class Scene extends JPanel implements Runnable{
 						}
 						laser.setAngleTir(angle);
 						j=listeBlocEau.size();
-						System.out.println("le nouvel angle est de "+laser.getAngleTir());
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -689,11 +691,9 @@ public class Scene extends JPanel implements Runnable{
 
 						//Calcul position intersection (intersection entre deux droites)
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
-						System.out.println("centre miroir" + listeMiroirCourbe.get(n).getPosition());
 
 						double angleR = Math.toRadians(laser.getAngleTir()) ;	
 						Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
-						System.out.println("dir laser : " + vecDirLaser);
 
 						Vecteur ptsMiroir = (new Vecteur (ligne.getX1(), ligne.getY1()));
 						Vecteur vecDirMiroir = new Vecteur (ligne.x2-ligne.x1, ligne.y2-ligne.y1).normalise();
@@ -821,7 +821,6 @@ public class Scene extends JPanel implements Runnable{
 
 	public void ajoutBallePetite() {
 
-		// System.out.println("avant :"+petiteBalle.toString());
 		petiteBalle = new Balle(new Vecteur(2, 2), vitesse, "SMALL", gravite);
 		listeBalles.add(petiteBalle);
 
@@ -1033,10 +1032,15 @@ public class Scene extends JPanel implements Runnable{
 	 * Methode qui active le mode de triche
 	 */
 	// auteur Arnaud Lefebvre
-	private void modeTriche() {
-		triche = true;
+	public void modeTriche(boolean valeur) {
+		triche = valeur;
+		dragBon = valeur;
 	}
 
+	public void activerDrag(boolean valeur) {
+		dragBon = valeur;
+	}
+	
 	/**
 	 * Methode qui permet de tracer un vecteur qui indique l'angle de tir du fusil
 	 * 
@@ -1188,11 +1192,8 @@ public class Scene extends JPanel implements Runnable{
 		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
 		if (customDir.exists()) {
-			System.out.println(customDir + "le fichier existe deja");
 		} else if (customDir.mkdirs()) {
-			System.out.println(customDir + "il a ete cree");
 		} else {
-			System.out.println(customDir + "le fichier n'a pas ete cree");
 		}
 		// Fin creation dossier
 
@@ -1209,7 +1210,6 @@ public class Scene extends JPanel implements Runnable{
 			fluxSortie.writeObject(listeTrou);
 			fluxSortie.writeObject(listeBlocEau);
 			fluxSortie.writeDouble(personnage.getPosition());
-			System.out.println("ecrit " + personnage.getPosition() );
 			if (couleurLaser == null) {
 				fluxSortie.writeObject(null);
 			} else {
@@ -1247,7 +1247,6 @@ public class Scene extends JPanel implements Runnable{
 
 		} else {
 			fichierDeTravail = new File(direction, nomFichier);
-			System.out.println(nomFichier);
 		}
 		ObjectInputStream fluxEntree = null;
 
@@ -1265,7 +1264,6 @@ public class Scene extends JPanel implements Runnable{
 				e.printStackTrace();
 			}
 			positionPerso = fluxEntree.readDouble();
-			System.out.println("lu" + positionPerso );
 			try {
 				couleurLaser = (Color) fluxEntree.readObject();
 				if (couleurLaser == null) {
@@ -1312,8 +1310,6 @@ public class Scene extends JPanel implements Runnable{
 			}
 		}else {
 			// partie nouvelle
-			System.out.println("nouvelle partie come on");
-			System.out.println("scene isNouvelle" + isNouvelle + " " + toucheGauche);
 			personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 		}
 	}
@@ -1546,7 +1542,7 @@ public class Scene extends JPanel implements Runnable{
 	 * Détecte et réalise la collision entre un pouvoir et le personnage
 	 */
 	private void detectionCollisionPouvoirsPersonnages() {
-
+try {
 		for (Pouvoir pouvoir : listePouvoirs) {
 			if (enIntersection(pouvoir.getAire(), personnage.getAire())) {
 				son.joue("pouvoirActive");
@@ -1554,6 +1550,7 @@ public class Scene extends JPanel implements Runnable{
 				ajoutCompteurs();
 				listePouvoirs.remove(pouvoir);
 			}
+		}}catch(ConcurrentModificationException e) {
 		}
 	}
 
@@ -1632,7 +1629,6 @@ public class Scene extends JPanel implements Runnable{
 
 				if (enIntersection(listePrisme.get(j).getAirPrisme(), listeLasers.get(i).getAire())) {
 
-					System.out.println(j);
 					prisme = listePrisme.get(j);
 					laser = listeLasers.get(i);
 
@@ -1656,25 +1652,21 @@ public class Scene extends JPanel implements Runnable{
 	// Auteur: Arezki Issaadi
 	private void calculRefractionPrisme(Laser laser, Prisme prismes) {
 
-		System.out.println("------------------------------------------------------------------------------");
 		Vecteur T = new Vecteur();
 		Vecteur V = laser.getPositionHaut();
 		Vecteur N = normalPrisme(laser, prismes);
 		Vecteur E = V.multiplie(-1);
 		double n = 1.0 / prisme.getIndiceRefraction();
-		System.out.println("la position laser avant refraction : " + laser.getPositionHaut());
 
-		System.out.println("normal" + N);
-		System.out.println("n: " + n);
-		System.out.println("position: " + prismes.getP1());
+		
 		T = V.multiplie(n).additionne(N.multiplie(
 				(n * (E.prodScalaire(N)) - Math.sqrt(1 - Math.pow(n, 2) * (1 - (Math.pow(E.prodScalaire(N), 2)))))));
 		T = T.multiplie(-1);
-		System.out.println("T: " + T);
+		
 
 		// laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(), T.getY()));
 		double angleAncien = laser.getAngleTir();
-		System.out.println("l'angle du laser avant refraction: " + angleAncien);
+		
 
 		if (ligne23) {
 			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())) + angle);
@@ -1682,9 +1674,7 @@ public class Scene extends JPanel implements Runnable{
 			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())));
 		}
 
-		System.out.println("l'angle du laser apres refraction: " + laser.getAngleTir());
-
-		System.out.println("la position laser apres refraction : " + laser.getPositionHaut());
+		
 
 		double angleLaser = laser.getAngleTir();
 		listeLasers.add(
@@ -1703,9 +1693,7 @@ public class Scene extends JPanel implements Runnable{
 	// Auteur: Arezki Issaadi
 	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
 
-		// System.out.println("position p1"+ prisme.getP1());
-		// System.out.println("position p2"+ prisme.getP2());
-		// System.out.println("position p3"+ prisme.getP3());
+	
 
 		double resultat13 = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(),
 				laser.getPositionHaut().getY());
@@ -1713,12 +1701,9 @@ public class Scene extends JPanel implements Runnable{
 				laser.getPositionHaut().getY());
 		double resultat23 = prisme.getLigne23().ptSegDist(laser.getPositionHaut().getX(),
 				laser.getPositionHaut().getY());
-		// System.out.println("resultat pour la ligne 13:"+resultat13);
-		// System.out.println("resultat pour la ligne 12:"+resultat12);
-		// System.out.println("resultat pour la ligne 23:"+resultat13);
-
+	
 		if (resultat13 > 0 && resultat13 < 0.80) {
-			System.out.println("jai touché ligne13 " + resultat13);
+			
 			ligne13 = true;
 			ligne12 = false;
 			ligne23 = false;
@@ -1741,7 +1726,7 @@ public class Scene extends JPanel implements Runnable{
 		} else if (resultat12 > 0 && resultat12 < 0.80) {
 			// a refaire le calcul est pas bon
 
-			System.out.println("jai toucher la ligne12 " + resultat12);
+			
 			ligne13 = false;
 			ligne12 = true;
 			ligne23 = false;
@@ -1752,7 +1737,7 @@ public class Scene extends JPanel implements Runnable{
 			return new Vecteur(xNormal, yNormal);
 
 		} else if (resultat23 > 0 && resultat23 < 0.80) {
-			System.out.println("jai toucher la ligne23 " + resultat23);
+			
 			ligne13 = false;
 			ligne12 = false;
 			ligne23 = true;
@@ -1876,11 +1861,12 @@ public class Scene extends JPanel implements Runnable{
 	 */
 	// auteur Arnaud Lefebvre
 	public void setAngle(double angle) {
-		// System.out.println("Angle: " + angle);
+
+
 		/*
-		 * try { laser.setAngleTir(angle); System.out.println("Angle: " + angle); }
+		 * try { laser.setAngleTir(angle); 
+
 		 * catch (NullPointerException e) {
-		 * System.out.println("Laser existe pas, enlevez vos Sysout"); }
 		 */
 		this.angle = angle;
 	}
@@ -2003,11 +1989,12 @@ public class Scene extends JPanel implements Runnable{
 	 * @param eYR position y du curseur de la souris 
 	 */
 	private  void selectionneurObjets(double eXR, double eYR) {
+	
+		if(dragBon) {
 		for (int i = 0; i < listeBalles.size(); i++) {
 			if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (!effacement)) {
 
 				balle = listeBalles.get(i);
-				System.out.println(balle.getAccel());
 				bonneBalle = true;
 
 				i = listeBalles.size();
@@ -2020,7 +2007,6 @@ public class Scene extends JPanel implements Runnable{
 
 		for (int i = 0; i < listeMiroirCourbe.size(); i++) {
 			if (listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR)&&(!effacement)) {
-				System.out.println("miroir courbe");
 				bonMiroirCourbe = true;
 				miroirCourbe = listeMiroirCourbe.get(i);
 				i = listeMiroirCourbe.size();
@@ -2086,7 +2072,7 @@ public class Scene extends JPanel implements Runnable{
 			}
 		}
 	}
-
+}
 
 	//Par Miora
 	/**

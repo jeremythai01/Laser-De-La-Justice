@@ -48,6 +48,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JCheckBox;
 import physique.BarreEnergie;
 import physique.Laser;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * 
@@ -68,6 +70,7 @@ public class FenetreJeu extends JFrame {
 	private JButton btnMiroirConcave;
 	private JButton btnMiroirConvexe;
 	private JButton btnMiroirPlan;
+	private JLabel lblTempsInfini;
 	private Scene sceneFinale;
 	private Options optionJeu;
 	private JRadioButton rbtnOrdiNiveau1;
@@ -488,11 +491,14 @@ public class FenetreJeu extends JFrame {
 					activerEditeur();
 					sceneFinale.ActiverEditeur();
 					tempsJeu.stop();
+					sceneFinale.activerDrag(true);
+					sceneFinale.requestFocusInWindow();
 				}else {
 					desactiverEditeur();
 					sceneFinale.DesactiverEditeur();
 					donneFocusALasceneFinale();
 					tempsJeu.stop();
+					sceneFinale.activerDrag(false);
 				}
 			}
 		});
@@ -561,10 +567,28 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(separator);
 
 		JToggleButton tglbtnTriche = new JToggleButton("Triche\r\n");
+		tglbtnTriche.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblTempsInfini.setVisible(true);		
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				lblTempsInfini.setVisible(false);				
+			}
+		});
+		
+		
 		tglbtnTriche.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(tglbtnTriche.isSelected()) {
 					triche = true;
+					sceneFinale.modeTriche(true);
+					donneFocusALasceneFinale();
+				}else {
+					triche = false;
+					sceneFinale.modeTriche(false);
 					donneFocusALasceneFinale();
 				}
 			
@@ -694,6 +718,13 @@ public class FenetreJeu extends JFrame {
 		lblPer= new JLabel ("position");
 		lblPer.setBounds(500, 868, 130, 14);
 		contentPane.add(lblPer);
+		
+
+
+		lblTempsInfini = new JLabel("Temps infini + Nombre de vies infini + Permet de bouger les objets durant la partie");
+		lblTempsInfini.setBounds(314, 11, 534, 39);
+		contentPane.add(lblTempsInfini);
+		lblTempsInfini.setVisible(false);
 		
 		
 	}
