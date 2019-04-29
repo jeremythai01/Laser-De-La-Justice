@@ -30,6 +30,8 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	private Rectangle2D.Double hitbox;
 	private final double largeurHitbox=0.0000001;
 	private double hauteur=0.5;
+	private double angle;
+	
 	
 	/**
 	 * Constructeur du bloc deau qui prend en parametre la position du bloc
@@ -165,7 +167,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 * @return, l'aire du bloc sous forme d'area
 	 */
 	public Area getAireBloc() {
-		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY()+hauteur, LARGEUR, largeurHitbox);
+		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteur);
 		 return new Area(aire);
 	}
 
@@ -185,6 +187,18 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 */
 	public void setPremiereCollision(boolean premiereCollision) {
 		this.premiereCollision = premiereCollision;
+	}
+
+
+	public void setIndiceRefraction(double value) {
+
+		indiceRefraction = value;
+	}
+
+
+	public void setAngle(double value) {
+
+		angle = value;
 	}
 	
 	

@@ -19,7 +19,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 
 	private double largeurOrdi=1;
 	private double longueurOrdi=1;
-	private double vitesseNiveau2=0.6;
+	private double vitesse=0.6;
 	//private int talent;
 	private Rectangle2D.Double forme;
 	private Vecteur position;
@@ -31,7 +31,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	double angle;
 	Laser test;
 	Balle balleSimuler/*= new Balle()*/;
-	private double vitesseLaser=1.5;
+	private double vitesseLaser=1;
 	private boolean enCollision=false;
 	private double temps;
 	
@@ -64,16 +64,16 @@ public class OrdinateurNiveau3 implements Dessinable {
 	 */
 	public void bouge() {
 
-		if(position.getX()+vitesseNiveau2>45) {
-			vitesseNiveau2=-vitesseNiveau2;
+		if(position.getX()+vitesse>45) {
+			vitesse=-vitesse;
 		}
-		if(position.getX()+vitesseNiveau2<5) {
-			vitesseNiveau2=-vitesseNiveau2;
+		if(position.getX()+vitesse<5) {
+			vitesse=-vitesse;
 		}
 
 
 
-		position.setX(position.getX()+vitesseNiveau2);
+		position.setX(position.getX()+vitesse);
 		changerVitesse();
 
 	}
@@ -218,10 +218,10 @@ public class OrdinateurNiveau3 implements Dessinable {
 
 		//System.out.println("position de la balle simulee "+balleSimuler.getPosition());
 		//double angleAViser=calculerAngleTir(distance);
-		double angleAViser=10;
+		double angleAViser=1;
 		test= new Laser(new Vecteur(getPositionX()+getLargeurOrdi()/2,hauteurDuMonde-getLongueurOrdi()), angleAViser, new Vecteur(0,vitesseLaser));
 		simulerMouvementLaser(test);
-		for(int i=0;i<170; i++) {
+		for(int i=0;i<179; i++) {
 			//System.out.println("je suis cici");
 			//	balleSimuler.unPasEuler(deltaT);
 
@@ -234,7 +234,6 @@ public class OrdinateurNiveau3 implements Dessinable {
 			}
 			else {
 				System.out.println("les simules se sont touches");
-				//System.exit(0);
 				break;
 			}
 			//System.out.println("angle a viser dans el for="+ angleAViser);
@@ -245,7 +244,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 		//System.out.println("angle a viser ="+ angleAViser);
 		//int pls = (int) (angleAViser/180);
 		//System.out.println("pls = "+ pls);
-		angle=angleAViser;
+		angle=angleAViser+1;
 		System.out.println("angle a viser" + angleAViser);
 		//angle=angleAViser+210;
 	}

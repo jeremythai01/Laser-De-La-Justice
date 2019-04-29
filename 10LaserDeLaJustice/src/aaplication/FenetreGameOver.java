@@ -12,6 +12,9 @@ import son.Bruit;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.UIManager;
 
 public class FenetreGameOver extends JFrame {
 
@@ -22,6 +25,11 @@ public class FenetreGameOver extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -38,8 +46,11 @@ public class FenetreGameOver extends JFrame {
 	 * Create the frame.
 	 */
 	public FenetreGameOver() {
+		setTitle("GAME OVER");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -66,5 +77,10 @@ public class FenetreGameOver extends JFrame {
 		});
 		btnQuitter.setBounds(266, 106, 105, 55);
 		contentPane.add(btnQuitter);
+		
+		JLabel lblNewLabel = new JLabel("VOUS AVEZ PERDU");
+		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 17));
+		lblNewLabel.setBounds(135, 42, 167, 40);
+		contentPane.add(lblNewLabel);
 	}
 }

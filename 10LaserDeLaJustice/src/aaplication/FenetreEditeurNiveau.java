@@ -2,13 +2,15 @@ package aaplication;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,17 +22,15 @@ import javax.swing.JSpinner;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import interfaces.MiroirListener;
-import interfaces.SceneListener;
 import miroir.FenetreMiroir;
-import personnage.Personnage;
-import physique.Balle;
-import physique.Laser;
 import son.Bruit;
+
 
 public class FenetreEditeurNiveau extends JFrame {
 	/**
@@ -53,24 +53,25 @@ public class FenetreEditeurNiveau extends JFrame {
 	private Bruit son = new Bruit();
 	private FenetreMiroir fenetreMiroir;
 	//private Options optionJeu;
-
 	private boolean isNouveauOption = true;
 	boolean triche = false;
 
 	private static String nomFichier;
 
-
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
 	private static boolean  isNouvelle = true;
-
-
 	// Par Arezki 
 	/**
 	 * Lancement de l'application
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -91,11 +92,14 @@ public class FenetreEditeurNiveau extends JFrame {
 	 */
 	// Par Arezki
 	public FenetreEditeurNiveau() {
-		setTitle("Laser de la Justice.exe");
+		setResizable(false);
+		setTitle("Mode \u00E9diteur");
 		setBackground(Color.GRAY);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1413, 854);
+		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(new Color(255, 175, 175));
@@ -240,8 +244,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		sceneFinale.setBounds(10, 110, 1146, 585);
 		contentPane.add(sceneFinale);
 
-
-
 		JButton btnDemarrage = new JButton("Retour au d\u00E9marrage");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -252,7 +254,7 @@ public class FenetreEditeurNiveau extends JFrame {
 
 			}
 		});
-		btnDemarrage.setBounds(10, 39, 148, 36);
+		btnDemarrage.setBounds(10, 39, 166, 36);
 		contentPane.add(btnDemarrage);
 
 		tempsJeu = new Timer(1000, listener);
@@ -313,7 +315,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		contentPane.add(lblChangementsDivers);
 
 		JLabel lblRfractionP = new JLabel("Indice de r\u00E9fracrion prisme :");
-		lblRfractionP.setBounds(1198, 676, 137, 38);
+		lblRfractionP.setBounds(1193, 656, 178, 38);
 		contentPane.add(lblRfractionP);
 
 		JSpinner spinner = new JSpinner();
@@ -323,17 +325,19 @@ public class FenetreEditeurNiveau extends JFrame {
 				repaint();
 			}
 		});
-		spinner.setBounds(1306, 716, 40, 23);
+
+		spinner.setBounds(1306, 692, 40, 23);
+
 		contentPane.add(spinner);
 
 		JLabel lblRefBloc = new JLabel("Indice de r\u00E9fraction du bloc :");
-		lblRefBloc.setBounds(1198, 750, 148, 14);
+		lblRefBloc.setBounds(1189, 727, 182, 14);
 		contentPane.add(lblRefBloc);
 
 		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(1306, 771, 40, 23);
+		spinner_1.setBounds(1306, 753, 40, 23);
 		contentPane.add(spinner_1);
-
+		
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setOrientation(SwingConstants.VERTICAL);
 		separator_3.setForeground(SystemColor.activeCaption);
@@ -435,6 +439,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		tglEffacementPrecis.setBounds(1011, 741, 145, 23);
 		contentPane.add(tglEffacementPrecis);
 
+
 		JSeparator separator_11 = new JSeparator();
 		separator_11.setOrientation(SwingConstants.VERTICAL);
 		separator_11.setBounds(1362, 110, 9, 768);
@@ -451,9 +456,21 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnAvance.setBounds(1198, 581, 148, 23);
 		contentPane.add(btnAvance);
 
+
+		
+		JLabel lblAngleBloc = new JLabel("Angle bloc");
+		lblAngleBloc.setBounds(1187, 771, 89, 14);
+		contentPane.add(lblAngleBloc);
+		
+		JSpinner spnAngleBloc = new JSpinner();
+		spnAngleBloc.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				sceneFinale.setAngleBloc((double)spnAngleBloc.getValue());
+			}
+		});
+		spnAngleBloc.setBounds(1297, 795, 49, 20);
+		contentPane.add(spnAngleBloc);
 	}
-
-
 
 	// Par Miora
 	/**
@@ -528,16 +545,4 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnPetiteBalle.setEnabled(false);
 	}
 
-
-
-
-
-	// Miora
-	/**
-	 * Cette methode defini si les options doivent etre change ou non 
-	 * @param isNouveauOption : s'il y a un changement ou non S
-	 */
-	public void setNouveauOption(boolean isNouveauOption) {
-		this.isNouveauOption = isNouveauOption;
-	}
 }

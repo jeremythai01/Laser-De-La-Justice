@@ -1,8 +1,10 @@
 package aaplication;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -17,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import documentation.FenetreConcept;
 import interfaces.SceneTutorielListener;
+import javax.swing.UIManager;
 /**
  * C'est la classe du tutoriel. Elle permet au joueur de comprendre le but du jeu.
  * @author Arnaud Lefebvre, Miora R. Rakoto
@@ -31,6 +34,11 @@ public class FenetreTuto extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		
 		
 		
@@ -53,6 +61,8 @@ public class FenetreTuto extends JFrame {
 	public FenetreTuto() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 908);
+		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -97,6 +107,7 @@ public class FenetreTuto extends JFrame {
 		scrollBarX.addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(AdjustmentEvent arg0) {
 				sceneInstructionJeu.setX((double)-3*scrollBarX.getValue());
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		scrollBarX.setBounds(525, 841, 342, 17);
@@ -107,6 +118,7 @@ public class FenetreTuto extends JFrame {
 		scrollBarY.addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				sceneInstructionJeu.setY((double)-3*scrollBarY.getValue());
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		scrollBarY.setBounds(957, 79, 17, 754);
@@ -116,6 +128,7 @@ public class FenetreTuto extends JFrame {
 		btnPageSuivante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.augmenterPage();
+				sceneInstructionJeu.requestFocusInWindow();
 			}
 		});
 		btnPageSuivante.setBounds(837, 50, 119, 23);
@@ -125,6 +138,7 @@ public class FenetreTuto extends JFrame {
 		btnPagePrcdente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.baisserPage();
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		btnPagePrcdente.setBounds(525, 50, 131, 23);
@@ -149,6 +163,7 @@ public class FenetreTuto extends JFrame {
 		btnConcept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				affichierConcept();
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		btnConcept.setBounds(810, 11, 152, 23);
@@ -156,6 +171,7 @@ public class FenetreTuto extends JFrame {
 		btnDfaut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.defaut();
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		
