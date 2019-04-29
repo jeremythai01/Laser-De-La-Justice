@@ -48,6 +48,9 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	private URL urlCoeur;
 	
 	
+
+	
+	
 	//Par Arnaud
 	/**
 	 * Constructeur du bloc deau qui prend en parametre la position du bloc et son indice de refraction
