@@ -72,7 +72,6 @@ public class Scene extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private double angle;
-
 	private double LARGEUR_DU_MONDE = 65; // en metres
 	private double HAUTEUR_DU_MONDE;
 	private double diametre = 2; // em mètres
@@ -418,7 +417,6 @@ public class Scene extends JPanel implements Runnable {
 			son.joueMusique("alienMusique");
 			calculerUneIterationPhysique();
 			leverEventBalle(listeBalles);
-			leverEventPersonnage(personnage);
 			leverEvenModeScientifique();
 			qtRotation = qtRotation + 0.2;
 			for (TrouNoir trou : listeTrou) {
@@ -1830,11 +1828,7 @@ public class Scene extends JPanel implements Runnable {
 		this.toucheGauche = toucheGauche;
 	}
 
-	public void setSciencePrisme(boolean valeur) {
-		prisme.setScience(valeur);
-		repaint();
-	}
-
+	
 	public void setIndiceRefractionPrisme(double valeur) {
 		prisme.setIndiceRefraction(valeur);
 		repaint();
@@ -1969,6 +1963,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void setModeScientifique(boolean modeScientifique) {
 		this.modeScientifique = modeScientifique;
+		prisme.setScience(modeScientifique);
 	}
 
 	//Arezki
@@ -2060,6 +2055,15 @@ public class Scene extends JPanel implements Runnable {
 				repaint();
 			}
 		}
+	}
+
+	public void setIndiceRefractionBloc(double value) {
+
+		bloc.setIndiceRefraction(value);
+	}
+
+	public void setAngleBloc(double value) {
+		bloc.setAngle(value);		
 	}
 	
 }

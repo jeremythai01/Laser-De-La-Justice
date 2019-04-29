@@ -97,6 +97,7 @@ public class FenetreTuto extends JFrame {
 		scrollBarX.addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(AdjustmentEvent arg0) {
 				sceneInstructionJeu.setX((double)-3*scrollBarX.getValue());
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		scrollBarX.setBounds(525, 841, 342, 17);
@@ -107,6 +108,7 @@ public class FenetreTuto extends JFrame {
 		scrollBarY.addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				sceneInstructionJeu.setY((double)-3*scrollBarY.getValue());
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		scrollBarY.setBounds(957, 79, 17, 754);
@@ -116,6 +118,7 @@ public class FenetreTuto extends JFrame {
 		btnPageSuivante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.augmenterPage();
+				sceneInstructionJeu.requestFocusInWindow();
 			}
 		});
 		btnPageSuivante.setBounds(837, 50, 119, 23);
@@ -125,6 +128,7 @@ public class FenetreTuto extends JFrame {
 		btnPagePrcdente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.baisserPage();
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		btnPagePrcdente.setBounds(525, 50, 131, 23);
@@ -149,6 +153,7 @@ public class FenetreTuto extends JFrame {
 		btnConcept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				affichierConcept();
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		btnConcept.setBounds(810, 11, 152, 23);
@@ -156,6 +161,7 @@ public class FenetreTuto extends JFrame {
 		btnDfaut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneInstructionJeu.defaut();
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		

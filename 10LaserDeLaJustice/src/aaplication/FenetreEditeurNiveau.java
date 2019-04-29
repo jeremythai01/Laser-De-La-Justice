@@ -48,22 +48,17 @@ public class FenetreEditeurNiveau extends JFrame {
 	private Scene sceneFinale;
 	private Bruit son = new Bruit();
 	//private Options optionJeu;
-
 	private boolean isNouveauOption = true;
 	boolean triche = false;
 	
 	private static String nomFichier;
-
 
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
 	private static boolean  isNouvelle = true;
 	
-	
 	private JSpinner spnAngleMiroir;
-	
-	
 	// Par Arezki 
 	/**
 	 * Lancement de l'application
@@ -261,7 +256,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		});
 		btnEditeur.setBounds(886, 61, 96, 38);
 		contentPane.add(btnEditeur);
-
 		JButton btnDemarrage = new JButton("demarrage\r\n");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -342,21 +336,8 @@ public class FenetreEditeurNiveau extends JFrame {
 				changerAngleMiroirs();	
 			}
 		});
-		spnAngleMiroir.setBounds(1317, 698, 29, 20);
+		spnAngleMiroir.setBounds(1317, 698, 49, 20);
 		contentPane.add(spnAngleMiroir);
-		
-		JLabel lblIndiceRefMiroir = new JLabel("R\u00E9fraction Miroir\r\n");
-		lblIndiceRefMiroir.setBounds(1198, 729, 118, 14);
-		contentPane.add(lblIndiceRefMiroir);
-		
-		JSpinner spnRefMiroir = new JSpinner();
-		spnRefMiroir.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-			
-			}
-		});
-		spnRefMiroir.setBounds(1317, 726, 29, 20);
-		contentPane.add(spnRefMiroir);
 		
 		JLabel lblRfractionP = new JLabel("R\u00E9fraction Prisme");
 		lblRfractionP.setBounds(1198, 760, 118, 14);
@@ -369,16 +350,21 @@ public class FenetreEditeurNiveau extends JFrame {
 				repaint();
 			}
 		});
-		spinner.setBounds(1317, 757, 29, 20);
+		spinner.setBounds(1317, 757, 49, 20);
 		contentPane.add(spinner);
 		
 		JLabel lblRefBloc = new JLabel("R\u00E9fraction Bloc");
-		lblRefBloc.setBounds(1198, 791, 118, 14);
+		lblRefBloc.setBounds(1198, 732, 118, 14);
 		contentPane.add(lblRefBloc);
 		
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(1317, 788, 29, 20);
-		contentPane.add(spinner_1);
+		JSpinner spnRefBloc = new JSpinner();
+		spnRefBloc.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				sceneFinale.setIndiceRefractionBloc((double)spnRefBloc.getValue());
+			}
+		});
+		spnRefBloc.setBounds(1317, 729, 49, 20);
+		contentPane.add(spnRefBloc);
 		
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setOrientation(SwingConstants.VERTICAL);
@@ -480,8 +466,29 @@ public class FenetreEditeurNiveau extends JFrame {
 		});
 		tglEffacementPrecis.setBounds(1011, 741, 145, 23);
 		contentPane.add(tglEffacementPrecis);
+		
+		JLabel lblAngleBloc = new JLabel("Angle bloc");
+		lblAngleBloc.setBounds(1198, 790, 89, 14);
+		contentPane.add(lblAngleBloc);
+		
+		JSpinner spnAngleBloc = new JSpinner();
+		spnAngleBloc.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				sceneFinale.setAngleBloc((double)spnAngleBloc.getValue());
+			}
+		});
+		spnAngleBloc.setBounds(1317, 785, 49, 20);
+		contentPane.add(spnAngleBloc);
 	}
 
+	//Par Miora
+	/**
+	 * Cette methode permet de montrer a l'utilisateur les touches pour jouer
+	 */
+	private void toucheScene() {
+		JOptionPane.showMessageDialog(null, " " + "Vos touches ont été initialisé a " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + " et " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()));
+
+	}
 	// Par Miora
 	/**
 	 * Methode qui donne le focus a la sceneFinale
@@ -550,6 +557,4 @@ public class FenetreEditeurNiveau extends JFrame {
 		sceneFinale.setAngleMiroir(Integer.parseInt(spnAngleMiroir.getValue().toString()));
 		
 	}
-	
-
 }

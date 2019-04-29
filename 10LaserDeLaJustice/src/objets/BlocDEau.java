@@ -30,6 +30,8 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	private Rectangle2D.Double hitbox;
 	private final double largeurHitbox=0.0000001;
 	private double hauteur=0.5;
+	private double angle;
+	
 	
 	/**
 	 * Constructeur du bloc deau qui prend en parametre la position du bloc
@@ -185,6 +187,18 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 */
 	public void setPremiereCollision(boolean premiereCollision) {
 		this.premiereCollision = premiereCollision;
+	}
+
+
+	public void setIndiceRefraction(double value) {
+
+		indiceRefraction = value;
+	}
+
+
+	public void setAngle(double value) {
+
+		angle = value;
 	}
 	
 	

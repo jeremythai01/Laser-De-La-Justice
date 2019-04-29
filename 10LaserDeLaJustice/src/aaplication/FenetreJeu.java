@@ -268,6 +268,7 @@ public class FenetreJeu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				sceneFinale.ajoutBalleGrosse();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnGrosseBalle.setEnabled(false);
@@ -303,6 +304,7 @@ public class FenetreJeu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				son.joue("beep");
 				sceneFinale.ajoutPrisme();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnPrisme.setEnabled(false);
@@ -470,7 +472,7 @@ public class FenetreJeu extends JFrame {
 
 				// TODO Auto-generated method stub
 				if(!triche)
-					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0) {
+					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
 					} else {
@@ -502,6 +504,7 @@ public class FenetreJeu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				son.joue("beep");
 				sauvegarderNiveau();
+				donneFocusALasceneFinale();
 			}
 		});
 		btnSaveNiveau.setBounds(526, 61, 153, 38);
@@ -517,7 +520,10 @@ public class FenetreJeu extends JFrame {
 			public void stateChanged(ChangeEvent arg0) {
 				if(tglbtnTriche.isSelected()) {
 					triche = true;
+					donneFocusALasceneFinale();
 				}
+			
+			donneFocusALasceneFinale();
 			}
 		});
 		tglbtnTriche.setBounds(1063, 61, 89, 38);
@@ -533,6 +539,7 @@ public class FenetreJeu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				son.joue("beep");
 				sceneFinale.ajoutMiroirCourbe();
+				donneFocusALasceneFinale();
 			}
 		});
 		buttonMiroirCourbe.setEnabled(false);
@@ -546,9 +553,11 @@ public class FenetreJeu extends JFrame {
 				if(checkBoxModeScientifique.isSelected()) {
 					setSize(1300, getHeight());
 					sceneFinale.setModeScientifique(true);
+					donneFocusALasceneFinale();
 				}else {
 					setSize(1174, getHeight());
 					sceneFinale.setModeScientifique(false);
+					donneFocusALasceneFinale();
 				}
 			}
 		});
