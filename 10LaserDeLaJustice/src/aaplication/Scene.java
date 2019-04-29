@@ -279,9 +279,9 @@ public class Scene extends JPanel implements Runnable{
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles();
 			premiereFois = false;
 			Balle.setModele(getWidth(),getHeight(),LARGEUR_DU_MONDE);
-			ordi3 = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE-1));
-			ordi2 = new OrdinateurNiveau2(new Vecteur(28, HAUTEUR_DU_MONDE-1));
-			ordi1 = new Ordinateur(new Vecteur(28, HAUTEUR_DU_MONDE-1));
+			ordi3 = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE-2)); // soustrait la hauteur
+			ordi2 = new OrdinateurNiveau2(new Vecteur(28, HAUTEUR_DU_MONDE-2));
+			ordi1 = new Ordinateur(new Vecteur(28, HAUTEUR_DU_MONDE-2));
 		}
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);

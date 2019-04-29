@@ -1,8 +1,14 @@
 package objets;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -14,37 +20,38 @@ import physique.Laser;
  */
 public class OrdinateurNiveau2 implements Dessinable {
 	
-	private double largeurOrdi=1;
-	private double longueurOrdi=1;
+	private double largeurOrdi=2;
+	private double longueurOrdi=2;
 	private double vitesse=0.6;
 	//private int talent;
 	private Rectangle2D.Double forme;
 	private Vecteur position;
 	private double hauteurDuMonde;
+	private Image img=null;
+	private double largeurMonde=0;
 	
 	/**
 	 * Constructeur de l'ordinateurNiveau2 qui prend en parametre la position 
 	 * @param position, la position de l'ordinateurNiveau2
 	 */
 	public OrdinateurNiveau2(Vecteur position) {
-		//talent(talent);
+		lireImage();
 		this.position=position;
 	}
 	
-	/*private void talent(int talent) {
-		switch(talent) {
-		
-		
-		case 1: 	;
-		break;
-		case 2: ;
-		break;
-		case 3: ;
-		break;
+	public void lireImage() {
+		URL urlCoeur = getClass().getClassLoader().getResource("niveau2.png");
+		if (urlCoeur == null) {
+			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
+			System.exit(0);}
+		try {
+			img = ImageIO.read(urlCoeur);
 		}
-		
-	}*/
-
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
+	}
+	
 	@Override
 	/**
 	 * Permet de dessiner l'ordinateurNiveau2 selon le contexte graphique en parametre.
@@ -58,6 +65,14 @@ public class OrdinateurNiveau2 implements Dessinable {
 		forme = new Rectangle2D.Double(position.getX(), position.getY(), largeurOrdi, longueurOrdi);
 		g.fill(matLocal.createTransformedShape(forme));
 		hauteurDuMonde=hauteur;
+		
+		double factX = largeurOrdi/ img.getWidth(null) ;
+		double factY = largeurOrdi/ img.getHeight(null) ;
+		matLocal.scale( factX, factY);
+		matLocal.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
+		g.drawImage(img, matLocal, null);
+			
+		largeurMonde=largeur;
 	}
 
 	/**

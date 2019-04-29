@@ -23,8 +23,8 @@ import physique.Laser;
  */
 public class OrdinateurNiveau3 implements Dessinable {
 
-	private double largeurOrdi=1;
-	private double longueurOrdi=1;
+	private double largeurOrdi=2;
+	private double longueurOrdi=2;
 	private double vitesse=0.6;
 	//private int talent;
 	private Rectangle2D.Double forme;
@@ -97,7 +97,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	 */
 	public void bouge() {
 
-		if(position.getX()+vitesse>largeurMonde-1) {
+		if(position.getX()+vitesse>largeurMonde-2) {
 			vitesse=-vitesse;
 		}
 		if(position.getX()+vitesse<1) {
