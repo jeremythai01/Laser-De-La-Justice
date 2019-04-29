@@ -71,7 +71,7 @@ public class MiroirCourbe implements Dessinable, Serializable {
 			vecGraph = new VecteurGraphique(normal.getX(), normal.getY()); //adaptation g2d
 			vecGraph.setOrigineXY(position.getX(), position.getY());  
 			vecGraph.setLongueurTete(0.5);
-			g2d.setColor(Color.BLACK);
+			g2d.setColor(Color.red);
 			vecGraph.dessiner(g2d, mat, hauteur, largeur);
 		}
 	}

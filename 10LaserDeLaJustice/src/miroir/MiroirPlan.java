@@ -77,9 +77,10 @@ public class MiroirPlan implements Dessinable, Serializable {
 		
 		if(modeSci) {
 			matLocale = new AffineTransform(mat);
+			
 			//Vecteur normal
-			int lgVec = 4;
-			g2d.setColor(Color.black);
+			double lgVec = longueur;
+			g2d.setColor(Color.red);
 			normal = normal.multiplie(lgVec/normal.module()); //on agrandit la taille du vecteur
 			vecGraph = new VecteurGraphique(normal);
 			vecGraph.setOrigineXY(inter.getX(), inter.getY());  
@@ -168,11 +169,12 @@ public class MiroirPlan implements Dessinable, Serializable {
 
 	//Par Miora
 	/**
-	 * Cette methode permet de dessiner le vecteur normal 
-	 * @param inter la position d'intersection avec un lase
+	 * Cette methode permet de dessiner le mode scientifique (vecteur normal)
+	 * @param inter la position d'intersection avec le laser
+	 * @param retourne vrai si le mode scientifique est active
 	 */
-	public void afficherVecteur(Vecteur inter) {
-		modeSci = true;
+	public void modeScientifique(Vecteur inter, boolean modeSci) {
+		this.modeSci = modeSci;
 		this.inter = inter;
 	}
 

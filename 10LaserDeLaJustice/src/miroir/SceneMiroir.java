@@ -294,7 +294,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 					System.out.println("normal " + normal);
 					if(modeScientifique) {
-						listeMiroirPlan.get(n).afficherVecteur(posInter);
+						listeMiroirPlan.get(n).modeScientifique(posInter, modeScientifique);
 					}
 
 					Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();

@@ -635,9 +635,10 @@ public class Scene extends JPanel implements Runnable{
 
 					//Calcul du nouvel angle
 					Vecteur normal = listeMiroirPlan.get(n).getNormal(vecDirLaser).normalise();
-					if(modeScientifique) {
-						listeMiroirPlan.get(n).afficherVecteur(posInter);
-					}
+					
+					//Dessin ou non du vecteur normal
+					listeMiroirPlan.get(n).modeScientifique(posInter, modeScientifique);
+					
 					Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 					Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
 
@@ -705,9 +706,10 @@ public class Scene extends JPanel implements Runnable{
 						Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 						Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
 	
-						if(modeScientifique) {
-							listeMiroirCourbe.get(n).modeScientifique(true);
-						}
+					
+						//Mode scientifique ou non
+						listeMiroirCourbe.get(n).modeScientifique(modeScientifique);
+				
 
 						//ajustement en systeme d'axe normal
 						reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
