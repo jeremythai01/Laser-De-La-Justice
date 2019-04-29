@@ -17,7 +17,7 @@ import java.util.ConcurrentModificationException;
 import javax.swing.JPanel;
 
 import geometrie.Vecteur;
-import objets.BlocDEau;
+import objets.BlocRefraction;
 import objets.Echelle;
 import objets.Ordinateur;
 import objets.OrdinateurNiveau2;
@@ -80,8 +80,8 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private double angle;
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
-	private BlocDEau bloc;
-	private ArrayList<BlocDEau> listeBloc = new ArrayList<BlocDEau>();
+	private BlocRefraction bloc;
+	private ArrayList<BlocRefraction> listeBloc = new ArrayList<BlocRefraction>();
 	private TrouNoir trou;
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
 	private Coeurs coeur;
@@ -207,7 +207,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 			System.out.println("le laser nexiste pas");
 		}
 	
-		for (BlocDEau bloc : listeBloc) {
+		for (BlocRefraction bloc : listeBloc) {
 			g2d.setColor(Color.blue);
 			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}

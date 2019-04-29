@@ -66,8 +66,8 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 
 
-	private BlocDEau bloc;
-	private ArrayList<BlocDEau> listeBloc = new ArrayList<BlocDEau>();
+	private BlocRefraction bloc;
+	private ArrayList<BlocRefraction> listeBloc = new ArrayList<BlocRefraction>();
 	private TrouNoir trou;
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
 	private Coeurs coeur;
@@ -116,7 +116,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 				
 				//balle = new Balle(new Vecteur(eXR, eYR-diametre/2),vitesse, "LARGE", gravite);
 				//listeBalles.add(balle);
-				bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
+				bloc= new BlocRefraction(new Vecteur(eXR,eYR),1.33);
 				listeBloc.add(bloc);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
@@ -234,7 +234,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		checkCollisionTrouLaserPersonnage( listeLasers );
 		checkCollisionBlocLaserPersonnage( listeLasers );
 		detectionCollisionMurBalle();
-		for(BlocDEau bloc:listeBloc) {
+		for(BlocRefraction bloc:listeBloc) {
 			g2d.setColor(Color.blue);
 			bloc.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
@@ -518,7 +518,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 						listeLasers.get(i).getPositionHaut().getX()<=listeBloc.get(j).getPosition().getX()+listeBloc.get(j).getLARGEUR()
 					&&listeLasers.get(i).getPositionHaut().getY()<=listeBloc.get(j).getPosition().getY()+listeBloc.get(j).getHauteur()+0.1&&
 					listeLasers.get(i).getPositionHaut().getY()>=listeBloc.get(j).getPosition().getY()+listeBloc.get(j).getHauteur()-0.1) {
-					BlocDEau bloc = listeBloc.get(j);
+					BlocRefraction bloc = listeBloc.get(j);
 					Laser laser = listeLasers.get(i);
 					System.out.println("je suis ici");
 					
@@ -533,7 +533,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 						if(angle<0) {
 							angle=angle+180;
 						}
-						laser.setAngleTir(angle);
+						laser.setAngleTir(angle-2);
 						j=listeBloc.size();
 						//laser.setAngleTir(30);
 						System.out.println("le nouvel angle est de "+laser.getAngleTir());

@@ -24,7 +24,7 @@ import physique.Laser;
  * @author Arnaud Lefebvre
  *
  */
-public class BlocDEau extends Obstacles implements Dessinable, Serializable {
+public class BlocRefraction extends Obstacles implements Dessinable, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private Vecteur position;
@@ -49,7 +49,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 * @param position, la position du bloc
 	 * @param indiceRefraction, l'indice de refraction du bloc
 	 */
-	public BlocDEau(Vecteur position, double indiceRefraction) {
+	public BlocRefraction(Vecteur position, double indiceRefraction) {
 		this.position=position;
 		this.indiceRefraction=indiceRefraction;
 		lireImage();
@@ -135,7 +135,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 * @param bloc, le bloc avec lequel le laser entre en contact
 	 * @return, le vecteur normal du bloc
 	 */
-	public Vecteur calculNormal(Laser laser, BlocDEau bloc) {
+	public Vecteur calculNormal(Laser laser, BlocRefraction bloc) {
 
 		return new Vecteur(laser.getPositionHaut().getX() - bloc.getPosition().getX(),
 				laser.getPositionHaut().getY() - bloc.getPosition().getY());
