@@ -16,16 +16,16 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import aaplication.Scene;
-import effets.AjoutVie;
-import effets.BoostVitesse;
-import effets.Bouclier;
-import effets.Pouvoir;
-import effets.Ralenti;
 import geometrie.Vecteur;
 import interfaces.SceneListener;
 
 import objets.TrouNoir;
 import personnage.Personnage;
+import pouvoir.AjoutVie;
+import pouvoir.BoostVitesse;
+import pouvoir.Bouclier;
+import pouvoir.Pouvoir;
+import pouvoir.Ralenti;
 import son.Bruit;
 import utilite.ModeleAffichage;
 

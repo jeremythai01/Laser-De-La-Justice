@@ -30,11 +30,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import effets.AjoutVie;
-import effets.BoostVitesse;
-import effets.Bouclier;
-import effets.Pouvoir;
-import effets.Ralenti;
 import geometrie.Vecteur;
 import interfaces.SceneListener;
 import miroir.Ligne;
@@ -51,6 +46,11 @@ import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
 import physique.MoteurPhysique;
+import pouvoir.AjoutVie;
+import pouvoir.BoostVitesse;
+import pouvoir.Bouclier;
+import pouvoir.Pouvoir;
+import pouvoir.Ralenti;
 import prisme.Prisme;
 import son.Bruit;
 import utilite.ModeleAffichage;
@@ -1503,8 +1503,8 @@ public class Scene extends JPanel implements Runnable{
 
 	//Jeremy Thai
 	/**
-	 * 
-	 * @param balle
+	 * Crée un pouvoir au hasard et le met dans la liste de pouvoirs 
+	 * @param balle balle  qui a été touchée
 	 */
 	private void pouvoirAuHasard(Balle balle) {
 
@@ -1520,28 +1520,28 @@ public class Scene extends JPanel implements Runnable{
 
 		case 1:
 			pouvoir = new BoostVitesse(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
 
 		case 2:
 			pouvoir = new Bouclier(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
 
 		case 3:
 			pouvoir = new Ralenti(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
 
 		case 4:
 			pouvoir = new AjoutVie(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12);
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
@@ -1555,13 +1555,13 @@ public class Scene extends JPanel implements Runnable{
 	private void ajoutCompteurs() {
 
 		if (vitesseLaser.getY() > vitesseLaserInit.getY())
-			compteurVitesse = tempsEcoule + 10;
+			compteurVitesse = tempsEcoule + 7; // duree de 7 secondes
 
 		if (deltaT < deltaTInit)
-			compteurRalenti = tempsEcoule + 10;
+			compteurRalenti = tempsEcoule + 7;// duree de 7 secondes
 
 		if (personnage.isBouclierActive())
-			compteurBouclier = tempsEcoule + 10;
+			compteurBouclier = tempsEcoule + 10;// duree de 10 secondes 
 	}
 
 	//Jeremy Thai
@@ -1911,12 +1911,22 @@ try {
 		this.toucheGauche = toucheGauche;
 	}
 
+	//Arezki
+	/**
+	 * Modifie la valeur de l'indice de refraction du prisme avec celle en parametre
+	 * @param valeur nouvelle valeur d'indice de refraction du prisme 
+	 */
 	public void setIndiceRefractionPrisme(double valeur) {
 		prisme.setIndiceRefraction(valeur);
 		repaint();
 	}
 
 
+	//Arnaud 
+	/**
+	 * Modifie la valeur de l'indice de refraction du bloc avec celle en parametre
+	 * @param valeur nouvelle valeur d'indice de refraction du bloc 
+	 */
 	public void setRefractionBloc(double valeur) {
 
 	}

@@ -1,4 +1,4 @@
-package effets;
+package pouvoir;
 
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -7,46 +7,42 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-
 import aaplication.Scene;
 import geometrie.Vecteur;
-import personnage.Personnage;
-import physique.Balle;
-import physique.Coeurs;
-import physique.Laser;
-import physique.SceneTest;
+
 
 /**
  * Classe qui créée un pouvoir de bouclier et mémorise sa position, son accélération,son image et ses dimensions.
- * @author Jeremy Thai 
+ * @author Arnaud Lefebvre 
  */
 
-public class Ralenti extends Pouvoir{
+public class BoostVitesse extends Pouvoir {
+
 
 	/**
 	 * Constructeur ou la position et l'acceleration initiales sont spécifiés qui appelle le constructeur de la classe ascendante et qui modifie la largeur et la longueur de l'image du pouvoir.
 	 * @param position Vecteur incluant les positions en x et y du coin superieur-gauche
 	 * @param accel Vecteur incluant les accelerations en x et y  
 	 */
-	public Ralenti ( Vecteur position, Vecteur accel) {
-		super(position, accel);
+	public BoostVitesse ( Vecteur position , Vecteur accel) {
+		super(position,accel);
 		lireImage();
 		setLargeurImg(2);
-		setLongueurImg(3.6);
+		setLongueurImg(3);
 	}
 
-	
+
+	/**
+	 * Methode qui permet d'associer une image a l'objet
+	 */
 	@Override
 	public void lireImage() {
-	
-		setImg(Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("sablier.gif")));
-
+		
+		setImg(Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("boost.gif")));
 	}
-	
+
 	/**
 	 * Permet de dessiner le pouvoir selon le contexte graphique en parametre.
 	 * @param g2d contexte graphique
@@ -56,33 +52,33 @@ public class Ralenti extends Pouvoir{
 	 * 
 	 */
 	@Override
-	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
+	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 
 		AffineTransform matLocale = new AffineTransform(mat);
-
 		double factX = getLargeurImg()/ getImg().getWidth(null) ;
 		double factY = getLongueurImg()/ getImg().getHeight(null) ;
 		matLocale.scale( factX, factY);
-
 		matLocale.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
-
-		g.drawImage(getImg(), matLocale, null);
+		g2d.drawImage(getImg(), matLocale, null);
 	}
 
+	/**
+	 * Methode qui permet de retourner l'aire de l'objet
+	 * @return l'aire de l'objet sous forme de area
+	 */
 	@Override
 	public Area getAire() {
 		setRectFantome(new Rectangle2D.Double(getPosition().getX(), getPosition().getY(), getLargeurImg(), getLongueurImg())); // probleme de detection
 		return new Area(getRectFantome());
 	}
 
+	/**
+	 * Methode qui active l'effet de l'objet lorsque appelé
+	 */
 	@Override
-	public void activeEffet( Scene scene) {
-		scene.setDeltaT(0.0006);
+	public void activeEffet(Scene scene) {
+		scene.setVitesseLaser(scene.getVitesseLaser().additionne(new Vecteur(0,3)));
+		scene.getPersonnage().setEnVitesse(true);
 	}
-
-
-
-
-
 
 }
