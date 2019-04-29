@@ -296,9 +296,9 @@ public class Options extends JFrame {
 		File customDir = new File(direction);
 
 		if (customDir.mkdirs()) {
-			System.out.println(customDir + "Le fichier option a ete cree");
+			
 		} else {
-			System.out.println(customDir + "Le fichier option n'a pas ete cree");
+			
 		}
 		//Fin creation dossier
 
