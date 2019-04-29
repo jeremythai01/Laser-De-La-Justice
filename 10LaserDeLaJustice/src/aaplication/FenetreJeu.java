@@ -733,12 +733,12 @@ public class FenetreJeu extends JFrame {
 					rbtnOrdiNiveau3.setEnabled(true);
 				}else {
 					rbtnOrdiNiveau1.setEnabled(false);
-					rbtnOrdiNiveau1.setSelected(false);
 					rbtnOrdiNiveau2.setEnabled(false);
-					rbtnOrdiNiveau2.setSelected(false);
 					rbtnOrdiNiveau3.setEnabled(false);
-					rbtnOrdiNiveau3.setSelected(false);
+					btnGroupOrdi.clearSelection();
+					sceneFinale.desactiverOrdi();
 				}
+				repaint();
 			}
 		});
 		cbxAide.setEnabled(false);

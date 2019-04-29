@@ -31,8 +31,8 @@ import java.awt.event.MouseMotionAdapter;
 
 
 /**
- * 
- * @author Arnaud
+ * Classe test qui permet de tester plus precisement les objets
+ * @author Arnaud, Jeremy
  *
  */
 public class SceneTestPls extends JPanel implements Runnable {
@@ -85,8 +85,9 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private double chargeBalle=-0.000006;
 	private double chargeChamp=0.00004;
 	/**
-	 * Create the panel.
+	 * Creer la scene.
 	 */
+	//Arnaud Lefebvre
 	public SceneTestPls() {
 
 		//ordi= new Ordinateur(1, new Vecteur(20,44));
@@ -110,12 +111,13 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 				double eXR = e.getX()/modele.getPixelsParUniteX();
 				double eYR = e.getY()/modele.getPixelsParUniteY();
-				balle = new Balle(new Vecteur(eXR, eYR-diametre/2),vitesse, "LARGE", gravite);
-				listeBalles.add(balle);
-				//bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
-				////listeBloc.add(bloc);
-				//champ=new Champ(new Vecteur(eXR-12.5, eYR-12.5), chargeChamp);
-				//listeChamps.add(champ);
+				
+				//Ajouter une balle, bloc ou trou
+				
+				//balle = new Balle(new Vecteur(eXR, eYR-diametre/2),vitesse, "LARGE", gravite);
+				//listeBalles.add(balle);
+				bloc= new BlocDEau(new Vecteur(eXR,eYR),1.33);
+				listeBloc.add(bloc);
 
 				//trou= new TrouNoir(new Vecteur(eXR,eYR));
 				//listeTrou.add(trou);
@@ -160,7 +162,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 			public void keyPressed(KeyEvent e) {
 				character.deplacerLePersoSelonTouche( e );
 				changerAngle(e);
-				modeTriche();
 				shoot(e);
 				//tirer();
 				repaint();
@@ -178,10 +179,12 @@ public class SceneTestPls extends JPanel implements Runnable {
 		 */
 	}
 
-	private void modeTriche() {
-		triche=true;
-	}
 	
+	/**
+	 * Methode qui permet de changer l'angle selon le clavier
+	 * @param e, l'evenement du clavier
+	 */
+	//Arnaud Lefebvre
 	private void changerAngle(KeyEvent e) {
 		if(e.getKeyCode()==38 && angle<180) {
 			angle=angle+5;
@@ -192,6 +195,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 		enMouvement=true;
 	}
 	
+	/**
+	 * Methode qui permet de tout dessiner
+	 *@param g, le composant graphiqe
+	 */
+	//Arnaud Lefebvre
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
@@ -282,6 +290,12 @@ public class SceneTestPls extends JPanel implements Runnable {
 		g.draw(arg0);
 	}*/
 
+	/**
+	 * Methode qui permet de tracer un vecteur qui indique l'angle de tir du fusil
+	 * 
+	 * @param g, le composant graphique
+	 */
+	//Arnaud Lefebvre
 	private void tracerVecteurGraphique(Graphics2D g) {
 		if(enMouvement) {
 			g.setColor(Color.red);
@@ -292,7 +306,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 	}
 
-	
+	/**
+	 * permet de calculer les collision la vitessse des balles et tout autres
+	 * animation ayant de la physiques
+	 */
+	//Arnaud Lefebvre
 	private void calculerUneIterationPhysique() {
 
 
@@ -311,11 +329,19 @@ public class SceneTestPls extends JPanel implements Runnable {
 		ordi3.bouge();
 	}
 
+	/**
+	 * Cette méthode permet d'arreter l'animation
+	 */
+	//Arnaud Lefebvre
 	public void arreter( ) {
 		if(enCoursAnimation)
 			enCoursAnimation = false;
 	}
 
+	/**
+	 * Cette méthode permet de démarrer l'animation
+	 */
+	//Arnaud Lefebvre
 	public void demarrer() {
 		if (!enCoursAnimation) { 
 			Thread proc = new Thread(this);
@@ -329,6 +355,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private int compteur=0;
 	private double qtRotation=0;
 	@Override
+	/**
+	 * Animation du jeu 
+	 */ 
+	//Arnaud Lefebvre
 	public void run() {
 
 		while (enCoursAnimation) {	
@@ -356,18 +386,29 @@ public class SceneTestPls extends JPanel implements Runnable {
 	}
 
 
+	/**
+	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne touche
+	 * @param e touche du clavier
+	 */
+	//Jeremy
 	private void shoot(KeyEvent e) {
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_SPACE) {
-			//if(listeLasers.size() <1) { // Pour que 1 laser soit tirer  a la fois 
 			listeLasers.add(
 					new Laser(new Vecteur(
 							character.getPositionX()+character.getLARGEUR_PERSO()/2,HAUTEUR_DU_MONDE-character.getLONGUEUR_PERSO()), angle, new Vecteur(0,0.3)));
-			//}
 		}
 	}
 
 
+	/**
+	 * Fait la detection d une collision entre toutes les balles et tous les lasers
+	 * 
+	 * @param listeBalles liste de balles
+	 * @param listeLasers liste de lasers
+	 * @param character   personnage
+	 */
+	//Jeremy
 	private void checkCollisionBalleLaserPersonnage(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers, Personnage character ) {
 
 		ArrayList<Balle> listeBalleTouche = new ArrayList<Balle>();
@@ -402,6 +443,14 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 
 	//}
+	/**
+	 * Retourne vrai si deux aires de formes sont en intersection, sinon faux.
+	 * 
+	 * @param aire1 aire de la premiere forme
+	 * @param aire2 aire de la deuxieme forme
+	 * @return boolean true or false
+	 */
+	//Arnaud Lefebvre
 	private boolean intersection(Area aire1, Area aire2) {
 		Area aireInter = new Area(aire1);
 		aireInter.intersect(aire2);
@@ -411,6 +460,13 @@ public class SceneTestPls extends JPanel implements Runnable {
 		return false;
 	}
 
+	/**
+	 * Methode qui indique quand un laser entre en collision avec un trou et ensuite
+	 * comment changer l'orientation du laser
+	 * 
+	 * @param listeLasers, la liste des lasers tirés
+	 */
+	//Arnaud Lefebvre
 	private void checkCollisionTrouLaserPersonnage( ArrayList<Laser> listeLasers ) {
 
 
@@ -445,7 +501,11 @@ public class SceneTestPls extends JPanel implements Runnable {
 	
 	
 	
-	
+	/**
+	 * Methode qui indique quand un laser entre en collision avec un bloc pour ensuite lui savoir comment changer l'orientation du laser selon l'indice du bloc
+	 * @param listeLasers, la liste des lasers tires
+	 */
+	//Arnaud Lefebvre
 	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {
 		//for(Laser laser : listeLasers) {
 		for (int i = 0; i < listeLasers.size(); i++) {
@@ -506,6 +566,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 		}
 	}
 
+	/**
+	 * Indiquer aux ordis de tirer et rajouter le laser dans la liste
+	 */
+	//Arnaud Lefebvre
 	private void tirer() {
 
 		ordi3.ajouterListesObstacles(listeBalles);
@@ -516,6 +580,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	}
 	
+	/**
+	  * Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
+	 */
+	//Jeremy
 	private void detectionCollisionMurBalle() {
 
 		for (Balle balle : listeBalles) {

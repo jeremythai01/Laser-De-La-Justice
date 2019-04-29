@@ -84,6 +84,7 @@ public class Scene extends JPanel implements Runnable{
 	private double n2 = 2.00;
 	private int compteurOrdi = 0;
 	private double qtRotation = 0;
+	private double indiceRefraction=1.33;//par defaut
 
 	private int toucheDroite = 39;
 	private double positionPerso;
@@ -188,7 +189,7 @@ public class Scene extends JPanel implements Runnable{
 		
 		angle = valeurAngleRoulette;
 		nouvellePartie(isPartieNouveau, nomFichier);
-		lectureFichierOption();
+		//lectureFichierOption();
 		if(deplacementSouris) {
 			personnage.setModeSouris(true);
 		}
@@ -889,7 +890,7 @@ public class Scene extends JPanel implements Runnable{
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutBlocEau() {
-		listeBlocEau.add(new BlocDEau(new Vecteur(9, 0), 2));
+		listeBlocEau.add(new BlocDEau(new Vecteur(9, 0), indiceRefraction));
 		repaint();
 
 	}
@@ -1051,6 +1052,25 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
+	 * Methode qui indique aux blocs quel est leur indice
+	 * @param index, l'index de la combobox, commencant par l'eau
+	 */
+	//Arnaud Lefebvre
+	public void modifierIndiceBloc(int index) {
+		switch (index) {
+		
+		case 0: indiceRefraction=(1.33);
+				break;
+		case 1: indiceRefraction=(1.5);
+				break;
+		case 2: indiceRefraction=(2.42);
+				break;
+		case 3: indiceRefraction=(1.63);
+				break;
+		}
+	}
+	
+	/**
 	 * Methode qui active l'ordinateur 1
 	 */
 	//Arnaud Lefebvre
@@ -1081,6 +1101,15 @@ public class Scene extends JPanel implements Runnable{
 		activerOrdi3=true;
 }
 	
+	/**
+	 * Methode qui desactive les ordis
+	 */
+	//Arnaud
+	public void desactiverOrdi() {
+		activerOrdi1=false;
+		activerOrdi2=false;
+		activerOrdi3=false;
+	}
 	
 	/**
 	 * Methode qui active le mode de triche
