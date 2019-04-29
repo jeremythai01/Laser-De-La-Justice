@@ -1540,11 +1540,11 @@ public class Scene extends JPanel implements Runnable{
 		File customDir = new File(direction);
 
 		if (customDir.exists()) {
-			System.out.println(customDir + "Le fichier niveau n'existe pas");
+			
 		} else if (customDir.mkdirs()) {
-			System.out.println(customDir + "Le fichier niveau a ete cree");
+			
 		} else {
-			System.out.println(customDir + "Le fichier niveau n'a pas ete cree");
+			
 		}
 		// Fin creation dossier
 

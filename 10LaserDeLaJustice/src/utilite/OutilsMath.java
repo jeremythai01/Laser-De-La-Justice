@@ -4,7 +4,7 @@ import geometrie.Vecteur;
 import physique.Laser;
 
 /**
- * Cette classe offre des outils pour resoudre des problemes a bases mathematique
+ * Cette classe offre des outils pour resoudre des problemes a bases mathematiques
  * @author Miora
  *
  */
