@@ -856,17 +856,7 @@ public class FenetreJeu extends JFrame {
 		}
 
 
-		//Miora
-		/**
-		 * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
-		 * sceneFinale
-		 * @param reponse : oui ou non s'il s'agit d'une nouvelle scene
-		 */
-		//
-		//	public void isNouvelle(boolean reponse) {
-		//		isNouvelle = reponse;
-		//	}
-
+	
 		//Par Miora
 		/**
 		 * Cette methode ouvre le menu option lorsque la touche option est cliquee
@@ -876,8 +866,10 @@ public class FenetreJeu extends JFrame {
 				optionJeu = new Options(true,true);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "not found");
 			} catch (IOException e) {
 				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "fichier");
 			}
 			optionJeu.setDansScene(true);
 			optionJeu.setVisible(true);

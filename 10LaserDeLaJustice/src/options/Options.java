@@ -263,9 +263,8 @@ public class Options extends JFrame {
 		btnTirer.setBounds(334, 303, 163, 46);
 		contentPane.add(btnTirer);
 		
-		if(dansScene) {
+		if(dansScene && !isIni) {
 			lectureFichierOption();
-			desactiverLesBoutons() ;
 		}
 	}
 
@@ -443,6 +442,7 @@ public class Options extends JFrame {
 			snpAcc.setValue(fluxEntree.readDouble());
 			if(fluxEntree.readBoolean()) {
 				btnRadSouris.setSelected(true);
+				desactiverLesBoutons() ;
 			}
 			btnG.setText(KeyEvent.getKeyText(fluxEntree.readInt()));
 			btnD.setText(KeyEvent.getKeyText(fluxEntree.readInt()));
