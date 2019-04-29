@@ -78,6 +78,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
 
 		JButton btnEditeurDeNiveau = new JButton("Editeur de niveau");
 		btnEditeurDeNiveau.addActionListener(new ActionListener() {
@@ -176,6 +178,7 @@ public class App10LaserDeLaJustice extends JFrame {
 
 	}
 
+
 	/**Cette methode permet d'associer un bouton a une image
 	 * @param leBouton
 	 * @param fichierImage
@@ -229,7 +232,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 * @throws FileNotFoundException fichier non trouve
 	 */
 	private void ouvrirOptions() throws FileNotFoundException, IOException {
-		fenetreOption = new Options(true, false);
+		fenetreOption = new Options(false);
 		fenetreOption.setVisible(true);
 	}
 
