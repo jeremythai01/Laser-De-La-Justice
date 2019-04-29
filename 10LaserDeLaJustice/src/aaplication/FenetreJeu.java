@@ -513,7 +513,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnDemarrage);
 
 		
-		FenetreVictoire victoire = new FenetreVictoire();
+		//FenetreVictoire victoire = new FenetreVictoire();
 		
 		listener = new ActionListener() {
 			@Override
@@ -527,19 +527,20 @@ public class FenetreJeu extends JFrame {
 						//son.joueSonLorsqueFini();
 						tempsJeu.stop();
 						sceneFinale.arreter();
-
+						/*
 						FenetreGameOver gameOver = new FenetreGameOver();
 						setVisible(false);
 						gameOver.setVisible(true);
+						*/
 					}
-		
+		/*
 				if(sceneFinale.getListeBalles().size()==0) {
 					//son.joueSonLorsqueFini();
-					victoire.setVisible(true);
+					//victoire.setVisible(true);
 					barreTempsDuJeu.setValue(0);
 					setVisible(false);
 				}
-			
+			*/
 			}
 		
 		

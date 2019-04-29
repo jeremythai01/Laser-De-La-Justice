@@ -59,7 +59,7 @@ public class FenetreAuteur extends JFrame {
 		lblArnaud.setBounds(175, 181, 121, 14);
 		contentPane.add(lblArnaud);
 		
-		JLabel lblMiora = new JLabel("Miora Ratsirahoanana");
+		JLabel lblMiora = new JLabel("Miora Rakoto");
 		lblMiora.setFont(new Font("Times New Roman", Font.BOLD, 15));
 		lblMiora.setBounds(366, 181, 180, 14);
 		contentPane.add(lblMiora);
