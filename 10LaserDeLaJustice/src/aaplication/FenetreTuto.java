@@ -28,6 +28,7 @@ import javax.swing.UIManager;
  * @author Arnaud Lefebvre, Miora R. Rakoto
  *
  */
+
 public class FenetreTuto extends JFrame {
 
 	private JPanel contentPane;
@@ -60,6 +61,7 @@ public class FenetreTuto extends JFrame {
 	/**
 	 * Creation de la fenetre
 	 */
+	//Arnaud
 	public FenetreTuto() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 908);

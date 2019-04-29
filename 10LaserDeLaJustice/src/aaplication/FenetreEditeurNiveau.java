@@ -60,6 +60,7 @@ public class FenetreEditeurNiveau extends JFrame {
 	private boolean isNouveauOption = true;
 	boolean triche = false;
 
+	
 	private static String nomFichier;
 
 	private ActionListener listener;

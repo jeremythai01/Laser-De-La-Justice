@@ -34,6 +34,7 @@ import utilite.ModeleAffichage;
  */
 public class SceneTutoriel extends JPanel implements Runnable {
 
+	
 	private Image fond = null;
 
 	private Personnage personnage;

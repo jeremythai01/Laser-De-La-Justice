@@ -25,6 +25,7 @@ import javax.swing.UIManager;
  */
 public class FenetreGameOver extends JFrame {
 
+	
 	private JPanel contentPane;
 	private Bruit son = new Bruit() ;
 
