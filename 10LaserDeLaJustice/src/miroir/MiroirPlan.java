@@ -24,14 +24,13 @@ public class MiroirPlan implements Dessinable, Serializable {
 
 	private double angle=0,x=0,y=0;
 	private Rectangle2D.Double miroir;
-	private Vecteur projection;
 
-	private double longueur = 50; 
+	private double longueur; 
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
 	private Vecteur inter;
-	private double largeur = 0.1;
+	private double largeur = 0.2;
 	private boolean modeSci = false;
 	private VecteurGraphique vecGraph;
 
@@ -41,15 +40,14 @@ public class MiroirPlan implements Dessinable, Serializable {
 	 * @param position la position la plus au centre du miroir
 	 * @param angle angle de miroir avec une rotation en degre a partir de x,y
 	 */
-	public MiroirPlan(Vecteur position, double angle) {
+	public MiroirPlan(Vecteur position, double angle, int longueur) {
 		super();
 		this.position = position;
 		this.angle = angle;
 		if(angle>=180) {
 			this.angle = angle-180;
 		}
-
-
+		this.longueur = longueur;
 	}
 	public Vecteur[] coordonneHautBas() {
 		Vecteur tab[] = new Vecteur[2];

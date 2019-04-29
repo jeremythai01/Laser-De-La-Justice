@@ -39,6 +39,7 @@ import effets.Bouclier;
 import effets.Pouvoir;
 import effets.Ralenti;
 import geometrie.Vecteur;
+import interfaces.MiroirListener;
 import interfaces.SceneListener;
 import miroir.Ligne;
 import miroir.MiroirCourbe;
@@ -63,7 +64,7 @@ import utilite.OutilsMath;
  * @author Miora, Arezki, Jeremy, Arnaud
  *
  */
-public class Scene extends JPanel implements Runnable {
+public class Scene extends JPanel implements Runnable{
 
 	private Image fond = null;
 
@@ -157,6 +158,7 @@ public class Scene extends JPanel implements Runnable {
 	private Bruit son = new Bruit();
 
 	private int angleMiroir = 0;
+	private int longueurMiroir = 8;
 
 	private boolean modeScientifique = false;
 
@@ -657,6 +659,10 @@ public class Scene extends JPanel implements Runnable {
 						Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 						Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
 	
+						if(modeScientifique) {
+							listeMiroirCourbe.get(n).modeScientifique(true);
+						}
+						
 						//ajustement en systeme d'axe normal
 						reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
 
@@ -778,7 +784,7 @@ public class Scene extends JPanel implements Runnable {
 	// Auteur: Arezki Issaadi
 
 	public void ajoutMiroirPlan() {
-		listeMiroirPlan.add(new MiroirPlan(new Vecteur(4, 4), angleMiroir));
+		listeMiroirPlan.add(new MiroirPlan(new Vecteur(4, 4), angleMiroir, longueurMiroir));
 		repaint();
 
 	}
@@ -824,7 +830,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutMiroirCourbe() {
-		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), 2, angleMiroir));
+		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), longueurMiroir/2, angleMiroir));
 		repaint();
 
 	}
@@ -1046,7 +1052,6 @@ public class Scene extends JPanel implements Runnable {
 		} // fin try
 
 		catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "Fichier  " + fichierDeTravail.getAbsolutePath() + "  introuvable!");
 			System.exit(0);
 		}
 
@@ -2023,7 +2028,17 @@ public class Scene extends JPanel implements Runnable {
 			}
 		}
 	}
-	
+
+	//Par Miora
+	/**
+	 * Cette methode permet de modifier la longueur d'un miroir
+	 * @param longueur - la longueur d'un miroir
+	 */
+	public void setLongueurMiroir(int longueur) {
+		this.longueurMiroir = longueur;
+		
+	}
+
 }
 
 

@@ -28,7 +28,7 @@ public class AppMiroirTest extends JFrame {
 	private JPanel contentPane;
 	private SceneMiroir sceneMiroir;
 	private static AppMiroirTest frame;
-	private EditeurMiroir editeurMiroir;
+	private VisualisationMiroir editeurMiroir;
 
 	/**
 	 * Lancer l'application
@@ -157,7 +157,7 @@ public class AppMiroirTest extends JFrame {
 		chkScience.setBounds(588, 188, 149, 37);
 		contentPane.add(chkScience);
 		
-		editeurMiroir = new EditeurMiroir();
+		editeurMiroir = new VisualisationMiroir();
 		editeurMiroir.setBounds(571, 372, 184, 207);
 		contentPane.add(editeurMiroir);
 	}

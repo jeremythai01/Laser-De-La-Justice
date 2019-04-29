@@ -7,7 +7,7 @@ import personnage.Personnage;
 import physique.Balle;
 import physique.Laser;
 /**
- * Interface qui contient les evenements
+ * Interface qui contient les evenements de la scene a surveiller
  * @author Miora
  */
 public interface SceneListener extends EventListener{
