@@ -731,7 +731,7 @@ public class FenetreJeu extends JFrame {
 
 
 		lblTempsInfini = new JLabel("Temps infini + Nombre de vies infini + Permet de bouger les objets durant la partie");
-		lblTempsInfini.setBounds(314, 11, 534, 39);
+		lblTempsInfini.setBounds(10, 11, 534, 39);
 		contentPane.add(lblTempsInfini);
 
 		cbxAide = new JCheckBox("Aide ordinateur");
