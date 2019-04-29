@@ -122,7 +122,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 				double eXR = e.getX() / modele.getPixelsParUniteX();
 				double eYR = e.getY() / modele.getPixelsParUniteY();
 
-				prisme = new Prisme(new Vecteur(eXR, eYR));
+				prisme = new Prisme(new Vecteur(eXR, eYR),2);
 				listePrisme.add(prisme);
 				// balle = new Balle(new Vecteur(eXR-diametre/2, eYR-diametre/2),vitesse,
 				// "LARGE" );

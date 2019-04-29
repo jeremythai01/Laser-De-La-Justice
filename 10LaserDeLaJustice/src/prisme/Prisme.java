@@ -38,10 +38,11 @@ public class Prisme implements Dessinable, Serializable {
 	 * Constructeur du prisme qui initialise les 3 positions(sommets) du prisme
 	 * @param position, le sommet principal
 	 */
-	public Prisme(Vecteur position) {
+	public Prisme(Vecteur position, double indiceRefraction) {
 		p1 = position;
 		p2 = new Vecteur(position.getX() + 6, position.getY());
 		p3 = new Vecteur((p2.getX() + p1.getX()) / 2, position.getY() + 5);
+		this.indiceRefraction = indiceRefraction;
 
 	}
 

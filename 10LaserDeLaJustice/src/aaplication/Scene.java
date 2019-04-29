@@ -972,7 +972,7 @@ public class Scene extends JPanel implements Runnable{
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutPrisme() {
-		listePrisme.add(new Prisme(new Vecteur(2, 2)));
+		listePrisme.add(new Prisme(new Vecteur(2, 2) ,indiceRefraction));
 		repaint();
 
 	}
@@ -1004,7 +1004,7 @@ public class Scene extends JPanel implements Runnable{
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutMiroirCourbe() {
-		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), longueurMiroir/2, angleMiroir));
+		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(5,5), longueurMiroir/2, angleMiroir));
 		repaint();
 
 	}
