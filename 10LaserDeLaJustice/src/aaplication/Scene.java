@@ -190,6 +190,8 @@ public class Scene extends JPanel implements Runnable{
 		lectureFichierOption();
 		if(deplacementSouris) {
 			personnage.setModeSouris(true);
+			personnage.setToucheDroite(898); //touches au hasard
+			personnage.setToucheGauche(1671);  //touches au hasard
 		}
 
 		addMouseMotionListener(new MouseMotionAdapter() {

@@ -262,7 +262,6 @@ public class Options extends JFrame {
 		btnTirer.setBounds(334, 303, 163, 46);
 		contentPane.add(btnTirer);
 		
-	
 		lectureFichierOption();
 		
 	}

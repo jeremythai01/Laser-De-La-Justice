@@ -313,7 +313,7 @@ public class Personnage implements Dessinable, Serializable {
 	}
 	/**
 	 * Methode de changer la touche utilise pour bouger le personnage a droite
-	 * @param la nouvelle touche droite
+	 * @param le keyCode de la nouvelle touche droite 
 	 */
 	//Miora
 	public void setToucheDroite(int toucheDroite) {

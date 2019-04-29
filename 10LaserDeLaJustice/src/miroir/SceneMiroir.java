@@ -1,6 +1,5 @@
 package miroir;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,9 +10,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -53,6 +49,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private VecteurGraphique q;
 
 	private double angle = 0;
+	private Teleporteur teleporteur;
 
 
 	private double angleLaser;
@@ -61,6 +58,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 	private MiroirCourbe miroirCourbe;
 	private ArrayList<MiroirPlan> listeMiroirPlan = new ArrayList<MiroirPlan>();
 	private ArrayList<MiroirCourbe> listeMiroirCourbe = new ArrayList<MiroirCourbe>();
+	private ArrayList<Teleporteur> listeTeleporteur = new ArrayList<Teleporteur>();
 
 	//Miora
 	/**
@@ -87,8 +85,10 @@ public class SceneMiroir extends JPanel implements Runnable {
 				if(miroirPlan == true && miroirConcave == false && miroirConvexe == false) {
 					double posX = e.getX()/modele.getPixelsParUniteX();
 					double posY = e.getY()/modele.getPixelsParUniteY();
-					plan = new MiroirPlan (new Vecteur (posX,posY), angle, 8);
-					listeMiroirPlan.add(plan);
+					//					plan = new MiroirPlan (new Vecteur (posX,posY), angle, 8);
+					//					listeMiroirPlan.add(plan);
+					teleporteur = new Teleporteur (new Vecteur (posX,posY));
+					listeTeleporteur.add(teleporteur);
 					repaint();
 				}
 				if(miroirPlan == false && miroirConcave == false && miroirConvexe == true) {
@@ -146,6 +146,9 @@ public class SceneMiroir extends JPanel implements Runnable {
 			miroir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
+		for(Teleporteur teleporteur : listeTeleporteur) {
+			teleporteur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
 		character.dessiner(g2d, mat, LARGEUR_DU_MONDE, HAUTEUR_DU_MONDE);
 
@@ -200,6 +203,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			try {
 				colisionLaserMiroirPlan();
 				colisionLaserMiroirCourbe();
+				collisionTeleporteur();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -213,6 +217,8 @@ public class SceneMiroir extends JPanel implements Runnable {
 		}//fin while
 		System.out.println("Le thread est mort...");
 	}
+
+
 
 	//Arnaud
 	/**
@@ -246,6 +252,81 @@ public class SceneMiroir extends JPanel implements Runnable {
 		return false;
 	}
 
+
+	private void collisionTeleporteur() {
+		for(Laser laser : listeLasers) {
+			int n=0;
+			boolean collision = false;
+			while(n< listeTeleporteur.size() && collision == false) {
+				if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire()) ||
+				   enIntersection(listeTeleporteur.get(n).getAireTeleporteur2(), laser.getAire()) ) {
+					boolean isIntersectionPremier;
+					collision = true;
+					
+					if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
+						isIntersectionPremier = true;
+					}else {
+						isIntersectionPremier = false;
+					}
+					
+
+					Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
+					double angleR = Math.toRadians(laser.getAngleTir()) ;	
+					Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+					
+					Vecteur ptsTeleporteur ;
+					if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
+						ptsTeleporteur = listeTeleporteur.get(n).getPositionPremier();
+					}else {
+						ptsTeleporteur = listeTeleporteur.get(n).getPositionDeuxieme();
+					}
+					
+					Vecteur vecTeleporteur = new Vecteur (1,0).normalise();
+				
+					Vecteur sous = (ptsLaser.soustrait(ptsTeleporteur)).multiplie(-1); // de l'autre cote equation
+					Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecTeleporteur); // devient moins
+
+					double [] inter = intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+
+					double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
+					double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
+				
+					Vecteur posInter = new Vecteur (x,y);
+					
+					laser.setPositionHaut(posInter);
+					
+					double xt = 1.1*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
+					double yt = 1.1*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
+					double a[][]={{1,0,xt},{0,1,yt},{0,0,1}};
+					double b[]={laser.getPositionHaut().getX(),laser.getPositionHaut().getY(),1};  // le point a translater  
+
+					//creer une matrice qui va acceuillir la transformation
+					double c[]=new double[3];  //matrice de 1 colonne et 1 ligne  
+
+					//multiplication matriciel 
+					for(int i=0;i<3;i++){    
+						c[i]=0;      
+						for(int k=0;k<3;k++)      
+						{      
+							c[i]+=a[i][k]*b[k];      
+						}
+					} 
+					System.out.println(listeTeleporteur.get(n).getPositionDeuxieme().toString());
+					if(isIntersectionPremier) {
+						//Tete a la meme position en x sur les deux teleporteurs 
+						double positionInterTel = c[0] - listeTeleporteur.get(n).getPositionPremier().getX();
+						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionDeuxieme().getX()+positionInterTel, c[1]));
+					}else {
+						double positionInterTel = c[0] - listeTeleporteur.get(n).getPositionDeuxieme().getX();
+						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionPremier().getX()+positionInterTel, c[1]));
+					}
+				}// fin if intersection
+			n++;
+			} //fin while
+		} // fin for 
+	}
+	
+	
 	//Miora
 	/**
 	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
@@ -260,7 +341,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 			while(n< listeMiroirPlan.size() && collision == false) {
 				if(enIntersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
-					
+
 					Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 					System.out.println("pts Laser : " + ptsLaser );
 					System.out.println("angle miroir " + listeMiroirPlan.get(n).getAngle());
@@ -282,13 +363,13 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 					double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
 					double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
-					
-					
+
+
 					posInter = new Vecteur (x,y);
 					System.out.println("position intersection :" + posInter);
 					System.out.println(" ");
 
-					
+
 					//Calcul selon g2d
 					Vecteur normal = listeMiroirPlan.get(n).getNormal(vecDirLaser).normalise();
 
@@ -338,7 +419,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 				for(Ligne ligne :listeMiroirCourbe.get(n).getListeLigne()) {
 					if(enIntersection(ligne.getAireLigne(), laser.getAire())){
 						collision = true;
-						
+
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 						System.out.println("centre miroir" + listeMiroirCourbe.get(n).getPosition());
 
@@ -348,7 +429,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 						Vecteur ptsMiroir = (new Vecteur (ligne.getX1(), ligne.getY1()));
 						System.out.println("pts miroir " + ptsMiroir);
-						
+
 						Vecteur vecDirMiroir = new Vecteur (ligne.x2-ligne.x1, ligne.y2-ligne.y1).normalise();
 						System.out.println("vecDirMiroir = " + vecDirMiroir);
 
@@ -381,7 +462,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 						System.out.println("pos haut fleche apres trans angle : " + laser.getPositionHaut() + " bas : " + laser.getPositionBas());
 						laser.setPositionHaut(new Vecteur (translation(laser)[0],translation(laser)[1]));
-						
+
 						System.out.println("laser bas : " + laser.getPositionBas() + "laser haut " + laser.getPositionHaut() );
 						System.out.println("-----------------------------------------------------------------------------");
 					}
