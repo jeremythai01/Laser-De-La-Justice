@@ -71,7 +71,7 @@ public class Options extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Options frame = new Options(isIni, dansScene);
+					Options frame = new Options(dansScene);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -82,12 +82,11 @@ public class Options extends JFrame {
 
 	/**
 	 * Creation de la fenetre.
-	 * @param isIni : retourne vrai si les options ont ete ouverts
 	 * @param dansScene : retourne vrai si appele quand le jeu a deja demarre
 	 * @throws IOException : si mauvaise lecture
 	 * @throws FileNotFoundException : si fichier non-trouve
 	 */
-	public Options(boolean isIni, boolean dansScene) throws FileNotFoundException, IOException {
+	public Options(boolean dansScene) throws FileNotFoundException, IOException {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 798, 515);
 		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -263,9 +262,9 @@ public class Options extends JFrame {
 		btnTirer.setBounds(334, 303, 163, 46);
 		contentPane.add(btnTirer);
 		
-		if(!isIni || dansScene) {
-			lectureFichierOption();
-		}
+	
+		lectureFichierOption();
+		
 	}
 
 	//Par Miora
@@ -426,15 +425,20 @@ public class Options extends JFrame {
 		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
 
-		// Path du dossier contenant les modifications, les options sont crees par
-		// ordinateur et non par partie
+		
 		String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
 				+ "Laser de la justice";
 		direction += File.separator + "Option" + File.separator + "modifie.d3t";
 		File f = new File(direction);
-		fichierDeTravail = new File(direction);
 		// Fin path
 
+		if (f.exists()) { // si le fichier modiefie existe, changement
+			fichierDeTravail = new File(direction);
+		}else { //sinon version initiale
+			String autreDir = System.getProperty("user.dir");
+			fichierDeTravail = new File(autreDir, "DonneeInitiale.d3t");
+		}
+		// Path du dossier contenant les modifications, les options sont crees par
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			snpAcc.setValue(fluxEntree.readDouble());

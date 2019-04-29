@@ -863,7 +863,7 @@ public class FenetreJeu extends JFrame {
 		 */
 		private void choixOption() {
 			try {
-				optionJeu = new Options(true,true);
+				optionJeu = new Options(true);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "not found");

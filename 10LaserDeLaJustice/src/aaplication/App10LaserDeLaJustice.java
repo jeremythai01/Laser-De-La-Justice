@@ -232,7 +232,7 @@ public class App10LaserDeLaJustice extends JFrame {
 	 * @throws FileNotFoundException fichier non trouve
 	 */
 	private void ouvrirOptions() throws FileNotFoundException, IOException {
-		fenetreOption = new Options(true, false);
+		fenetreOption = new Options(false);
 		fenetreOption.setVisible(true);
 	}
 
