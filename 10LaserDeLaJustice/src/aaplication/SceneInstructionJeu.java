@@ -20,6 +20,7 @@ import java.awt.event.MouseWheelEvent;
  */
 public class SceneInstructionJeu extends JPanel {
 
+	
 
 	private int page = 1;
 
@@ -36,6 +37,9 @@ public class SceneInstructionJeu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructeur qui permet de zoom in et out
+	 */
 	public SceneInstructionJeu() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -66,6 +70,11 @@ public class SceneInstructionJeu extends JPanel {
 
 	}
 
+	
+	
+	/**
+	 * Permet de lire les images en fonction de la page séléctionner
+	 */
 	public void lireFond() {
 
 		if (page == 1) {
@@ -139,27 +148,44 @@ public class SceneInstructionJeu extends JPanel {
 
 
 
+	/**
+	 * Permet d'augmenter de 1 la variable qui servira à tourner les pages des instructions
+	 */
 	public void augmenterPage() {
 		page++;
 		repaint();
 	}
 
+	/**
+	 *  Permet de baisser de 1 la variable qui servira à tourner les pages des instructions
+	 */
 	public void baisserPage() {
 		page--;
 
 		repaint();
 	}
 
+	/**
+	 * Change la valeur du x pour pouvoir bouger la page horizontalement
+	 * @param valeur: Double qui sera la nouvelle valeur du x
+	 */
 	public void setX(double valeur) {
 		x = valeur;
 		repaint();
 	}
 
+	/**
+	 * Change la valeur du x pour pouvoir bouger la page verticalement
+	 * @param valeur : Double qui sera la nouvelle valeur du y
+	 */
 	public void setY(double valeur) {
 		y = valeur;
 		repaint();
 	}
 
+	/**
+	 * Remet toutes les variables à 1 zoom = 1, x= 1 et y = 1
+	 */
 	public void defaut() {
 
 		x = 1;

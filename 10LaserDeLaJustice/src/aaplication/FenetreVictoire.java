@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
  */
 public class FenetreVictoire extends JFrame {
 
+	
 	private JPanel contentPane;
 
 	/**

@@ -54,6 +54,7 @@ import son.Bruit;
  */
 public class FenetreJeu extends JFrame {
 
+	
 	private JPanel contentPane;
 	private JButton btnImage;
 	private JButton btnPrisme;
