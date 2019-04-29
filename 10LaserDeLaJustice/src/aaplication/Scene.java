@@ -1,6 +1,7 @@
 package aaplication;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -2187,6 +2188,11 @@ try {
 	 */
 	public int getToucheTir() {
 		return toucheTir;
+	}
+
+	public ArrayList<Balle> getListeBalles() {
+		// TODO Auto-generated method stub
+		return listeBalles;
 	}
 
 
