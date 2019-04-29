@@ -167,6 +167,7 @@ public class FenetreJeu extends JFrame {
 				tempsJeu.stop();
 			}
 		});
+		
 		btnPause.setBounds(116, 61, 89, 38);
 		contentPane.add(btnPause);
 		//associerBoutonAvecImage(btnPause, "pause.jpg");

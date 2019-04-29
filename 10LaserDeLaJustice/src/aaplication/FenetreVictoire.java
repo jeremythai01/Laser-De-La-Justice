@@ -6,13 +6,17 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+/**
+ * Cette classe s'ouvre lorsque lorsqu'il n'y a plus de balle.
+ * @author Arezki
+ *
+ */
 public class FenetreVictoire extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
+	 * Lance l'application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -28,7 +32,7 @@ public class FenetreVictoire extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Créer la fenetre
 	 */
 	public FenetreVictoire() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

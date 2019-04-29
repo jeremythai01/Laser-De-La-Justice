@@ -17,12 +17,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
-
+/**
+ * Cette fenetre contient les informations concernant les auteurs qui ont fait l'application
+ * 
+ * @author Arezki
+ *
+ */
 public class FenetreAuteur extends JFrame {
 
 	private JPanel contentPane;
+
 	/**
-	 * Launch the application.
+	 * Lance l'application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -36,8 +42,9 @@ public class FenetreAuteur extends JFrame {
 			}
 		});
 	}
+
 	/**
-	 * Create the frame.
+	 * Créer la fenetre
 	 */
 	public FenetreAuteur() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,8 +53,6 @@ public class FenetreAuteur extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-
 
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
@@ -57,19 +62,16 @@ public class FenetreAuteur extends JFrame {
 		});
 		btnRetour.setBounds(10, 6, 89, 23);
 		contentPane.add(btnRetour);
-		
+
 		JPanel panelAuteur = new JPanel();
 		panelAuteur.setBounds(10, 40, 950, 554);
 		contentPane.add(panelAuteur);
 		panelAuteur.setLayout(null);
-		
+
 		JLabel lblAuteur = new JLabel("\r\n");
 		lblAuteur.setIcon(new ImageIcon(FenetreAuteur.class.getResource("/auteur.JPG")));
 		lblAuteur.setBounds(10, 11, 936, 532);
 		panelAuteur.add(lblAuteur);
-	
-		
-		
-		
+
 	}
 }

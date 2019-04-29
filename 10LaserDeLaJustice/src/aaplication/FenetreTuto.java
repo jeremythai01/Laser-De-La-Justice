@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
+import javax.print.attribute.standard.DocumentName;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,7 +42,6 @@ public class FenetreTuto extends JFrame {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		
 		
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -131,7 +131,7 @@ public class FenetreTuto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				sceneInstructionJeu.augmenterPage();
-				sceneInstructionJeu.requestFocusInWindow();
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		btnPageSuivante.setBounds(837, 50, 119, 23);
@@ -159,6 +159,7 @@ public class FenetreTuto extends JFrame {
 				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 				demarrage.setVisible(true);
 				setVisible(false);
+				sceneAnimee.requestFocusInWindow();
 			}
 		});
 		btnRetour.setBounds(31, 22, 89, 23);
