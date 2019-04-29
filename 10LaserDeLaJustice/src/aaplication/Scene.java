@@ -65,6 +65,8 @@ import utilite.OutilsMath;
  */
 public class Scene extends JPanel implements Runnable{
 
+
+
 	private Image fond = null;
 
 	private Personnage personnage;
@@ -104,6 +106,7 @@ public class Scene extends JPanel implements Runnable{
 	private boolean ligne12 = false;
 	private boolean triche = false;
 	private boolean effacement = false;
+	private boolean deplacementSouris;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -181,7 +184,9 @@ public class Scene extends JPanel implements Runnable{
 		angle = valeurAngleRoulette;
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
-		// personnage.setModeSouris(true);
+		if(deplacementSouris) {
+			personnage.setModeSouris(true);
+		}
 
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -470,8 +475,8 @@ public class Scene extends JPanel implements Runnable{
 				System.out.println("Erreur de lecture du fichier d'image du AjoutVie");
 			}
 		}
-		
-	//	fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
+
+		//	fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -635,10 +640,10 @@ public class Scene extends JPanel implements Runnable{
 
 					//Calcul du nouvel angle
 					Vecteur normal = listeMiroirPlan.get(n).getNormal(vecDirLaser).normalise();
-					
+
 					//Dessin ou non du vecteur normal
 					listeMiroirPlan.get(n).modeScientifique(posInter, modeScientifique);
-					
+
 					Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 					Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
 
@@ -705,11 +710,11 @@ public class Scene extends JPanel implements Runnable{
 						Vecteur normal = listeMiroirCourbe.get(n).getNormal(posInter).normalise();
 						Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 						Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
-	
-					
+
+
 						//Mode scientifique ou non
 						listeMiroirCourbe.get(n).modeScientifique(modeScientifique);
-				
+
 
 						//ajustement en systeme d'axe normal
 						reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
@@ -744,7 +749,7 @@ public class Scene extends JPanel implements Runnable{
 	private void tirLaser(KeyEvent e) {
 		if (enCoursAnimation) {
 			int code = e.getKeyCode();
-			if (code == KeyEvent.VK_SPACE) {
+			if (code == toucheTir) {
 				double x = personnage.getPosition() + personnage.getLARGEUR_PERSO() / 2
 						+ 2 * Math.cos(Math.toRadians(angle));
 				double y = HAUTEUR_DU_MONDE - personnage.getLONGUEUR_PERSO() - 2 * Math.sin(Math.toRadians(angle));
@@ -1075,15 +1080,15 @@ public class Scene extends JPanel implements Runnable{
 		}else { //sinon version initiale
 			String autreDir = System.getProperty("user.dir");
 			fichierDeTravail = new File(autreDir, "DonneeInitiale.d3t");
-			System.out.println("else");
 		}
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			gravite = new Vecteur(0, fluxEntree.readDouble());
-			System.out.println("accballe option" + accBalle);
-
+			deplacementSouris = fluxEntree.readBoolean();
 			toucheGauche = fluxEntree.readInt();
 			toucheDroite = fluxEntree.readInt();
+			toucheTir = fluxEntree.readInt();
+			personnage.setToucheTir(toucheTir);
 			try {
 				Color couleurOption;
 				couleurOption = (Color) fluxEntree.readObject();
@@ -2104,6 +2109,26 @@ public class Scene extends JPanel implements Runnable{
 	public void setAngleBloc(double value) {
 		bloc.setAngle(value);		
 	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de savoir si l'utilisateur utilise la souris ou les touches du clavier
+	 * @return vrai si utilise la souris
+	 */
+	public boolean isDeplacementSouris() {
+		return deplacementSouris;
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de connaitre la touche de tir
+	 * @return la touche pour tirer
+	 */
+	public int getToucheTir() {
+		return toucheTir;
+	}
+
+
 
 }
 

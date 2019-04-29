@@ -24,9 +24,12 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import aaplication.FenetreJeu;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 /**
  * Cette classe permet a l'utilisateur de modifier les parametres du jeu. 
  * Ces parametres sont le niveau, la gravite, les touches de clavier et la couleur du rayon 
@@ -37,30 +40,28 @@ import aaplication.FenetreJeu;
 public class Options extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private int toucheGauche = 37, toucheDroite = 39;
+	private int toucheGauche = 37, toucheDroite = 39, toucheTir = 32;
 	private JSpinner snpAcc;
 	private JButton btnG;
 	private JButton btnD;
 	private Color couleurLaser = null;
 	private boolean dansScene = false;
 	private static boolean isIni = false;
-
-
-	public boolean isDansScene() {
-		return dansScene;
-	}
-
-	public void setDansScene(boolean dansScene) {
-		this.dansScene = dansScene;
-	}
-
 	private FenetreJeu jeu;
 	private boolean isModifie = false;
 	private JLabel lblCouleur;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JButton btnTirer;
+	private JRadioButton rdbtnClavier;
+	private JRadioButton btnRadSouris;
 
 
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -79,7 +80,7 @@ public class Options extends JFrame {
 	 */
 	public Options(boolean isIni) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 787, 480);
+		setBounds(100, 100, 798, 515);
 		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
@@ -88,40 +89,40 @@ public class Options extends JFrame {
 		contentPane.setLayout(null);
 
 		JLabel lblOptJeu = new JLabel("Options de jeu");
-		lblOptJeu.setFont(new Font("Lucida Sans", Font.PLAIN, 50));
-		lblOptJeu.setBounds(233, 47, 394, 64);
+		lblOptJeu.setFont(new Font("Lucida Sans", Font.PLAIN, 36));
+		lblOptJeu.setBounds(275, 11, 274, 64);
 		contentPane.add(lblOptJeu);
 
 		JLabel lblAccG = new JLabel("Acc\u00E9l\u00E9ration gravitationnelle :\r\n");
-		lblAccG.setBounds(30, 166, 274, 22);
+		lblAccG.setBounds(30, 92, 274, 22);
 		lblAccG.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		contentPane.add(lblAccG);
 
 		JLabel lblTouchePourSe = new JLabel("Touches pour se d\u00E9placer :");
-		lblTouchePourSe.setBounds(30, 233, 274, 30);
+		lblTouchePourSe.setBounds(30, 209, 274, 30);
 		lblTouchePourSe.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		contentPane.add(lblTouchePourSe);
 
 		JLabel lblCouleurDuRayon = new JLabel("Couleur du rayon :");
-		lblCouleurDuRayon.setBounds(30, 369, 240, 22);
+		lblCouleurDuRayon.setBounds(30, 386, 240, 22);
 		lblCouleurDuRayon.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
 		contentPane.add(lblCouleurDuRayon);
 
 		snpAcc = new JSpinner();
 		snpAcc.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
-		snpAcc.setModel(new SpinnerNumberModel(new Double(9.8), new Double(0), null, new Double(0.1)));
-		snpAcc.setBounds(467, 157, 54, 43);
+		snpAcc.setModel(new SpinnerNumberModel(9.8, 1.0, 20.0, 0.1));
+		snpAcc.setBounds(398, 83, 77, 43);
 		contentPane.add(snpAcc);
 
 		JLabel lblGaucheTxt = new JLabel();
 		lblGaucheTxt.setText("Gauche :");
 		lblGaucheTxt.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
-		lblGaucheTxt.setBounds(353, 233, 77, 21);
+		lblGaucheTxt.setBounds(334, 194, 77, 21);
 		contentPane.add(lblGaucheTxt);
 
 		JLabel lblDroiteTxt = new JLabel("Droite :");
 		lblDroiteTxt.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
-		lblDroiteTxt.setBounds(555, 240, 63, 19);
+		lblDroiteTxt.setBounds(574, 195, 63, 19);
 		contentPane.add(lblDroiteTxt);
 
 		btnG = new JButton("Gauche");
@@ -132,24 +133,22 @@ public class Options extends JFrame {
 		btnG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				btnG.addKeyListener(new KeyAdapter() {
-					@Override
 					public void keyPressed(KeyEvent e) {
 						modificationGauche(e);
 					}
 				});
 			}
 		});
-		btnG.setBounds(373, 265, 154, 55);
+		btnG.setBounds(334, 226, 163, 43);
 		contentPane.add(btnG);
 
 		btnD = new JButton("Droite");
-		btnD.setFont(new Font("Lucida Sans Typewriter", Font.PLAIN, 12));
+		btnD.setFont(new Font("Lucida Sans", Font.PLAIN, 12));
 		btnD.setBackground(Color.WHITE);
-		btnD.setBounds(595, 270, 154, 55);
+		btnD.setBounds(554, 226, 154, 43);
 		btnD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				btnD.addKeyListener(new KeyAdapter() {
-					@Override
 					public void keyPressed(KeyEvent e) {
 						modificationDroite(e);
 					}
@@ -160,6 +159,8 @@ public class Options extends JFrame {
 		contentPane.add(btnD);
 
 		JButton btnSauvegarder = new JButton("Sauvegarder");
+		btnSauvegarder.setBackground(Color.WHITE);
+		btnSauvegarder.setFont(new Font("Lucida Sans", Font.PLAIN, 13));
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(dansScene) {
@@ -171,31 +172,106 @@ public class Options extends JFrame {
 				setVisible(false);
 			}
 		});
-		btnSauvegarder.setBounds(595, 399, 154, 43);
+		btnSauvegarder.setOpaque(true);
+		btnSauvegarder.setBounds(618, 423, 154, 43);
 		contentPane.add(btnSauvegarder);
 
 		JButton btnChangerLaCouleur = new JButton("Changer la couleur");
+		btnChangerLaCouleur.setBackground(Color.WHITE);
+		btnChangerLaCouleur.setFont(new Font("Lucida Sans", Font.PLAIN, 12));
 		btnChangerLaCouleur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				choixCouleur();
 				changerJLabel();
 			}
 		});
-		btnChangerLaCouleur.setBounds(219, 374, 192, 21);
+		btnChangerLaCouleur.setOpaque(true);
+		btnChangerLaCouleur.setBounds(334, 379, 163, 43);
 		contentPane.add(btnChangerLaCouleur);
 
 		JLabel lblMs = new JLabel("m\\s\u00B2");
-		lblMs.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
-		lblMs.setBounds(531, 165, 63, 27);
+		lblMs.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
+		lblMs.setBounds(486, 91, 63, 27);
 		contentPane.add(lblMs);
 
 		lblCouleur = new JLabel("");
 		lblCouleur.setBackground(Color.GRAY);
-		lblCouleur.setBounds(441, 358, 86, 53);
+		lblCouleur.setBounds(531, 386, 71, 36);
 		lblCouleur.setOpaque(true);
 		contentPane.add(lblCouleur);
+		
+		JLabel lblModeDeDplacement = new JLabel("Mode de d\u00E9placement :");
+		lblModeDeDplacement.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
+		lblModeDeDplacement.setBounds(30, 147, 274, 30);
+		contentPane.add(lblModeDeDplacement);
+		
+		btnRadSouris = new JRadioButton("Souris");
+		btnRadSouris.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
+		btnRadSouris.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(btnRadSouris.isSelected()) {
+					desactiverLesBoutons() ;
+				}
+			}
+		});
+		buttonGroup.add(btnRadSouris);
+		btnRadSouris.setBounds(334, 152, 109, 23);
+		contentPane.add(btnRadSouris);
+		
+		rdbtnClavier = new JRadioButton("Clavier");
+		rdbtnClavier.setFont(new Font("Lucida Sans", Font.PLAIN, 14));
+		rdbtnClavier.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(rdbtnClavier.isSelected()) {
+					activerLesBoutons();
+				}
+			}
+		});
+		buttonGroup.add(rdbtnClavier);
+		rdbtnClavier.setSelected(true);
+		rdbtnClavier.setBounds(554, 152, 109, 23);
+		contentPane.add(rdbtnClavier);
+		
+		JLabel btnTir = new JLabel("Touche pour tirer : ");
+		btnTir.setFont(new Font("Lucida Sans", Font.PLAIN, 18));
+		btnTir.setBounds(33, 292, 226, 30);
+		contentPane.add(btnTir);
+		
+		btnTirer = new JButton("Espace");
+		btnTirer.setBackground(Color.WHITE);
+		btnTirer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnTirer.addKeyListener(new KeyAdapter() {
+					public void keyPressed(KeyEvent e) {
+						modificationTir(e);
+					}
+				});
+			}
+		});
+		btnTirer.setOpaque(true);
+		btnTirer.setFont(new Font("Lucida Sans", Font.PLAIN, 12));
+		btnTirer.setBounds(334, 303, 163, 46);
+		contentPane.add(btnTirer);
 	}
 
+	//Par Miora
+	/**
+	 * Cette methode permet d'activer les boutons gauches et droites
+	 */
+	private void activerLesBoutons() {
+		btnG.setEnabled(true);
+		btnD.setEnabled(true);
+	}
+	
+	//Par Miora
+		/**
+		 * Cette methode permet desactiver les boutons gauches et droites
+		 */
+		private void desactiverLesBoutons() {
+			btnG.setEnabled(false);
+			btnD.setEnabled(false);
+		}
+	
 	// Par Miora
 	/**
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
@@ -208,11 +284,11 @@ public class Options extends JFrame {
 		File customDir = new File(direction);
 
 		if (customDir.exists()) {
-			System.out.println(customDir + "Le fichier niveau n'existe pas");
+			System.out.println(customDir + "Le fichier option n'existe pas");
 		} else if (customDir.mkdirs()) {
-			System.out.println(customDir + "Le fichier niveau a ete cree");
+			System.out.println(customDir + "Le fichier option a ete cree");
 		} else {
-			System.out.println(customDir + "Le fichier niveau n'a pas ete cree");
+			System.out.println(customDir + "Le fichier option n'a pas ete cree");
 		}
 		//Fin creation dossier
 
@@ -220,7 +296,7 @@ public class Options extends JFrame {
 		if(isIni) {
 			nomFichier= "modifie.d3t";
 		}else {
-			nomFichier = "DonneeOption.d3t";
+			nomFichier = "DonneInitiale.d3t";
 		}
 		File fichierDeTravail = new File(direction, nomFichier);
 
@@ -228,8 +304,14 @@ public class Options extends JFrame {
 		try {
 			fluxSortie = new ObjectOutputStream(new BufferedOutputStream(	new FileOutputStream(fichierDeTravail)));
 			fluxSortie.writeDouble(Double.parseDouble(snpAcc.getValue().toString()));
+			if(btnRadSouris.isSelected()) {
+				fluxSortie.writeBoolean(true);
+			}else {
+				fluxSortie.writeBoolean(false);
+			}
 			fluxSortie.writeInt(toucheGauche);
 			fluxSortie.writeInt(toucheDroite);
+			fluxSortie.writeInt(toucheTir);
 			fluxSortie.writeObject(couleurLaser);
 			JOptionPane.showMessageDialog(null,"Vos modifications ont ete sauvegardées avec succès");
 		} 
@@ -267,6 +349,16 @@ public class Options extends JFrame {
 		toucheDroite = e.getKeyCode() ;
 		btnD.setText(KeyEvent.getKeyText(e.getKeyCode()));
 	}
+	
+	//Par Miora
+		/**
+		 * Cette methode permet d'initialiser la touche de tir 
+		 * @param e : la touche du clavier
+		 */
+	private void modificationTir (KeyEvent e) {
+		toucheTir = e.getKeyCode() ;
+		btnTirer.setText(KeyEvent.getKeyText(e.getKeyCode()));
+	}
 
 	// Par Arnaud 
 	/**
@@ -284,11 +376,31 @@ public class Options extends JFrame {
 		lblCouleur.setBackground(couleurLaser);
 	}
 
+	//Par Miora
 	/**
 	 * Cette methode retourne vrai si le fichier option a ete modifie
 	 * @return vrai si le fichier option a ete modifie
 	 */
 	public boolean getIsModifie() {
 		return isModifie;
+	}
+	
+
+	//Par Miora
+	/**
+	 * Cette methode retourne vrai si la classe est appele en plein jeu
+	 * @return vrai si la classe est appele en plein jeu
+	 */
+	public boolean isDansScene() {
+		return dansScene;
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode modifie le type d'option si il est ou non appele dans la scene
+	 * @param dansScene vrai si appele dans scene
+	 */
+	public void setDansScene(boolean dansScene) {
+		this.dansScene = dansScene;
 	}
 }

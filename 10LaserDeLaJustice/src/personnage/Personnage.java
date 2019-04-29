@@ -80,6 +80,7 @@ public class Personnage implements Dessinable, Serializable {
 		this.toucheGauche = gauche;
 		this.toucheDroite = droite;
 		this.toucheTir = tir;
+		System.out.println(KeyEvent.getKeyText(toucheTir));
 	}
 
 	// Jeremy Thai

@@ -54,11 +54,8 @@ public class App10LaserDeLaJustice extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-
 					App10LaserDeLaJustice frame = new App10LaserDeLaJustice();
 					frame.setVisible(true);
-
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -80,9 +77,6 @@ public class App10LaserDeLaJustice extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-
-
 
 		JButton btnEditeurDeNiveau = new JButton("Editeur de niveau");
 		btnEditeurDeNiveau.addActionListener(new ActionListener() {

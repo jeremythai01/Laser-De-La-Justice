@@ -672,7 +672,13 @@ public class FenetreJeu extends JFrame {
 		 * Cette methode permet de montrer a l'utilisateur les touches pour jouer
 		 */
 		private void toucheScene() {
-			JOptionPane.showMessageDialog(null, " " + "Vos touches ont été initialisé a " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + " et " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()));
+			if(sceneFinale.isDeplacementSouris()) {
+				JOptionPane.showMessageDialog(null,"Vous vous déplacez avec la souris");
+			}
+			JOptionPane.showMessageDialog(null, "Vos touches ont été initialisées à \n" 
+					+ "Gauche : " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + "\n"
+					+ "Droite : " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()) + "\n" 
+					+ "Tir :" + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
 
 		}
 
