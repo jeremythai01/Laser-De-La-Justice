@@ -1,8 +1,10 @@
 package aaplication;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -17,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import documentation.FenetreConcept;
 import interfaces.SceneTutorielListener;
+import javax.swing.UIManager;
 /**
  * C'est la classe du tutoriel. Elle permet au joueur de comprendre le but du jeu.
  * @author Arnaud Lefebvre, Miora R. Rakoto
@@ -31,6 +34,11 @@ public class FenetreTuto extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		
 		
 		
@@ -53,6 +61,8 @@ public class FenetreTuto extends JFrame {
 	public FenetreTuto() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 908);
+		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

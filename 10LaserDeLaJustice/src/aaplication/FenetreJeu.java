@@ -135,7 +135,7 @@ public class FenetreJeu extends JFrame {
 		this.nomFichier = nomFichier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1174, 974);
-
+		
 		ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();

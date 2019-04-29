@@ -51,13 +51,6 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 	private Personnage character;
 	private VecteurGraphique q;
-	private Vecteur origin;
-	private boolean afficherVec =false;
-	Laser laser2;
-
-
-	private int nbCollison = 0;
-
 
 	private double angle = 0;
 
@@ -94,14 +87,14 @@ public class SceneMiroir extends JPanel implements Runnable {
 				if(miroirPlan == true && miroirConcave == false && miroirConvexe == false) {
 					double posX = e.getX()/modele.getPixelsParUniteX();
 					double posY = e.getY()/modele.getPixelsParUniteY();
-					plan = new MiroirPlan (new Vecteur (posX,posY), angle);
+					plan = new MiroirPlan (new Vecteur (posX,posY), angle, 8);
 					listeMiroirPlan.add(plan);
 					repaint();
 				}
 				if(miroirPlan == false && miroirConcave == false && miroirConvexe == true) {
 					double posX = e.getX()/modele.getPixelsParUniteX();
 					double posY = e.getY()/modele.getPixelsParUniteY();
-					miroirCourbe = new MiroirCourbe (new Vecteur(posX, posY), 4, (int) angle);
+					miroirCourbe = new MiroirCourbe (new Vecteur(posX, posY), 8, (int) angle);
 					listeMiroirCourbe.add(miroirCourbe);
 					repaint();
 				}
@@ -301,7 +294,7 @@ public class SceneMiroir extends JPanel implements Runnable {
 
 					System.out.println("normal " + normal);
 					if(modeScientifique) {
-						listeMiroirPlan.get(n).afficherVecteur(posInter);
+						listeMiroirPlan.get(n).modeScientifique(posInter, modeScientifique);
 					}
 
 					Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();

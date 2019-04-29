@@ -1,7 +1,9 @@
 package aaplication;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileSystemView;
 
 import son.Bruit;
+import javax.swing.UIManager;
 
 
 
@@ -34,6 +37,11 @@ public class FenetrePartie extends JFrame {
 	 * Lancer l'application
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -50,8 +58,12 @@ public class FenetrePartie extends JFrame {
 	 * Creation de la fenetre
 	 */
 	public FenetrePartie() {
+		setTitle("Commencer une partie");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

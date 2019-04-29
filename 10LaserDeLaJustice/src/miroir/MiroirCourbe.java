@@ -26,13 +26,13 @@ public class MiroirCourbe implements Dessinable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Vecteur position;
-	private double rayon=0;  // x et y sont les coordonne du centre de l'arc
+	private double rayon;  // x et y sont les coordonne du centre de l'arc
 	private Arc2D.Double arc; 
 	private double angle;
 	double approximation = 1;
 	private boolean modeSci;
 	private ArrayList <Ligne> listeLigne = new ArrayList <Ligne> () ;
-	Vecteur inter ;
+	private Vecteur inter ;
 	boolean dessiner =false;
 	private Point2D.Double pts;
 	private Vecteur normal;
@@ -58,20 +58,20 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 */
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform aff = new AffineTransform(mat);
-		g2d.fill(aff.createTransformedShape(new Ellipse2D.Double(position.getX()-0.5/2, position.getY()-0.5/2, 0.5, 0.5)));
-
+		
 		//on dessine la courbe avec des petites ligne
 		g2d.setColor(Color.red);
 		for(Ligne ligne : listeLigne) {
 			g2d.draw(aff.createTransformedShape(ligne));
 		}
-		if(dessiner) {
-			int lgVec = 8;
-			g2d.setColor(Color.black);
+
+		if(modeSci) {
+			double lgVec = rayon*2;
 			normal = normal.multiplie(lgVec/normal.module()); //on agrandit la taille du vecteur
 			vecGraph = new VecteurGraphique(normal.getX(), normal.getY()); //adaptation g2d
 			vecGraph.setOrigineXY(position.getX(), position.getY());  
 			vecGraph.setLongueurTete(0.5);
+			g2d.setColor(Color.red);
 			vecGraph.dessiner(g2d, mat, hauteur, largeur);
 		}
 	}
@@ -83,8 +83,7 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	public Area getAireMiroirCourbe() {
 		AffineTransform matLocale = new AffineTransform();
 		matLocale.rotate(Math.toRadians(-angle),position.getX(),position.getY());
-		double pRayon = rayon-0.5;
-		Area fantome = new Area (new Ellipse2D.Double (position.getX()-pRayon, position.getY()-pRayon, pRayon*2, pRayon*2));
+		Area fantome = new Area (new Ellipse2D.Double (position.getX()-rayon, position.getY()-rayon, rayon*2, rayon*2));
 		Area rect = new Area (new Rectangle2D.Double(position.getX()-rayon, position.getY()-rayon, 2*rayon, rayon));
 		fantome.subtract(rect);
 		return fantome;
@@ -96,7 +95,6 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 * @return : le vecteur normal
 	 */
 	public Vecteur getNormal(Vecteur posInter) {
-		dessiner = true;
 		this.inter = posInter;
 		this.normal = (posInter.soustrait(position)) ;
 		return normal ;
@@ -137,7 +135,7 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	private void initialiserMiroir() {
 		ArrayList <Point2D.Double> listePoints = new ArrayList <Point2D.Double> () ;
 		for(int i=0; i<=180; i+=approximation) {
-			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon  ,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
+			pts = new Point2D.Double (position.getX()+Math.cos(Math.toRadians(-i))*rayon,  position.getY()- Math.sin(Math.toRadians(-i))*rayon );
 			double a = Math.toRadians(-angle);
 			double matR [][]={{Math.cos(a), -Math.sin(a)},{Math.sin(a),Math.cos(a)}}; // matrice de rotation
 			double ptsD[] = {pts.getX()-position.getX() , pts.getY()-position.getY()}; 
@@ -158,7 +156,7 @@ public class MiroirCourbe implements Dessinable, Serializable {
 		}
 		//Petites lignes qui vont former le demi-cercle
 		for(int j=0;j<= listePoints.size()-2; j++) {
-			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1));
+			Ligne ligne = new Ligne (listePoints.get(j), listePoints.get(j+1), rayon);
 			listeLigne.add(ligne);
 		}
 	}
@@ -176,6 +174,14 @@ public class MiroirCourbe implements Dessinable, Serializable {
 	 */
 	public void setAngle(double angle) {
 		this.angle = angle;
+	}
+	
+	/**
+	 * Cette methode dessine le mode scientifique des miroirs courbes (vecteur normal)
+	 * @param modeSci
+	 */
+	public void modeScientifique(boolean modeSci) {
+		this.modeSci = modeSci;
 	}
 
 

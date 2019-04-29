@@ -24,14 +24,13 @@ public class MiroirPlan implements Dessinable, Serializable {
 
 	private double angle=0,x=0,y=0;
 	private Rectangle2D.Double miroir;
-	private Vecteur projection;
 
-	private double longueur = 50; 
+	private double longueur; 
 	private Shape miroirTransfo;
 	private Vecteur normal;
 	private Vecteur position;
 	private Vecteur inter;
-	private double largeur = 0.1;
+	private double largeur = 0.2;
 	private boolean modeSci = false;
 	private VecteurGraphique vecGraph;
 
@@ -41,15 +40,14 @@ public class MiroirPlan implements Dessinable, Serializable {
 	 * @param position la position la plus au centre du miroir
 	 * @param angle angle de miroir avec une rotation en degre a partir de x,y
 	 */
-	public MiroirPlan(Vecteur position, double angle) {
+	public MiroirPlan(Vecteur position, double angle, int longueur) {
 		super();
 		this.position = position;
 		this.angle = angle;
 		if(angle>=180) {
 			this.angle = angle-180;
 		}
-
-
+		this.longueur = longueur;
 	}
 	public Vecteur[] coordonneHautBas() {
 		Vecteur tab[] = new Vecteur[2];
@@ -79,9 +77,10 @@ public class MiroirPlan implements Dessinable, Serializable {
 		
 		if(modeSci) {
 			matLocale = new AffineTransform(mat);
+			
 			//Vecteur normal
-			int lgVec = 4;
-			g2d.setColor(Color.black);
+			double lgVec = longueur;
+			g2d.setColor(Color.red);
 			normal = normal.multiplie(lgVec/normal.module()); //on agrandit la taille du vecteur
 			vecGraph = new VecteurGraphique(normal);
 			vecGraph.setOrigineXY(inter.getX(), inter.getY());  
@@ -170,11 +169,12 @@ public class MiroirPlan implements Dessinable, Serializable {
 
 	//Par Miora
 	/**
-	 * Cette methode permet de dessiner le vecteur normal 
-	 * @param inter la position d'intersection avec un lase
+	 * Cette methode permet de dessiner le mode scientifique (vecteur normal)
+	 * @param inter la position d'intersection avec le laser
+	 * @param retourne vrai si le mode scientifique est active
 	 */
-	public void afficherVecteur(Vecteur inter) {
-		modeSci = true;
+	public void modeScientifique(Vecteur inter, boolean modeSci) {
+		this.modeSci = modeSci;
 		this.inter = inter;
 	}
 

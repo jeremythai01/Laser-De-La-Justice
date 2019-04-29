@@ -72,11 +72,8 @@ public class SceneTest extends JPanel implements Runnable {
 	private int toucheDroite = 39;
 	private int toucheTir = 32;
 
-	private ArrayList<Mur> listeMurs = new ArrayList<Mur>();
 
 	private ArrayList<Personnage> listePerso = new ArrayList<Personnage>();
-
-	private Mur mur;
 
 	private Coeurs coeurs;
 
@@ -114,15 +111,6 @@ public class SceneTest extends JPanel implements Runnable {
 		listePerso.add(personnage);
 		angle = 90;
 		vitesse = new Vecteur(0.5 ,0);
-
-
-		mur = new Mur ( new Vecteur(0,0), "VERTICAL"  );
-		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(0,HAUTEUR_DU_MONDE ), "HORIZONTAL"  );
-		listeMurs.add(mur);
-		mur = new Mur ( new Vecteur(LARGEUR_DU_MONDE,0 ), "VERTICAL" );
-		listeMurs.add(mur);
-
 
 		addMouseMotionListener(new MouseMotionAdapter() {
 

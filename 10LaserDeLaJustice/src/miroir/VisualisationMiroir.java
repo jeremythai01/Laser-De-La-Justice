@@ -16,15 +16,15 @@ import utilite.ModeleAffichage;
  * @author Miora
  *
  */
-public class EditeurMiroir extends JPanel {
+public class VisualisationMiroir extends JPanel {
 
-	private int angle=0;
+	private int angle=0, longueur=2;
 	private boolean dessinerMiroirPlan = false , dessinnerMiroirCourbe = false;
 
 	/**
 	 * Creation du JPanel
 	 */
-	public EditeurMiroir() {
+	public VisualisationMiroir() {
 		setBackground(Color.yellow);
 	}
 
@@ -35,11 +35,11 @@ public class EditeurMiroir extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
-		ModeleAffichage modele = new ModeleAffichage(getWidth(),getHeight(),10);
+		ModeleAffichage modele = new ModeleAffichage(getWidth(),getHeight(),65);
 		AffineTransform mat = modele.getMatMC();
 		g2d.setColor(Color.red);
-		MiroirPlan miroirPlan = new MiroirPlan(new Vecteur (modele.getLargUnitesReelles()/2,modele.getHautUnitesReelles()/2), angle);
-		MiroirCourbe miroirCourbe = new MiroirCourbe (new Vecteur (5,5), 4, angle);
+		MiroirPlan miroirPlan = new MiroirPlan(new Vecteur (modele.getLargUnitesReelles()/2,modele.getHautUnitesReelles()/2), angle, longueur);
+		MiroirCourbe miroirCourbe = new MiroirCourbe (new Vecteur (modele.getLargUnitesReelles()/2,modele.getLargUnitesReelles()/2), longueur/2, angle);
 		if(dessinerMiroirPlan) {
 			miroirPlan.dessiner(g2d, mat, 0, 0);
 		}
@@ -73,6 +73,15 @@ public class EditeurMiroir extends JPanel {
 	public void dessinerMiroirCourbe() {
 		this.dessinnerMiroirCourbe = true;
 		this.dessinerMiroirPlan = false;
+		repaint();
+	}
+
+	/**
+	 * * Cette methode permet de modifier la longueur des miroirs 
+	 * @param angle : la nouvelle longueur
+	 */
+	public void setLongueur(int longueur) {
+		this.longueur = longueur;
 		repaint();
 	}
 

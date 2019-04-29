@@ -199,8 +199,6 @@ public class Personnage implements Dessinable, Serializable {
 	 * Méthode qui permet de modifier la vitesse du personnage selon la touche enfoncee
 	 */
 	public void update() {
-
-
 		animation();
 
 		if(modeSouris) {
@@ -382,11 +380,19 @@ public class Personnage implements Dessinable, Serializable {
 		this.posSouris = posSouris;
 	}
 
-	
+	//Jeremy Thai
+	/**
+	 * Retourne la valeur booleenne du bouclier afin de savoir si celui-ci est active ou non 
+	 * @return bouclierActive valeur booleene  du bouclier 
+	 */
 	public boolean isBouclierActive() {
 		return bouclierActive;
 	}
-	
+	//Jeremy Thai
+		/**
+		 * Modifie la valeur booleenne du bouclier par celle passee en parametre
+		 * @param bouclierActive nouvelle valeur booleene du bouclier 
+		 */
 	public void setBouclierActive(boolean bouclierActive) {
 		this.bouclierActive = bouclierActive;
 	}
