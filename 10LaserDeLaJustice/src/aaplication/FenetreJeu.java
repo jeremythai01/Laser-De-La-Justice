@@ -508,6 +508,8 @@ public class FenetreJeu extends JFrame {
 		JButton btnDemarrage = new JButton("demarrage\r\n");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.arreter();
+				son.joue("beep");
 				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 				demarrage.setVisible(true);
 				setVisible(false);
@@ -566,7 +568,8 @@ public class FenetreJeu extends JFrame {
 		separator.setBounds(719, 730, 9, 198);
 		contentPane.add(separator);
 
-		JToggleButton tglbtnTriche = new JToggleButton("Triche\r\n");
+		JToggleButton tglbtnTriche = new JToggleButton("");
+		tglbtnTriche.setSelectedIcon(new ImageIcon(FenetreJeu.class.getResource("/com/sun/java/swing/plaf/windows/icons/Warn.gif")));
 		tglbtnTriche.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -595,7 +598,7 @@ public class FenetreJeu extends JFrame {
 			donneFocusALasceneFinale();
 			}
 		});
-		tglbtnTriche.setBounds(1063, 61, 89, 38);
+		tglbtnTriche.setBounds(1127, 61, 18, 23);
 		contentPane.add(tglbtnTriche);
 
 		JSeparator separator_1 = new JSeparator();
