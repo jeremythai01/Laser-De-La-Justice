@@ -35,10 +35,10 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	private final double indiceVide=1.0;
 	private double hauteurBloc=0.5;
 	private double angle;
-	private boolean eau=false;
+	private boolean eau=true;
 	private boolean verre=false;
 	private boolean diamant=false;
-	private boolean disulfureCarbone=true;
+	private boolean disulfureCarbone=false;
 	private Image img=null;
 	private URL urlCoeur;
 	
@@ -60,16 +60,16 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 */
 	public void lireImage() {
 		
-		if(eau) {
+		if(indiceRefraction==1.33) {
 			urlCoeur = getClass().getClassLoader().getResource("eau.jpg");
 		}
-		if(verre) {
+		if(indiceRefraction==1.50) {
 			urlCoeur = getClass().getClassLoader().getResource("verre.jpg");
 		}
-		if(diamant) {
+		if(indiceRefraction==2.42) {
 			urlCoeur = getClass().getClassLoader().getResource("diamant.jpg");	
 		}
-		if(disulfureCarbone) {
+		if(indiceRefraction==1.63) {
 			urlCoeur = getClass().getClassLoader().getResource("disulfure.jpg");
 		}
 		
@@ -96,7 +96,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 		AffineTransform matLocal = new AffineTransform(mat);
 		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteurBloc);
 		g.setColor(Color.blue);
-		g.fill(matLocal.createTransformedShape(bloc));
+		//g.fill(matLocal.createTransformedShape(bloc));
 		
 		double factX = LARGEUR/ img.getWidth(null) ;
 		double factY = hauteurBloc/ img.getHeight(null) ;
