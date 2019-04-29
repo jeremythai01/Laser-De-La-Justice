@@ -19,6 +19,8 @@ import javax.swing.border.EmptyBorder;
 
 import documentation.FenetreConcept;
 import interfaces.SceneTutorielListener;
+import son.Bruit;
+
 import javax.swing.UIManager;
 /**
  * C'est la classe du tutoriel. Elle permet au joueur de comprendre le but du jeu.
@@ -29,7 +31,7 @@ public class FenetreTuto extends JFrame {
 
 	private JPanel contentPane;
 	private SceneTutoriel sceneAnimee;
-
+	private Bruit son = new Bruit();
 	/**
 	 * Launch the application.
 	 */
@@ -127,6 +129,7 @@ public class FenetreTuto extends JFrame {
 		JButton btnPageSuivante = new JButton("page suivante");
 		btnPageSuivante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneInstructionJeu.augmenterPage();
 				sceneInstructionJeu.requestFocusInWindow();
 			}
@@ -137,6 +140,7 @@ public class FenetreTuto extends JFrame {
 		JButton btnPagePrcdente = new JButton("page pr\u00E9c\u00E9dente");
 		btnPagePrcdente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneInstructionJeu.baisserPage();
 				sceneAnimee.requestFocusInWindow();
 			}
@@ -151,6 +155,7 @@ public class FenetreTuto extends JFrame {
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 				demarrage.setVisible(true);
 				setVisible(false);
@@ -162,6 +167,7 @@ public class FenetreTuto extends JFrame {
 		JButton btnConcept = new JButton("Concept scientifique");
 		btnConcept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				affichierConcept();
 				sceneAnimee.requestFocusInWindow();
 			}
@@ -170,6 +176,7 @@ public class FenetreTuto extends JFrame {
 		contentPane.add(btnConcept);
 		btnDfaut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				sceneInstructionJeu.defaut();
 				sceneAnimee.requestFocusInWindow();
 			}
