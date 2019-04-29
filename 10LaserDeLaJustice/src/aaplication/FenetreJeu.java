@@ -79,7 +79,6 @@ public class FenetreJeu extends JFrame {
 
 	private static String nomFichier;
 
-
 	private ActionListener listener;
 	private Timer tempsJeu;
 	double secondes = 60;
@@ -135,7 +134,7 @@ public class FenetreJeu extends JFrame {
 		this.nomFichier = nomFichier;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1174, 974);
-		
+
 		ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
@@ -290,7 +289,7 @@ public class FenetreJeu extends JFrame {
 		btnPetiteBalle.setEnabled(false);
 		btnPetiteBalle.setBounds(729, 868, 96, 26);
 		contentPane.add(btnPetiteBalle);
-		
+
 		btnTeleportation = new JButton("Téléporteur");
 		btnTeleportation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -302,8 +301,8 @@ public class FenetreJeu extends JFrame {
 		btnTeleportation.setEnabled(false);
 		btnTeleportation.setBounds(729, 900, 96, 26);
 		contentPane.add(btnTeleportation); 
-		
-		
+
+
 		rbtnOrdiNiveau1 = new JRadioButton("Aide niveau 1");
 		rbtnOrdiNiveau1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -315,7 +314,7 @@ public class FenetreJeu extends JFrame {
 		rbtnOrdiNiveau1.setEnabled(false);
 		contentPane.add(rbtnOrdiNiveau1);
 		btnGroupOrdi.add(rbtnOrdiNiveau1);
-		
+
 		rbtnOrdiNiveau2 = new JRadioButton("Aide niveau 2");
 		rbtnOrdiNiveau2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -327,7 +326,7 @@ public class FenetreJeu extends JFrame {
 		rbtnOrdiNiveau2.setEnabled(false);
 		contentPane.add(rbtnOrdiNiveau2);
 		btnGroupOrdi.add(rbtnOrdiNiveau2);
-		
+
 		rbtnOrdiNiveau3 = new JRadioButton("Aide niveau 3");
 		rbtnOrdiNiveau3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -339,7 +338,7 @@ public class FenetreJeu extends JFrame {
 		rbtnOrdiNiveau3.setEnabled(false);
 		contentPane.add(rbtnOrdiNiveau3);
 		btnGroupOrdi.add(rbtnOrdiNiveau3);
-		
+
 
 		btnPrisme = new JButton("prisme");
 		btnPrisme.addActionListener(new ActionListener() {
@@ -413,7 +412,7 @@ public class FenetreJeu extends JFrame {
 				barreEnergiePotentielle.repaint();
 				barreEnergieMecanique.repaint();
 			}
-			
+
 			/**
 			 * Permet d'avoir en sortie la vitesse, l'accélération et la force gravitationnelle des balles. 
 			 */
@@ -423,15 +422,15 @@ public class FenetreJeu extends JFrame {
 				double vitesseMoyY = 0;
 				DecimalFormat df = new DecimalFormat("#.##");
 				if(listeBalles.size()!=0) {
-				lblAccel.setText("[x: "+(listeBalles.get(0).getAccel().getX()+ " , y: "+ listeBalles.get(0).getAccel().getY()+" ] m²/s"));
-				for(int i = 0; i < listeBalles.size();i++ ) {
-					vitesseMoyX += listeBalles.get(i).getVitesse().getX();
-					
-					vitesseMoyY += listeBalles.get(i).getVitesse().getY();
-					lblVitesse.setText("[x: "+df.format(vitesseMoyX)+" ,y : "+df.format(vitesseMoyY)+" ] m/s");
-					lblGravit.setText("[x: "+listeBalles.get(i).getForceGravi().getX()+ " , y: "+ listeBalles.get(i).getForceGravi().getY()+" ] N");
-					
-				    }
+					lblAccel.setText("[x: "+(listeBalles.get(0).getAccel().getX()+ " , y: "+ listeBalles.get(0).getAccel().getY()+" ] m²/s"));
+					for(int i = 0; i < listeBalles.size();i++ ) {
+						vitesseMoyX += listeBalles.get(i).getVitesse().getX();
+
+						vitesseMoyY += listeBalles.get(i).getVitesse().getY();
+						lblVitesse.setText("[x: "+df.format(vitesseMoyX)+" ,y : "+df.format(vitesseMoyY)+" ] m/s");
+						lblGravit.setText("[x: "+listeBalles.get(i).getForceGravi().getX()+ " , y: "+ listeBalles.get(i).getForceGravi().getY()+" ] N");
+
+					}
 				}
 			}
 
@@ -442,9 +441,9 @@ public class FenetreJeu extends JFrame {
 			public void evenementLaser(ArrayList<Laser> lasers, double angle) {
 				DecimalFormat df = new DecimalFormat("#.##");
 				lblAngle.setText(""+df.format(angle));
-				
+
 				lblCouleur.setForeground(lasers.get(0).getCouleurLaser());
-				
+
 			}
 
 
@@ -512,9 +511,11 @@ public class FenetreJeu extends JFrame {
 		btnDemarrage.setBounds(314, 62, 96, 36);
 		contentPane.add(btnDemarrage);
 
-		
-		//FenetreVictoire victoire = new FenetreVictoire();
-		
+
+
+		FenetreVictoire victoire = new FenetreVictoire();
+
+
 		listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -522,30 +523,25 @@ public class FenetreJeu extends JFrame {
 					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
-						
+
 					} else {
 						//son.joueSonLorsqueFini();
 						tempsJeu.stop();
 						sceneFinale.arreter();
-						/*
 						FenetreGameOver gameOver = new FenetreGameOver();
 						setVisible(false);
 						gameOver.setVisible(true);
-						*/
+
 					}
-		/*
+/*
 				if(sceneFinale.getListeBalles().size()==0) {
-					//son.joueSonLorsqueFini();
-					//victoire.setVisible(true);
+					son.joueSonLorsqueFini();
+					victoire.setVisible(true);
 					barreTempsDuJeu.setValue(0);
 					setVisible(false);
 				}
-			*/
-			}
-		
-		
-		
-		
+*/
+			};
 		};
 
 		tempsJeu = new Timer(1000, listener);
@@ -582,15 +578,15 @@ public class FenetreJeu extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				lblTempsInfini.setVisible(true);		
-				
+
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				lblTempsInfini.setVisible(false);				
 			}
 		});
-		
-		
+
+
 		tglbtnTriche.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				if(tglbtnTriche.isSelected()) {
@@ -602,8 +598,8 @@ public class FenetreJeu extends JFrame {
 					sceneFinale.modeTriche(false);
 					donneFocusALasceneFinale();
 				}
-			
-			donneFocusALasceneFinale();
+
+				donneFocusALasceneFinale();
 			}
 		});
 		tglbtnTriche.setBounds(1127, 61, 18, 23);
@@ -676,66 +672,66 @@ public class FenetreJeu extends JFrame {
 		});
 		btnLireLesConcepts.setBounds(858, 11, 294, 39);
 		contentPane.add(btnLireLesConcepts);
-		
+
 		JLabel lblVitesseMoyenneDes = new JLabel("Vitesse totale des balles :");
 		lblVitesseMoyenneDes.setBounds(60, 784, 145, 14);
 		contentPane.add(lblVitesseMoyenneDes);
-		
+
 		lblVitesse = new JLabel("vitesse");
 		lblVitesse.setBounds(215, 783, 145, 14);
 		contentPane.add(lblVitesse);
-		
+
 		JLabel lblForceRavitationnelle = new JLabel("Force gravitationnelle :");
 		lblForceRavitationnelle.setBounds(63, 825, 142, 14);
 		contentPane.add(lblForceRavitationnelle);
-		
+
 		lblGravit = new JLabel("Gravit\u00E9");
 		lblGravit.setBounds(215, 825, 130, 14);
 		contentPane.add(lblGravit);
-		
+
 		JLabel lblAcclerationGravitationnelle = new JLabel("Acc\u00E9leration Gravitationnelle: ");
 		lblAcclerationGravitationnelle.setBounds(60, 868, 145, 14);
 		contentPane.add(lblAcclerationGravitationnelle);
-		
+
 		lblAccel = new JLabel("Accel");
 		lblAccel.setBounds(215, 868, 130, 14);
 		contentPane.add(lblAccel);
-		
-	
+
+
 		JLabel lblAngleLaser = new JLabel("L'angle du laser: ");
 		lblAngleLaser.setBounds(360, 784, 145, 14);
 		contentPane.add(lblAngleLaser);
-		
+
 		lblAngle = new JLabel("Angle");
 		lblAngle.setBounds(470, 784, 130, 14);
 		contentPane.add(lblAngle);
-		
-		
+
+
 		JLabel lblCouleurLaser = new JLabel("Couleur du laser :");
 		lblCouleurLaser.setBounds(360, 825, 142, 14);
 		contentPane.add(lblCouleurLaser);
-		
+
 		lblCouleur= new JLabel ("Couleur");
 		lblCouleur.setBackground(Color.GRAY);
 		lblCouleur.setBounds(470, 825, 130, 14);
 		contentPane.add(lblCouleur);
-		
-		
+
+
 
 		JLabel lblPersonnage = new JLabel("Position du personnage :");
 		lblPersonnage.setBounds(360, 868, 142, 14);
 		contentPane.add(lblPersonnage);
-		
+
 		lblPer= new JLabel ("position");
 		lblPer.setBounds(500, 868, 130, 14);
 		contentPane.add(lblPer);
-		
+
 
 
 		lblTempsInfini = new JLabel("Temps infini + Nombre de vies infini + Permet de bouger les objets durant la partie");
 		lblTempsInfini.setBounds(314, 11, 534, 39);
 		contentPane.add(lblTempsInfini);
-		
+
 		cbxAide = new JCheckBox("Aide ordinateur");
 		cbxAide.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -757,190 +753,190 @@ public class FenetreJeu extends JFrame {
 		cbxAide.setBounds(934, 800, 105, 23);
 		contentPane.add(cbxAide);
 		lblTempsInfini.setVisible(false);
-		
-		
+
+
 	}
 
 
 
-		//Par Miora
-		/**
-		 * Cette methode permet d'ouvrir une fenetre pour consulter les concepts scientifiques
-		 * derriere l'application
-		 */
-		private void affichierConcept() {
-			sceneFinale.arreter();
-			tempsJeu.stop();
-			FenetreConcept fenetreConcept = new FenetreConcept();
-			fenetreConcept.setVisible(true);
-		}
+	//Par Miora
+	/**
+	 * Cette methode permet d'ouvrir une fenetre pour consulter les concepts scientifiques
+	 * derriere l'application
+	 */
+	private void affichierConcept() {
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		FenetreConcept fenetreConcept = new FenetreConcept();
+		fenetreConcept.setVisible(true);
+	}
 
-		//Par Miora
-		/**
-		 * Cette methode permet de montrer a l'utilisateur les touches pour jouer
-		 */
-		private void toucheScene() {
-			if(sceneFinale.isDeplacementSouris()) {
-				JOptionPane.showMessageDialog(null,"Vous vous déplacez avec la souris \n"+
-			"Tir : " + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
-			}else {
-				JOptionPane.showMessageDialog(null, "Vos touches ont été initialisées à \n" 
-						+ "Gauche : " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + "\n"
-						+ "Droite : " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()) + "\n" 
-						+ "Tir :" + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
-			}
-		}
-
-		// Par Miora
-		/**
-		 * Methode qui donne le focus a la sceneFinale
-		 */
-		public void donneFocusALasceneFinale() {
-			sceneFinale.requestFocusInWindow();
-		}
-
-		//Par Arezki
-		/**
-		 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
-		 * les objets dans la sceneFinale
-		 * 
-		 */
-		public void activerEditeur() {
-			btnBlocDeau.setEnabled(true);
-			btnGrosseBalle.setEnabled(true);
-			btnMediumBalle.setEnabled(true);
-			btnMiroirPlan.setEnabled(true);
-			btnPrisme.setEnabled(true);
-			btnTrouNoir.setEnabled(true);
-			btnPetiteBalle.setEnabled(true);
-			buttonMiroirCourbe.setEnabled(true);
-			cbxAide.setEnabled(true);
-			btnTeleportation.setEnabled(true);
-		}
-
-		// Par Arezki
-		/**
-		 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons
-		 * de l'éditeur, mais les dessins restent
-		 * 
-		 */
-		public void desactiverEditeur() {
-			btnBlocDeau.setEnabled(false);
-			btnGrosseBalle.setEnabled(false);
-			btnMediumBalle.setEnabled(false);
-			btnMiroirPlan.setEnabled(false);
-			btnPrisme.setEnabled(false);
-			btnTrouNoir.setEnabled(false);
-			btnPetiteBalle.setEnabled(false);
-			buttonMiroirCourbe.setEnabled(false);
-			cbxAide.setEnabled(false);
-			rbtnOrdiNiveau1.setEnabled(false);
-			rbtnOrdiNiveau2.setEnabled(false);
-			rbtnOrdiNiveau3.setEnabled(false);
-			btnTeleportation.setEnabled(false);
-		}
-
-
-		/**Cette methode permet d'associer un bouton a une image
-		 * @param leBouton
-		 * @param fichierImage
-		 */
-		//par Caroline Houle
-
-		private void associerBoutonAvecImage(JButton leBouton, String fichierImage) {
-			Image imgLue = null;
-			java.net.URL urlImage = getClass().getClassLoader().getResource(fichierImage);
-			if (urlImage == null) {
-				JOptionPane.showMessageDialog(null, "Fichier " + fichierImage + " introuvable");
-			}
-			try {
-				imgLue = ImageIO.read(urlImage);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Erreur pendant la lecture du fichier d'image");
-			}
-
-			// redimensionner l'image de la meme grandeur que le bouton
-			Image imgRedim = imgLue.getScaledInstance(leBouton.getWidth(), leBouton.getHeight(), Image.SCALE_SMOOTH);
-
-			// au cas ou le fond de limage serait transparent
-			leBouton.setOpaque(false);
-			leBouton.setContentAreaFilled(false);
-			leBouton.setBorderPainted(false);
-
-			// associer l'image au bouton
-			leBouton.setText("");
-			leBouton.setIcon(new ImageIcon(imgRedim));
-
-			// on se debarrasse des images intermediaires
-			imgLue.flush();
-			imgRedim.flush();
-		}
-		
-		// Miora
-		/**
-		 * Cette methode defini si les options doivent etre change ou non 
-		 * @param isNouveauOption : s'il y a un changement ou non S
-		 */
-		public void setNouveauOption(boolean isNouveauOption) {
-			this.isNouveauOption = isNouveauOption;
-		}
-
-
-	
-		//Par Miora
-		/**
-		 * Cette methode ouvre le menu option lorsque la touche option est cliquee
-		 */
-		private void choixOption() {
-			try {
-				optionJeu = new Options(true);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "not found");
-			} catch (IOException e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "fichier");
-			}
-			optionJeu.setDansScene(true);
-			optionJeu.setVisible(true);
-			sceneFinale.ecritureFichierSauvegarde("temporaire", true); // je sauvegarde
-			sceneFinale.arreter();
-			tempsJeu.stop();
-			setVisible(false);
-			donneFocusALasceneFinale();
-		}
-
-
-		//Par Miora
-		/**
-		 * Cette methode modifie le temps pour la barre de temps
-		 * @param temps : le nouveau temps
-		 */
-		private void modifierLeTemps(int temps) {
-			barreTempsDuJeu.setValue(temps);
-			barreTempsDuJeu.setString(temps + " secondes restantes");
-
-		}
-
-		//Par Miora
-		/**
-		 * Cette methode permet de sauvegarder une partie
-		 */
-		private void enregistrer() {
-			sceneFinale.arreter();
-			tempsJeu.stop();
-			String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
-			sceneFinale.ecritureFichierSauvegarde(nom, false);
-
-		}
-
-		//Par Miora
-		/**
-		 * Cette methode permet de sauvegarder le niveau
-		 */
-		private void sauvegarderNiveau() {
-			String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
-			sceneFinale.ecritureNiveau(nomSauv);
-
+	//Par Miora
+	/**
+	 * Cette methode permet de montrer a l'utilisateur les touches pour jouer
+	 */
+	private void toucheScene() {
+		if(sceneFinale.isDeplacementSouris()) {
+			JOptionPane.showMessageDialog(null,"Vous vous déplacez avec la souris \n"+
+					"Tir : " + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
+		}else {
+			JOptionPane.showMessageDialog(null, "Vos touches ont été initialisées à \n" 
+					+ "Gauche : " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + "\n"
+					+ "Droite : " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()) + "\n" 
+					+ "Tir :" + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
 		}
 	}
+
+	// Par Miora
+	/**
+	 * Methode qui donne le focus a la sceneFinale
+	 */
+	public void donneFocusALasceneFinale() {
+		sceneFinale.requestFocusInWindow();
+	}
+
+	//Par Arezki
+	/**
+	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
+	 * les objets dans la sceneFinale
+	 * 
+	 */
+	public void activerEditeur() {
+		btnBlocDeau.setEnabled(true);
+		btnGrosseBalle.setEnabled(true);
+		btnMediumBalle.setEnabled(true);
+		btnMiroirPlan.setEnabled(true);
+		btnPrisme.setEnabled(true);
+		btnTrouNoir.setEnabled(true);
+		btnPetiteBalle.setEnabled(true);
+		buttonMiroirCourbe.setEnabled(true);
+		cbxAide.setEnabled(true);
+		btnTeleportation.setEnabled(true);
+	}
+
+	// Par Arezki
+	/**
+	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons
+	 * de l'éditeur, mais les dessins restent
+	 * 
+	 */
+	public void desactiverEditeur() {
+		btnBlocDeau.setEnabled(false);
+		btnGrosseBalle.setEnabled(false);
+		btnMediumBalle.setEnabled(false);
+		btnMiroirPlan.setEnabled(false);
+		btnPrisme.setEnabled(false);
+		btnTrouNoir.setEnabled(false);
+		btnPetiteBalle.setEnabled(false);
+		buttonMiroirCourbe.setEnabled(false);
+		cbxAide.setEnabled(false);
+		rbtnOrdiNiveau1.setEnabled(false);
+		rbtnOrdiNiveau2.setEnabled(false);
+		rbtnOrdiNiveau3.setEnabled(false);
+		btnTeleportation.setEnabled(false);
+	}
+
+
+	/**Cette methode permet d'associer un bouton a une image
+	 * @param leBouton
+	 * @param fichierImage
+	 */
+	//par Caroline Houle
+
+	private void associerBoutonAvecImage(JButton leBouton, String fichierImage) {
+		Image imgLue = null;
+		java.net.URL urlImage = getClass().getClassLoader().getResource(fichierImage);
+		if (urlImage == null) {
+			JOptionPane.showMessageDialog(null, "Fichier " + fichierImage + " introuvable");
+		}
+		try {
+			imgLue = ImageIO.read(urlImage);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Erreur pendant la lecture du fichier d'image");
+		}
+
+		// redimensionner l'image de la meme grandeur que le bouton
+		Image imgRedim = imgLue.getScaledInstance(leBouton.getWidth(), leBouton.getHeight(), Image.SCALE_SMOOTH);
+
+		// au cas ou le fond de limage serait transparent
+		leBouton.setOpaque(false);
+		leBouton.setContentAreaFilled(false);
+		leBouton.setBorderPainted(false);
+
+		// associer l'image au bouton
+		leBouton.setText("");
+		leBouton.setIcon(new ImageIcon(imgRedim));
+
+		// on se debarrasse des images intermediaires
+		imgLue.flush();
+		imgRedim.flush();
+	}
+
+	// Miora
+	/**
+	 * Cette methode defini si les options doivent etre change ou non 
+	 * @param isNouveauOption : s'il y a un changement ou non S
+	 */
+	public void setNouveauOption(boolean isNouveauOption) {
+		this.isNouveauOption = isNouveauOption;
+	}
+
+
+
+	//Par Miora
+	/**
+	 * Cette methode ouvre le menu option lorsque la touche option est cliquee
+	 */
+	private void choixOption() {
+		try {
+			optionJeu = new Options(true);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "not found");
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "fichier");
+		}
+		optionJeu.setDansScene(true);
+		optionJeu.setVisible(true);
+		sceneFinale.ecritureFichierSauvegarde("temporaire", true); // je sauvegarde
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		setVisible(false);
+		donneFocusALasceneFinale();
+	}
+
+
+	//Par Miora
+	/**
+	 * Cette methode modifie le temps pour la barre de temps
+	 * @param temps : le nouveau temps
+	 */
+	private void modifierLeTemps(int temps) {
+		barreTempsDuJeu.setValue(temps);
+		barreTempsDuJeu.setString(temps + " secondes restantes");
+
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder une partie
+	 */
+	private void enregistrer() {
+		sceneFinale.arreter();
+		tempsJeu.stop();
+		String nom = JOptionPane.showInputDialog("Entrez le nom de votre sauvagarde :");
+		sceneFinale.ecritureFichierSauvegarde(nom, false);
+
+	}
+
+	//Par Miora
+	/**
+	 * Cette methode permet de sauvegarder le niveau
+	 */
+	private void sauvegarderNiveau() {
+		String nomSauv = JOptionPane.showInputDialog("Entrer le nom de votre niveau :");
+		sceneFinale.ecritureNiveau(nomSauv);
+
+	}
+}

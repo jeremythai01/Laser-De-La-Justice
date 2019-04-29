@@ -1341,7 +1341,6 @@ public class Scene extends JPanel implements Runnable{
 
 		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
 		direction += File.separator + "Niveau";
-
 		File fichierDeTravail = new File(direction, nomFichierNiveau);
 
 		try {
