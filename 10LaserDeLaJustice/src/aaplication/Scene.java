@@ -46,6 +46,8 @@ import miroir.MiroirCourbe;
 import miroir.MiroirPlan;
 import objets.BlocDEau;
 import objets.Echelle;
+import objets.Ordinateur;
+import objets.OrdinateurNiveau2;
 import objets.OrdinateurNiveau3;
 import objets.TrouNoir;
 import personnage.Personnage;
@@ -110,6 +112,9 @@ public class Scene extends JPanel implements Runnable{
 	private boolean triche = false;
 	private boolean effacement = false;
 	private boolean deplacementSouris;
+	private boolean activerOrdi1=false;
+	private boolean activerOrdi2=false;
+	private boolean activerOrdi3=false;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -130,7 +135,9 @@ public class Scene extends JPanel implements Runnable{
 	private MiroirCourbe miroirCourbe;
 	private MiroirPlan miroirePlan;
 	private BlocDEau bloc;
-	private OrdinateurNiveau3 ordi;
+	private Ordinateur ordi1;
+	private OrdinateurNiveau2 ordi2;
+	private OrdinateurNiveau3 ordi3;
 	private Laser laser;
 	private Coeurs coeurs = new Coeurs(nombreVies);
 	private Prisme prisme;
@@ -272,7 +279,9 @@ public class Scene extends JPanel implements Runnable{
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles();
 			premiereFois = false;
 			Balle.setModele(getWidth(),getHeight(),LARGEUR_DU_MONDE);
-			ordi = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE-1));
+			ordi3 = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE-1));
+			ordi2 = new OrdinateurNiveau2(new Vecteur(28, HAUTEUR_DU_MONDE-1));
+			ordi1 = new Ordinateur(new Vecteur(28, HAUTEUR_DU_MONDE-1));
 		}
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
@@ -337,9 +346,21 @@ public class Scene extends JPanel implements Runnable{
 		echelle.savoirModele(getWidth(), getHeight(), LARGEUR_DU_MONDE);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
-		ordi.ajouterListesObstacles(listeBalles);
-		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		ordi.savoirTempsSleep(tempsDuSleep);
+		ordi3.ajouterListesObstacles(listeBalles);
+		ordi3.savoirTempsSleep(tempsDuSleep);
+		if(activerOrdi3) {
+		ordi3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
+		
+	
+		if(activerOrdi2) {
+		ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
+		
+		
+		if(activerOrdi1) {
+		ordi1.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		}
 
 		tracerVecteurGraphique(g2d);
 
@@ -409,7 +430,9 @@ public class Scene extends JPanel implements Runnable{
 		} else {
 			personnage.bouge();
 		}
-		ordi.bouge();
+		ordi3.bouge();
+		ordi1.bouge();
+		ordi2.bouge();
 
 		tempsEcoule += deltaTInit;
 
@@ -1018,16 +1041,36 @@ public class Scene extends JPanel implements Runnable{
 	// auteur Arnaud Lefebvre
 	private void tirer() {
 
-		ordi.ajouterListesObstacles(listeBalles);
+		ordi3.ajouterListesObstacles(listeBalles);
 		// listeLasers.add(ordi.tirer());
 		// listeLasers.add(ordi2.tirer());
-		listeLasers.add(ordi.tirer());
+		listeLasers.add(ordi3.tirer());
 		// listeLasers.add(new Laser(new
 		// Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()),
 		// angle, new Vecteur(0,0.5)));
 
 	}
 
+	public void activerOrdi1() {
+		activerOrdi1=true;
+		activerOrdi2=false;
+		activerOrdi3=false;
+		
+		
+	}
+	public void activerOrdi2() {
+		activerOrdi1=false;
+		activerOrdi2=true;
+		activerOrdi3=false;
+		
+	}
+	public void activerOrdi3() {
+		activerOrdi1=false;
+		activerOrdi2=false;
+		activerOrdi3=true;
+}
+	
+	
 	/**
 	 * Methode qui active le mode de triche
 	 */

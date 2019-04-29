@@ -27,8 +27,7 @@ public class Ordinateur implements Dessinable {
 	 * Constructeur de l'ordinateur qui prend en parametre la position 
 	 * @param position, la position de l'ordinateur
 	 */
-	public Ordinateur(int talent, Vecteur position) {
-		//talent(talent);
+	public Ordinateur(Vecteur position) {
 		this.position=position;
 	}
 	//if talent==2
