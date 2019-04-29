@@ -499,6 +499,9 @@ public class FenetreJeu extends JFrame {
 		btnDemarrage.setBounds(314, 62, 96, 36);
 		contentPane.add(btnDemarrage);
 
+		
+		FenetreVictoire victoire = new FenetreVictoire();
+		
 		listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -508,6 +511,7 @@ public class FenetreJeu extends JFrame {
 					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
+						
 					} else {
 						son.joueSonLorsqueFini();
 						tempsJeu.stop();
@@ -517,7 +521,19 @@ public class FenetreJeu extends JFrame {
 						setVisible(false);
 						gameOver.setVisible(true);
 					}
+		
+				if(sceneFinale.getListeBalles().size()==0) {
+					son.joueSonLorsqueFini();
+					victoire.setVisible(true);
+					//barreTempsDuJeu.setValue(0);
+					setVisible(false);
+				}
+			
 			}
+		
+		
+		
+		
 		};
 
 		tempsJeu = new Timer(1000, listener);

@@ -174,6 +174,16 @@ public class FenetreTuto extends JFrame {
 		});
 		btnConcept.setBounds(810, 11, 152, 23);
 		contentPane.add(btnConcept);
+		
+		JButton btnPropos = new JButton("\u00C0 propos");
+		btnPropos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FenetreAuteur auteur = new FenetreAuteur();
+				auteur.setVisible(true);
+			}
+		});
+		btnPropos.setBounds(646, 11, 152, 23);
+		contentPane.add(btnPropos);
 		btnDfaut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
