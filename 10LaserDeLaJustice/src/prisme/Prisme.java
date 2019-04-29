@@ -63,7 +63,7 @@ public class Prisme implements Dessinable, Serializable {
 		ligne23 = new Line2D.Double(p2, p3);
 		ligne12 = new Line2D.Double(p1, p2);
 		if (science)
-			g.drawString("n: " + indiceRefraction, (float) (10 * p1.getX()), (float) (10 * p1.getY()));
+			g.drawString("n: " + indiceRefraction, (float) (19 * p1.getX()), (float) (20 * p1.getY()));
 
 		matLocal.rotate(Math.toRadians(0), p1.getX(), p1.getY());
 
