@@ -144,7 +144,7 @@ public class Scene extends JPanel implements Runnable {
 	private boolean enMouvement = false;
 
 	private double tempsEcoule = 0;
-	private double deltaTInit = 0.03;
+	private double deltaTInit = 0.025;
 	private double deltaT = deltaTInit;
 
 	private Vecteur vitesseLaserInit = new Vecteur(0, 0.5);

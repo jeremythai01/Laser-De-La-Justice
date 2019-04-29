@@ -2,10 +2,12 @@ package aaplication;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,6 +29,7 @@ import javax.swing.event.ChangeListener;
 import son.Bruit;
 
 import javax.swing.JSpinner;
+import javax.swing.UIManager;
 
 public class FenetreEditeurNiveau extends JFrame {
 	/**
@@ -64,6 +67,11 @@ public class FenetreEditeurNiveau extends JFrame {
 	 * Lancement de l'application
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -84,11 +92,14 @@ public class FenetreEditeurNiveau extends JFrame {
 	 */
 	// Par Arezki
 	public FenetreEditeurNiveau() {
-		setTitle("Laser de la Justice.exe");
+		setResizable(false);
+		setTitle("Mode \u00E9diteur");
 		setBackground(Color.GRAY);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1413, 854);
+		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setForeground(new Color(255, 175, 175));
