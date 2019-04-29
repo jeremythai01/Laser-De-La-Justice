@@ -48,8 +48,10 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	private URL urlCoeur;
 	
 	
+
 	
 	
+	//Par Arnaud
 	/**
 	 * Constructeur du bloc deau qui prend en parametre la position du bloc et son indice de refraction
 	 * @param position, la position du bloc
@@ -61,6 +63,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		lireImage();
 	}
 	
+	//Par Arnaud
 	/**
 	 * Methode qui permet de lire une image
 	 */
@@ -91,7 +94,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		}
 	}
 	
-	@Override
+	//Par Arnaud
 	/**
 	 * Permet de dessiner le bloc selon le contexte graphique en parametre.
 	 * @param g2d contexte graphique
@@ -144,6 +147,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	        }
 	    }
 	
+	//Par Arnaud
 	/**
 	 * Methode qui permet d'effectuer le calcul de la refraction
 	 * @param v, le vecteur orientation du vecteur incident
@@ -166,7 +170,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	
 	}
 
-
+	//Par Arnaud
 	/**
 	 * Methode qui permet d'effectuer le calcul de la normale
 	 * @param laser, le laser qui entre en contact
@@ -181,6 +185,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		
 	}
 
+	//Par Arnaud
 	/**
 	 * Retourne la normale
 	 * @return, la normale en  vecteur
@@ -192,6 +197,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		return normal;
 	}
 
+	//Par Arnaud
 	/**
 	 * Retourne la position
 	 * @return, la position en vecteur
@@ -201,6 +207,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	}
 
 
+	//Par Arnaud
 	/**
 	 * Modifie la position du bloc
 	 * @param position, la position du bloc qu'on veut modifier
@@ -210,6 +217,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	}
 
 
+	//Par Arnaud
 	/**
 	 * Permet d'obtenir une copie du bloc
 	 * @return, un bloc qui est une copie du bloc
@@ -218,6 +226,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		return bloc;
 	}
 
+	//Par Arnaud
 	/**
 	 * Permet de modifier le bloc
 	 * @param bloc, le nouveau bloc desire
@@ -227,6 +236,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	}
 
 
+	//Par Arnaud
 	/**
 	 * Permet d'obtenir la largeur du bloc 
 	 * @return la largeur du bloc
@@ -235,6 +245,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		return LARGEUR;
 	}
 
+	//Par Arnaud
 	/**
 	 * Permet d'obtenir la hauteur du bloc 
 	 * @return la hauteur du bloc
@@ -243,6 +254,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		return hauteurBloc;
 	}
 
+	//Par Arnaud
 	/**
 	 * Permet d'obtenir l'aire du bloc pour faire les intersections
 	 * @return, l'aire du bloc sous forme d'area
@@ -253,6 +265,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	}
 
 
+	//Par Arnaud
 	/**
 	 * Methode qui permet de savoir si c'est la premiere collision du bloc
 	 * @return premiereCollision, si c'est la premiere
@@ -262,6 +275,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	}
 
 
+	//Par Arnaud
 	/**
 	 * Methode qui indique au bloc si la premiere collision est arrivee
 	 * @param premiereCollision, la valeur de la premiere collision
@@ -271,16 +285,17 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	}
 
 
+	//Par Arnaud
 	/**
 	 * Methode qui modifie l'indice du bloc
 	 * @param value, le nouvel indice
 	 */
 	public void setIndiceRefraction(double value) {
-
 		indiceRefraction = value;
 	}
 
 
+	//Par Arnaud
 	/**
 	 * Methode qui modifie l'angle de dessin du bloc
 	 * @param value,le nouvel angle
