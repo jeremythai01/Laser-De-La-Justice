@@ -58,7 +58,7 @@ public abstract class Pouvoir implements Dessinable {
 	 * @param deltaT intervalle de temps (pas)
 	 */
 	public void unPasVerlet(double deltaT) {
-		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
+		MoteurPhysique.unPasVerlet(deltaT, position, vitesse, accel);
 	}
 	
 	/**

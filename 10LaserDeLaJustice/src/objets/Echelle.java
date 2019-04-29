@@ -53,13 +53,6 @@ public class Echelle extends Obstacles implements Dessinable{
 		trace.lineTo(posX, posY+0.5);
 		trace.moveTo(posX, posY);
 		
-		/*for(int i=1;i<=7;i++) {// pour avoir 7 barres dans l'echelle
-			trace.lineTo(posX+pixelsParMetre*i, posY);
-			trace.lineTo(posX+pixelsParMetre*i, posY-1);
-			trace.lineTo(posX+pixelsParMetre*1, posY+1);
-			trace.moveTo(posX+pixelsParMetre*1, posY);
-		}*/
-		
 		trace.lineTo(posX+pixelsParMetre, posY);
 		trace.lineTo(posX+pixelsParMetre, posY-0.5);
 		trace.lineTo(posX+pixelsParMetre, posY+0.5);
@@ -74,27 +67,6 @@ public class Echelle extends Obstacles implements Dessinable{
 		trace.lineTo(posX+pixelsParMetre*3, posY-0.5);
 		trace.lineTo(posX+pixelsParMetre*3, posY+0.5);
 		trace.moveTo(posX+pixelsParMetre*3, posY);
-		
-		
-		/*trace.lineTo(posX+pixelsParMetre*4, posY);
-		trace.lineTo(posX+pixelsParMetre*4, posY-0.5);
-		trace.lineTo(posX+pixelsParMetre*4, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*4, posY);*/
-		
-		/*trace.lineTo(posX+pixelsParMetre*5, posY);
-		trace.lineTo(posX+pixelsParMetre*5, posY-0.5);
-		trace.lineTo(posX+pixelsParMetre*5, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*5, posY);*/
-		
-		/*trace.lineTo(posX+pixelsParMetre*6, posY);
-		trace.lineTo(posX+pixelsParMetre*6, posY-0.5);
-		trace.lineTo(posX+pixelsParMetre*6, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*6, posY);*/
-		
-		/*trace.lineTo(posX+pixelsParMetre*7, posY);
-		trace.lineTo(posX+pixelsParMetre*7, posY-0.5);
-		trace.lineTo(posX+pixelsParMetre*7, posY+0.5);
-		trace.moveTo(posX+pixelsParMetre*7, posY);*/
 		
 		
 		

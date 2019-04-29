@@ -34,6 +34,10 @@ public class Prisme implements Dessinable, Serializable {
 	Line2D ligne12;
 	Line2D ligne23;
 
+	/**
+	 * Constructeur du prisme qui initialise les 3 positions(sommets) du prisme
+	 * @param position, le sommet principal
+	 */
 	public Prisme(Vecteur position) {
 		p1 = position;
 		p2 = new Vecteur(position.getX() + 6, position.getY());

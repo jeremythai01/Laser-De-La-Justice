@@ -139,7 +139,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		btnJouer.setBounds(277, 173, 86, 85);
 		contentPane.add(btnJouer);
 		associerBoutonAvecImage(btnJouer, "play.png");
-		
+
 		Icon imgIcon = new ImageIcon(this.getClass().getClassLoader().getResource("astronaute.gif"));
 		lblNewLabel = new JLabel(imgIcon);
 		lblNewLabel.setBounds(0, 0, 646, 462);
@@ -153,7 +153,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		panel.setBounds(0, 0, 645, 470);
 		contentPane.add(panel);*/
 
-/*
+		/*
 		 JPanel panelAvecImage = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -164,73 +164,73 @@ public class App10LaserDeLaJustice extends JFrame {
 			}
 		};
 		setContentPane(panelAvecImage);
-	*/	
-	
+		 */	
+
 		/*
 	Icon imgIcon = new ImageIcon(this.getClass().getClassLoader().getResource("astronaute.gif"));
 	JLabel label = new JLabel(imgIcon);
 	label.setBounds(112, 46, 635, 459);
 	label.setBounds(getBounds());
 	contentPane.add(label);
-	*/
+		 */
 
 	}
 
-/**Cette methode permet d'associer un bouton a une image
- * @param leBouton
- * @param fichierImage
- */
-//par Caroline Houle
+	/**Cette methode permet d'associer un bouton a une image
+	 * @param leBouton
+	 * @param fichierImage
+	 */
+	//par Caroline Houle
 
-private void associerBoutonAvecImage(JButton leBouton, String fichierImage) {
-	Image imgLue = null;
-	java.net.URL urlImage = getClass().getClassLoader().getResource(fichierImage);
-	if (urlImage == null) {
-		JOptionPane.showMessageDialog(null, "Fichier " + fichierImage + " introuvable");
+	private void associerBoutonAvecImage(JButton leBouton, String fichierImage) {
+		Image imgLue = null;
+		java.net.URL urlImage = getClass().getClassLoader().getResource(fichierImage);
+		if (urlImage == null) {
+			JOptionPane.showMessageDialog(null, "Fichier " + fichierImage + " introuvable");
+		}
+		try {
+			imgLue = ImageIO.read(urlImage);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Erreur pendant la lecture du fichier d'image");
+		}
+
+		// redimensionner l'image de la meme grandeur que le bouton
+		Image imgRedim = imgLue.getScaledInstance(leBouton.getWidth(), leBouton.getHeight(), Image.SCALE_SMOOTH);
+
+		// au cas ou le fond de limage serait transparent
+		leBouton.setOpaque(false);
+		leBouton.setContentAreaFilled(false);
+		leBouton.setBorderPainted(false);
+
+		// associer l'image au bouton
+		leBouton.setText("");
+		leBouton.setIcon(new ImageIcon(imgRedim));
+
+		// on se debarrasse des images intermediaires
+		imgLue.flush();
+		imgRedim.flush();
 	}
-	try {
-		imgLue = ImageIO.read(urlImage);
-	} catch (IOException e) {
-		JOptionPane.showMessageDialog(null, "Erreur pendant la lecture du fichier d'image");
+
+	//Par Miora
+	/**
+	 * Cette methode permet de savoir si il s'agit d'une nouvelle partie ou d'une partie charge
+	 */
+	private void nouvellePartie() {
+		jouerPartie = new FenetrePartie();
+		jouerPartie.setVisible(true);
+		setVisible(false);
 	}
 
-	// redimensionner l'image de la meme grandeur que le bouton
-	Image imgRedim = imgLue.getScaledInstance(leBouton.getWidth(), leBouton.getHeight(), Image.SCALE_SMOOTH);
 
-	// au cas ou le fond de limage serait transparent
-	leBouton.setOpaque(false);
-	leBouton.setContentAreaFilled(false);
-	leBouton.setBorderPainted(false);
-
-	// associer l'image au bouton
-	leBouton.setText("");
-	leBouton.setIcon(new ImageIcon(imgRedim));
-
-	// on se debarrasse des images intermediaires
-	imgLue.flush();
-	imgRedim.flush();
-}
-
-//Par Miora
-/**
- * Cette methode permet de savoir si il s'agit d'une nouvelle partie ou d'une partie charge
- */
-private void nouvellePartie() {
-	jouerPartie = new FenetrePartie();
-	jouerPartie.setVisible(true);
-	setVisible(false);
-}
-
-
-//Par Miora
-/**
- * Cette methode permet d'ouvir la fenetre des options
- * @throws IOException lecture possible du fichier
- * @throws FileNotFoundException fichier non trouve
- */
-private void ouvrirOptions() throws FileNotFoundException, IOException {
-	fenetreOption = new Options(true, false);
-	fenetreOption.setVisible(true);
-}
+	//Par Miora
+	/**
+	 * Cette methode permet d'ouvir la fenetre des options
+	 * @throws IOException lecture possible du fichier
+	 * @throws FileNotFoundException fichier non trouve
+	 */
+	private void ouvrirOptions() throws FileNotFoundException, IOException {
+		fenetreOption = new Options(true, false);
+		fenetreOption.setVisible(true);
+	}
 
 }

@@ -32,7 +32,6 @@ import utilite.ModeleAffichage;
  * @author Arnaud, Arezki, Jeremy
  *
  */
-//Cette classe est plus avancee, mais jai completement oublie de push avant de venir au cours du mercredi 24 avril, cette classe parait donc comme la scenePrincipale en terme de javadoc
 public class SceneTutoriel extends JPanel implements Runnable {
 
 	private Image fond = null;
@@ -299,8 +298,8 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	/**
 	 * Animation de la scene
 	 * 
-	 * @author Arnaud
 	 */
+	//Arnaud
 	public void run() {
 		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
@@ -482,8 +481,8 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	 * permet de calculer les collision la vitessse des balles et tout autres
 	 * animation ayant de la physiques
 	 * 
-	 * @author Jeremy
 	 */
+	//Jeremy
 	public void calculerUneIterationPhysique() {
 
 

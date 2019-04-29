@@ -27,8 +27,6 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	private boolean premiereCollision=true;
 	private double indiceRefraction;
 	private final double indiceAir=1.0;
-	private Rectangle2D.Double hitbox;
-	private final double largeurHitbox=0.0000001;
 	private double hauteur=0.5;
 	private double angle;
 	
@@ -54,7 +52,6 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteur);
-		//hitbox= new Rectangle2D.Double(position.getX(), position.getY()+LARGEUR, LARGEUR, largeurHitbox);
 		g.setColor(Color.blue);
 		g.fill(matLocal.createTransformedShape(bloc));
 		
@@ -75,14 +72,11 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 		E=v.multiplie(-1);
 		System.out.println("la normale est"+ N);
 		
-		// QUE FAIRE ICI !!!!! %???? /"%?"%?/"%?$ %
 		if(((1-((n*n)*(1-(E.prodScalaire(N)*(E.prodScalaire(N))))))) < 0)
 		throw new RuntimeException("OUPS !!!");
-		double resultat=1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)));
-		//System.out.println("dsfsa"+resultat);
 		vecteur = v.multiplie(n).additionne(N.multiplie(((E.prodScalaire(N)*n)-Math.sqrt(1-((n*n)*1-E.prodScalaire(N)*(E.prodScalaire(N)))))));
 		return new Vecteur(-vecteur.getX(),-vecteur.getY());
-		//return vecteur.multiplie(-1);
+	
 	}
 
 
@@ -190,12 +184,20 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	}
 
 
+	/**
+	 * Methode qui modifie l'indice du bloc
+	 * @param value, le nouvel indice
+	 */
 	public void setIndiceRefraction(double value) {
 
 		indiceRefraction = value;
 	}
 
 
+	/**
+	 * Methode qui modifie l'angle de dessin du bloc
+	 * @param value,le nouvel angle
+	 */
 	public void setAngle(double value) {
 
 		angle = value;

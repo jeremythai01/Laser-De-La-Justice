@@ -6,7 +6,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -26,7 +25,6 @@ public class Ordinateur implements Dessinable {
 	private double vitesse=0.2;
 	private Rectangle2D.Double forme;
 	private Vecteur position;
-	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
 	private double hauteurDuMonde;
 	private Image img=null;
 	private double largeurMonde=0;
@@ -40,6 +38,9 @@ public class Ordinateur implements Dessinable {
 		lireImage();
 	}
 
+	/**
+	 * Methode qui permet de lire une image
+	 */
 	public void lireImage() {
 		URL urlCoeur = getClass().getClassLoader().getResource("niveau1.jpg");
 		if (urlCoeur == null) {

@@ -153,4 +153,3 @@ public class Personnage implements Dessinable {
 	
 	
 }	
-

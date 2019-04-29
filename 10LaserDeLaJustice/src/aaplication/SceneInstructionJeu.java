@@ -13,25 +13,25 @@ import javax.swing.JPanel;
 import utilite.ModeleAffichage;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
-
+/**
+ * Cette classe gère les instructions du jeu
+ * 
+ * @author Arezki
+ */
 public class SceneInstructionJeu extends JPanel {
 
-	/**
-	 * Cette classe gère les instructions du jeu
-	 * 
-	 * @author Arezki
-	 */
+
 	private int page = 1;
 
 	private Image fond = null;
-	
+
 	private double LARGEUR_DU_MONDE = 100;
-	
+
 	private double scale = 1.00;
-	
+
 	private double x = 1;
 	private double y = 1;
-	
+
 	ModeleAffichage modele;
 
 	private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class SceneInstructionJeu extends JPanel {
 					scale +=0.01;
 					repaint();
 				}
-					
+
 			}
 		});
 		setLayout(null);
@@ -57,13 +57,13 @@ public class SceneInstructionJeu extends JPanel {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
-	
+
 		modele = new ModeleAffichage(getWidth(), getHeight(), LARGEUR_DU_MONDE);
 		lireFond();
 		g2d.scale(scale, scale);
 		g2d.translate(x, y);
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
-	
+
 	}
 
 	public void lireFond() {
@@ -139,34 +139,34 @@ public class SceneInstructionJeu extends JPanel {
 
 
 
-public void augmenterPage() {
-	page++;
-	repaint();
-}
+	public void augmenterPage() {
+		page++;
+		repaint();
+	}
 
-public void baisserPage() {
-	page--;
+	public void baisserPage() {
+		page--;
 
-	repaint();
-}
+		repaint();
+	}
 
-public void setX(double valeur) {
-	x = valeur;
-	repaint();
-}
+	public void setX(double valeur) {
+		x = valeur;
+		repaint();
+	}
 
-public void setY(double valeur) {
-	y = valeur;
-	repaint();
-}
+	public void setY(double valeur) {
+		y = valeur;
+		repaint();
+	}
 
-public void defaut() {
+	public void defaut() {
 
-	x = 1;
-	y = 1;
-	scale = 1;
-	
-	repaint();
-}
+		x = 1;
+		y = 1;
+		scale = 1;
+
+		repaint();
+	}
 
 }

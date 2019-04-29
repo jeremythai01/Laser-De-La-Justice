@@ -42,17 +42,6 @@ public class ApplicationObjetsTest extends JFrame {
 		});
 		
 		
-		/*
-		BlocDEau b = new BlocDEau(new Vecteur(0.0, 0.0));
-		Vecteur v = b.refraction(new Vecteur(-1.0, -1.0), new Vecteur(0.0, 1.0), 1.0, 1.33);
-		
-		
-		
-		BlocDEau b = new BlocDEau(new Vecteur(0.0, 0.0));
-		Vecteur v = b.refraction(new Vecteur(1.0, -1.0), new Vecteur(0.0, 1.0), 1.0, 1.33);
-		
-		
-		System.out.println(v);*/
 	}
 
 	/**

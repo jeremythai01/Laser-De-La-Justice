@@ -125,14 +125,7 @@ public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 		AffineTransform matLocal = new AffineTransform(mat);
 		AffineTransform matLocale = new AffineTransform(mat);
 		
-		//double factPersoY = 0.5 / img.getHeight(null);
-	//	double factPersoX = 0.5 / img.getWidth(null);
-
-		// redimenssionne le personnage
-		//matLocale.scale(factPersoX, factPersoY);
-
-		//Deplacement du personnage a sa position initiale
-		//matLocale.translate( (0.5) / factPersoX , (2-0.5) / factPersoY);
+	
 		
 		double factX = (LARGEUR+distance*2)/ img.getWidth(null) ;
 		double factY = (LARGEUR+distance*2)/ img.getHeight(null) ;
@@ -148,13 +141,10 @@ public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 		trou= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g.setColor(Color.black);
 		
-		//g.drawImage(img, (int)position.getX(),(int) position.getY(), 60, 60, null, null);
-		//System.out.println("chris"+ (int)position.getX());
+		
 		
 		g.drawImage(img, matLocale, null);
-		//g.draw(matLocale.createTransformedShape(trou));
-		System.out.println("draw");	
-		//g.fill(matLocal.createTransformedShape(trou));
+		
 		
 		
 	}
@@ -189,9 +179,6 @@ public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 	}
 
 
-	//public Vecteur attirerLaser() {
-		
-	//}
 
 	//Par Arnaud Lefebvre
 	/**

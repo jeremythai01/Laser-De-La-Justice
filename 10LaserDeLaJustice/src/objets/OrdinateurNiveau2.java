@@ -23,7 +23,6 @@ public class OrdinateurNiveau2 implements Dessinable {
 	private double largeurOrdi=2;
 	private double longueurOrdi=2;
 	private double vitesse=0.6;
-	//private int talent;
 	private Rectangle2D.Double forme;
 	private Vecteur position;
 	private double hauteurDuMonde;
@@ -39,6 +38,9 @@ public class OrdinateurNiveau2 implements Dessinable {
 		this.position=position;
 	}
 	
+	/**
+	 * Methode qui permet de lire une image
+	 */
 	public void lireImage() {
 		URL urlCoeur = getClass().getClassLoader().getResource("niveau2.png");
 		if (urlCoeur == null) {
@@ -80,7 +82,7 @@ public class OrdinateurNiveau2 implements Dessinable {
 	 */
 	public void bouge() {
 		
-		if(position.getX()+vitesse>45) {
+		if(position.getX()+vitesse>largeurMonde-largeurOrdi) {
 			vitesse=-vitesse;
 		}
 		if(position.getX()+vitesse<5) {
@@ -90,15 +92,10 @@ public class OrdinateurNiveau2 implements Dessinable {
 		
 		
 		position.setX(position.getX()+vitesse);
-		changerVitesse();
 		
 	}
 	
-	public void changerVitesse() { 
-		if((Math.floor(Math.random() * (2)) + 1)%2==0) {
-			//vitesseNiveau2=-vitesseNiveau2;
-		}
-	}
+	
 	
 	/**
 	 * Methode qui tire un laser selon la position et l'angle de l'ordiNiveau2

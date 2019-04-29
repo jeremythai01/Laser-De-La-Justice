@@ -274,7 +274,7 @@ public class SceneTestPrisme extends JPanel implements Runnable {
 	private void calculerUneIterationPhysique() {
 
 		for (Balle balle : listeBalles) {
-			balle.unPasEuler(deltaT);
+			balle.unPasVerlet(deltaT);
 		}
 
 		for (Laser laser : listeLasers) {

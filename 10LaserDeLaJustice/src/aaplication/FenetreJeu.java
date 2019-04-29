@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -20,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
-import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -36,20 +38,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import documentation.FenetreConcept;
-import geometrie.Vecteur;
 import interfaces.SceneListener;
 import options.Options;
 import personnage.Personnage;
 import physique.Balle;
-import son.Bruit;
-
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import javax.swing.JCheckBox;
 import physique.BarreEnergie;
 import physique.Laser;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import son.Bruit;
 
 /**
  * 
@@ -420,7 +415,6 @@ public class FenetreJeu extends JFrame {
 					vitesseMoyX += listeBalles.get(i).getVitesse().getX();
 					
 					vitesseMoyY += listeBalles.get(i).getVitesse().getY();
-					System.out.println();
 					lblVitesse.setText("[x: "+df.format(vitesseMoyX)+" ,y : "+df.format(vitesseMoyY)+" ] m/s");
 					lblGravit.setText("[x: "+listeBalles.get(i).getForceGravi().getX()+ " , y: "+ listeBalles.get(i).getForceGravi().getY()+" ] N");
 					
@@ -494,7 +488,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnDemarrage = new JButton("demarrage\r\n");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				son.arreter();
+				//son.arreter();
 				son.joue("beep");
 				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 				demarrage.setVisible(true);
@@ -800,7 +794,6 @@ public class FenetreJeu extends JFrame {
 		 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons
 		 * de l'éditeur, mais les dessins restent
 		 * 
-		 * @author Arezki
 		 */
 		public void desactiverEditeur() {
 			btnBlocDeau.setEnabled(false);

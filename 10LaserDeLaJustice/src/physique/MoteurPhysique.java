@@ -8,36 +8,13 @@ import geometrie.Vecteur;
  * Cette classe regroupera les calculs physiques nécessaires au mouvement des objets des divers objets dans la scène. 
  *  
  * @author Jeremy Thai
- *  @author Caroline Houle
+ * 
  *
  */
 
 public class MoteurPhysique implements Serializable {
-	
-	  private static final long serialVersionUID = 2057630780843954427L;
-	  
-	// Caroline Houle 
-	/**
-	 * Calcule une itération de l'algorithem d'intégration numérique d'Euler semi-implicite. 
-	 * Les vecteurs position et vitesse seront modifiés à la sortie!
-	 * 
-	 * @param deltaT Incrément de temps
-	 * @param position Vecteur de position (sera modifié)
-	 * @param vitesse Vecteur de vitesse (sera modifié)
-	 * @param accel Vecteur d'accélération
-	 */
-	public static void unPasEuler(double deltaT, Vecteur position, Vecteur vitesse, Vecteur accel) {
 
-		Vecteur deltaVitesse = Vecteur.multiplie(accel, deltaT);
-		Vecteur resultV = vitesse.additionne( deltaVitesse ); 
-		vitesse.setX(resultV.getX());	//on change le vecteur vitesse
-		vitesse.setY(resultV.getY());
-
-		Vecteur deltaPosition = Vecteur.multiplie(vitesse, deltaT);
-		Vecteur resultP = position.additionne(deltaPosition); //on calcule la position en considerant la nouvelle vitesse
-		position.setX(resultP.getX());  //on change le vecteur position
-		position.setY(resultP.getY());
-	}
+	private static final long serialVersionUID = 2057630780843954427L;
 
 	// Jeremy Thai 
 	/**
@@ -129,10 +106,10 @@ public class MoteurPhysique implements Serializable {
 	 * @return energie cinetique en Joules 
 	 */
 	protected static double energieCinetique(double masse, Vecteur v) {
-		
+
 		double vF = Math.sqrt(v.getX()*v.getX() + v.getY()*v.getY());
 		return (0.5 * masse* vF*vF); 
-	
+
 	}
 
 	//Jeremy Thai
@@ -156,7 +133,7 @@ public class MoteurPhysique implements Serializable {
 	protected static double energieMecanique(double eC, double eP) {
 		return eC+eP;
 	}
-	
+
 	//Jeremy Thai
 	/** 
 	 * retourne un vecteur du calcul de la force gravitationnelle
@@ -166,7 +143,7 @@ public class MoteurPhysique implements Serializable {
 	protected static Vecteur forceGravi(double masse, Vecteur accel) {
 		return new Vecteur(0, masse*accel.getY());
 	}
-	
+
 	/**
 	 *  Methode qui calcule le temps ou les temps  exactes lors  dune collision a l'aide de la formule quadratique
 	 * @param A 1er element   de l'equation
@@ -199,16 +176,16 @@ public class MoteurPhysique implements Serializable {
 	public static void detectionCollisionBalles(Balle balle1, Balle balle2) {
 
 		double rayonA = balle1.getDiametre()/2 ;
-		
+
 		Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
-	
+
 		double rayonB = balle2.getDiametre()/2; 
-		
+
 		Vecteur rB0 =  new Vecteur(balle2.getPosition().getX()+ rayonB ,balle2.getPosition().getY() +  rayonB );
 		Vecteur r0 = rB0.soustrait(rA0);
 
 		double D = rayonA + rayonB;
-		
+
 
 		if(D >= r0.module()) 
 			collisionBalles(balle1, balle2);
@@ -222,7 +199,7 @@ public class MoteurPhysique implements Serializable {
 	//Jeremy Thai
 
 	private static void collisionBalles(Balle balle1, Balle balle2) {
-		
+
 		double rayonA = balle1.getDiametre()/2 ;
 		Vecteur rA0 = new Vecteur(balle1.getPosition().getX()+ rayonA ,balle1.getPosition().getY() +  rayonA );
 		Vecteur vA =  balle1.getVitesse();

@@ -247,15 +247,6 @@ public class Balle implements Dessinable, Serializable {
 	}
 
 
-	//Jeremy Thai
-	/**
-	 * Effectue une iteration de l'algorithme d'Euler implicite. Calcule la nouvelle vitesse et la nouvelle
-	 * position de la balle.
-	 * @param deltaT intervalle de temps (pas)
-	 */
-	public void unPasEuler(double deltaT) {
-		MoteurPhysique.unPasEuler(deltaT, position, vitesse, accel);
-	}
 	
 	//Jeremy Thai
 	/**

@@ -70,8 +70,6 @@ public class SceneTestPls extends JPanel implements Runnable {
 	private ArrayList<BlocDEau> listeBloc = new ArrayList<BlocDEau>();
 	private TrouNoir trou;
 	private ArrayList<TrouNoir> listeTrou = new ArrayList<TrouNoir>();
-	private Champ champ;
-	private ArrayList<Champ> listeChamps = new ArrayList<Champ>();
 	private Coeurs coeur;
 	private int nombreVies=3;
 
@@ -209,10 +207,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 		for(TrouNoir trou: listeTrou) {
 			trou.dessiner(g2d,mat,HAUTEUR_DU_MONDE,LARGEUR_DU_MONDE);
 		}
-		for(Champ champ: listeChamps) {
-			champ.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
-		}
-
+		
 		try {
 
 
@@ -226,12 +221,10 @@ public class SceneTestPls extends JPanel implements Runnable {
 			}
 
 		}catch(ConcurrentModificationException e) {
-			System.out.println("le laser nexiste pas");
 		}
 		checkCollisionBalleLaserPersonnage( listeBalles,  listeLasers,character);
 		checkCollisionTrouLaserPersonnage( listeLasers );
 		checkCollisionBlocLaserPersonnage( listeLasers );
-		checkCollisionChampBalle();
 		detectionCollisionMurBalle();
 		for(BlocDEau bloc:listeBloc) {
 			g2d.setColor(Color.blue);
@@ -450,29 +443,7 @@ public class SceneTestPls extends JPanel implements Runnable {
 
 	}
 	
-	private void checkCollisionChampBalle() {
-		
-		for(Balle balle : listeBalles) {
-			for(Champ champ: listeChamps ) {
-				
-
-				if(intersection(champ.getAireChamp(), balle.getAire())) {
-		 			//balle.setForcesElectrique(MoteurPhysique.forceElectrique(new Vecteur(balle.getPosition().getX()+balle.getDiametre()/2, balle.getPosition().getY()+balle.getDiametre()/2), champ.getPosition(), chargeBalle, champ.getK(), chargeChamp));
-					//System.out.println("accel "+(champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle).multiplie(1.0/15.0)));
-					//	System.out.println("la vitess de la balle "+balle.getVitesse());
-					//	System.out.println("force "+ champ.forceElectrique(balle.getPosition(), champ.getPosition(),chargeBalle));
-					//	System.out.println("champ pos"+champ.getPosition());
-					System.out.println(balle.getAccel());
-
-				}	else {
-					//balle.setForcesElectrique(new Vecteur(0,0));
-				}
-				
-			}
-		}
-		
-		
-	}
+	
 	
 	
 	private void checkCollisionBlocLaserPersonnage(ArrayList<Laser> listeLasers) {

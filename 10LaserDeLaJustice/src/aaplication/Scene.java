@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -23,13 +22,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.SocketOptions;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+
 import javax.imageio.ImageIO;
-import javax.swing.BoundedRangeModel;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -39,7 +36,6 @@ import effets.Bouclier;
 import effets.Pouvoir;
 import effets.Ralenti;
 import geometrie.Vecteur;
-import interfaces.MiroirListener;
 import interfaces.SceneListener;
 import miroir.Ligne;
 import miroir.MiroirCourbe;
@@ -95,9 +91,7 @@ public class Scene extends JPanel implements Runnable{
 	private boolean dragBon = false;
 	private boolean enCoursAnimation = false;
 	private boolean premiereFois = true;
-	private boolean isGrCercleCliquer = false;
-	private boolean isMedCercleCliquer = false;
-	private boolean isPetCercleCliquer = false;
+
 	private boolean bonneBalle = false;
 	private boolean bonMiroirCourbe = false;
 	private boolean bonMiroirPlan = false;
@@ -430,7 +424,7 @@ public class Scene extends JPanel implements Runnable{
 		} else {
 			personnage.bouge();
 		}
-		ordi3.bouge();
+		//ordi3.bouge();
 		ordi1.bouge();
 		ordi2.bouge();
 
@@ -577,9 +571,9 @@ public class Scene extends JPanel implements Runnable{
 	 */
 	// auteur Arnaud Lefebvre
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
+		try {
 		for (Laser laser : listeLasers) {
 			for (TrouNoir trou : listeTrou) {
-				// if(trou.getAireTrou().intersects(laser.getLine())) {
 
 				if (enIntersection(trou.getAireTrou(), laser.getAire())) {
 
@@ -591,6 +585,7 @@ public class Scene extends JPanel implements Runnable{
 					laser.setAngleTir(laser.getAngleTir() + distance.getX());
 				}
 			}
+		} }catch(ConcurrentModificationException e) {
 		}
 	}
 
@@ -604,7 +599,7 @@ public class Scene extends JPanel implements Runnable{
 			for (int j = 0; j < listeBlocEau.size(); j++) {
 				if(listeLasers.get(i).getPositionHaut().getX()>=listeBlocEau.get(j).getPosition().getX()&&
 						listeLasers.get(i).getPositionHaut().getX()<=listeBlocEau.get(j).getPosition().getX()+listeBlocEau.get(j).getLARGEUR()
-						&&listeLasers.get(i).getPositionHaut().getY()<=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()+0.2&&
+						&&listeLasers.get(i).getPositionHaut().getY()<=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()+0.2&&//0.2 pour permettre une approximation, car deux x ne seront jamais egaux
 						listeLasers.get(i).getPositionHaut().getY()>=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()-0.2) {
 					BlocDEau bloc = listeBlocEau.get(j);
 					Laser laser = listeLasers.get(i);
@@ -1042,15 +1037,22 @@ public class Scene extends JPanel implements Runnable{
 	private void tirer() {
 
 		ordi3.ajouterListesObstacles(listeBalles);
-		// listeLasers.add(ordi.tirer());
-		// listeLasers.add(ordi2.tirer());
+		if(activerOrdi1) {
+		 listeLasers.add(ordi1.tirer());
+		}
+		if(activerOrdi2) {
+		listeLasers.add(ordi2.tirer());
+		}
+		if(activerOrdi3) {
 		listeLasers.add(ordi3.tirer());
-		// listeLasers.add(new Laser(new
-		// Vecteur(ordi.getPositionX()+ordi.getLargeurOrdi()/2,HAUTEUR_DU_MONDE-ordi.getLongueurOrdi()),
-		// angle, new Vecteur(0,0.5)));
+		}
 
 	}
 
+	/**
+	 * Methode qui active l'ordinateur 1
+	 */
+	//Arnaud Lefebvre
 	public void activerOrdi1() {
 		activerOrdi1=true;
 		activerOrdi2=false;
@@ -1058,12 +1060,20 @@ public class Scene extends JPanel implements Runnable{
 		
 		
 	}
+	/**
+	 * Methode qui active l'ordinateur 2
+	 */
+	//Arnaud Lefebvre
 	public void activerOrdi2() {
 		activerOrdi1=false;
 		activerOrdi2=true;
 		activerOrdi3=false;
 		
 	}
+	/**
+	 * Methode qui active l'ordinateur 3
+	 */
+	//Arnaud Lefebvre
 	public void activerOrdi3() {
 		activerOrdi1=false;
 		activerOrdi2=false;
@@ -1080,6 +1090,11 @@ public class Scene extends JPanel implements Runnable{
 		dragBon = valeur;
 	}
 
+	/**
+	 * Methode qui permet d'activer le drag
+	 * @param valeur, savoir quand le faire
+	 */
+	//Arezki
 	public void activerDrag(boolean valeur) {
 		dragBon = valeur;
 	}
@@ -1403,7 +1418,7 @@ public class Scene extends JPanel implements Runnable{
 		} // fin finally
 	}
 
-	// --------------------------------------------------------------------------------------------------------------------------------------
+
 
 	//Miora
 	/**
@@ -1445,6 +1460,11 @@ public class Scene extends JPanel implements Runnable{
 		}
 	}
 
+	/**
+	 * Methode qui permet de gerer les evenements relies au personnage
+	 * @param personnage, le personnage principal
+	 */
+	//Arezki
 	public void leverEventPersonnage(Personnage personnage) {
 		for(SceneListener ecout : listeEcouteur) {
 			ecout.evenementPersonnage(personnage);
@@ -1864,6 +1884,11 @@ try {
 	public void setDeltaT(double deltaT) { this.deltaT = deltaT; }
 
 
+	/**
+	 * Methode qui modifie la touche pour bouger a droite
+	 * @param toucheDroite, la nouvelle touche
+	 */
+	//Arezki
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
@@ -2011,6 +2036,7 @@ try {
 	 * Cette methode permet de modifier le temps de jeu
 	 * @param tempsDuJeu : le temps du jeu
 	 */
+	//Miora
 	public void setTempsDuJeu(int tempsDuJeu) {
 		this.tempsDuJeu = tempsDuJeu;
 	}

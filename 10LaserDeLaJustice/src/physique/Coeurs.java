@@ -82,22 +82,22 @@ public class Coeurs implements Dessinable,  Serializable {
 
 		//Deplacement du personnage a sa position initiale
 		matLocale.translate( (0.5) / factPersoX , (2-0.5) / factPersoY);
-		
-		
+
+
 		for(int i=0; i<combienGris; i++) {
 			g.drawImage(imgGris, 0+20*i, 0, 20, 20, null, null);
-			
+
 		}
-		
+
 		for(int i=0; i<combien; i++) {
 			g.drawImage(img, 0+20*i, 0, 20, 20, null, null);
 		}
 
 	}
-/**
- * Methode qui permet d'indiquer le nouveau nombre de coeurs voulus
- * @param combien, le nouveau nombre de coeurs
- */
+	/**
+	 * Methode qui permet d'indiquer le nouveau nombre de coeurs voulus
+	 * @param combien, le nouveau nombre de coeurs
+	 */
 	public void setCombien(int combien) {
 		this.combien=combien;
 	}

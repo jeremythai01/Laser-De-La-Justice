@@ -52,6 +52,11 @@ public class BarreEnergie extends JPanel  {
 		g2d.setTransform(mat);
 	}
 	
+	/**
+	 * Modifie les valeurs de l'énergie et de l'énergie mécanique par celles passées en parametre 
+	 * @param energie nouvelle energie
+	 * @param energieMecanique nouvelle energie mécanique 
+	 */
 	public void setEnergies(double energie, double energieMecanique) {
 		this.energie = energie;
 		this.energieMecanique = energieMecanique;

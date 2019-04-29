@@ -18,14 +18,18 @@ import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.UIManager;
-
+/**
+ * Classe qui cree la fenetre de fin de partie
+ * @author Arezki
+ *
+ */
 public class FenetreGameOver extends JFrame {
 
 	private JPanel contentPane;
 	private Bruit son = new Bruit() ;
 
 	/**
-	 * Launch the application.
+	 * Demarrer l'application.
 	 */
 	public static void main(String[] args) {
 		try {
@@ -46,7 +50,7 @@ public class FenetreGameOver extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Creer la fenetre.
 	 */
 	public FenetreGameOver() {
 		setTitle("GAME OVER");

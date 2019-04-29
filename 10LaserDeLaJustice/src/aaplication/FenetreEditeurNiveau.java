@@ -534,7 +534,6 @@ public class FenetreEditeurNiveau extends JFrame {
 	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
 	 * les objets dans la sceneFinale
 	 * 
-	 * @author Arezki
 	 */
 	public void activerEditeur() {
 		btnBlocDeau.setEnabled(true);
@@ -553,7 +552,6 @@ public class FenetreEditeurNiveau extends JFrame {
 	 * permet de réduire la fenêtre à sa forme initiale et de désactiver les boutons
 	 * de l'éditeur, mais les dessins restent
 	 * 
-	 * @author Arezki
 	 */
 	public void desactiverEditeur() {
 		btnBlocDeau.setEnabled(false);
