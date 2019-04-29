@@ -147,7 +147,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.setLayout(null);
 
 
-		JButton btnPlay = new JButton("play");
+		JButton btnPlay = new JButton("Jouer");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				son.joue("beep");
@@ -160,7 +160,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnPlay);
 		//associerBoutonAvecImage(btnPlay, "play.png");
 
-		JButton btnPause = new JButton("pause");
+		JButton btnPause = new JButton("Pause");
 		btnPause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
@@ -173,7 +173,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnPause);
 		//associerBoutonAvecImage(btnPause, "pause.jpg");
 
-		btnImage = new JButton("image");
+		btnImage = new JButton("Image");
 		btnImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sceneFinale.calculerUneIterationPhysique();
@@ -218,7 +218,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnEnregistrer);
 		//associerBoutonAvecImage(btnEnregistrer, "enregistrer.png");
 
-		btnMiroirPlan = new JButton("miroir Plan");
+		btnMiroirPlan = new JButton("Miroir plan");
 		btnMiroirPlan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
@@ -232,7 +232,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(btnMiroirPlan);
 
 
-		btnTrouNoir = new JButton("Trou Noir");
+		btnTrouNoir = new JButton("Trou noir");
 		btnTrouNoir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
@@ -244,7 +244,7 @@ public class FenetreJeu extends JFrame {
 		btnTrouNoir.setBounds(835, 834, 89, 23);
 		contentPane.add(btnTrouNoir);
 
-		btnBlocDeau = new JButton("bloc D'eau ");
+		btnBlocDeau = new JButton("Bloc");
 		btnBlocDeau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
@@ -268,7 +268,7 @@ public class FenetreJeu extends JFrame {
 		btnGrosseBalle.setBounds(729, 800, 96, 23);
 		contentPane.add(btnGrosseBalle);
 
-		btnMediumBalle = new JButton("Medium Balle");
+		btnMediumBalle = new JButton("Balle moyenne");
 		btnMediumBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
@@ -280,7 +280,7 @@ public class FenetreJeu extends JFrame {
 		btnMediumBalle.setBounds(729, 834, 96, 23);
 		contentPane.add(btnMediumBalle);
 
-		btnPetiteBalle = new JButton("petite balle ");
+		btnPetiteBalle = new JButton("Petite balle");
 		btnPetiteBalle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				son.joue("beep");
