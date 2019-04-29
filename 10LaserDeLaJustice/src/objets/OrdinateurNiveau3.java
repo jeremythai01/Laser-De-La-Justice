@@ -1,10 +1,16 @@
 package objets;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -28,12 +34,14 @@ public class OrdinateurNiveau3 implements Dessinable {
 	private ArrayList<Balle> listeBalle = new ArrayList<Balle>();
 	private ArrayList<Vecteur> listeDistance = new ArrayList<Vecteur>();
 	private ArrayList<Vecteur> listePosition = new ArrayList<Vecteur>();
-	double angle;
-	Laser test;
-	Balle balleSimuler/*= new Balle()*/;
+	private double angle;
+	private Laser test;
+	private Balle balleSimuler/*= new Balle()*/;
 	private double vitesseLaser=1;
 	private boolean enCollision=false;
 	private double temps;
+	private Image img=null;
+	private double largeurMonde=0;
 	
 	/**
 	 * Constructeur de l'ordinateurNiveau3 qui prend en parametre la position 
@@ -41,6 +49,20 @@ public class OrdinateurNiveau3 implements Dessinable {
 	 */
 	public OrdinateurNiveau3(Vecteur position) {
 		this.position=position;
+		lireImage();
+	}
+	
+	public void lireImage() {
+		URL urlCoeur = getClass().getClassLoader().getResource("ordi.jpg");
+		if (urlCoeur == null) {
+			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
+			System.exit(0);}
+		try {
+			img = ImageIO.read(urlCoeur);
+		}
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
 	}
 
 	@Override
@@ -56,6 +78,17 @@ public class OrdinateurNiveau3 implements Dessinable {
 		forme = new Rectangle2D.Double(position.getX(), position.getY(), largeurOrdi, longueurOrdi);
 		g.fill(matLocal.createTransformedShape(forme));
 		hauteurDuMonde=hauteur;
+		
+		double factX = largeurOrdi/ img.getWidth(null) ;
+		double factY = largeurOrdi/ img.getHeight(null) ;
+		matLocal.scale( factX, factY);
+		matLocal.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
+		g.drawImage(img, matLocal, null);
+			
+		largeurMonde=largeur;
+		
+		
+		
 	}
 
 
@@ -64,10 +97,10 @@ public class OrdinateurNiveau3 implements Dessinable {
 	 */
 	public void bouge() {
 
-		if(position.getX()+vitesse>45) {
+		if(position.getX()+vitesse>largeurMonde-1) {
 			vitesse=-vitesse;
 		}
-		if(position.getX()+vitesse<5) {
+		if(position.getX()+vitesse<1) {
 			vitesse=-vitesse;
 		}
 

@@ -180,7 +180,7 @@ public class Scene extends JPanel implements Runnable{
 		});
 
 		lireFond();
-
+		
 		angle = valeurAngleRoulette;
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
@@ -269,6 +269,7 @@ public class Scene extends JPanel implements Runnable{
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles();
 			premiereFois = false;
 			Balle.setModele(getWidth(),getHeight(),LARGEUR_DU_MONDE);
+			ordi = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE-1));
 		}
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
@@ -333,7 +334,6 @@ public class Scene extends JPanel implements Runnable{
 		echelle.savoirModele(getWidth(), getHeight(), LARGEUR_DU_MONDE);
 		echelle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
-		ordi = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE - 1));
 		ordi.ajouterListesObstacles(listeBalles);
 		ordi.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		ordi.savoirTempsSleep(tempsDuSleep);

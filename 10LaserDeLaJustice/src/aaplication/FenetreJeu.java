@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
@@ -67,6 +69,10 @@ public class FenetreJeu extends JFrame {
 	private JButton btnMiroirPlan;
 	private Scene sceneFinale;
 	private Options optionJeu;
+	private JRadioButton rbtnOrdiNiveau1;
+	private JRadioButton rbtnOrdiNiveau2;
+	private JRadioButton rbtnOrdiNiveau3;
+	private final ButtonGroup btnGroupOrdi = new ButtonGroup();
 
 	private boolean isNouveauOption = true;
 	boolean triche = false;
@@ -298,6 +304,44 @@ public class FenetreJeu extends JFrame {
 		btnPetiteBalle.setEnabled(false);
 		btnPetiteBalle.setBounds(729, 868, 96, 26);
 		contentPane.add(btnPetiteBalle);
+		
+		
+		rbtnOrdiNiveau1 = new JRadioButton("Aide niveau 1");
+		rbtnOrdiNiveau1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//sceneFinale.
+				donneFocusALasceneFinale();
+			}
+		});
+		rbtnOrdiNiveau1.setBounds(1040, 800, 96, 23);
+		rbtnOrdiNiveau1.setEnabled(false);
+		contentPane.add(rbtnOrdiNiveau1);
+		btnGroupOrdi.add(rbtnOrdiNiveau1);
+		
+		rbtnOrdiNiveau2 = new JRadioButton("Aide niveau 2");
+		rbtnOrdiNiveau2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				donneFocusALasceneFinale();
+			}
+		});
+		rbtnOrdiNiveau2.setBounds(1040,834, 96, 23);
+		rbtnOrdiNiveau2.setEnabled(false);
+		contentPane.add(rbtnOrdiNiveau2);
+		btnGroupOrdi.add(rbtnOrdiNiveau2);
+		
+		rbtnOrdiNiveau3 = new JRadioButton("Aide niveau 3");
+		rbtnOrdiNiveau3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				donneFocusALasceneFinale();
+			}
+		});
+		rbtnOrdiNiveau3.setBounds(1040, 868, 96, 23);
+		rbtnOrdiNiveau3.setEnabled(false);
+		contentPane.add(rbtnOrdiNiveau3);
+		btnGroupOrdi.add(rbtnOrdiNiveau3);
+		
 
 		btnPrisme = new JButton("prisme");
 		btnPrisme.addActionListener(new ActionListener() {
@@ -705,6 +749,9 @@ public class FenetreJeu extends JFrame {
 			btnTrouNoir.setEnabled(true);
 			btnPetiteBalle.setEnabled(true);
 			buttonMiroirCourbe.setEnabled(true);
+			rbtnOrdiNiveau1.setEnabled(true);
+			rbtnOrdiNiveau2.setEnabled(true);
+			rbtnOrdiNiveau3.setEnabled(true);
 		}
 
 		// Par Arezki
@@ -723,6 +770,9 @@ public class FenetreJeu extends JFrame {
 			btnTrouNoir.setEnabled(false);
 			btnPetiteBalle.setEnabled(false);
 			buttonMiroirCourbe.setEnabled(false);
+			rbtnOrdiNiveau1.setEnabled(false);
+			rbtnOrdiNiveau2.setEnabled(false);
+			rbtnOrdiNiveau3.setEnabled(false);
 		}
 
 
