@@ -32,6 +32,7 @@ public class FenetreEditeurNiveau extends JFrame {
 	/**
 	 * Cette classe sert à éditer et créer un niveau
 	 * @author Arezki
+	 * @author Miora
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -234,9 +235,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		contentPane.add(sceneFinale);
 		
 		
-	
-
-		toucheScene();
 
 		JToggleButton btnEditeur = new JToggleButton("Editeur");
 		btnEditeur.addActionListener(new ActionListener() {
@@ -271,11 +269,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnDemarrage.setBounds(10, 62, 96, 36);
 		contentPane.add(btnDemarrage);
 
-
-			
-
-			
-			
 		tempsJeu = new Timer(1000, listener);
 
 		
@@ -340,8 +333,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		spnAngleMiroir = new JSpinner();
 		spnAngleMiroir.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				changerAngleMiroirs();
-				
+				changerAngleMiroirs();	
 			}
 		});
 		spnAngleMiroir.setBounds(1317, 698, 49, 20);
@@ -488,6 +480,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		spnAngleBloc.setBounds(1317, 785, 49, 20);
 		contentPane.add(spnAngleBloc);
 	}
+
 	//Par Miora
 	/**
 	 * Cette methode permet de montrer a l'utilisateur les touches pour jouer
@@ -496,7 +489,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		JOptionPane.showMessageDialog(null, " " + "Vos touches ont été initialisé a " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + " et " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()));
 
 	}
-
 	// Par Miora
 	/**
 	 * Methode qui donne le focus a la sceneFinale
@@ -556,17 +548,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		this.isNouveauOption = isNouveauOption;
 	}
 
-
-	//Miora
-	/**
-	 * Cette methode permet de choisir une sceneFinale sauvegarde ou une nouvelle
-	 * sceneFinale
-	 * @param reponse : oui ou non s'il s'agit d'une nouvelle scene
-	 */
-	public void isNouvelle(boolean reponse) {
-		isNouvelle = reponse;
-	}
-	
 	
 	//Par Miora
 	/**
