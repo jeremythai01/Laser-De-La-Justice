@@ -462,7 +462,6 @@ public class Scene extends JPanel implements Runnable{
 	 */ 
 	//Jeremy Thai
 	public void run() {
-		// TODO Auto-generated method stub
 		while (enCoursAnimation) {
 			compteurOrdi++;
 			son.joueMusique("alienMusique");
@@ -832,17 +831,22 @@ public class Scene extends JPanel implements Runnable{
 					
 					double xt = 1.1*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
 					double yt = 1.1*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
-					Vecteur trans = OutilsMath.translation(xt, yt, laser.getPositionHaut());
 					
+					
+					//transaltion pour annuler le while
+					Vecteur trans = OutilsMath.translation(xt, yt, laser.getPositionHaut());
 					
 					if(isIntersectionPremier) {
 						//Tete a la meme position en x sur les deux teleporteurs 
-						double positionInterTel = trans.getX() - listeTeleporteur.get(n).getPositionPremier().getX();
-						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionDeuxieme().getX()+positionInterTel, trans.getY()));
+						double positionInterTelX = trans.getX() - listeTeleporteur.get(n).getPositionPremier().getX();
+						double positionInterTelY = trans.getY() - listeTeleporteur.get(n).getPositionPremier().getY();
+						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionDeuxieme().getX()+positionInterTelX, listeTeleporteur.get(n).getPositionDeuxieme().getY()+positionInterTelY));
 					}else {
-						double positionInterTel = trans.getX() - listeTeleporteur.get(n).getPositionDeuxieme().getX();
-						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionPremier().getX()+positionInterTel, trans.getY()));
+						double positionInterTelX = trans.getX() - listeTeleporteur.get(n).getPositionDeuxieme().getX();
+						double positionInterTelY = trans.getY() - listeTeleporteur.get(n).getPositionDeuxieme().getY();
+						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionPremier().getX()+positionInterTelX, listeTeleporteur.get(n).getPositionPremier().getY()+positionInterTelY));
 					}
+					
 				}// fin if intersection
 			n++;
 			} //fin while
