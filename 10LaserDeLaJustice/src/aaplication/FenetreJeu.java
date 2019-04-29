@@ -68,7 +68,6 @@ public class FenetreJeu extends JFrame {
 	private JButton btnBlocDeau;
 	private JButton btnTrouNoir;
 	private JButton btnMiroirConcave;
-	private JButton btnMiroirConvexe;
 	private JButton btnMiroirPlan;
 	private JLabel lblTempsInfini;
 	private Scene sceneFinale;
@@ -76,6 +75,7 @@ public class FenetreJeu extends JFrame {
 	private JRadioButton rbtnOrdiNiveau1;
 	private JRadioButton rbtnOrdiNiveau2;
 	private JRadioButton rbtnOrdiNiveau3;
+	private JCheckBox cbxAide;
 	private final ButtonGroup btnGroupOrdi = new ButtonGroup();
 
 	private boolean isNouveauOption = true;
@@ -234,20 +234,6 @@ public class FenetreJeu extends JFrame {
 		btnMiroirPlan.setBounds(934, 868, 105, 23);
 		contentPane.add(btnMiroirPlan);
 
-		btnMiroirConvexe = new JButton("Miroir courbe");
-		btnMiroirConvexe.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				son.joue("beep");
-				sceneFinale.ajoutMiroirCourbe();
-				donneFocusALasceneFinale();
-			}
-		});
-		btnMiroirConvexe.setEnabled(false);
-		btnMiroirConvexe.setBounds(934, 800, 105, 23);
-
-
-		contentPane.add(btnMiroirConvexe);
-
 
 		btnTrouNoir = new JButton("Trou Noir");
 		btnTrouNoir.addActionListener(new ActionListener() {
@@ -313,7 +299,7 @@ public class FenetreJeu extends JFrame {
 		rbtnOrdiNiveau1 = new JRadioButton("Aide niveau 1");
 		rbtnOrdiNiveau1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//sceneFinale.
+				sceneFinale.activerOrdi1();
 				donneFocusALasceneFinale();
 			}
 		});
@@ -325,7 +311,7 @@ public class FenetreJeu extends JFrame {
 		rbtnOrdiNiveau2 = new JRadioButton("Aide niveau 2");
 		rbtnOrdiNiveau2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				sceneFinale.activerOrdi2();
 				donneFocusALasceneFinale();
 			}
 		});
@@ -337,7 +323,7 @@ public class FenetreJeu extends JFrame {
 		rbtnOrdiNiveau3 = new JRadioButton("Aide niveau 3");
 		rbtnOrdiNiveau3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				sceneFinale.activerOrdi3();
 				donneFocusALasceneFinale();
 			}
 		});
@@ -727,6 +713,27 @@ public class FenetreJeu extends JFrame {
 		lblTempsInfini = new JLabel("Temps infini + Nombre de vies infini + Permet de bouger les objets durant la partie");
 		lblTempsInfini.setBounds(314, 11, 534, 39);
 		contentPane.add(lblTempsInfini);
+		
+		cbxAide = new JCheckBox("Aide ordinateur");
+		cbxAide.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(cbxAide.isSelected()) {
+					rbtnOrdiNiveau1.setEnabled(true);
+					rbtnOrdiNiveau2.setEnabled(true);
+					rbtnOrdiNiveau3.setEnabled(true);
+				}else {
+					rbtnOrdiNiveau1.setEnabled(false);
+					rbtnOrdiNiveau1.setSelected(false);
+					rbtnOrdiNiveau2.setEnabled(false);
+					rbtnOrdiNiveau2.setSelected(false);
+					rbtnOrdiNiveau3.setEnabled(false);
+					rbtnOrdiNiveau3.setSelected(false);
+				}
+			}
+		});
+		cbxAide.setEnabled(false);
+		cbxAide.setBounds(934, 800, 105, 23);
+		contentPane.add(cbxAide);
 		lblTempsInfini.setVisible(false);
 		
 		
@@ -785,9 +792,7 @@ public class FenetreJeu extends JFrame {
 			btnTrouNoir.setEnabled(true);
 			btnPetiteBalle.setEnabled(true);
 			buttonMiroirCourbe.setEnabled(true);
-			rbtnOrdiNiveau1.setEnabled(true);
-			rbtnOrdiNiveau2.setEnabled(true);
-			rbtnOrdiNiveau3.setEnabled(true);
+			cbxAide.setEnabled(true);
 		}
 
 		// Par Arezki
@@ -806,6 +811,7 @@ public class FenetreJeu extends JFrame {
 			btnTrouNoir.setEnabled(false);
 			btnPetiteBalle.setEnabled(false);
 			buttonMiroirCourbe.setEnabled(false);
+			cbxAide.setEnabled(false);
 			rbtnOrdiNiveau1.setEnabled(false);
 			rbtnOrdiNiveau2.setEnabled(false);
 			rbtnOrdiNiveau3.setEnabled(false);
