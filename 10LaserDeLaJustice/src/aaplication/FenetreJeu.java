@@ -638,7 +638,7 @@ public class FenetreJeu extends JFrame {
 				affichierConcept();
 			}
 		});
-		btnLireLesConcepts.setBounds(858, 11, 195, 39);
+		btnLireLesConcepts.setBounds(858, 11, 294, 39);
 		contentPane.add(btnLireLesConcepts);
 		
 		JLabel lblVitesseMoyenneDes = new JLabel("Vitesse totale des balles :");
@@ -705,10 +705,10 @@ public class FenetreJeu extends JFrame {
 		 * derriere l'application
 		 */
 		private void affichierConcept() {
+			sceneFinale.arreter();
+			tempsJeu.stop();
 			FenetreConcept fenetreConcept = new FenetreConcept();
 			fenetreConcept.setVisible(true);
-			setVisible(false);
-
 		}
 
 		//Par Miora
@@ -717,13 +717,14 @@ public class FenetreJeu extends JFrame {
 		 */
 		private void toucheScene() {
 			if(sceneFinale.isDeplacementSouris()) {
-				JOptionPane.showMessageDialog(null,"Vous vous déplacez avec la souris");
+				JOptionPane.showMessageDialog(null,"Vous vous déplacez avec la souris \n"+
+			"Tir : " + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
+			}else {
+				JOptionPane.showMessageDialog(null, "Vos touches ont été initialisées à \n" 
+						+ "Gauche : " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + "\n"
+						+ "Droite : " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()) + "\n" 
+						+ "Tir :" + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
 			}
-			JOptionPane.showMessageDialog(null, "Vos touches ont été initialisées à \n" 
-					+ "Gauche : " + KeyEvent.getKeyText(sceneFinale.getToucheGauche()) + "\n"
-					+ "Droite : " + KeyEvent.getKeyText(sceneFinale.getToucheDroite()) + "\n" 
-					+ "Tir :" + KeyEvent.getKeyText(sceneFinale.getToucheTir()));
-
 		}
 
 		// Par Miora

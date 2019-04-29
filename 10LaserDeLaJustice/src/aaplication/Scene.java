@@ -1215,8 +1215,6 @@ public class Scene extends JPanel implements Runnable{
 			} else {
 				fluxSortie.writeObject(couleurLaser);
 			} // la couleur du rayon
-			fluxSortie.writeInt(toucheGauche); // la touche gauche
-			fluxSortie.writeInt(toucheDroite); // la touche droite
 			fluxSortie.writeInt(tempsDuJeu);
 
 		} catch (IOException e) {
@@ -1278,8 +1276,6 @@ public class Scene extends JPanel implements Runnable{
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			toucheGauche = fluxEntree.readInt();
-			toucheDroite = fluxEntree.readInt();
 			tempsDuJeu = fluxEntree.readInt();
 		} // fin try
 
