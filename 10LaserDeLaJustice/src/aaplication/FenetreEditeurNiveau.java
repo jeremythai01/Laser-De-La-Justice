@@ -79,6 +79,7 @@ public class FenetreEditeurNiveau extends JFrame {
 					frame = new FenetreEditeurNiveau();
 					frame.setVisible(true);
 					frame.sceneFinale.requestFocusInWindow();
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -92,10 +93,12 @@ public class FenetreEditeurNiveau extends JFrame {
 	 */
 	// Par Arezki
 	public FenetreEditeurNiveau() {
+		
+		
 		setResizable(false);
 		setTitle("Mode \u00E9diteur");
 		setBackground(Color.GRAY);
-
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1413, 854);
 		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -108,7 +111,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		//associerBoutonAvecImage(btnImage, "rejouer.png");
-
+		
 		JButton btnTutoriel = new JButton("Tutoriel");
 		btnTutoriel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -128,6 +131,7 @@ public class FenetreEditeurNiveau extends JFrame {
 				son.joue("beep");
 				sceneFinale.ajoutMiroirPlan();
 				donneFocusALasceneFinale();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnMiroirPlan.setEnabled(true);
@@ -139,7 +143,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				sceneFinale.ajoutMiroirCourbe();
-
+				sceneFinale.activerDrag(true);
 				donneFocusALasceneFinale();
 			}
 		});
@@ -154,6 +158,7 @@ public class FenetreEditeurNiveau extends JFrame {
 				son.joue("beep");
 				sceneFinale.ajoutTrouNoir();
 				donneFocusALasceneFinale();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnTrouNoir.setEnabled(true);
@@ -166,6 +171,8 @@ public class FenetreEditeurNiveau extends JFrame {
 				son.joue("beep");
 				sceneFinale.ajoutBlocEau();
 				donneFocusALasceneFinale();
+				sceneFinale.activerDrag(true);
+				
 			}
 		});
 		btnBlocDeau.setEnabled(true);
@@ -177,6 +184,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				sceneFinale.ajoutBalleGrosse();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnGrosseBalle.setEnabled(true);
@@ -189,6 +197,7 @@ public class FenetreEditeurNiveau extends JFrame {
 				son.joue("beep");
 				sceneFinale.ajoutBalleMedium();
 				donneFocusALasceneFinale();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnMediumBalle.setEnabled(true);
@@ -201,6 +210,7 @@ public class FenetreEditeurNiveau extends JFrame {
 				son.joue("beep");
 				sceneFinale.ajoutBallePetite();
 				donneFocusALasceneFinale();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnPetiteBalle.setEnabled(true);
@@ -212,6 +222,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				son.joue("beep");
 				sceneFinale.ajoutPrisme();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnPrisme.setEnabled(true);
@@ -369,6 +380,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				sceneFinale.effacerPrisme();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnEffacerTousLes_1.setBounds(397, 741, 176, 23);
@@ -379,6 +391,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				sceneFinale.effacerBloc();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnEffacerTousLes_2.setBounds(595, 741, 176, 23);
@@ -389,6 +402,7 @@ public class FenetreEditeurNiveau extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("beep");
 				sceneFinale.effacerTrouNoir();
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnEffacerTousLes_3.setBounds(793, 741, 200, 23);
@@ -397,6 +411,8 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnToutEffacer = new JButton("Tout effacer");
 		btnToutEffacer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				sceneFinale.activerDrag(true);
 			}
 		});
 		btnToutEffacer.setBounds(939, 38, 148, 38);
@@ -431,8 +447,10 @@ public class FenetreEditeurNiveau extends JFrame {
 			public void stateChanged(ChangeEvent arg0) {
 				if(tglEffacementPrecis.isSelected()) {
 					sceneFinale.effacementPrecis(true);
+					sceneFinale.activerDrag(true);
 				}else {
 					sceneFinale.effacementPrecis(false);
+					sceneFinale.activerDrag(true);
 				}
 			}
 		});
@@ -451,6 +469,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnAvance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				optionAvanceMiroir();
+				sceneFinale.activerDrag(true);
 			}	
 		});
 		btnAvance.setBounds(1198, 581, 148, 23);
@@ -466,6 +485,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		spnAngleBloc.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				sceneFinale.setAngleBloc((double)spnAngleBloc.getValue());
+				sceneFinale.activerDrag(true);
 			}
 		});
 		spnAngleBloc.setBounds(1297, 795, 49, 20);
@@ -507,6 +527,8 @@ public class FenetreEditeurNiveau extends JFrame {
 	});
 	}
 	
+	
+	
 	// // Par Arezki
 	/**
 	 * permet d'étendre la fenêtre et d'activer les boutons de l'éditeur pour mettre
@@ -518,7 +540,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnBlocDeau.setEnabled(true);
 		btnGrosseBalle.setEnabled(true);
 		btnMediumBalle.setEnabled(true);
-
+		
 		btnMiroirCourbe.setEnabled(true);
 		btnMiroirPlan.setEnabled(true);
 		btnPrisme.setEnabled(true);
@@ -545,4 +567,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		btnPetiteBalle.setEnabled(false);
 	}
 
+	
+	
 }
