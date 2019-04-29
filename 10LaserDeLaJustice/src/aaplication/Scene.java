@@ -63,9 +63,7 @@ import utilite.OutilsMath;
  * @author Miora, Arezki, Jeremy, Arnaud
  *
  */
-public class Scene extends JPanel implements Runnable{
-
-
+public class Scene extends JPanel implements Runnable {
 
 	private Image fond = null;
 
@@ -73,18 +71,19 @@ public class Scene extends JPanel implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 
+	private double indiceRefPrisme = 1;
 	private double angle;
 	private double LARGEUR_DU_MONDE = 65; // en metres
 	private double HAUTEUR_DU_MONDE;
 	private double diametre = 2; // em mètres
 	private int tempsDuSleep = 30;
 	private int nombreVies = 5;
-	private int tempsDuJeu = 60; //initialement
+	private int tempsDuJeu = 60; // initialement
 	private int toucheGauche = 37;
 	private double n2 = 2.00;
 	private int compteurOrdi = 0;
 	private double qtRotation = 0;
-	private double indiceRefraction=1.33;//par defaut
+	private double indiceRefraction = 1.33;// par defaut
 
 	private int toucheDroite = 39;
 	private double positionPerso;
@@ -110,9 +109,9 @@ public class Scene extends JPanel implements Runnable{
 	private boolean triche = false;
 	private boolean effacement = false;
 	private boolean deplacementSouris;
-	private boolean activerOrdi1=false;
-	private boolean activerOrdi2=false;
-	private boolean activerOrdi3=false;
+	private boolean activerOrdi1 = false;
+	private boolean activerOrdi2 = false;
+	private boolean activerOrdi3 = false;
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
@@ -190,14 +189,14 @@ public class Scene extends JPanel implements Runnable{
 		});
 
 		lireFond();
-		
+
 		angle = valeurAngleRoulette;
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
-		if(deplacementSouris) {
+		if (deplacementSouris) {
 			personnage.setModeSouris(true);
-			personnage.setToucheDroite(898); //touches au hasard
-			personnage.setToucheGauche(1671);  //touches au hasard
+			personnage.setToucheDroite(898); // touches au hasard
+			personnage.setToucheGauche(1671); // touches au hasard
 		}
 
 		addMouseMotionListener(new MouseMotionAdapter() {
@@ -216,7 +215,7 @@ public class Scene extends JPanel implements Runnable{
 				double eXR = e.getX() / modele.getPixelsParUniteX();
 				double eYR = e.getY() / modele.getPixelsParUniteY();
 
-				selectionneurObjets( eXR,  eYR);
+				selectionneurObjets(eXR, eYR);
 
 				tirLaser(e, personnage); // Tir du laser lorsque le personnage est en mode souris
 			}
@@ -282,10 +281,10 @@ public class Scene extends JPanel implements Runnable{
 			mat = modele.getMatMC();
 			HAUTEUR_DU_MONDE = modele.getHautUnitesReelles();
 			premiereFois = false;
-			Balle.setModele(getWidth(),getHeight(),LARGEUR_DU_MONDE);
-			ordi3 = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE-2)); // soustrait la hauteur
-			ordi2 = new OrdinateurNiveau2(new Vecteur(28, HAUTEUR_DU_MONDE-2));
-			ordi1 = new Ordinateur(new Vecteur(28, HAUTEUR_DU_MONDE-2));
+			Balle.setModele(getWidth(), getHeight(), LARGEUR_DU_MONDE);
+			ordi3 = new OrdinateurNiveau3(new Vecteur(28, HAUTEUR_DU_MONDE - 2)); // soustrait la hauteur
+			ordi2 = new OrdinateurNiveau2(new Vecteur(28, HAUTEUR_DU_MONDE - 2));
+			ordi1 = new Ordinateur(new Vecteur(28, HAUTEUR_DU_MONDE - 2));
 		}
 
 		g2d.drawImage(fond, 0, 0, (int) modele.getLargPixels(), (int) modele.getHautPixels(), null);
@@ -339,12 +338,12 @@ public class Scene extends JPanel implements Runnable{
 			pri.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
-		for(MiroirCourbe courbe : listeMiroirCourbe) {
+		for (MiroirCourbe courbe : listeMiroirCourbe) {
 			courbe.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
 		dessinerLesTeleporteur(g2d, mat);
-		
+
 		personnage.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		coeurs.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 
@@ -354,18 +353,16 @@ public class Scene extends JPanel implements Runnable{
 
 		ordi3.ajouterListesObstacles(listeBalles);
 		ordi3.savoirTempsSleep(tempsDuSleep);
-		if(activerOrdi3) {
-		ordi3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+		if (activerOrdi3) {
+			ordi3.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
-	
-		if(activerOrdi2) {
-		ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+
+		if (activerOrdi2) {
+			ordi2.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
-		
-		if(activerOrdi1) {
-		ordi1.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+
+		if (activerOrdi1) {
+			ordi1.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
 
 		tracerVecteurGraphique(g2d);
@@ -373,24 +370,21 @@ public class Scene extends JPanel implements Runnable{
 		for (Pouvoir pouvoir : listePouvoirs) {
 			pouvoir.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
-		
 
-		//Le listenern marche pas dans le constructeur...
+		// Le listenern marche pas dans le constructeur...
 		leverEvenChangementTemps(tempsDuJeu);
 
 	}
 
-
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode permet de dessiner les teleporteurs
 	 */
 	private void dessinerLesTeleporteur(Graphics2D g2d, AffineTransform mat) {
-		for(Teleporteur teleporteur : listeTeleporteur) {
+		for (Teleporteur teleporteur : listeTeleporteur) {
 			teleporteur.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
 		}
-		
+
 	}
 
 	// Arnaud Lefebvre
@@ -404,7 +398,7 @@ public class Scene extends JPanel implements Runnable{
 		}
 	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * Cette méthode permet de démarrer l'animation
 	 */
@@ -417,7 +411,7 @@ public class Scene extends JPanel implements Runnable{
 
 	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * permet de calculer les collision la vitessse des balles et tout autres
 	 * animation ayant de la physiques
@@ -449,7 +443,7 @@ public class Scene extends JPanel implements Runnable{
 		} else {
 			personnage.bouge();
 		}
-		//ordi3.bouge();
+		// ordi3.bouge();
 		ordi1.bouge();
 		ordi2.bouge();
 
@@ -458,9 +452,9 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
-	 * Animation du jeu 
-	 */ 
-	//Jeremy Thai
+	 * Animation du jeu
+	 */
+	// Jeremy Thai
 	public void run() {
 		while (enCoursAnimation) {
 			compteurOrdi++;
@@ -475,7 +469,7 @@ public class Scene extends JPanel implements Runnable{
 			}
 			try {
 				colisionLaserMiroirPlan();
-				colisionLaserMiroirCourbe() ;
+				colisionLaserMiroirCourbe();
 				collisionTeleporteur();
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -520,11 +514,11 @@ public class Scene extends JPanel implements Runnable{
 			}
 		}
 
-		//	fond = Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
+		// fond =
+		// Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource("space.gif"));
 	}
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 	// Jeremy Thai
 	/**
@@ -535,19 +529,20 @@ public class Scene extends JPanel implements Runnable{
 	 * @param character   personnage
 	 */
 	private void detectionCollisionBalleLaser(ArrayList<Balle> listeBalles, ArrayList<Laser> listeLasers) {
-		
+
 		try {
-		for (Laser laser : listeLasers) {
-	
-			for (Balle balle : listeBalles) {
-				if (enIntersection(balle.getAire(), laser.getAire())) {
-					listeLasers.remove(laser);
-					pouvoirAuHasard(balle);
-					balle.shrink(listeBalles, gravite);
+			for (Laser laser : listeLasers) {
+
+				for (Balle balle : listeBalles) {
+					if (enIntersection(balle.getAire(), laser.getAire())) {
+						listeLasers.remove(laser);
+						pouvoirAuHasard(balle);
+						balle.shrink(listeBalles, gravite);
+					}
 				}
 			}
-		}}catch(ConcurrentModificationException e) {
-		
+		} catch (ConcurrentModificationException e) {
+
 		}
 	}
 
@@ -563,13 +558,13 @@ public class Scene extends JPanel implements Runnable{
 		for (Balle balle : listeBalles) {
 			if (enIntersection(balle.getAire(), personnage.getAire())) {
 
-				if (triche == true) 
+				if (triche == true)
 					return;
 
 				if (personnage.isBouclierActive()) {
 					personnage.setBouclierActive(false);
 					return;
-				} 
+				}
 
 				if (personnage.isMort() == true)
 					return;
@@ -580,7 +575,7 @@ public class Scene extends JPanel implements Runnable{
 				personnage.setTempsMort(tempsEcoule + 3);
 				personnage.setMort(true);
 
-				if(coeurs.getCombien() == 0) {
+				if (coeurs.getCombien() == 0) {
 					son.joueSonLorsqueFini();
 					arreter();
 				}
@@ -597,47 +592,55 @@ public class Scene extends JPanel implements Runnable{
 	// auteur Arnaud Lefebvre
 	private void detectionCollisionTrouLaser(ArrayList<Laser> listeLasers) {
 		try {
-		for (Laser laser : listeLasers) {
-			for (TrouNoir trou : listeTrou) {
+			for (Laser laser : listeLasers) {
+				for (TrouNoir trou : listeTrou) {
 
-				if (enIntersection(trou.getAireTrou(), laser.getAire())) {
+					if (enIntersection(trou.getAireTrou(), laser.getAire())) {
 
-					listeLasers.remove(laser);
+						listeLasers.remove(laser);
 
-				}
-				if (enIntersection(trou.getAireGrandTrou(), laser.getAire())) {
-					Vecteur distance = laser.getPositionHaut().soustrait(trou.getPosition());
-					laser.setAngleTir(laser.getAngleTir() + distance.getX());
+					}
+					if (enIntersection(trou.getAireGrandTrou(), laser.getAire())) {
+						Vecteur distance = laser.getPositionHaut().soustrait(trou.getPosition());
+						laser.setAngleTir(laser.getAngleTir() + distance.getX());
+					}
 				}
 			}
-		} }catch(ConcurrentModificationException e) {
+		} catch (ConcurrentModificationException e) {
 		}
 	}
 
 	/**
-	 * Methode qui indique quand un laser entre en collision avec un bloc pour ensuite lui savoir comment changer l'orientation du laser selon l'indice du bloc
+	 * Methode qui indique quand un laser entre en collision avec un bloc pour
+	 * ensuite lui savoir comment changer l'orientation du laser selon l'indice du
+	 * bloc
+	 * 
 	 * @param listeLasers, la liste des lasers tires
 	 */
-	//Arnaud Lefebvre
+	// Arnaud Lefebvre
 	private void detectionCollisionBlocLaser(ArrayList<Laser> listeLasers) {
 		for (int i = 0; i < listeLasers.size(); i++) {
 			for (int j = 0; j < listeBlocEau.size(); j++) {
-				if(listeLasers.get(i).getPositionHaut().getX()>=listeBlocEau.get(j).getPosition().getX()&&
-						listeLasers.get(i).getPositionHaut().getX()<=listeBlocEau.get(j).getPosition().getX()+listeBlocEau.get(j).getLARGEUR()
-						&&listeLasers.get(i).getPositionHaut().getY()<=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()+0.2&&//0.2 pour permettre une approximation, car deux x ne seront jamais egaux
-						listeLasers.get(i).getPositionHaut().getY()>=listeBlocEau.get(j).getPosition().getY()+listeBlocEau.get(j).getHauteur()-0.2) {
+				if (listeLasers.get(i).getPositionHaut().getX() >= listeBlocEau.get(j).getPosition().getX()
+						&& listeLasers.get(i).getPositionHaut().getX() <= listeBlocEau.get(j).getPosition().getX()
+								+ listeBlocEau.get(j).getLARGEUR()
+						&& listeLasers.get(i).getPositionHaut().getY() <= listeBlocEau.get(j).getPosition().getY()
+								+ listeBlocEau.get(j).getHauteur() + 0.2
+						&& // 0.2 pour permettre une approximation, car deux x ne seront jamais egaux
+						listeLasers.get(i).getPositionHaut().getY() >= listeBlocEau.get(j).getPosition().getY()
+								+ listeBlocEau.get(j).getHauteur() - 0.2) {
 					BlocRefraction bloc = listeBlocEau.get(j);
 					Laser laser = listeLasers.get(i);
 
-
 					try {
-						Vecteur ref= bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
-						double angle = Math.toDegrees(Math.atan(ref.getY()/ref.getX()));
-						if(angle<0) {
-							angle=angle+180;
+						Vecteur ref = bloc.refraction(laser.getVitesse().multiplie(-1).normalise(), bloc.getNormal());
+						double angle = Math.toDegrees(Math.atan(ref.getY() / ref.getX()));
+						if (angle < 0) {
+							angle = angle + 180;
 						}
-						laser.setAngleTir(angle-2*1);//erreur d'imprecision causee par les vecteurs orientations pas assez precis
-						j=listeBlocEau.size();
+						laser.setAngleTir(angle - 2 * 1);// erreur d'imprecision causee par les vecteurs orientations
+															// pas assez precis
+						j = listeBlocEau.size();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -648,60 +651,67 @@ public class Scene extends JPanel implements Runnable{
 		}
 	}
 
-	//Miora
+	// Miora
 	/**
-	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une intersection
-	 * avec un miroir plan
+	 * Cette methode methode reoriente l'angle de depart du laser s'il y a une
+	 * intersection avec un miroir plan
+	 * 
 	 * @throws Exception
 	 */
-	private void colisionLaserMiroirPlan() throws Exception{
-		for(Laser laser : listeLasers) {
-			int n=0;
+	private void colisionLaserMiroirPlan() throws Exception {
+		for (Laser laser : listeLasers) {
+			int n = 0;
 			boolean collision = false;
-			while(n< listeMiroirPlan.size() && collision == false) {
-				if(enIntersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
+			while (n < listeMiroirPlan.size() && collision == false) {
+				if (enIntersection(listeMiroirPlan.get(n).getAireMiroirPixel(), laser.getAire())) {
 					collision = true;
 
-					//Les calculs se font a partir du referentiel g2d. Calcul position d'intersection
-					//entre deux droites
-					double angleR = Math.toRadians(laser.getAngleTir()) ;
+					// Les calculs se font a partir du referentiel g2d. Calcul position
+					// d'intersection
+					// entre deux droites
+					double angleR = Math.toRadians(laser.getAngleTir());
 					Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
-					Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+					Vecteur vecDirLaser = (new Vecteur(Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 
 					Vecteur ptsMiroir = listeMiroirPlan.get(n).getPosition();
-					Vecteur vecDirMiroir = (new Vecteur (Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle()) ) , -Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()))));
+					Vecteur vecDirMiroir = (new Vecteur(Math.cos(Math.toRadians(listeMiroirPlan.get(n).getAngle())),
+							-Math.sin(Math.toRadians(listeMiroirPlan.get(n).getAngle()))));
 
 					Vecteur sous = (ptsLaser.soustrait(ptsMiroir)).multiplie(-1);
-					Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); 
+					Vecteur kMiroir = (new Vecteur(0, 0)).soustrait(vecDirMiroir);
 
-					double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+					double[] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(),
+							vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
 
-					double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
-					double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
+					double x = ptsLaser.getX() + inter[0] * vecDirLaser.getX();
+					double y = ptsLaser.getY() + inter[0] * vecDirLaser.getY();
 
+					Vecteur posInter = new Vecteur(x, y);
 
-					Vecteur posInter = new Vecteur (x,y);
-
-
-					//Calcul du nouvel angle
+					// Calcul du nouvel angle
 					Vecteur normal = listeMiroirPlan.get(n).getNormal(vecDirLaser).normalise();
 
-					//Dessin ou non du vecteur normal
+					// Dessin ou non du vecteur normal
 					listeMiroirPlan.get(n).modeScientifique(posInter, modeScientifique);
 
-					Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
-					Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
+					Vecteur incident = (new Vecteur(Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+					Vecteur reflexion = (incident
+							.additionne(normal.multiplie(2.0 * (incident.multiplie(-1).prodScalaire(normal)))))
+									.normalise();
 
-					//ajustement en systeme d'axe normal
-					reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
+					// ajustement en systeme d'axe normal
+					reflexion = new Vecteur(reflexion.getX(), -1 * reflexion.getY());
 
 					laser.setAngleTir(OutilsMath.ajustementArcTan(reflexion));
 
-					//Translation pour mettre le laser au bon endroit. Le bas du laser va aller a la position intersection
-					//le haut va aller a sa nouvelle position
+					// Translation pour mettre le laser au bon endroit. Le bas du laser va aller a
+					// la position intersection
+					// le haut va aller a sa nouvelle position
 					double decalage = 1.5; // Pour annuler le "en intersection"
-					double xt = decalage*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
-					double yt = decalage*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
+					double xt = decalage * (laser.getPositionHaut().getX() - laser.getPositionBas().getX()); // translation
+																												// x
+					double yt = decalage * (laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation
+																												// y
 
 					Vecteur nouveauHaut = OutilsMath.translation(xt, yt, laser.getPositionHaut());
 
@@ -713,63 +723,66 @@ public class Scene extends JPanel implements Runnable{
 		}
 	} // fin methode
 
-
-
-	//Miora
+	// Miora
 	/**
 	 * Cette methode reoriente l'angle de depart du laser s'il y a une intersection
 	 * avec un miroir courbe
+	 * 
 	 * @throws Exception
 	 */
-	private void colisionLaserMiroirCourbe() throws Exception{
-		for(Laser laser : listeLasers) {
-			int n=0;
+	private void colisionLaserMiroirCourbe() throws Exception {
+		for (Laser laser : listeLasers) {
+			int n = 0;
 			boolean collision = false;
-			while(n < listeMiroirCourbe.size() && collision == false) {
-				for(Ligne ligne :listeMiroirCourbe.get(n).getListeLigne()) {
-					if(enIntersection(ligne.getAireLigne(), laser.getAire())){
+			while (n < listeMiroirCourbe.size() && collision == false) {
+				for (Ligne ligne : listeMiroirCourbe.get(n).getListeLigne()) {
+					if (enIntersection(ligne.getAireLigne(), laser.getAire())) {
 						collision = true;
 
-						//Calcul selon g2d
+						// Calcul selon g2d
 
-						//Calcul position intersection (intersection entre deux droites)
+						// Calcul position intersection (intersection entre deux droites)
 						Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
 
-						double angleR = Math.toRadians(laser.getAngleTir()) ;	
-						Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+						double angleR = Math.toRadians(laser.getAngleTir());
+						Vecteur vecDirLaser = (new Vecteur(Math.cos(angleR), -(Math.sin(angleR)))).normalise();
 
-						Vecteur ptsMiroir = (new Vecteur (ligne.getX1(), ligne.getY1()));
-						Vecteur vecDirMiroir = new Vecteur (ligne.x2-ligne.x1, ligne.y2-ligne.y1).normalise();
+						Vecteur ptsMiroir = (new Vecteur(ligne.getX1(), ligne.getY1()));
+						Vecteur vecDirMiroir = new Vecteur(ligne.x2 - ligne.x1, ligne.y2 - ligne.y1).normalise();
 
 						Vecteur sous = (ptsLaser.soustrait(ptsMiroir)).multiplie(-1); // de l'autre cote equation
-						Vecteur kMiroir = (new Vecteur (0,0)).soustrait(vecDirMiroir); // devient moins
-						double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(), vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
+						Vecteur kMiroir = (new Vecteur(0, 0)).soustrait(vecDirMiroir); // devient moins
+						double[] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kMiroir.getX(),
+								vecDirLaser.getY(), kMiroir.getY(), sous.getX(), sous.getY());
 
-						double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
-						double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
-						Vecteur posInter = new Vecteur (x,y);
+						double x = ptsLaser.getX() + inter[0] * vecDirLaser.getX();
+						double y = ptsLaser.getY() + inter[0] * vecDirLaser.getY();
+						Vecteur posInter = new Vecteur(x, y);
 
-						//Calcul nouvel angle
+						// Calcul nouvel angle
 						Vecteur normal = listeMiroirCourbe.get(n).getNormal(posInter).normalise();
-						Vecteur incident = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
-						Vecteur reflexion = (incident.additionne(normal.multiplie(2.0*(incident.multiplie(-1).prodScalaire(normal))))).normalise();
+						Vecteur incident = (new Vecteur(Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+						Vecteur reflexion = (incident
+								.additionne(normal.multiplie(2.0 * (incident.multiplie(-1).prodScalaire(normal)))))
+										.normalise();
 
-
-						//Mode scientifique ou non
+						// Mode scientifique ou non
 						listeMiroirCourbe.get(n).modeScientifique(modeScientifique);
 
+						// ajustement en systeme d'axe normal
+						reflexion = new Vecteur(reflexion.getX(), -1 * reflexion.getY());
 
-						//ajustement en systeme d'axe normal
-						reflexion = new Vecteur (reflexion.getX(),-1*reflexion.getY());
-
-						//Nouvel angle
+						// Nouvel angle
 						laser.setAngleTir(OutilsMath.ajustementArcTan(reflexion));
 
-						//Translation pour mettre le laser au bon endroit. Le bas du laser va aller a la position intersection
-						//le haut va aller a sa nouvelle position
+						// Translation pour mettre le laser au bon endroit. Le bas du laser va aller a
+						// la position intersection
+						// le haut va aller a sa nouvelle position
 						double decalage = 1.5; // Pour annuler le "en intersection"
-						double xt = decalage*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
-						double yt = decalage*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
+						double xt = decalage * (laser.getPositionHaut().getX() - laser.getPositionBas().getX()); // translation
+																													// x
+						double yt = decalage * (laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation
+																													// y
 
 						Vecteur nouveauHaut = OutilsMath.translation(xt, yt, laser.getPositionHaut());
 
@@ -782,81 +795,86 @@ public class Scene extends JPanel implements Runnable{
 		}
 	}
 	// fin methode
-	
-	//Par Miora
+
+	// Par Miora
 	/**
-	 * Cette methode change la position du laser lorsque celui-ci touche un des teleporteurs
+	 * Cette methode change la position du laser lorsque celui-ci touche un des
+	 * teleporteurs
 	 */
 	private void collisionTeleporteur() {
-		for(Laser laser : listeLasers) {
-			int n=0;
+		for (Laser laser : listeLasers) {
+			int n = 0;
 			boolean collision = false;
-			while(n< listeTeleporteur.size() && collision == false) {
-				if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire()) ||
-				   enIntersection(listeTeleporteur.get(n).getAireTeleporteur2(), laser.getAire()) ) {
+			while (n < listeTeleporteur.size() && collision == false) {
+				if (enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())
+						|| enIntersection(listeTeleporteur.get(n).getAireTeleporteur2(), laser.getAire())) {
 					boolean isIntersectionPremier;
 					collision = true;
-					
-					if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
+
+					if (enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
 						isIntersectionPremier = true;
-					}else {
+					} else {
 						isIntersectionPremier = false;
 					}
-		
+
 					Vecteur ptsLaser = laser.getPositionHaut(); // un point du laser
-					double angleR = Math.toRadians(laser.getAngleTir()) ;	
-					Vecteur vecDirLaser = (new Vecteur (Math.cos(angleR), -(Math.sin(angleR)))).normalise();
-					
-					Vecteur ptsTeleporteur ;
-					if(enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
+					double angleR = Math.toRadians(laser.getAngleTir());
+					Vecteur vecDirLaser = (new Vecteur(Math.cos(angleR), -(Math.sin(angleR)))).normalise();
+
+					Vecteur ptsTeleporteur;
+					if (enIntersection(listeTeleporteur.get(n).getAireTeleporteur1(), laser.getAire())) {
 						ptsTeleporteur = listeTeleporteur.get(n).getPositionPremier();
-					}else {
+					} else {
 						ptsTeleporteur = listeTeleporteur.get(n).getPositionDeuxieme();
 					}
-					
-					Vecteur vecTeleporteur = new Vecteur (1,0).normalise();
-				
+
+					Vecteur vecTeleporteur = new Vecteur(1, 0).normalise();
+
 					Vecteur sous = (ptsLaser.soustrait(ptsTeleporteur)).multiplie(-1); // de l'autre cote equation
-					Vecteur kTeleporteur = (new Vecteur (0,0)).soustrait(vecTeleporteur); // devient moins
+					Vecteur kTeleporteur = (new Vecteur(0, 0)).soustrait(vecTeleporteur); // devient moins
 
-					double [] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kTeleporteur.getX(), vecDirLaser.getY(), kTeleporteur.getY(), sous.getX(), sous.getY());
+					double[] inter = OutilsMath.intersectionCramer(vecDirLaser.getX(), kTeleporteur.getX(),
+							vecDirLaser.getY(), kTeleporteur.getY(), sous.getX(), sous.getY());
 
-					double x = ptsLaser.getX() + inter[0]*vecDirLaser.getX();
-					double y= ptsLaser.getY() + inter[0]*vecDirLaser.getY();
-				
-					Vecteur posInter = new Vecteur (x,y);
-					
+					double x = ptsLaser.getX() + inter[0] * vecDirLaser.getX();
+					double y = ptsLaser.getY() + inter[0] * vecDirLaser.getY();
+
+					Vecteur posInter = new Vecteur(x, y);
+
 					laser.setPositionHaut(posInter);
-					
-					
-					double xt = 1.1*(laser.getPositionHaut().getX()-laser.getPositionBas().getX()); // translation x
-					double yt = 1.1*(laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
-					
-					
-					//transaltion pour annuler le while
+
+					double xt = 1.1 * (laser.getPositionHaut().getX() - laser.getPositionBas().getX()); // translation x
+					double yt = 1.1 * (laser.getPositionHaut().getY() - laser.getPositionBas().getY()); // translation y
+
+					// transaltion pour annuler le while
 					Vecteur trans = OutilsMath.translation(xt, yt, laser.getPositionHaut());
-					
-					if(isIntersectionPremier) {
-						//Tete a la meme position en x sur les deux teleporteurs 
+
+					if (isIntersectionPremier) {
+						// Tete a la meme position en x sur les deux teleporteurs
 						double positionInterTelX = trans.getX() - listeTeleporteur.get(n).getPositionPremier().getX();
 						double positionInterTelY = trans.getY() - listeTeleporteur.get(n).getPositionPremier().getY();
-						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionDeuxieme().getX()+positionInterTelX, listeTeleporteur.get(n).getPositionDeuxieme().getY()+positionInterTelY));
-					}else {
+						laser.setPositionHaut(
+								new Vecteur(listeTeleporteur.get(n).getPositionDeuxieme().getX() + positionInterTelX,
+										listeTeleporteur.get(n).getPositionDeuxieme().getY() + positionInterTelY));
+					} else {
 						double positionInterTelX = trans.getX() - listeTeleporteur.get(n).getPositionDeuxieme().getX();
 						double positionInterTelY = trans.getY() - listeTeleporteur.get(n).getPositionDeuxieme().getY();
-						laser.setPositionHaut(new Vecteur (listeTeleporteur.get(n).getPositionPremier().getX()+positionInterTelX, listeTeleporteur.get(n).getPositionPremier().getY()+positionInterTelY));
+						laser.setPositionHaut(
+								new Vecteur(listeTeleporteur.get(n).getPositionPremier().getX() + positionInterTelX,
+										listeTeleporteur.get(n).getPositionPremier().getY() + positionInterTelY));
 					}
-					
-				}// fin if intersection
-			n++;
-			} //fin while
-		} // fin for 
-	}
 
+				} // fin if intersection
+				n++;
+			} // fin while
+		} // fin for
+	}
 
 	// Jeremy Thai
 	/**
-	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonnetouche de clavier
+	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la
+	 * bonnetouche de clavier
+	 * 
 	 * @param e touche du clavier
 	 */
 	private void tirLaser(KeyEvent e) {
@@ -900,8 +918,8 @@ public class Scene extends JPanel implements Runnable{
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Permet d'ajouter et de dessiner une grosse balle en appuyant
-	 * sur le boutton grosse balle
+	 * Permet d'ajouter et de dessiner une grosse balle en appuyant sur le boutton
+	 * grosse balle
 	 */
 	// Auteur: Arezki Issaadi
 
@@ -913,8 +931,8 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
-	 * Permet d'ajouter et de dessiner une balle medium en appuyant
-	 * sur le boutton medium balle
+	 * Permet d'ajouter et de dessiner une balle medium en appuyant sur le boutton
+	 * medium balle
 	 */
 	// Auteur: Arezki Issaadi
 
@@ -927,8 +945,8 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
-	 * Permet d'ajouter et de dessiner une petite balle en appuyant
-	 * sur le boutton petite balle
+	 * Permet d'ajouter et de dessiner une petite balle en appuyant sur le boutton
+	 * petite balle
 	 */
 	// Auteur: Arezki Issaadi
 
@@ -941,10 +959,9 @@ public class Scene extends JPanel implements Runnable{
 
 	}
 
-
 	/**
-	 * Permet d'ajouter et de dessiner un miroir plan en appuyant sur
-	 * le boutton miroire plan
+	 * Permet d'ajouter et de dessiner un miroir plan en appuyant sur le boutton
+	 * miroire plan
 	 */
 	// Auteur: Arezki Issaadi
 
@@ -955,8 +972,8 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
-	 * Permet d'ajouter et de dessiner un trou noir en appuyant sur
-	 * le boutton Trou noir
+	 * Permet d'ajouter et de dessiner un trou noir en appuyant sur le boutton Trou
+	 * noir
 	 */
 	// Auteur: Arezki Issaadi
 
@@ -967,28 +984,27 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
-	 * Permet d'ajouter et de dessiner un prisme en appuyant sur
-	 * le boutton prisme
+	 * Permet d'ajouter et de dessiner un prisme en appuyant sur le boutton prisme
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutPrisme() {
-		listePrisme.add(new Prisme(new Vecteur(2, 2)));
+		listePrisme.add(new Prisme(new Vecteur(2, 2),indiceRefPrisme ));
 		repaint();
 
 	}
-	
-	//Par Miora
+
+	// Par Miora
 	/**
 	 * Permet d'ajouter les telepoteurs dans la liste
 	 */
 	public void ajoutTeleporteur() {
-		listeTeleporteur.add(new Teleporteur ((new Vecteur(2, 2))));
+		listeTeleporteur.add(new Teleporteur((new Vecteur(2, 2))));
 		repaint();
 	}
 
 	/**
-	 * Permet d'ajouter et de dessiner un bloc d'eau en appuyant sur
-	 * le boutton Bloc d'eau
+	 * Permet d'ajouter et de dessiner un bloc d'eau en appuyant sur le boutton Bloc
+	 * d'eau
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutBlocEau() {
@@ -997,21 +1013,20 @@ public class Scene extends JPanel implements Runnable{
 
 	}
 
-
 	/**
-	 * Permet d'ajouter et de dessiner un miroir courbe en appuyant sur
-	 * le boutton miroir courbe
+	 * Permet d'ajouter et de dessiner un miroir courbe en appuyant sur le boutton
+	 * miroir courbe
 	 */
 	// Auteur: Arezki Issaadi
 	public void ajoutMiroirCourbe() {
-		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2,2), longueurMiroir/2, angleMiroir));
+		listeMiroirCourbe.add(new MiroirCourbe(new Vecteur(2, 2), longueurMiroir / 2, angleMiroir));
 		repaint();
 
 	}
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	/**
-	 *Permet aux dessins de safficher a chaque clic
+	 * Permet aux dessins de safficher a chaque clic
 	 */
 	// Auteur: Arezki Issaadi
 	public void ActiverEditeur() {
@@ -1029,8 +1044,8 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
-	 * Efface tous les dessins sur la scene en effaçant tous les
-	 * objets dans les listes. Agisse comme une corbeille
+	 * Efface tous les dessins sur la scene en effaçant tous les objets dans les
+	 * listes. Agisse comme une corbeille
 	 */
 	// Auteur: Arezki Issaadi
 	public void reinitialiserDessin() {
@@ -1044,12 +1059,8 @@ public class Scene extends JPanel implements Runnable{
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
 	/**
-	 * Methode qui fait drag tous les objets 
+	 * Methode qui fait drag tous les objets
 	 */
 	// Auteur: Arezki Issaadi
 	private void dragObjet(MouseEvent e) {
@@ -1085,16 +1096,16 @@ public class Scene extends JPanel implements Runnable{
 
 			repaint();
 		}
-		
-		if(bonTelepoteur1) {
+
+		if (bonTelepoteur1) {
 			double xDrag = e.getX() / modele.getPixelsParUniteX();
 			double yDrag = e.getY() / modele.getPixelsParUniteY();
 			teleporteur.setPositionPremier(new Vecteur(xDrag, yDrag));
 
 			repaint();
 		}
-		
-		if(bonTelepoteur2) {
+
+		if (bonTelepoteur2) {
 			double xDrag = e.getX() / modele.getPixelsParUniteX();
 			double yDrag = e.getY() / modele.getPixelsParUniteY();
 			teleporteur.setPositionDeuxieme(new Vecteur(xDrag, yDrag));
@@ -1157,78 +1168,84 @@ public class Scene extends JPanel implements Runnable{
 	private void tirer() {
 
 		ordi3.ajouterListesObstacles(listeBalles);
-		if(activerOrdi1) {
-		 listeLasers.add(ordi1.tirer());
+		if (activerOrdi1) {
+			listeLasers.add(ordi1.tirer());
 		}
-		if(activerOrdi2) {
-		listeLasers.add(ordi2.tirer());
+		if (activerOrdi2) {
+			listeLasers.add(ordi2.tirer());
 		}
-		if(activerOrdi3) {
-		listeLasers.add(ordi3.tirer());
+		if (activerOrdi3) {
+			listeLasers.add(ordi3.tirer());
 		}
 
 	}
 
 	/**
 	 * Methode qui indique aux blocs quel est leur indice
+	 * 
 	 * @param index, l'index de la combobox, commencant par l'eau
 	 */
-	//Arnaud Lefebvre
+	// Arnaud Lefebvre
 	public void modifierIndiceBloc(int index) {
 		switch (index) {
-		
-		case 0: indiceRefraction=(1.33);
-				break;
-		case 1: indiceRefraction=(1.5);
-				break;
-		case 2: indiceRefraction=(2.42);
-				break;
-		case 3: indiceRefraction=(1.63);
-				break;
+
+		case 0:
+			indiceRefraction = (1.33);
+			break;
+		case 1:
+			indiceRefraction = (1.5);
+			break;
+		case 2:
+			indiceRefraction = (2.42);
+			break;
+		case 3:
+			indiceRefraction = (1.63);
+			break;
 		}
 	}
-	
+
 	/**
 	 * Methode qui active l'ordinateur 1
 	 */
-	//Arnaud Lefebvre
+	// Arnaud Lefebvre
 	public void activerOrdi1() {
-		activerOrdi1=true;
-		activerOrdi2=false;
-		activerOrdi3=false;
-		
-		
+		activerOrdi1 = true;
+		activerOrdi2 = false;
+		activerOrdi3 = false;
+
 	}
+
 	/**
 	 * Methode qui active l'ordinateur 2
 	 */
-	//Arnaud Lefebvre
+	// Arnaud Lefebvre
 	public void activerOrdi2() {
-		activerOrdi1=false;
-		activerOrdi2=true;
-		activerOrdi3=false;
-		
+		activerOrdi1 = false;
+		activerOrdi2 = true;
+		activerOrdi3 = false;
+
 	}
+
 	/**
 	 * Methode qui active l'ordinateur 3
 	 */
-	//Arnaud Lefebvre
+	// Arnaud Lefebvre
 	public void activerOrdi3() {
-		activerOrdi1=false;
-		activerOrdi2=false;
-		activerOrdi3=true;
-}
-	
+		activerOrdi1 = false;
+		activerOrdi2 = false;
+		activerOrdi3 = true;
+	}
+
 	/**
 	 * Methode qui desactive les ordis
 	 */
-	//Arnaud
+	// Arnaud
 	public void desactiverOrdi() {
-		activerOrdi1=false;
-		activerOrdi2=false;
-		activerOrdi3=false;
+		activerOrdi1 = false;
+		activerOrdi2 = false;
+		activerOrdi3 = false;
 	}
-	
+
 	/**
 	 * Methode qui active le mode de triche
 	 */
@@ -1240,13 +1257,14 @@ public class Scene extends JPanel implements Runnable{
 
 	/**
 	 * Methode qui permet d'activer le drag
+	 * 
 	 * @param valeur, savoir quand le faire
 	 */
-	//Arezki
+	// Arezki
 	public void activerDrag(boolean valeur) {
 		dragBon = valeur;
 	}
-	
+
 	/**
 	 * Methode qui permet de tracer un vecteur qui indique l'angle de tir du fusil
 	 * 
@@ -1287,7 +1305,7 @@ public class Scene extends JPanel implements Runnable{
 
 		if (f.exists()) { // si le fichier modiefie existe, changement
 			fichierDeTravail = new File(direction);
-		}else { //sinon version initiale
+		} else { // sinon version initiale
 			String autreDir = System.getProperty("user.dir");
 			fichierDeTravail = new File(autreDir, "DonneeInitiale.d3t");
 		}
@@ -1337,6 +1355,7 @@ public class Scene extends JPanel implements Runnable{
 	// Par Miora
 	/**
 	 * Cette methode creer de mettre le niveau pesonnalise
+	 * 
 	 * @param nomFichier : le nom du fichier a lire
 	 */
 	private void lectureNiveau(String nomFichier) {
@@ -1520,12 +1539,11 @@ public class Scene extends JPanel implements Runnable{
 				coeurs.setCombien(nombreVies);
 				personnage = new Personnage(positionPerso, toucheGauche, toucheDroite, toucheTir);
 			}
-		}else {
+		} else {
 			// partie nouvelle
 			personnage = new Personnage(LARGEUR_DU_MONDE / 2, toucheGauche, toucheDroite, toucheTir);
 		}
 	}
-
 
 	// Par Miora R. Rakoto
 	/**
@@ -1573,16 +1591,16 @@ public class Scene extends JPanel implements Runnable{
 		} // fin finally
 	}
 
-
-
-	//Miora
+	// Miora
 	/**
 	 * Cette methode permet d'ajouter la liste d'écouteur a la scene
+	 * 
 	 * @param ecouteur : l'ecouteur
 	 */
 	public void addSceneListener(SceneListener ecouteur) {
 		listeEcouteur.add(ecouteur);
 	}
+
 	// Par Miora
 	/**
 	 * Cette methode permet de remettre le temps de la partie sauvegarde
@@ -1594,54 +1612,61 @@ public class Scene extends JPanel implements Runnable{
 	}
 
 	/**
-	 * Permet d'avoir en sortie la vitesse, l'accélération et la force gravitationnelle des balles. 
+	 * Permet d'avoir en sortie la vitesse, l'accélération et la force
+	 * gravitationnelle des balles.
+	 * 
 	 * @param listeBalles
 	 */
 	// Arezki
 	public void leverEventBalle(ArrayList<Balle> listeBalles) {
-		for(SceneListener ecout : listeEcouteur) {
+		for (SceneListener ecout : listeEcouteur) {
 			ecout.evenementBalles(listeBalles);
 		}
 	}
+
 	/**
 	 * Cette méthode gère les évènements qui sont reliés au laser
+	 * 
 	 * @param lasers
 	 * @param angle
 	 */
-	//Arezki
+	// Arezki
 	public void leverEventLaser(ArrayList<Laser> lasers, double angle) {
-		for(SceneListener ecout : listeEcouteur) {
+		for (SceneListener ecout : listeEcouteur) {
 			ecout.evenementLaser(lasers, angle);
 		}
 	}
 
 	/**
 	 * Methode qui permet de gerer les evenements relies au personnage
+	 * 
 	 * @param personnage, le personnage principal
 	 */
-	//Arezki
+	// Arezki
 	public void leverEventPersonnage(Personnage personnage) {
-		for(SceneListener ecout : listeEcouteur) {
+		for (SceneListener ecout : listeEcouteur) {
 			ecout.evenementPersonnage(personnage);
 		}
 	}
 
-	// Par Jeremy 
+	// Par Jeremy
 	/**
 	 * Permet de mettre a jour les sorties du mode scientifique
 	 */
 	private void leverEvenModeScientifique() {
-		if(modeScientifique) {
+		if (modeScientifique) {
 			for (SceneListener ecout : listeEcouteur) {
 				ecout.modeScientifiqueListener(listeBalles, HAUTEUR_DU_MONDE);
 			}
 		}
 	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
-	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne touche de souris et qu'il est en mode souris
-	 * @param e touche de souris
+	 * Ajoute un laser dans la liste de lasers si l'utilisateur appuie sur la bonne
+	 * touche de souris et qu'il est en mode souris
+	 * 
+	 * @param e     touche de souris
 	 * @param perso personnage
 	 */
 	private void tirLaser(MouseEvent e, Personnage perso) {
@@ -1656,19 +1681,20 @@ public class Scene extends JPanel implements Runnable{
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
-	 * Crée un pouvoir au hasard et le met dans la liste de pouvoirs 
-	 * @param balle balle  qui a été touchée
+	 * Crée un pouvoir au hasard et le met dans la liste de pouvoirs
+	 * 
+	 * @param balle balle qui a été touchée
 	 */
 	private void pouvoirAuHasard(Balle balle) {
 
 		Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
 		Vecteur accel = new Vecteur(gravite);
 
-		int range = (10 - 1) + 1;     
+		int range = (10 - 1) + 1;
 
-		int nb =  (int)(Math.random() * range) + 1;
+		int nb = (int) (Math.random() * range) + 1;
 
 		Pouvoir pouvoir;
 		switch (nb) {
@@ -1703,7 +1729,7 @@ public class Scene extends JPanel implements Runnable{
 		}
 	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * Ajoute les compteurs de pouvoirs et les fait partir
 	 */
@@ -1716,12 +1742,13 @@ public class Scene extends JPanel implements Runnable{
 			compteurRalenti = tempsEcoule + 7;// duree de 7 secondes
 
 		if (personnage.isBouclierActive())
-			compteurBouclier = tempsEcoule + 10;// duree de 10 secondes 
+			compteurBouclier = tempsEcoule + 10;// duree de 10 secondes
 	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
-	 * Met a jour la durée de compteurs de pouvoirs et de la rotation des images des balles 
+	 * Met a jour la durée de compteurs de pouvoirs et de la rotation des images des
+	 * balles
 	 */
 	private void updateDureeCompteurs() {
 
@@ -1755,24 +1782,25 @@ public class Scene extends JPanel implements Runnable{
 
 	}
 
-	//Jérémy Thai
+	// Jérémy Thai
 	/**
 	 * Détecte et réalise la collision entre un pouvoir et le personnage
 	 */
 	private void detectionCollisionPouvoirsPersonnages() {
-try {
-		for (Pouvoir pouvoir : listePouvoirs) {
-			if (enIntersection(pouvoir.getAire(), personnage.getAire())) {
-				son.joue("pouvoirActive");
-				pouvoir.activeEffet(this);
-				ajoutCompteurs();
-				listePouvoirs.remove(pouvoir);
+		try {
+			for (Pouvoir pouvoir : listePouvoirs) {
+				if (enIntersection(pouvoir.getAire(), personnage.getAire())) {
+					son.joue("pouvoirActive");
+					pouvoir.activeEffet(this);
+					ajoutCompteurs();
+					listePouvoirs.remove(pouvoir);
+				}
 			}
-		}}catch(ConcurrentModificationException e) {
+		} catch (ConcurrentModificationException e) {
 		}
 	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * Met a jour la position de chaque pouvoir de la liste de pouvoirs
 	 */
@@ -1789,9 +1817,10 @@ try {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
-	 * Evalue une collision avec le sol ou un mur et modifie la vitesse courante selon la collision
+	 * Evalue une collision avec le sol ou un mur et modifie la vitesse courante
+	 * selon la collision
 	 */
 	private void detectionCollisionMurBalle() {
 
@@ -1817,10 +1846,10 @@ try {
 
 	}
 
-
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
-	 * Détecte et s'il y a une collision entre le personnage et un mur et s'occupe de la collision
+	 * Détecte et s'il y a une collision entre le personnage et un mur et s'occupe
+	 * de la collision
 	 */
 	private void detectionCollisionPersonnageMur() {
 
@@ -1830,8 +1859,6 @@ try {
 		if (personnage.getPosition() + personnage.getLARGEUR_PERSO() >= LARGEUR_DU_MONDE)
 			personnage.setPosition(LARGEUR_DU_MONDE - personnage.getLARGEUR_PERSO());
 	}
-
-
 
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1863,7 +1890,9 @@ try {
 	}
 
 	/**
-	 * Cette méthode fait les calculs pour a réfraction du laser lorsqu'il touche un prisme et crée plusieur lasers comme dans la vraie vie 
+	 * Cette méthode fait les calculs pour a réfraction du laser lorsqu'il touche un
+	 * prisme et crée plusieur lasers comme dans la vraie vie
+	 * 
 	 * @param laser: laser qui sera en collision avec le prisme
 	 * @param prismes: prisme qui sera en collision avec le laser
 	 */
@@ -1876,23 +1905,18 @@ try {
 		Vecteur E = V.multiplie(-1);
 		double n = 1.0 / prisme.getIndiceRefraction();
 
-		
 		T = V.multiplie(n).additionne(N.multiplie(
 				(n * (E.prodScalaire(N)) - Math.sqrt(1 - Math.pow(n, 2) * (1 - (Math.pow(E.prodScalaire(N), 2)))))));
 		T = T.multiplie(-1);
-		
 
 		// laser.setPositionHaut(new Vecteur (anciennePosLaser.getX(), T.getY()));
 		double angleAncien = laser.getAngleTir();
-		
 
 		if (ligne23) {
 			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())) + angle);
 		} else {
 			laser.setAngleTir(Math.toDegrees(Math.atan(T.getY() / T.getX())));
 		}
-
-		
 
 		double angleLaser = laser.getAngleTir();
 		listeLasers.add(
@@ -1903,7 +1927,9 @@ try {
 	}
 
 	/**
-	 * Cette méthode calcule la normal pour chaque côté du prisme et la retourne en vecteur dans les unités du rélles
+	 * Cette méthode calcule la normal pour chaque côté du prisme et la retourne en
+	 * vecteur dans les unités du rélles
+	 * 
 	 * @param laser: laser qui sera en collision avec le prisme
 	 * @param prisme: le prisme qui sera en collision avec le laser
 	 * @return Vecteur: Vecteur en x et en y de la normal du segment du prisme
@@ -1911,17 +1937,15 @@ try {
 	// Auteur: Arezki Issaadi
 	private Vecteur normalPrisme(Laser laser, Prisme prisme) {
 
-	
-
 		double resultat13 = prisme.getLigne13().ptSegDist(laser.getPositionHaut().getX(),
 				laser.getPositionHaut().getY());
 		double resultat12 = prisme.getLigne12().ptSegDist(laser.getPositionHaut().getX(),
 				laser.getPositionHaut().getY());
 		double resultat23 = prisme.getLigne23().ptSegDist(laser.getPositionHaut().getX(),
 				laser.getPositionHaut().getY());
-	
+
 		if (resultat13 > 0 && resultat13 < 0.80) {
-			
+
 			ligne13 = true;
 			ligne12 = false;
 			ligne23 = false;
@@ -1944,7 +1968,6 @@ try {
 		} else if (resultat12 > 0 && resultat12 < 0.80) {
 			// a refaire le calcul est pas bon
 
-			
 			ligne13 = false;
 			ligne12 = true;
 			ligne23 = false;
@@ -1955,7 +1978,7 @@ try {
 			return new Vecteur(xNormal, yNormal);
 
 		} else if (resultat23 > 0 && resultat23 < 0.80) {
-			
+
 			ligne13 = false;
 			ligne12 = false;
 			ligne23 = true;
@@ -1982,39 +2005,50 @@ try {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//Jeremy Thai 
+	// Jeremy Thai
 	/**
-	 * Retourne la vitesse dun laser 
+	 * Retourne la vitesse dun laser
+	 * 
 	 * @return vitesseLaser vitesse du laser
 	 */
-	public Vecteur getVitesseLaser() { return vitesseLaser; }
+	public Vecteur getVitesseLaser() {
+		return vitesseLaser;
+	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * Retourne le personnage
+	 * 
 	 * @return personnage personnage du jeu
 	 */
-	public Personnage getPersonnage() { return personnage; }
+	public Personnage getPersonnage() {
+		return personnage;
+	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * Retourne les coeurs
-	 * @return coeurs coeurs 
+	 * 
+	 * @return coeurs coeurs
 	 */
-	public Coeurs getCoeurs() { return coeurs; }
+	public Coeurs getCoeurs() {
+		return coeurs;
+	}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode retourne la touche gauche pour deplacer le personnage
+	 * 
 	 * @return le KeyCode de la touche gauche
 	 */
 	public int getToucheGauche() {
 		return toucheGauche;
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode retourne la touche droite pour deplacer le personnage
+	 * 
 	 * @return le KeyCode de la touche droite
 	 */
 	public int getToucheDroite() {
@@ -2023,64 +2057,76 @@ try {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * Modifie la vitesse dun laser par celle passée en parametre
+	 * 
 	 * @param vitesseLaser vitesse du laser
 	 */
-	public void setVitesseLaser(Vecteur vitesseLaser) { this.vitesseLaser = vitesseLaser; }
+	public void setVitesseLaser(Vecteur vitesseLaser) {
+		this.vitesseLaser = vitesseLaser;
+	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
 	 * Modifie le pas d'incrémentation par celui passé en paramètre
+	 * 
 	 * @param deltaT nouveau pas
 	 */
 
-	public void setDeltaT(double deltaT) { this.deltaT = deltaT; }
-
+	public void setDeltaT(double deltaT) {
+		this.deltaT = deltaT;
+	}
 
 	/**
 	 * Methode qui modifie la touche pour bouger a droite
+	 * 
 	 * @param toucheDroite, la nouvelle touche
 	 */
-	//Arezki
+	// Arezki
 	public void setToucheDroite(int toucheDroite) {
 		this.toucheDroite = toucheDroite;
 	}
 
-	//Jeremy Thai
+	// Jeremy Thai
 	/**
-	 * Modifie le temps ecoule depuis le debut de lanimation par celui passe en parametre
-	 * @param tempsEcoule nouveau temps ecoule 
+	 * Modifie le temps ecoule depuis le debut de lanimation par celui passe en
+	 * parametre
+	 * 
+	 * @param tempsEcoule nouveau temps ecoule
 	 */
 	public void setTempsTotalEcoule(int tempsEcoule) {
 		this.tempsEcoule = tempsEcoule;
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
-	 * Cette methode modifie le KeyCode de la touche gauche par celle passee en parametre
+	 * Cette methode modifie le KeyCode de la touche gauche par celle passee en
+	 * parametre
+	 * 
 	 * @param le KeyCode de la nouvelle touche gauche en parametre
 	 */
 	public void setToucheGauche(int toucheGauche) {
 		this.toucheGauche = toucheGauche;
 	}
 
-	//Arezki
+	// Arezki
 	/**
 	 * Modifie la valeur de l'indice de refraction du prisme avec celle en parametre
-	 * @param valeur nouvelle valeur d'indice de refraction du prisme 
+	 * 
+	 * @param valeur nouvelle valeur d'indice de refraction du prisme
 	 */
+
 	public void setIndiceRefractionPrisme(double valeur) {
-		prisme.setIndiceRefraction(valeur);
-		repaint();
+		indiceRefPrisme = valeur;
+		//repaint();
 	}
 
-
-	//Arnaud 
+	// Arnaud
 	/**
 	 * Modifie la valeur de l'indice de refraction du bloc avec celle en parametre
-	 * @param valeur nouvelle valeur d'indice de refraction du bloc 
+	 * 
+	 * @param valeur nouvelle valeur d'indice de refraction du bloc
 	 */
 	public void setRefractionBloc(double valeur) {
 
@@ -2095,17 +2141,17 @@ try {
 	// auteur Arnaud Lefebvre
 	public void setAngle(double angle) {
 
-
 		/*
-		 * try { laser.setAngleTir(angle); 
-
+		 * try { laser.setAngleTir(angle);
+		 * 
 		 * catch (NullPointerException e) {
 		 */
 		this.angle = angle;
 	}
 
 	/**
-	 * Cette méthode permet de modifier l'angle du laser avec la roulette de la souris
+	 * Cette méthode permet de modifier l'angle du laser avec la roulette de la
+	 * souris
 	 */
 	// Auteur: Arezki Issaadi
 	private void setAngleRoulette() {
@@ -2182,7 +2228,7 @@ try {
 	 * @param valeur: Boolean pour activer ou désactiver l'effacement des objet avec
 	 *        le clique de la souris (true or false)
 	 */
-	//Auteur: Arezki
+	// Auteur: Arezki
 	public void effacementPrecis(boolean valeur) {
 
 		effacement = valeur;
@@ -2199,120 +2245,124 @@ try {
 
 	/**
 	 * Cette methode permet de modifier le temps de jeu
+	 * 
 	 * @param tempsDuJeu : le temps du jeu
 	 */
-	//Miora
+	// Miora
 	public void setTempsDuJeu(int tempsDuJeu) {
 		this.tempsDuJeu = tempsDuJeu;
 	}
 
-	//jeremy 
+	// jeremy
 	/**
-	 * Modifie la valeur (vrai ou faux) du mode scientifique par celle passee en parametre
+	 * Modifie la valeur (vrai ou faux) du mode scientifique par celle passee en
+	 * parametre
+	 * 
 	 * @param modeScientifique nouvelle valeur passee en parametre
 	 */
 	public void setModeScientifique(boolean modeScientifique) {
 		this.modeScientifique = modeScientifique;
+		for(Prisme prisme : listePrisme)
 		prisme.setScience(modeScientifique);
 	}
 
-	//Arezki
+	// Arezki
 	/**
-	 * Selectionne les objets en contact avec le curseur de la souris 
-	 * @param eXR position x du curseur de la souris 
-	 * @param eYR position y du curseur de la souris 
+	 * Selectionne les objets en contact avec le curseur de la souris
+	 * 
+	 * @param eXR position x du curseur de la souris
+	 * @param eYR position y du curseur de la souris
 	 */
-	private  void selectionneurObjets(double eXR, double eYR) {
-	
-		if(dragBon) {
-		for (int i = 0; i < listeBalles.size(); i++) {
-			if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (!effacement)) {
+	private void selectionneurObjets(double eXR, double eYR) {
 
-				balle = listeBalles.get(i);
-				bonneBalle = true;
+		if (dragBon) {
+			for (int i = 0; i < listeBalles.size(); i++) {
+				if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (!effacement)) {
 
-				i = listeBalles.size();
-			} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
-				listeBalles.remove(i);
-				repaint();
+					balle = listeBalles.get(i);
+					bonneBalle = true;
+
+					i = listeBalles.size();
+				} else if ((listeBalles.get(i).getAire().contains(eXR, eYR)) && (effacement)) {
+					listeBalles.remove(i);
+					repaint();
+				}
 			}
-		}
 
+			for (int i = 0; i < listeMiroirCourbe.size(); i++) {
+				if (listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR) && (!effacement)) {
+					bonMiroirCourbe = true;
+					miroirCourbe = listeMiroirCourbe.get(i);
+					i = listeMiroirCourbe.size();
 
-		for (int i = 0; i < listeMiroirCourbe.size(); i++) {
-			if (listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR)&&(!effacement)) {
-				bonMiroirCourbe = true;
-				miroirCourbe = listeMiroirCourbe.get(i);
-				i = listeMiroirCourbe.size();
+				} else if ((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR)) && (effacement)) {
 
-			}else if((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR))&&(effacement)) {
-
-
-			}else if((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR))&&(effacement)) {
-				listeMiroirCourbe.remove(i);
-				repaint();
+				} else if ((listeMiroirCourbe.get(i).getAireMiroirCourbe().contains(eXR, eYR)) && (effacement)) {
+					listeMiroirCourbe.remove(i);
+					repaint();
+				}
 			}
-		}
 
-		for (int i = 0; i < listeMiroirPlan.size(); i++) {
-			if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR) && (!effacement)) {
+			for (int i = 0; i < listeMiroirPlan.size(); i++) {
+				if (listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR) && (!effacement)) {
 
-				bonMiroirPlan = true;
-				miroirePlan = listeMiroirPlan.get(i);
+					bonMiroirPlan = true;
+					miroirePlan = listeMiroirPlan.get(i);
 
-				i = listeMiroirPlan.size();
-			} else if ((listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) && (effacement)) {
-				listeMiroirPlan.remove(i);
-				repaint();
+					i = listeMiroirPlan.size();
+				} else if ((listeMiroirPlan.get(i).getAireMiroirPixel().contains(eXR, eYR)) && (effacement)) {
+					listeMiroirPlan.remove(i);
+					repaint();
+				}
 			}
-		}
-		
-		selectionTeleporteur(eXR,eYR);
 
-		for (int i = 0; i < listeTrou.size(); i++) {
-			if (listeTrou.get(i).getAireTrou().contains(eXR, eYR) && (!effacement)) {
+			selectionTeleporteur(eXR, eYR);
 
-				bonTrouNoir = true;
-				trou = listeTrou.get(i);
+			for (int i = 0; i < listeTrou.size(); i++) {
+				if (listeTrou.get(i).getAireTrou().contains(eXR, eYR) && (!effacement)) {
 
-				i = listeTrou.size();
-			} else if ((listeTrou.get(i).getAireTrou().contains(eXR, eYR)) && (effacement)) {
-				listeTrou.remove(i);
-				repaint();
+					bonTrouNoir = true;
+					trou = listeTrou.get(i);
+
+					i = listeTrou.size();
+				} else if ((listeTrou.get(i).getAireTrou().contains(eXR, eYR)) && (effacement)) {
+					listeTrou.remove(i);
+					repaint();
+				}
 			}
-		}
 
-		for (int i = 0; i < listeBlocEau.size(); i++) {
-			if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR) && (!effacement)) {
+			for (int i = 0; i < listeBlocEau.size(); i++) {
+				if (listeBlocEau.get(i).getAireBloc().contains(eXR, eYR) && (!effacement)) {
 
-				bonBlocEau = true;
-				bloc = listeBlocEau.get(i);
+					bonBlocEau = true;
+					bloc = listeBlocEau.get(i);
 
-				i = listeBlocEau.size();
-			} else if ((listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)) && (effacement)) {
-				listeBlocEau.remove(i);
-				repaint();
+					i = listeBlocEau.size();
+				} else if ((listeBlocEau.get(i).getAireBloc().contains(eXR, eYR)) && (effacement)) {
+					listeBlocEau.remove(i);
+					repaint();
+				}
 			}
-		}
 
-		for (int i = 0; i < listePrisme.size(); i++) {
-			if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR) && (!effacement)) {
+			for (int i = 0; i < listePrisme.size(); i++) {
+				if (listePrisme.get(i).getAirPrisme().contains(eXR, eYR) && (!effacement)) {
 
-				bonPrisme = true;
-				prisme = listePrisme.get(i);
+					bonPrisme = true;
+					prisme = listePrisme.get(i);
 
-				i = listePrisme.size();
-			} else if ((listePrisme.get(i).getAirPrisme().contains(eXR, eYR)) && (effacement)) {
-				listePrisme.remove(i);
-				repaint();
+					i = listePrisme.size();
+				} else if ((listePrisme.get(i).getAirPrisme().contains(eXR, eYR)) && (effacement)) {
+					listePrisme.remove(i);
+					repaint();
+				}
 			}
 		}
 	}
-}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode permet de deplacer les teleporteur a l'aide de la souris
+	 * 
 	 * @param eXR : la position en x de la souris
 	 * @param eYR : la position en y de la souris
 	 */
@@ -2329,7 +2379,7 @@ try {
 				repaint();
 			}
 		}
-		
+
 		for (int i = 0; i < listeTeleporteur.size(); i++) {
 			if (listeTeleporteur.get(i).getAireTeleporteur2().contains(eXR, eYR) && (!effacement)) {
 
@@ -2342,12 +2392,13 @@ try {
 				repaint();
 			}
 		}
-		
+
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode permet de modifier la longueur d'un miroir
+	 * 
 	 * @param longueur - la longueur d'un miroir
 	 */
 	public void setLongueurMiroir(int longueur) {
@@ -2360,21 +2411,24 @@ try {
 	}
 
 	public void setAngleBloc(double value) {
-		bloc.setAngle(value);		
+		bloc.setAngle(value);
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
-	 * Cette methode permet de savoir si l'utilisateur utilise la souris ou les touches du clavier
+	 * Cette methode permet de savoir si l'utilisateur utilise la souris ou les
+	 * touches du clavier
+	 * 
 	 * @return vrai si utilise la souris
 	 */
 	public boolean isDeplacementSouris() {
 		return deplacementSouris;
 	}
 
-	//Par Miora
+	// Par Miora
 	/**
 	 * Cette methode permet de connaitre la touche de tir
+	 * 
 	 * @return la touche pour tirer
 	 */
 	public int getToucheTir() {
@@ -2386,8 +2440,4 @@ try {
 		return listeBalles;
 	}
 
-
-
 }
-
-

@@ -34,6 +34,7 @@ import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SpinnerNumberModel;
 
 
 public class FenetreEditeurNiveau extends JFrame {
@@ -60,6 +61,7 @@ public class FenetreEditeurNiveau extends JFrame {
 	private boolean isNouveauOption = true;
 	boolean triche = false;
 
+	
 	
 	private static String nomFichier;
 
@@ -330,24 +332,8 @@ public class FenetreEditeurNiveau extends JFrame {
 		lblChangementsDivers.setBounds(1215, 627, 105, 38);
 		contentPane.add(lblChangementsDivers);
 
-		JLabel lblRfractionP = new JLabel("Indice de r\u00E9fracrion prisme :");
-		lblRfractionP.setBounds(1193, 656, 178, 38);
-		contentPane.add(lblRfractionP);
-
-		JSpinner spinner = new JSpinner();
-		spinner.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				sceneFinale.setIndiceRefractionPrisme((double) spinner.getValue());
-				repaint();
-			}
-		});
-
-		spinner.setBounds(1306, 692, 40, 23);
-
-		contentPane.add(spinner);
-
 		JLabel lblRefBloc = new JLabel("Indice de r\u00E9fraction du bloc :");
-		lblRefBloc.setBounds(1189, 727, 182, 14);
+		lblRefBloc.setBounds(1189, 670, 182, 14);
 		contentPane.add(lblRefBloc);
 		
 		JSeparator separator_3 = new JSeparator();
@@ -412,13 +398,18 @@ public class FenetreEditeurNiveau extends JFrame {
 		JButton btnToutEffacer = new JButton("Tout effacer");
 		btnToutEffacer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				sceneFinale.effacerBalles();
+				sceneFinale.effacerBloc();
+				sceneFinale.effacerMiroir();
+				sceneFinale.effacerPrisme();
+				sceneFinale.effacerTrouNoir();
 				sceneFinale.activerDrag(true);
 			}
 		});
 		btnToutEffacer.setBounds(939, 38, 148, 38);
 		contentPane.add(btnToutEffacer);
 
+		
 		JSeparator separator_4 = new JSeparator();
 		separator_4.setOrientation(SwingConstants.VERTICAL);
 		separator_4.setForeground(SystemColor.activeCaption);
@@ -475,22 +466,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		});
 		btnAvance.setBounds(1198, 581, 148, 23);
 		contentPane.add(btnAvance);
-
-
-		
-		JLabel lblAngleBloc = new JLabel("Angle bloc");
-		lblAngleBloc.setBounds(1187, 771, 89, 14);
-		contentPane.add(lblAngleBloc);
-		
-		JSpinner spnAngleBloc = new JSpinner();
-		spnAngleBloc.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				sceneFinale.setAngleBloc((double)spnAngleBloc.getValue());
-				sceneFinale.activerDrag(true);
-			}
-		});
-		spnAngleBloc.setBounds(1297, 795, 49, 20);
-		contentPane.add(spnAngleBloc);
 		
 		JComboBox cmbBloc = new JComboBox();
 		cmbBloc.addActionListener(new ActionListener() {
@@ -500,7 +475,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		});
 		cmbBloc.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		cmbBloc.setModel(new DefaultComboBoxModel(new String[] {"Eau(n=1.33)", "Verre(n=1.5)", "Diamant(n=2.42)", "Disulfure de carbone(n=1.63)"}));
-		cmbBloc.setBounds(1179, 741, 182, 24);
+		cmbBloc.setBounds(1179, 684, 182, 24);
 		contentPane.add(cmbBloc);
 		
 		JButton btnTeleporteur = new JButton("T\u00E9l\u00E9porteur");

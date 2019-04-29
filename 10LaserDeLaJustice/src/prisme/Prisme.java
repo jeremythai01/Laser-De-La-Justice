@@ -25,7 +25,7 @@ public class Prisme implements Dessinable, Serializable {
 	private Vecteur p2;
 	private Vecteur p3;
 
-	private double indiceRefraction = 2.0;
+	public double indiceRefraction = 2.0;
 
 	private boolean science = false;
 
@@ -38,8 +38,9 @@ public class Prisme implements Dessinable, Serializable {
 	 * Constructeur du prisme qui initialise les 3 positions(sommets) du prisme
 	 * @param position, le sommet principal
 	 */
-	public Prisme(Vecteur position) {
+	public Prisme(Vecteur position, double indiceRefraction) {
 		p1 = position;
+		this.indiceRefraction = indiceRefraction;
 		p2 = new Vecteur(position.getX() + 6, position.getY());
 		p3 = new Vecteur((p2.getX() + p1.getX()) / 2, position.getY() + 5);
 
@@ -67,7 +68,7 @@ public class Prisme implements Dessinable, Serializable {
 		ligne23 = new Line2D.Double(p2, p3);
 		ligne12 = new Line2D.Double(p1, p2);
 		if (science)
-			g.drawString("n: " + indiceRefraction, (float) (19 * p1.getX()), (float) (20 * p1.getY()));
+			g.drawString("n: " + getIndiceRefraction(), (float) (19 * p1.getX()), (float) (20 * p1.getY()));
 
 		matLocal.rotate(Math.toRadians(0), p1.getX(), p1.getY());
 
@@ -185,6 +186,7 @@ public class Prisme implements Dessinable, Serializable {
 		this.indiceRefraction = indiceRefraction;
 	}
 
+	
 	/**
 	 * Cette méthode permet de savoir si le mode scientifique est activé. Si c'est
 	 * le cas, il ecrira l'indice de réfraction du prisme
