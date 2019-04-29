@@ -30,6 +30,10 @@ import javax.swing.event.ChangeListener;
 import interfaces.MiroirListener;
 import miroir.FenetreMiroir;
 import son.Bruit;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 
 public class FenetreEditeurNiveau extends JFrame {
@@ -344,10 +348,6 @@ public class FenetreEditeurNiveau extends JFrame {
 		JLabel lblRefBloc = new JLabel("Indice de r\u00E9fraction du bloc :");
 		lblRefBloc.setBounds(1189, 727, 182, 14);
 		contentPane.add(lblRefBloc);
-
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setBounds(1306, 753, 40, 23);
-		contentPane.add(spinner_1);
 		
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setOrientation(SwingConstants.VERTICAL);
@@ -490,6 +490,12 @@ public class FenetreEditeurNiveau extends JFrame {
 		});
 		spnAngleBloc.setBounds(1297, 795, 49, 20);
 		contentPane.add(spnAngleBloc);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setFont(new Font("SansSerif", Font.PLAIN, 11));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Eau(n=1.33)", "Verre(n=1.5)", "Diamant(n=2.42)", "Disulfure de carbone(n=1.63)"}));
+		comboBox.setBounds(1179, 741, 182, 24);
+		contentPane.add(comboBox);
 	}
 
 	// Par Miora
