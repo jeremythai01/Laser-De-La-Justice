@@ -58,7 +58,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	public void lireImage() {
 		URL urlCoeur = getClass().getClassLoader().getResource("ordi.jpg");
 		if (urlCoeur == null) {
-			JOptionPane.showMessageDialog(null , "Fichier coeur.png introuvable");
+			JOptionPane.showMessageDialog(null , "Fichier ordi.png introuvable");
 			System.exit(0);}
 		try {
 			img = ImageIO.read(urlCoeur);
@@ -79,7 +79,7 @@ public class OrdinateurNiveau3 implements Dessinable {
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		forme = new Rectangle2D.Double(position.getX(), position.getY(), largeurOrdi, longueurOrdi);
-		g.fill(matLocal.createTransformedShape(forme));
+		//g.fill(matLocal.createTransformedShape(forme));
 		hauteurDuMonde=hauteur;
 		
 		double factX = largeurOrdi/ img.getWidth(null) ;

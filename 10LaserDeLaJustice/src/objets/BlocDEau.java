@@ -2,11 +2,17 @@ package objets;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import geometrie.Vecteur;
 import interfaces.Dessinable;
@@ -22,25 +28,62 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private Vecteur position;
-	private final int LARGEUR=2;
+	private final double LARGEUR=2.0;
 	private Rectangle2D.Double bloc;
 	private boolean premiereCollision=true;
 	private double indiceRefraction;
-	private final double indiceAir=1.0;
-	private double hauteur=0.5;
+	private final double indiceVide=1.0;
+	private double hauteurBloc=0.5;
 	private double angle;
+	private boolean eau=false;
+	private boolean verre=false;
+	private boolean diamant=false;
+	private boolean disulfureCarbone=true;
+	private Image img=null;
+	private URL urlCoeur;
+	
 	
 	
 	/**
-	 * Constructeur du bloc deau qui prend en parametre la position du bloc
+	 * Constructeur du bloc deau qui prend en parametre la position du bloc et son indice de refraction
 	 * @param position, la position du bloc
+	 * @param indiceRefraction, l'indice de refraction du bloc
 	 */
 	public BlocDEau(Vecteur position, double indiceRefraction) {
 		this.position=position;
 		this.indiceRefraction=indiceRefraction;
+		lireImage();
 	}
 	
-
+	/**
+	 * Methode qui permet de lire une image
+	 */
+	public void lireImage() {
+		
+		if(eau) {
+			urlCoeur = getClass().getClassLoader().getResource("eau.jpg");
+		}
+		if(verre) {
+			urlCoeur = getClass().getClassLoader().getResource("verre.jpg");
+		}
+		if(diamant) {
+			urlCoeur = getClass().getClassLoader().getResource("diamant.jpg");	
+		}
+		if(disulfureCarbone) {
+			urlCoeur = getClass().getClassLoader().getResource("disulfure.jpg");
+		}
+		
+		if (urlCoeur == null) {
+			JOptionPane.showMessageDialog(null , "Fichier niveau2.png introuvable");
+			System.exit(0);}
+		try {
+			img = ImageIO.read(urlCoeur);
+		}
+		catch (IOException e) {
+			System.out.println("Erreur pendant la lecture du fichier d'image");
+		}
+	}
+	
 	@Override
 	/**
 	 * Permet de dessiner le bloc selon le contexte graphique en parametre.
@@ -51,9 +94,15 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 */
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
-		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteur);
+		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteurBloc);
 		g.setColor(Color.blue);
 		g.fill(matLocal.createTransformedShape(bloc));
+		
+		double factX = LARGEUR/ img.getWidth(null) ;
+		double factY = hauteurBloc/ img.getHeight(null) ;
+		matLocal.scale( factX, factY);
+		matLocal.translate( getPosition().getX() / factX ,  getPosition().getY() / factY);
+		g.drawImage(img, matLocal, null);
 		
 	}
 	
@@ -67,7 +116,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 */
 	public Vecteur refraction(Vecteur v, Vecteur N) {
 		Vecteur vecteur= new Vecteur();
-		double n= indiceAir/indiceRefraction;
+		double n= indiceVide/indiceRefraction;
 		Vecteur E = new Vecteur();
 		E=v.multiplie(-1);
 		System.out.println("la normale est"+ N);
@@ -144,7 +193,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 * Permet d'obtenir la largeur du bloc 
 	 * @return la largeur du bloc
 	 */
-	public int getLARGEUR() {
+	public double getLARGEUR() {
 		return LARGEUR;
 	}
 
@@ -153,7 +202,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 * @return la hauteur du bloc
 	 */
 	public double getHauteur() {
-		return hauteur;
+		return hauteurBloc;
 	}
 
 	/**
@@ -161,7 +210,7 @@ public class BlocDEau extends Obstacles implements Dessinable, Serializable {
 	 * @return, l'aire du bloc sous forme d'area
 	 */
 	public Area getAireBloc() {
-		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteur);
+		 Rectangle2D.Double aire= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteurBloc);
 		 return new Area(aire);
 	}
 

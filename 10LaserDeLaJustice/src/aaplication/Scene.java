@@ -187,7 +187,7 @@ public class Scene extends JPanel implements Runnable{
 		
 		angle = valeurAngleRoulette;
 		nouvellePartie(isPartieNouveau, nomFichier);
-		lectureFichierOption();
+		//lectureFichierOption();
 		if(deplacementSouris) {
 			personnage.setModeSouris(true);
 		}
@@ -1080,6 +1080,15 @@ public class Scene extends JPanel implements Runnable{
 		activerOrdi3=true;
 }
 	
+	/**
+	 * Methode qui desactive les ordis
+	 */
+	//Arnaud
+	public void desactiverOrdi() {
+		activerOrdi1=false;
+		activerOrdi2=false;
+		activerOrdi3=false;
+	}
 	
 	/**
 	 * Methode qui active le mode de triche
