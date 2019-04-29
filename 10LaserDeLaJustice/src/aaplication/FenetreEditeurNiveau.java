@@ -107,7 +107,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		setBackground(Color.GRAY);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1413, 854);
+		setBounds(100, 100, 1413, 822);
 		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(0, ecranDimension.height/2-getSize().height/2); //le plus a gauche
 		contentPane = new JPanel();
