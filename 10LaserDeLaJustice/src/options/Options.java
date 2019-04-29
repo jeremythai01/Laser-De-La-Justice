@@ -263,7 +263,7 @@ public class Options extends JFrame {
 		btnTirer.setBounds(334, 303, 163, 46);
 		contentPane.add(btnTirer);
 		
-		if(dansScene && !isIni) {
+		if(!isIni || dansScene) {
 			lectureFichierOption();
 		}
 	}
@@ -297,9 +297,7 @@ public class Options extends JFrame {
 		direction += File.separator + "Option";
 		File customDir = new File(direction);
 
-		if (customDir.exists()) {
-			System.out.println(customDir + "Le fichier option n'existe pas");
-		} else if (customDir.mkdirs()) {
+		if (customDir.mkdirs()) {
 			System.out.println(customDir + "Le fichier option a ete cree");
 		} else {
 			System.out.println(customDir + "Le fichier option n'a pas ete cree");

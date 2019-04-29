@@ -79,7 +79,6 @@ public class App10LaserDeLaJustice extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		creationFichierOption();
 		
 
 		JButton btnEditeurDeNiveau = new JButton("Editeur de niveau");
@@ -179,25 +178,6 @@ public class App10LaserDeLaJustice extends JFrame {
 
 	}
 
-	//Par Miora
-	/**
-	 * Cette methode cree le un dossier option sur le desktop
-	 */
-	private void creationFichierOption() {
-		
-			String direction = System.getProperty("user.home") + File.separator + "Desktop"  + File.separator +  "Laser de la justice";
-			direction += File.separator + "Option";
-			File customDir = new File(direction);
-
-			if (customDir.exists()) {
-				System.out.println(customDir + "Le fichier option n'existe pas");
-			} else if (customDir.mkdirs()) {
-				System.out.println(customDir + "Le fichier option a ete cree");
-			} else {
-				System.out.println(customDir + "Le fichier option n'a pas ete cree");
-			}
-		
-	}
 
 	/**Cette methode permet d'associer un bouton a une image
 	 * @param leBouton

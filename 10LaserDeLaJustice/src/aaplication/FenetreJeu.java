@@ -877,6 +877,7 @@ public class FenetreJeu extends JFrame {
 			sceneFinale.arreter();
 			tempsJeu.stop();
 			setVisible(false);
+			donneFocusALasceneFinale();
 		}
 
 

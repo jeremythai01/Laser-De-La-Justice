@@ -35,7 +35,7 @@ public class VisualisationMiroir extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;	
-		ModeleAffichage modele = new ModeleAffichage(getWidth(),getHeight(),65);
+		ModeleAffichage modele = new ModeleAffichage(getWidth(),getHeight(),40);
 		AffineTransform mat = modele.getMatMC();
 		g2d.setColor(Color.red);
 		MiroirPlan miroirPlan = new MiroirPlan(new Vecteur (modele.getLargUnitesReelles()/2,modele.getHautUnitesReelles()/2), angle, longueur);
