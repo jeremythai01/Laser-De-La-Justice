@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 public class FenetreAuteur extends JFrame {
 
 	private JPanel contentPane;
-
 	/**
 	 * Launch the application.
 	 */
@@ -37,42 +36,16 @@ public class FenetreAuteur extends JFrame {
 			}
 		});
 	}
-
 	/**
 	 * Create the frame.
 	 */
 	public FenetreAuteur() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 847, 362);
+		setBounds(100, 100, 982, 644);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JLabel lblArezkiIssaadi = new JLabel("Arezki Issaadi");
-		lblArezkiIssaadi.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		lblArezkiIssaadi.setBounds(10, 181, 121, 14);
-		contentPane.add(lblArezkiIssaadi);
-		
-		JLabel lblArnaud = new JLabel("Arnaud Lefevfre");
-		lblArnaud.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		lblArnaud.setBounds(175, 181, 121, 14);
-		contentPane.add(lblArnaud);
-		
-		JLabel lblMiora = new JLabel("Miora Ratsirahoanana");
-		lblMiora.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		lblMiora.setBounds(366, 181, 180, 14);
-		contentPane.add(lblMiora);
-		
-		JLabel lblThai = new JLabel("Jeremy Thai");
-		lblThai.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		lblThai.setBounds(641, 181, 180, 14);
-		contentPane.add(lblThai);
-		
-		JLabel lblDescriptif = new JLabel("Cette application est dans le cadre du cours SCD");
-		lblDescriptif.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD, 15));
-		lblDescriptif.setBounds(65, 239, 450, 29);
-		contentPane.add(lblDescriptif);
 		
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
@@ -82,6 +55,16 @@ public class FenetreAuteur extends JFrame {
 		});
 		btnRetour.setBounds(10, 6, 89, 23);
 		contentPane.add(btnRetour);
+		
+		JPanel panelAuteur = new JPanel();
+		panelAuteur.setBounds(10, 40, 950, 554);
+		contentPane.add(panelAuteur);
+		panelAuteur.setLayout(null);
+		
+		JLabel lblAuteur = new JLabel("\r\n");
+		lblAuteur.setIcon(new ImageIcon(FenetreAuteur.class.getResource("/auteur.JPG")));
+		lblAuteur.setBounds(10, 11, 936, 532);
+		panelAuteur.add(lblAuteur);
 	
 		
 		
