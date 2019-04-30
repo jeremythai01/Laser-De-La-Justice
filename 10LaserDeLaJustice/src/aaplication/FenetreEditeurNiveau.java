@@ -107,7 +107,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		setBackground(Color.GRAY);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1413, 822);
+		setBounds(100, 100, 1413, 854);
 		Dimension ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(0, ecranDimension.height/2-getSize().height/2); //le plus a gauche
 		contentPane = new JPanel();
@@ -332,8 +332,12 @@ public class FenetreEditeurNiveau extends JFrame {
 		lblChangementsDivers.setBounds(1215, 627, 105, 38);
 		contentPane.add(lblChangementsDivers);
 
+		JLabel lblRfractionP = new JLabel("Indice de r\u00E9fracrion prisme :");
+		lblRfractionP.setBounds(1193, 656, 178, 38);
+		contentPane.add(lblRfractionP);
+
 		JLabel lblRefBloc = new JLabel("Indice de r\u00E9fraction du bloc :");
-		lblRefBloc.setBounds(1189, 670, 182, 14);
+		lblRefBloc.setBounds(1189, 727, 182, 14);
 		contentPane.add(lblRefBloc);
 		
 		JSeparator separator_3 = new JSeparator();
@@ -475,7 +479,7 @@ public class FenetreEditeurNiveau extends JFrame {
 		});
 		cmbBloc.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		cmbBloc.setModel(new DefaultComboBoxModel(new String[] {"Eau(n=1.33)", "Verre(n=1.5)", "Diamant(n=2.42)", "Disulfure de carbone(n=1.63)"}));
-		cmbBloc.setBounds(1179, 684, 182, 24);
+		cmbBloc.setBounds(1179, 741, 182, 24);
 		contentPane.add(cmbBloc);
 		
 		JButton btnTeleporteur = new JButton("T\u00E9l\u00E9porteur");
@@ -489,6 +493,16 @@ public class FenetreEditeurNiveau extends JFrame {
 		});
 		btnTeleporteur.setBounds(1198, 442, 148, 23);
 		contentPane.add(btnTeleporteur);
+		
+		JSpinner spnRefPrisme = new JSpinner();
+		spnRefPrisme.setModel(new SpinnerNumberModel(1.0, 1.0, 20.0, 0.1));
+		spnRefPrisme.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				sceneFinale.setIndiceRefractionPrisme((double)spnRefPrisme.getValue());
+			}
+		});
+		spnRefPrisme.setBounds(1270, 687, 57, 28);
+		contentPane.add(spnRefPrisme);
 	}
 
 	// Par Miora

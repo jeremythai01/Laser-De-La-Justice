@@ -1,6 +1,8 @@
 package pouvoir;
 
+
 import java.awt.Graphics2D;
+
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -18,7 +20,7 @@ import personnage.Personnage;
 import physique.Balle;
 import physique.Coeurs;
 import physique.Laser;
-import physique.SceneTest;
+
 
 /**
  * Classe qui créée un pouvoir de bouclier et mémorise sa position, son accélération,son image et ses dimensions.
