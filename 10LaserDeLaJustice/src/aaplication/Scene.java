@@ -191,6 +191,7 @@ public class Scene extends JPanel implements Runnable {
 		lireFond();
 
 		angle = valeurAngleRoulette;
+		
 		nouvellePartie(isPartieNouveau, nomFichier);
 		lectureFichierOption();
 		if (deplacementSouris) {
@@ -1295,11 +1296,10 @@ public class Scene extends JPanel implements Runnable {
 	private void lectureFichierOption() {
 		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
-
+		
 		// Path du dossier contenant les modifications, les options sont crees par
 		// ordinateur et non par partie
-		String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
-				+ "Laser de la justice";
+		String direction = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
 		direction += File.separator + "Option" + File.separator + "modifie.d3t";
 		File f = new File(direction);
 		// Fin path
@@ -1307,15 +1307,23 @@ public class Scene extends JPanel implements Runnable {
 		if (f.exists()) { // si le fichier modiefie existe, changement
 			fichierDeTravail = new File(direction);
 		} else { // sinon version initiale
-			String autreDir = System.getProperty("user.dir");
-			fichierDeTravail = new File(autreDir, "DonneeInitiale.d3t");
+			String autre = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
+			autre += File.separator + "Option";
+			fichierDeTravail = new File(autre, "DonneeInitiale.d3t");
 		}
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			gravite = new Vecteur(0, fluxEntree.readDouble());
+			if(listeBalles.size()!=0) {
+				for(Balle balle : listeBalles) {
+					balle.setAccel(gravite);
+				}
+			}
 			deplacementSouris = fluxEntree.readBoolean();
-			toucheGauche = fluxEntree.readInt();
+			toucheGauche = fluxEntree.readInt();	
 			toucheDroite = fluxEntree.readInt();
+			personnage.setToucheDroite(toucheDroite);
+			personnage.setToucheGauche(toucheGauche);
 			toucheTir = fluxEntree.readInt();
 			personnage.setToucheTir(toucheTir);
 			try {
@@ -1363,8 +1371,8 @@ public class Scene extends JPanel implements Runnable {
 		String nomFichierNiveau = nomFichier;
 		ObjectInputStream fluxEntree = null;
 
-		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
-		direction += File.separator + "Niveau";
+		String direction =  System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
+		direction += "/Chargement" +File.separator + "Niveau";
 		File fichierDeTravail = new File(direction, nomFichierNiveau);
 
 		try {
@@ -1414,8 +1422,8 @@ public class Scene extends JPanel implements Runnable {
 		}
 
 		// Creation dossier
-		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
-		direction += File.separator + "Sauvegarde";
+		String direction =  System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
+		direction += "/Chargement" + File.separator + "Sauvegarde";
 		File customDir = new File(direction);
 		if (customDir.exists()) {
 		} else if (customDir.mkdirs()) {
@@ -1466,12 +1474,11 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier de sauvegarde
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
-		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
-		direction += File.separator + "Sauvegarde";
-		File fichierDeTravail;
+		String direction =  System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
+		direction += "/Chargement" + File.separator + "Sauvegarde";
+		File fichierDeTravail; 
 		if (nomFichier.equals("temporaire")) {
 			fichierDeTravail = new File(direction, "temporaire");
-
 		} else {
 			fichierDeTravail = new File(direction, nomFichier);
 		}
@@ -1554,17 +1561,8 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	public void ecritureNiveau(String nomSauv) {
 		// Creation dossier
-		String direction = System.getProperty("user.dir") + File.separator + "Laser de la justice";
-		direction += File.separator + "Niveau";
-		File customDir = new File(direction);
-
-		if (customDir.exists()) {
-			
-		} else if (customDir.mkdirs()) {
-			
-		} else {
-			
-		}
+		String direction = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
+		direction += "/Chargement" +  File.separator + "Niveau";
 		// Fin creation dossier
 
 		String nomFichierNiveau = nomSauv + ".niv";

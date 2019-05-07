@@ -172,11 +172,11 @@ public class Options extends JFrame {
 		btnSauvegarder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(dansScene) {
-					ecritureFichier(true);
+					ecritureFichier();
 					jeu = new FenetreJeu (false,"temporaire");
 					jeu.setVisible(true);
 				}
-				ecritureFichier(true);
+				ecritureFichier();
 				setVisible(false);
 			}
 		});
@@ -287,28 +287,13 @@ public class Options extends JFrame {
 	// Par Miora
 	/**
 	 * Cette methode permet de sauvegarder les options du choisi par l'utilisateur
-	 * @param isIni : retourne vrai si le fichier option a ete ouvert
 	 */
 
-	private void ecritureFichier(boolean isIni){
-		String direction = System.getProperty("user.home") + File.separator + "Desktop"  + File.separator +  "Laser de la justice";
+	private void ecritureFichier(){
+		String direction = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
 		direction += File.separator + "Option";
-		File customDir = new File(direction);
-
-		if (customDir.mkdirs()) {
-			
-		} else {
-			
-		}
-		//Fin creation dossier
-
-		String nomFichier = "";
-		if(isIni) {
-			nomFichier= "modifie.d3t";
-		}else {
-			nomFichier = "DonneInitiale.d3t";
-		}
-		File fichierDeTravail = new File(direction, nomFichier);
+		
+		File fichierDeTravail = new File(direction, "modifie.d3t");
 
 		ObjectOutputStream fluxSortie = null;
 		try {
@@ -424,20 +409,18 @@ public class Options extends JFrame {
 		File fichierDeTravail;
 		ObjectInputStream fluxEntree = null;
 
-		
-		String direction = System.getProperty("user.home") + File.separator + "Desktop" + File.separator
-				+ "Laser de la justice";
-		direction += File.separator + "Option" + File.separator + "modifie.d3t";
+		String direction = System.getProperty("user.home") + "/Desktop" + "/10LaserDeLaJustice";
+		direction +=  "/Option" + "/modifie.d3t";
 		File f = new File(direction);
 		// Fin path
 
 		if (f.exists()) { // si le fichier modiefie existe, changement
 			fichierDeTravail = new File(direction);
-		}else { //sinon version initiale
-			String autreDir = System.getProperty("user.dir");
-			fichierDeTravail = new File(autreDir, "DonneeInitiale.d3t");
-		}
-		// Path du dossier contenant les modifications, les options sont crees par
+		} else { // sinon version initiale
+			String autre = System.getProperty("user.home") + "/Desktop" + "/10LaserDeLaJustice";
+			autre += File.separator + "Option";
+			fichierDeTravail = new File(autre, "DonneeInitiale.d3t");
+		}// Path du dossier contenant les modifications, les options sont crees par
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
 			snpAcc.setValue(fluxEntree.readDouble());

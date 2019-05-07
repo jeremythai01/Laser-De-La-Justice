@@ -80,18 +80,20 @@ public class FenetrePartie extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("file_new");
 				String nomFichier = "";
-				String userDir = System.getProperty("user.dir");
-				JFileChooser fc = new JFileChooser(userDir + "/Laser de la justice" );
+				String userDir = System.getProperty("user.home") + "/Desktop" + "/10LaserDeLaJustice" + "/Chargement";
+				JFileChooser fc = new JFileChooser(userDir);
 	            int r = fc.showSaveDialog(null); 
 	            if (r == JFileChooser.APPROVE_OPTION) { 
 	            	File selectedFile = fc.getSelectedFile();
 	            	nomFichier = selectedFile.getName();
+	            	jeu = new FenetreJeu(false, nomFichier);
 	            } 
 	            else {
 	               JOptionPane.showMessageDialog(null, "Probleme lecture niveau ou sauvegarde, lancement d'une nouvelle partie");
+	               jeu = new FenetreJeu(true, nomFichier);
+				
 	            } 
-				jeu = new FenetreJeu(false, nomFichier);
-				jeu.setVisible(true);
+	        	jeu.setVisible(true);
 				//jeu.donneFocusALasceneFinale();
 				setVisible(false);
 			}

@@ -42,7 +42,7 @@ public class OrdinateurNiveau2 implements Dessinable {
 	 * Methode qui permet de lire une image
 	 */
 	public void lireImage() {
-		URL urlCoeur = getClass().getClassLoader().getResource("niveau2.png");
+		URL urlCoeur = getClass().getClassLoader().getResource("niveau2.PNG");
 		if (urlCoeur == null) {
 			JOptionPane.showMessageDialog(null , "Fichier niveau2.png introuvable");
 			System.exit(0);}

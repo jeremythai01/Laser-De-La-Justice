@@ -77,7 +77,7 @@ public class BoostVitesse extends Pouvoir {
 	 */
 	@Override
 	public void activeEffet(Scene scene) {
-		scene.setVitesseLaser(scene.getVitesseLaser().additionne(new Vecteur(0,3)));
+		//scene.setVitesseLaser(scene.getVitesseLaser().additionne(new Vecteur(0,3)));
 		scene.getPersonnage().setEnVitesse(true);
 	}
 
