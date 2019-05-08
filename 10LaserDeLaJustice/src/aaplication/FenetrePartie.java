@@ -107,8 +107,8 @@ public class FenetrePartie extends JFrame {
 		btnNouv.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("file_new");
-				jeu = new FenetreJeu(true, null);  // isNouvelle = true
-				jeu.setVisible(true);
+				FenetreNiveau niveau = new FenetreNiveau();
+				niveau.setVisible(true);
 				setVisible(false);
 			}
 		});
