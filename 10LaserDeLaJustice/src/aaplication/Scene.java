@@ -1307,9 +1307,8 @@ public class Scene extends JPanel implements Runnable {
 		if (f.exists()) { // si le fichier modiefie existe, changement
 			fichierDeTravail = new File(direction);
 		} else { // sinon version initiale
-			String autre = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
-			autre += File.separator + "Option";
-			fichierDeTravail = new File(autre, "DonneeInitiale.d3t");
+			File fileOriginal = new File(getClass().getClassLoader().getResource("DonneeInitiale.d3t").getFile());
+			fichierDeTravail = new File (fileOriginal.getAbsolutePath());
 		}
 		try {
 			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
@@ -1368,12 +1367,12 @@ public class Scene extends JPanel implements Runnable {
 	 * @param nomFichier : le nom du fichier a lire
 	 */
 	private void lectureNiveau(String nomFichier) {
-		String nomFichierNiveau = nomFichier;
 		ObjectInputStream fluxEntree = null;
 
 		String direction =  System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
-		direction += "/Chargement" +File.separator + "Niveau";
-		File fichierDeTravail = new File(direction, nomFichierNiveau);
+		direction += File.separator + "Niveau";
+		File fichierDeTravail = new File(direction, nomFichier);
+		System.out.println(nomFichier);
 
 		try {
 			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
@@ -1399,7 +1398,6 @@ public class Scene extends JPanel implements Runnable {
 		catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Erreur rencontree lors de la lecture niveau ");
 			e.printStackTrace();
-			System.exit(0);
 		}
 
 	}
@@ -1423,7 +1421,7 @@ public class Scene extends JPanel implements Runnable {
 
 		// Creation dossier
 		String direction =  System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
-		direction += "/Chargement" + File.separator + "Sauvegarde";
+		direction += File.separator + "Sauvegarde";
 		File customDir = new File(direction);
 		if (customDir.exists()) {
 		} else if (customDir.mkdirs()) {
@@ -1475,7 +1473,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	private void lectureFichierSauvegarde(String nomFichier) {
 		String direction =  System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
-		direction += "/Chargement" + File.separator + "Sauvegarde";
+		direction += File.separator + "Sauvegarde";
 		File fichierDeTravail; 
 		if (nomFichier.equals("temporaire")) {
 			fichierDeTravail = new File(direction, "temporaire");
@@ -1562,7 +1560,7 @@ public class Scene extends JPanel implements Runnable {
 	public void ecritureNiveau(String nomSauv) {
 		// Creation dossier
 		String direction = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
-		direction += "/Chargement" +  File.separator + "Niveau";
+		direction += File.separator + "Niveau";
 		// Fin creation dossier
 
 		String nomFichierNiveau = nomSauv + ".niv";

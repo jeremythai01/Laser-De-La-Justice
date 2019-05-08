@@ -80,7 +80,12 @@ public class FenetrePartie extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				son.joue("file_new");
 				String nomFichier = "";
-				String userDir = System.getProperty("user.home") + "/Desktop" + "/10LaserDeLaJustice" + "/Chargement";
+				String userDir = System.getProperty("user.home") + "/Desktop" + "/10LaserDeLaJustice" + "/Sauvegarde";
+				File customDir = new File(userDir);
+				if (customDir.exists()) {
+				} else if (customDir.mkdirs()) {
+				} else {
+				}
 				JFileChooser fc = new JFileChooser(userDir);
 	            int r = fc.showSaveDialog(null); 
 	            if (r == JFileChooser.APPROVE_OPTION) { 
