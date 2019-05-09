@@ -137,7 +137,7 @@ public class Balle implements Dessinable, Serializable {
 	 */
 	private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        System.out.println(listeImages.size() + " write");
+        
         out.writeInt(listeImages.size());
         for (BufferedImage chaqueImage : listeImages) {
             ImageIO.write(chaqueImage, "png", out);

@@ -230,7 +230,7 @@ public class App10LaserDeLaJustice extends JFrame {
 		File customDir = new File(direction);
 		customDir.mkdirs();
 		
-		InputStream in; 
+		InputStream in;  
 
 		for(int i = 1; i<=5; i++) {
 			in = getClass().getResourceAsStream("/niveau" + i + ".niv"); 
