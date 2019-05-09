@@ -76,7 +76,7 @@ public class Scene extends JPanel implements Runnable {
 	private double LARGEUR_DU_MONDE = 65; // en metres
 	private double HAUTEUR_DU_MONDE;
 	private double diametre = 2; // em mètres
-	private int tempsDuSleep = 35;
+	private int tempsDuSleep = 37;
 	private int nombreVies = 5;
 	private int tempsDuJeu = 60; // initialement
 	private int toucheGauche = 37;
@@ -157,7 +157,7 @@ public class Scene extends JPanel implements Runnable {
 	private boolean enMouvement = false;
 
 	private double tempsEcoule = 0;
-	private double deltaTInit = 0.025;
+	private double deltaTInit = 0.0247;
 	private double deltaT = deltaTInit;
 
 	private Vecteur vitesseLaserInit = new Vecteur(0, 0.5);
@@ -441,6 +441,10 @@ public class Scene extends JPanel implements Runnable {
 			personnage.bouge();
 			personnage.bouge();
 			personnage.bouge();
+			personnage.bouge();
+			personnage.bouge();
+			personnage.bouge();
+			personnage.bouge();
 		} else {
 			personnage.bouge();
 		}
@@ -468,6 +472,9 @@ public class Scene extends JPanel implements Runnable {
 			for (TrouNoir trou : listeTrou) {
 				trou.savoirQuantiteRotation(qtRotation);
 			}
+			
+			
+			
 			try {
 				colisionLaserMiroirPlan();
 				colisionLaserMiroirCourbe();
@@ -491,7 +498,6 @@ public class Scene extends JPanel implements Runnable {
 			}
 
 			try {
-
 				Thread.sleep(tempsDuSleep);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -573,7 +579,7 @@ public class Scene extends JPanel implements Runnable {
 				son.joueSonLorsqueTouche();
 				coeurs.setCombien(nombreVies - 1);
 				nombreVies--;
-				personnage.setTempsMort(tempsEcoule + 3);
+				personnage.setTempsMort(tempsEcoule + 2);
 				personnage.setMort(true);
 
 				if (coeurs.getCombien() == 0) {
@@ -1668,6 +1674,7 @@ public class Scene extends JPanel implements Runnable {
 	 */
 	private void tirLaser(MouseEvent e, Personnage perso) {
 		if (perso.isModeSouris()) {
+			son.joue("tir");
 			if (enCoursAnimation == true) {
 				perso.neBougePas();
 				listeLasers.add(new Laser(new Vecteur(perso.getPosition() + perso.getLARGEUR_PERSO() / 2,
@@ -1689,7 +1696,7 @@ public class Scene extends JPanel implements Runnable {
 		Vecteur position = new Vecteur(balle.getPosition().getX(), balle.getPosition().getY());
 		Vecteur accel = new Vecteur(gravite);
 
-		int range = (10 - 1) + 1;
+		int range = (25 - 1);
 
 		int nb = (int) (Math.random() * range) + 1;
 
@@ -1698,31 +1705,34 @@ public class Scene extends JPanel implements Runnable {
 
 		case 1:
 			pouvoir = new BoostVitesse(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 9); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
 
 		case 2:
 			pouvoir = new Bouclier(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 9); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
 
 		case 3:
 			pouvoir = new Ralenti(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 9); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
 
 		case 4:
 			pouvoir = new AjoutVie(position, accel);
-			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 12); // duree de 12 secondes
+			pouvoir.setCompteurAvantDisparaitre(tempsEcoule + 9); // duree de 12 secondes
 			listePouvoirs.add(pouvoir);
 			son.joue("pouvoirApparait");
 			break;
+		
+			default: 
+				return;
 		}
 	}
 
@@ -1736,10 +1746,10 @@ public class Scene extends JPanel implements Runnable {
 			compteurVitesse = tempsEcoule + 7; // duree de 7 secondes
 
 		if (deltaT < deltaTInit)
-			compteurRalenti = tempsEcoule + 7;// duree de 7 secondes
+			compteurRalenti = tempsEcoule + 4;// duree de 7 secondes
 
 		if (personnage.isBouclierActive())
-			compteurBouclier = tempsEcoule + 10;// duree de 10 secondes
+			compteurBouclier = tempsEcoule + 5;// duree de 10 secondes
 	}
 
 	// Jeremy Thai
@@ -2154,6 +2164,7 @@ public class Scene extends JPanel implements Runnable {
 	private void setAngleRoulette() {
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
+				if(personnage.isModeSouris()) {
 				if (arg0.getWheelRotation() == -1 && (valeurAngleRoulette >= 0)) {
 					valeurAngleRoulette -= 0.05;
 					setAngle(valeurAngleRoulette);
@@ -2164,6 +2175,7 @@ public class Scene extends JPanel implements Runnable {
 				}
 
 				enMouvement = true;
+			}
 			}
 		});
 
