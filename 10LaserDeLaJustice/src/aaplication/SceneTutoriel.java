@@ -45,7 +45,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 
 	private double LARGEUR_DU_MONDE = 40; // en metres
 	private double HAUTEUR_DU_MONDE;
-	private int tempsDuSleep = 30;
+	private int tempsDuSleep = 34;
 	
 
 
@@ -62,7 +62,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 
 	private ModeleAffichage modele;
 	private AffineTransform mat;
-	private Vecteur vitesse = new Vecteur(1, 1);
+	private Vecteur vitesse = new Vecteur(1, 0);
 
 
 	private ArrayList<Laser> listeLasers = new ArrayList<Laser>();
@@ -92,7 +92,7 @@ public class SceneTutoriel extends JPanel implements Runnable {
 	
 
 
-	private double deltaTInit = 0.04;
+	private double deltaTInit = 0.032;
 	private double deltaT = deltaTInit;
 	
 	private Vecteur vitesseLaserInit = new Vecteur(0,0.5);

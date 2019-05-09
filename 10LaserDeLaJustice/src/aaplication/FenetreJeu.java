@@ -54,7 +54,7 @@ import son.Bruit;
  */
 public class FenetreJeu extends JFrame {
 
-	
+
 	private JPanel contentPane;
 	private JButton btnImage;
 	private JButton btnPrisme;
@@ -168,7 +168,7 @@ public class FenetreJeu extends JFrame {
 				tempsJeu.stop();
 			}
 		});
-		
+
 		btnPause.setBounds(116, 61, 89, 38);
 		contentPane.add(btnPause);
 		//associerBoutonAvecImage(btnPause, "pause.jpg");
@@ -502,7 +502,7 @@ public class FenetreJeu extends JFrame {
 		JButton btnDemarrage = new JButton("demarrage\r\n");
 		btnDemarrage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//son.arreter();
+				sceneFinale.arreter();
 				son.joue("beep");
 				App10LaserDeLaJustice demarrage = new App10LaserDeLaJustice();
 				demarrage.setVisible(true);
@@ -515,34 +515,24 @@ public class FenetreJeu extends JFrame {
 
 
 
-		FenetreVictoire victoire = new FenetreVictoire();
-
+		
 
 		listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!triche)
-					if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
+				if(!triche) {
+					 if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
-
-					} else {
+					}else {
 						son.joueSonLorsqueFini();
 						tempsJeu.stop();
 						sceneFinale.arreter();
 						FenetreGameOver gameOver = new FenetreGameOver();
 						setVisible(false);
 						gameOver.setVisible(true);
-
 					}
-/*
-				if(sceneFinale.getListeBalles().size()==0) {
-					son.joueSonLorsqueFini();
-					victoire.setVisible(true);
-					barreTempsDuJeu.setValue(0);
-					setVisible(false);
 				}
-*/
 			};
 		};
 
@@ -575,7 +565,7 @@ public class FenetreJeu extends JFrame {
 		contentPane.add(separator);
 
 		JToggleButton tglbtnTriche = new JToggleButton("");
-		tglbtnTriche.setSelectedIcon(new ImageIcon(FenetreJeu.class.getResource("/com/sun/java/swing/plaf/windows/icons/Warn.gif")));
+		//tglbtnTriche.setSelectedIcon(new ImageIcon(FenetreJeu.class.getResource("/com/sun/java/swing/plaf/windows/icons/Warn.gif")));
 		tglbtnTriche.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {

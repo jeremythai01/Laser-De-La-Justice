@@ -50,7 +50,7 @@ public class FenetreTuto extends JFrame {
 				try {
 					FenetreTuto frame = new FenetreTuto();
 					frame.setVisible(true);
-					frame.sceneAnimee.requestFocus();
+					frame.sceneAnimee.requestFocusInWindow();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -17,7 +17,6 @@ public class Bruit {
 
 	private Clip musique;
 
-
 	/**
 	 * Méthode qui cherche et fait jouer un son dont le nom du fichier de son est passée en paramètre 
 	 * @param str chaine de caractere qui represente le nom du fichier de son
@@ -78,7 +77,7 @@ public class Bruit {
 	public void joueSonLorsqueTouche() {
 
 		
-		int range = (2 - 1) + 1;     
+		int range = (2 - 1);     
 
 		int nb =  (int)(Math.random() * range) + 1;
 		
@@ -100,7 +99,7 @@ public class Bruit {
 	 */
 	public void joueSonLorsqueFini() {
 
-		int range = (4 - 1) + 1;     
+		int range = (3 - 1);     
 		int nb =  (int)(Math.random() * range) + 1;
 	
 		switch(nb) {
@@ -113,11 +112,7 @@ public class Bruit {
 			joue("careless");
 			break;
 
-		case 3: 
-			joue("chosenone");
-			break;
-
-		case 4:
+		case 3:
 			joue("gameover");
 			break;
 		}

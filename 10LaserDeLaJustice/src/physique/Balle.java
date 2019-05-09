@@ -209,6 +209,7 @@ public class Balle implements Dessinable, Serializable {
 			double eXR1 = (position.getX()+diametre/2 +  vitesse.getX() /4 + (0.30*(vitesse.getX()/Math.abs(vitesse.getX()))) ) * modele.getPixelsParUniteX();
 			double eYR1 =  (position.getY()+diametre/2 + vitesse.getY() /4 ) * modele.getPixelsParUniteY();
 
+			g2d.setColor(Color.yellow);
 			g2d.drawString("V", (int)( eXR1), (int)(eYR1));
 			
 
@@ -222,6 +223,7 @@ public class Balle implements Dessinable, Serializable {
 			double eXR2 =(position.getX()+0.25+diametre/2) * modele.getPixelsParUniteX();
 			double eYR2 = ( position.getY()+diametre/2+diametre) * modele.getPixelsParUniteY();
 			
+			g2d.setColor(Color.ORANGE);
 			g2d.drawString("FG", (int)( eXR2), (int)(eYR2));
 
 		
