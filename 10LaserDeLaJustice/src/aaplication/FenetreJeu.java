@@ -515,19 +515,13 @@ public class FenetreJeu extends JFrame {
 
 
 
-		FenetreVictoire victoire = new FenetreVictoire();
-
+		
 
 		listener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!triche) {
-					if(sceneFinale.getListeBalles().size()==0) {
-						sceneFinale.arreter();
-						victoire.setVisible(true);
-						barreTempsDuJeu.setValue(0);
-						setVisible(false);
-					} else if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
+					 if (barreTempsDuJeu.getValue() > 00 && secondes >= 0 && (sceneFinale.getCoeurs().getCombien()!=0)) {
 						barreTempsDuJeu.setValue(barreTempsDuJeu.getValue() - 1);
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
 					}else {

@@ -77,7 +77,7 @@ public class Scene extends JPanel implements Runnable {
 	private double LARGEUR_DU_MONDE = 63; // en metres
 	private double HAUTEUR_DU_MONDE;
 	private double diametre = 2; // em mètres
-	private int tempsDuSleep = 37;
+	private int tempsDuSleep = 25;
 	private int nombreVies = 5;
 	private int tempsDuJeu = 60; // initialement
 	private int toucheGauche = 37;
