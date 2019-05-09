@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
@@ -1308,16 +1309,28 @@ public class Scene extends JPanel implements Runnable {
 		String direction = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
 		direction += File.separator + "Option" + File.separator + "modifie.d3t";
 		File f = new File(direction);
+		InputStream in = null ;
 		// Fin path
 
-		if (f.exists()) { // si le fichier modiefie existe, changement
-			fichierDeTravail = new File(direction);
+		if (f.exists()) { // si le fichier modiefie on le lit
+			try {
+				fichierDeTravail = new File(direction);
+				fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} else { // sinon version initiale
-			File fileOriginal = new File(getClass().getClassLoader().getResource("DonneeInitiale.d3t").getFile());
-			fichierDeTravail = new File (fileOriginal.getAbsolutePath());
+			in = getClass().getResourceAsStream("/DonneeInitiale.d3t"); 
+			try {
+				fluxEntree = new ObjectInputStream(in);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		try {
-			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
+			
 			gravite = new Vecteur(0, fluxEntree.readDouble());
 			if(listeBalles.size()!=0) {
 				for(Balle balle : listeBalles) {
@@ -1378,7 +1391,6 @@ public class Scene extends JPanel implements Runnable {
 		String direction =  System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
 		direction += File.separator + "Niveau";
 		File fichierDeTravail = new File(direction, nomFichier);
-		System.out.println(nomFichier);
 
 		try {
 			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));

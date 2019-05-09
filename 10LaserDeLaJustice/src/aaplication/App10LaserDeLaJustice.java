@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -221,34 +223,29 @@ public class App10LaserDeLaJustice extends JFrame {
 		imgLue.flush();
 		imgRedim.flush();
 
-		try {
-			creationNiveau();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		creationNiveau();
 	}
 
 	//Par Miora
 	/**
 	 * Cette methode permet de creer un dossier qui va sauvegarder les niveaux dès l'initialisation
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
 	 */
-	private void creationNiveau() throws FileNotFoundException, IOException {
+	private void creationNiveau() {
 		String direction = System.getProperty("user.home") + "/Desktop"+ "/10LaserDeLaJustice";
 		direction += "/Niveau" ;
 		File customDir = new File(direction);
 		customDir.mkdirs();
+		
+		InputStream in; 
 
 		for(int i = 1; i<=5; i++) {
-			File fileNiveau = new File(getClass().getClassLoader().getResource("niveau" + i + ".niv").getFile());
-			Path entre = Paths.get(fileNiveau.getPath());
-			Path sort = Paths.get(customDir.getAbsolutePath() + "/Niveau" + i + ".niv");
-			Files.copy(entre, sort, REPLACE_EXISTING);
+			in = getClass().getResourceAsStream("/niveau" + i + ".niv"); 
+			Path sort = Paths.get(customDir.getAbsolutePath() + "/niveau" + i + ".niv" );
+			try {
+				Files.copy(in, sort, REPLACE_EXISTING);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

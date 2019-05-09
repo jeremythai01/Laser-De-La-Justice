@@ -11,31 +11,31 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import aaplication.FenetreJeu;
-import geometrie.Vecteur;
-
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
 /**
  * Cette classe permet a l'utilisateur de modifier les parametres du jeu. 
  * Ces parametres sont le niveau, la gravite, les touches de clavier et la couleur du rayon 
@@ -418,16 +418,16 @@ public class Options extends JFrame {
 		String direction = System.getProperty("user.home") + "/Desktop" + "/10LaserDeLaJustice";
 		direction +=  "/Option" + "/modifie.d3t";
 		File f = new File(direction);
+		InputStream in = null ;
 		// Fin path
 
-		if (f.exists()) { // si le fichier modiefie existe, changement
+		if (f.exists()) { // si le fichier modifie existe, changement
 			fichierDeTravail = new File(direction);
 		} else { // sinon version initiale
-			File fileOriginal = new File(getClass().getClassLoader().getResource("DonneeInitiale.d3t").getFile());
-			fichierDeTravail = new File (fileOriginal.getAbsolutePath());
+			in = getClass().getResourceAsStream("/DonneeInitiale.d3t"); 
 		}
 		try {
-			fluxEntree = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fichierDeTravail)));
+			fluxEntree = new ObjectInputStream(in);
 			snpAcc.setValue(fluxEntree.readDouble());
 			if(fluxEntree.readBoolean()) {
 				btnRadSouris.setSelected(true);
