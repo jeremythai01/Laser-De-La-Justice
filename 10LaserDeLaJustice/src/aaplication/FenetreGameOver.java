@@ -54,7 +54,7 @@ public class FenetreGameOver extends JFrame {
 	 * Creer la fenetre.
 	 */
 	public FenetreGameOver() {
-		setTitle("GAME OVER");
+		setTitle("Partie finie");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -88,9 +88,9 @@ public class FenetreGameOver extends JFrame {
 		btnQuitter.setBounds(266, 106, 105, 55);
 		contentPane.add(btnQuitter);
 		
-		JLabel lblNewLabel = new JLabel("VOUS AVEZ PERDU");
+		JLabel lblNewLabel = new JLabel("Que voulez-vous faire");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 17));
-		lblNewLabel.setBounds(135, 42, 167, 40);
+		lblNewLabel.setBounds(126, 42, 189, 40);
 		contentPane.add(lblNewLabel);
 	}
 }
