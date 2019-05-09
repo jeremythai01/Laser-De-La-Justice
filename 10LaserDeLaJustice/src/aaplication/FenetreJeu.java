@@ -527,7 +527,7 @@ public class FenetreJeu extends JFrame {
 						sceneFinale.setTempsDuJeu(barreTempsDuJeu.getValue());
 
 					} else {
-						//son.joueSonLorsqueFini();
+						son.joueSonLorsqueFini();
 						tempsJeu.stop();
 						sceneFinale.arreter();
 						FenetreGameOver gameOver = new FenetreGameOver();

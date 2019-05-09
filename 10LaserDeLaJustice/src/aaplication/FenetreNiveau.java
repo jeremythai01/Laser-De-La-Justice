@@ -1,21 +1,28 @@
 package aaplication;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import son.Bruit;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 public class FenetreNiveau extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnNiveau3;
+	private Dimension ecranDimension;
+	private Bruit son = new Bruit();
 
 	/**
 	 * Launch the application.
@@ -43,10 +50,14 @@ public class FenetreNiveau extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		ecranDimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(ecranDimension.width/2-getSize().width/2, ecranDimension.height/2-getSize().height/2);
+		
 		
 		JButton btnNiveau = new JButton("Niveau 1");
 		btnNiveau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				FenetreJeu jeu = new FenetreJeu(false, "niveau1.niv");
 				jeu.setVisible(true);
 				setVisible(false);
@@ -58,6 +69,7 @@ public class FenetreNiveau extends JFrame {
 		JButton btnNiveau2 = new JButton("Niveau 2");
 		btnNiveau2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				FenetreJeu jeu = new FenetreJeu(false, "niveau2.niv");
 				jeu.setVisible(true);
 				setVisible(false);
@@ -69,6 +81,7 @@ public class FenetreNiveau extends JFrame {
 		btnNiveau3 = new JButton("Niveau 3");
 		btnNiveau3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				son.joue("beep");
 				FenetreJeu jeu = new FenetreJeu(false, "niveau3.niv");
 				jeu.setVisible(true);
 				setVisible(false);
@@ -80,6 +93,7 @@ public class FenetreNiveau extends JFrame {
 		JButton btnNiveau5 = new JButton("Niveau 5\r\n");
 		btnNiveau5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				FenetreJeu jeu = new FenetreJeu(false, "niveau5.niv");
 				jeu.setVisible(true);
 				setVisible(false);
@@ -91,6 +105,7 @@ public class FenetreNiveau extends JFrame {
 		JButton btnNiveau4 = new JButton("Niveau 4\r\n");
 		btnNiveau4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 			FenetreJeu jeu = new FenetreJeu(false, "niveau4.niv");
 			jeu.setVisible(true);
 			setVisible(false);
@@ -102,6 +117,7 @@ public class FenetreNiveau extends JFrame {
 		JButton btnMaster = new JButton("Niveau master");
 		btnMaster.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				FenetreJeu jeu = new FenetreJeu(false, "Master.niv");
 				jeu.setVisible(true);
 				setVisible(false);
@@ -113,6 +129,7 @@ public class FenetreNiveau extends JFrame {
 		JButton btnNiveauPersonnalis = new JButton("Niveau personnalis\u00E9");
 		btnNiveauPersonnalis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				FenetreEditeurNiveau niveau = new FenetreEditeurNiveau();
 				niveau.setVisible(true);
 				setVisible(false);
@@ -124,6 +141,7 @@ public class FenetreNiveau extends JFrame {
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				son.joue("beep");
 				App10LaserDeLaJustice demar = new App10LaserDeLaJustice();
 				demar.setVisible(true);
 				setVisible(false);
