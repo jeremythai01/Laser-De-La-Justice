@@ -68,7 +68,8 @@ public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 	 * @throws IOException
 	 */
 	private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
+		out.defaultWriteObject();
+        System.out.println(listeImages.size() + " write");
         out.writeInt(listeImages.size());
         for (BufferedImage chaqueImage : listeImages) {
             ImageIO.write(chaqueImage, "png", out);
@@ -83,11 +84,11 @@ public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 	 * @throws ClassNotFoundException
 	 */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        final int imageCount = in.readInt();
-        listeImages = new ArrayList<BufferedImage>(imageCount);
-        for (int i=0; i<imageCount; i++) {
-            img = ImageIO.read(in);
+    	in.defaultReadObject();
+        int nbImgListe = in.readInt();
+        listeImages = new ArrayList<BufferedImage>(nbImgListe);
+        for (int i = 0; i < nbImgListe; i++) {
+            listeImages.add(ImageIO.read(in));
         }
     }
 	
@@ -124,6 +125,7 @@ public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 	public void dessiner(Graphics2D g, AffineTransform mat, double hauteur, double largeur) {
 		AffineTransform matLocal = new AffineTransform(mat);
 		AffineTransform matLocale = new AffineTransform(mat);
+		img = listeImages.get(0);
 		
 	
 		
@@ -140,6 +142,7 @@ public class TrouNoir extends Obstacles implements Dessinable, Serializable {
 		
 		trou= new Ellipse2D.Double(position.getX(), position.getY(), LARGEUR, LARGEUR);
 		g.setColor(Color.black);
+		g.draw(matLocale.createTransformedShape(trou));
 		
 		
 		

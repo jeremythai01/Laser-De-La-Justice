@@ -894,10 +894,8 @@ public class FenetreJeu extends JFrame {
 			optionJeu = new Options(true);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "not found");
 		} catch (IOException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "fichier");
 		}
 		optionJeu.setDansScene(true);
 		optionJeu.setVisible(true);

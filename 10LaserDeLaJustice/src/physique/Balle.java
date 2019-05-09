@@ -3,7 +3,6 @@ package physique;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -15,8 +14,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -47,7 +44,7 @@ public class Balle implements Dessinable, Serializable {
 	private boolean modeScientifique = false;
 	private static ModeleAffichage modele;	
 	private transient BufferedImage img;
-	private transient ArrayList<BufferedImage> images = new ArrayList ();
+	private transient ArrayList<BufferedImage> listeImages = new ArrayList ();
 
 	/**
 	 * Classe enumeration des types de balle
@@ -89,6 +86,8 @@ public class Balle implements Dessinable, Serializable {
 			lireImage("alienBalleBleue.png");
 			break;
 		}
+		listeImages.add(img);
+		//System.out.println(images.size());
 		forceGravi = MoteurPhysique.forceGravi(masse, accel);
 	}
 
@@ -123,7 +122,7 @@ public class Balle implements Dessinable, Serializable {
 			System.exit(0);}
 		try {
 			img = ImageIO.read(urlBalle);
-			images.add(img); // on rentre les images dans une listes
+		 // on rentre les images dans une listes
 		}
 		catch (IOException e) {
 			System.out.println("Erreur pendant la lecture du fichier d'image");
@@ -138,10 +137,10 @@ public class Balle implements Dessinable, Serializable {
 	 */
 	private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
-        out.writeInt(images.size());
-        for (BufferedImage chaqueImage : images) {
+        System.out.println(listeImages.size() + " write");
+        out.writeInt(listeImages.size());
+        for (BufferedImage chaqueImage : listeImages) {
             ImageIO.write(chaqueImage, "png", out);
-            ImageIO.write(chaqueImage, "jpg", out);
         }
     }
 
@@ -154,10 +153,10 @@ public class Balle implements Dessinable, Serializable {
 	 */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        final int imageCount = in.readInt();
-        images = new ArrayList<BufferedImage>(imageCount);
-        for (int i=0; i<imageCount; i++) {
-            img = ImageIO.read(in);
+        int nbImgListe = in.readInt();
+        listeImages = new ArrayList<BufferedImage>(nbImgListe);
+        for (int i = 0; i < nbImgListe; i++) {
+            listeImages.add(ImageIO.read(in));
         }
     }
 
@@ -173,20 +172,19 @@ public class Balle implements Dessinable, Serializable {
 	public void dessiner(Graphics2D g2d, AffineTransform mat, double hauteur, double largeur) {
 
 		AffineTransform matLocal = new AffineTransform(mat);
-
-		
-		
 		cercle = new Ellipse2D.Double(position.getX(), position.getY(), diametre, diametre);
 		Stroke stroke = g2d.getStroke();
 		g2d.setColor(Color.black);
 		g2d.setStroke(new BasicStroke(2.0f));
 		g2d.draw( matLocal.createTransformedShape(cercle) );
 		g2d.setStroke(stroke);
+		img = listeImages.get(0);
 		
 		double factX = (diametre)/ img.getWidth(null) ;
 		double factY = (diametre)/ img.getHeight(null) ;
 		matLocal.rotate(qtRot, position.getX()+diametre/2, position.getY()+diametre/2);
 		matLocal.scale( factX, factY);
+
 
 		matLocal.translate( (position.getX() )   / factX , (position.getY()) / factY);
 

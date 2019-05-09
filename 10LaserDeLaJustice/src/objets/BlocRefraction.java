@@ -2,10 +2,8 @@ package objets;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -44,7 +42,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 	private boolean diamant=false;
 	private boolean disulfureCarbone=false;
 	private transient BufferedImage img;
-	private transient ArrayList<BufferedImage> images = new ArrayList ();
+	private transient ArrayList<BufferedImage> listeImages = new ArrayList ();
 	private URL urlCoeur;
 	
 	
@@ -87,7 +85,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 			System.exit(0);}
 		try {
 			img = ImageIO.read(urlCoeur);
-		    images.add(img);
+		    listeImages.add(img);
 		}
 		catch (IOException e) {
 			System.out.println("Erreur pendant la lecture du fichier d'image");
@@ -107,6 +105,7 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		bloc= new Rectangle2D.Double(position.getX(), position.getY(), LARGEUR, this.hauteurBloc);
 		g.setColor(Color.blue);
 		//g.fill(matLocal.createTransformedShape(bloc));
+		img = listeImages.get(0);
 		
 		double factX = LARGEUR/ img.getWidth(null) ;
 		double factY = hauteurBloc/ img.getHeight(null) ;
@@ -123,10 +122,10 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		 * @throws IOException
 		 */
 		private void writeObject(ObjectOutputStream out) throws IOException {
-	        out.defaultWriteObject();
-	        out.writeInt(images.size());
-	        for (BufferedImage chaqueImage : images) {
-	            ImageIO.write(chaqueImage, "jpg", out);
+			out.defaultWriteObject();
+	        out.writeInt(listeImages.size());
+	        for (BufferedImage chaqueImage : listeImages) {
+	            ImageIO.write(chaqueImage, "png", out);
 	        }
 	    }
 
@@ -138,13 +137,12 @@ public class BlocRefraction extends Obstacles implements Dessinable, Serializabl
 		 * @throws ClassNotFoundException
 		 */
 	    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-	        in.defaultReadObject();
-	        final int imageCount = in.readInt();
-	        images = new ArrayList<BufferedImage>(imageCount);
-	        for (int i=0; i<imageCount; i++) {
-	            img = ImageIO.read(in);
-
-	        }
+	    	  in.defaultReadObject();
+	          int nbImgListe = in.readInt();
+	          listeImages = new ArrayList<BufferedImage>(nbImgListe);
+	          for (int i = 0; i < nbImgListe; i++) {
+	              listeImages.add(ImageIO.read(in));
+	          }
 	    }
 	
 	//Par Arnaud

@@ -14,7 +14,6 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -315,7 +314,8 @@ public class Scene extends JPanel implements Runnable {
 		detectionCollisionMurBalle();
 		for (Balle balle : listeBalles) {
 			balle.setModeScientifique(modeScientifique);
-			balle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+				balle.dessiner(g2d, mat, HAUTEUR_DU_MONDE, LARGEUR_DU_MONDE);
+			
 		}
 
 		for (MiroirCourbe miroirV : listeMiroirCourbe) {

@@ -148,9 +148,6 @@ public class FenetreNiveau extends JFrame {
 	            	FenetreJeu jeu = new FenetreJeu(false, nomFichier);
 	            	jeu.setVisible(true);
 	            }
-				son.joue("beep");
-				FenetreEditeurNiveau niveau = new FenetreEditeurNiveau();
-				niveau.setVisible(true);
 				setVisible(false);
 			}
 		});

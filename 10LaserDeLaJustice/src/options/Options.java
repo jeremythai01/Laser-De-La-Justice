@@ -423,11 +423,13 @@ public class Options extends JFrame {
 
 		if (f.exists()) { // si le fichier modifie existe, changement
 			fichierDeTravail = new File(direction);
+			fluxEntree = new ObjectInputStream(new FileInputStream(fichierDeTravail));
 		} else { // sinon version initiale
 			in = getClass().getResourceAsStream("/DonneeInitiale.d3t"); 
+			fluxEntree = new ObjectInputStream(in);
 		}
 		try {
-			fluxEntree = new ObjectInputStream(in);
+			
 			snpAcc.setValue(fluxEntree.readDouble());
 			if(fluxEntree.readBoolean()) {
 				btnRadSouris.setSelected(true);
@@ -453,12 +455,6 @@ public class Options extends JFrame {
 			}
 
 			finally {
-				// on exécutera toujours ceci, erreur ou pas
-				try {
-					fluxEntree.close();
-				} catch (IOException e) {
-					JOptionPane.showMessageDialog(null, "Erreur rencontrée lors de la fermeture!");
-				}
 			} // fin finally
 	
 	}
