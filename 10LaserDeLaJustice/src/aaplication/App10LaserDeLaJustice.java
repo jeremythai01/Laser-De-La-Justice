@@ -241,6 +241,13 @@ public class App10LaserDeLaJustice extends JFrame {
 				e.printStackTrace();
 			}
 		}
+		in = getClass().getResourceAsStream("/Master.niv");
+		Path sort = Paths.get(customDir.getAbsolutePath() + "/Master.niv" );
+		try {
+			Files.copy(in, sort, REPLACE_EXISTING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
