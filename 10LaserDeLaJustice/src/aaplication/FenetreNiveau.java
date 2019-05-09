@@ -5,9 +5,13 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -21,6 +25,11 @@ public class FenetreNiveau extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -113,8 +122,16 @@ public class FenetreNiveau extends JFrame {
 		JButton btnNiveauPersonnalis = new JButton("Niveau personnalis\u00E9");
 		btnNiveauPersonnalis.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FenetreEditeurNiveau niveau = new FenetreEditeurNiveau();
-				niveau.setVisible(true);
+				String nomFichier = "";
+				String userDir = System.getProperty("user.home") + "/Desktop" + "/10LaserDeLaJustice" + "/Niveau";
+				JFileChooser fc = new JFileChooser(userDir);
+	            int r = fc.showSaveDialog(null); 
+	            if (r == JFileChooser.APPROVE_OPTION) { 
+	            	File selectedFile = fc.getSelectedFile();
+	            	nomFichier = selectedFile.getName();
+	            	FenetreJeu jeu = new FenetreJeu(false, nomFichier);
+	            	jeu.setVisible(true);
+	            }
 				setVisible(false);
 			}
 		});
